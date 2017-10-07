@@ -618,6 +618,10 @@ var locations =
             return d
         };
 
+        this.closeInfoWindowCallBack = function () {
+            this.input.product.value = '';
+            productControlerObj.ChangeUrlForNewContext();
+        };
 
         this.showInfoWindow = function(d) {
             var data = null;
@@ -645,7 +649,7 @@ var locations =
                 if (!key) key = this.findMarkerKey(d);
                 if (!data) data = this.findDataInfo(key);
             }
-            if (key && data) {
+            if (key != null && data) {
                 var h = this.markers[key];
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
                 h.setZIndex(300);
@@ -665,6 +669,10 @@ var locations =
                     content: $('.map-item-info-board').html()
                 });
                 this.infoWindow.open(this.map, h);
+
+                google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
+                    $thismap.closeInfoWindowCallBack();
+                });
             }
         };
 
@@ -802,13 +810,15 @@ ProductSearchControler = function(h) {
     };
 
     this.ProductMap.initialize();
-    this._SearchAction(JSON.parse(JSON.stringify(this.formSearch.serializeArray())));
-    /*
-    if (this.ProductMap.currentPID) {
-        console.log(this.ProductMap.currentPID);
-        this.ProductMap.showInfoWindow(this.ProductMap.currentPID)
+    if (!this.ProductMap.isDrawing) {
+        this._SearchAction(JSON.parse(JSON.stringify(this.formSearch.serializeArray())));
     }
-    */
+    this.formSearch.submit(function () {
+        i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
+        i.ChangeUrlForNewContext();
+        i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
+        return false
+    })
 };
 
 ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
@@ -941,7 +951,8 @@ $(document).ready(function() {
 
 
     $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
-    $("#price").ionRangeSlider();
+    //$("#price").ionRangeSlider();
+    $('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
 
     $('#map').css({
         height: $(window).height() - $('nav.navbar').height(),

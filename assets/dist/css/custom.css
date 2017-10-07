@@ -514,7 +514,7 @@ nav.navbar a:hover, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.
     background: #fff;
     box-shadow: 5px 5px 6px rgba(0,0,0,.06);
 }
-.map-side .tab-content{position: relative;height: 100%;overflow-y:auto;padding-bottom:50px}
+.map-side .tab-content{position: relative;overflow-y:auto}
 .controls-area span{
     position: relative;
     display: block;

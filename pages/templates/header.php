@@ -13,7 +13,7 @@ $config->addJS('dist', 'main.js'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo IMG ?>/b.jpg"/>
 
-	<title><?php echo $page_title ?></title>
+	<title><?php echo $pageTitle ?></title>
 
 	<link rel="stylesheet" href="<?php echo MAIN_URL ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css">

@@ -127,9 +127,19 @@
                         Loại BĐS
                     </div>
                     <div class="col-md-8 no-padding">
-                        <label><input type="checkbox" name="type" class="minimal" checked> Căn hộ</label>
-                        <label><input type="checkbox" name="type" class="minimal" checked> Nhà</label>
-                        <label><input type="checkbox" name="type" class="minimal" checked> Đất</label>
+                        <select id="type" name="type" class="form-control">
+                            <option value="chungcu">Chung cư</option>
+                            <optgroup label="Nhà bán">
+                                <option value="nharieng">Nhà riêng</option>
+                                <option value="bietthu">Biệt thự, liền kề</option>
+                                <option value="matpho">Nhà mặt phố</option>
+                            </optgroup>
+                            <optgroup label="Đất bán">
+                                <option value="datnen">Đất nền dự án</option>
+                                <option value="bandat">Bán đất</option>
+                            </optgroup>
+                            <option value="resort">Trang trại, khu nghỉ dưỡng</option>
+                        </select>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -158,6 +168,55 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
+
+                <div class="form-group">
+                    <div class="control-label col-md-4 no-padding-left">
+                        Diện tích
+                    </div>
+                    <div class="col-md-8 no-padding">
+                        <select id="area" name="area" class="form-control">
+                            <option value="0">Chưa xác định</option>
+                            <option value="1"><= 30 m2</option>
+                            <option value="2">30 - 50 m2</option>
+                            <option value="3">50 - 80 m2</option>
+                            <option value="4">80 - 100 m2</option>
+                            <option value="5">100 - 150 m2</option>
+                            <option value="6">150 - 200 m2</option>
+                            <option value="7">200 - 250 m2</option>
+                            <option value="8">250 - 300 m2</option>
+                            <option value="9">300 - 500 m2</option>
+                            <option value="10">>= 500 m2</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <!--<input id="price" type="text" name="price" value="1000;100000" data-type="double" data-step="1000" data-postfix=" &euro;" data-from="30000" data-to="90000" data-hasgrid="true"> -->
+                    <div class="control-label col-md-4 no-padding-left">
+                        Giá tiền
+                    </div>
+                    <div class="col-md-8 no-padding">
+                        <select name="price" id="price" class="form-control">
+                            <option value="0">Thoả thuận</option>
+                            <option value="1">< 500 triệu</option>
+                            <option value="2">500 - 800 triệu</option>
+                            <option value="3">800 triệu - 1 tỷ</option>
+                            <option value="4">1 - 2 tỷ</option>
+                            <option value="5">2 - 3 tỷ</option>
+                            <option value="6">3 - 5 tỷ</option>
+                            <option value="7">5 - 7 tỷ</option>
+                            <option value="8">7 - 10 tỷ</option>
+                            <option value="9">10 - 20 tỷ</option>
+                            <option value="10">20 - 30 tỷ</option>
+                            <option value="11">> 30 tỷ</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="divide"></div>
+
                 <div class="form-group">
                     <div class="control-label col-md-4 no-padding-left">
                         Xã/phường
@@ -204,23 +263,6 @@
                         </select>
                     </div>
                     <div class="clearfix"></div>
-                </div>
-
-                <div class="form-group">
-                    <div class="control-label col-md-4 no-padding-left">
-                        Diện tích
-                    </div>
-                    <div class="col-md-8 no-padding">
-                        <select id="area" name="area" class="form-control">
-                            <option value="hanoi">Hà Nội</option>
-                            <option value="hochiminh">Hồ Chí Minh</option>
-                        </select>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="form-group">
-                    <input id="price" type="text" name="price" value="1000;100000" data-type="double" data-step="1000" data-postfix=" &euro;" data-from="30000" data-to="90000" data-hasgrid="true">
                 </div>
 
                 <div class="add-form-submit form-one-button">
