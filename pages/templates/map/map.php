@@ -224,7 +224,7 @@
                 </div>
 
                 <div class="add-form-submit form-one-button">
-                    <input type="submit" vlaue="Lọc"/>
+                    <input type="submit" value="Lọc"/>
                 </div>
             </form>
         </div> <!-- /.tab-pane -->
