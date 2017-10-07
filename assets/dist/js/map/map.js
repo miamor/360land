@@ -64,7 +64,10 @@ var locations =
         this.fullScreenButton = $('.' + q);
         this.exitFullScreenButton = $('.' + r);
 
+        this.isMapResize = false;
+
         this.input = {};
+        this.input.type = document.getElementById('type');
         this.input.city = document.getElementById('city');
         this.input.district = document.getElementById('district');
         this.input.ward = document.getElementById('ward');
@@ -92,16 +95,17 @@ var locations =
         };
 
         this.initialize = function() {
-            console.log(s);
+            //console.log(s);
             // set input value based on the window hash
-            this.input.city.value = this.context.city;
-            this.input.district.value = this.context.district;
-            this.input.ward.value = this.context.ward;
-            this.input.street.value = this.context.street;
-            this.input.room.value = this.context.room;
-            this.input.direction.value = this.context.direction;
-            this.input.price.value = this.context.price;
-            this.input.area.value = this.context.area;
+            if (this.context.type) this.input.type.value = this.context.ptype;
+            if (this.context.city) this.input.city.value = this.context.city;
+            if (this.context.district) this.input.district.value = this.context.district;
+            if (this.context.ward) this.input.ward.value = this.context.ward;
+            if (this.context.street) this.input.street.value = this.context.street;
+            if (this.context.room) this.input.room.value = this.context.room;
+            if (this.context.direction) this.input.direction.value = this.context.direction;
+            if (this.context.price) this.input.price.value = this.context.price;
+            if (this.context.area) this.input.area.value = this.context.area;
             this.input.zoom.value = this.context.zoom;
             this.input.center.value = this.context.center;
             this.input.points.value = this.context.lstPoint;
@@ -138,6 +142,9 @@ var locations =
             var k = {
                 center: new google.maps.LatLng(f, g),
                 zoom: e,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggable: true,
+
                 overviewMapControl: true,
                 overviewMapControlOptions: {
                     opened: false
@@ -145,19 +152,27 @@ var locations =
                 panControl: false,
                 rotateControl: false,
                 scaleControl: false,
-                zoomControl: true,
-                streetViewControl: false,
                 mapTypeControl: true,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
                 mapTypeControlOptions: {
                     style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                    position: google.maps.ControlPosition.TOP_RIGHT
+                    position: google.maps.ControlPosition.LEFT_TOP
                 },
-                draggable: true
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                },
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                },
+                streetViewControl: false,
+                streetViewControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                }
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
-            this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('controlArea'));
-            this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('controlUtility'));
+            this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('controlArea'));
+            this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('controlUtility'));
 
             var locationData = null;
             if (this.listLatlgn != null) {
@@ -174,6 +189,21 @@ var locations =
             }
         };
 
+        this.resize = function () {
+            google.maps.event.trigger($thismap.map, 'resize');
+            this.isMapResize = true;
+            this.boundsChangeCallBack();
+        }
+
+        this.boundsChangeCallBack = function () {
+            google.maps.event.addListener($thismap.map, 'bounds_changed', function () {
+                if ($thismap.isMapResize) {
+                    var c = $thismap.input.center.value.split(':');
+                    $thismap.map.setCenter(new google.maps.LatLng(c[0], c[1]));
+                }
+                $thismap.isMapResize = false;
+            })
+        }
 
         this.beginDrawButton.bind('click', this, function(b) {
             if (b.data.map.getZoom() < minZoomAllowSearch) {
@@ -517,7 +547,7 @@ var locations =
 
             if (this.infoWindow != null) this.infoWindow.setMap(null);
             this.dataUtilities = $thismap.formatUtilities(f, h.position, e);
-            console.log(this.dataUtilities);
+            //console.log(this.dataUtilities);
 
             $('label .uti-total', $(g)).remove();
             $.each($('input:checked', $(g)), function() {
@@ -630,17 +660,21 @@ var locations =
             if (d == undefined || d == null) {
                 d = this.currentPID;
             } else if (d != this.currentPID && this.currentPID != null) {
+                var t = this.findMarkerKey(this.currentPID);
+                var u = this.markers[t];
+
+                this.input.product.value = this.currentPID = d;
                 key = this.findMarkerKey(this.currentPID);
                 var e = this.markers[key];
                 var f = this.findDataInfo(key);
                 data = f;
-                if (e != undefined && e != null) {
-                    e.setIcon({
+                if (u != undefined && u != null) {
+                    u.setIcon({
                         url: "http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png",
                         size: new google.maps.Size(23, 26)
                     });
                     if (f != undefined && f != null) {
-                        e.setZIndex(6 - f.vip)
+                        u.setZIndex(6 - f.vip)
                     }
                 }
             } else if (d == this.currentPID) {}
@@ -649,6 +683,7 @@ var locations =
                 if (!key) key = this.findMarkerKey(d);
                 if (!data) data = this.findDataInfo(key);
             }
+
             if (key != null && data) {
                 var h = this.markers[key];
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
@@ -671,6 +706,7 @@ var locations =
                 this.infoWindow.open(this.map, h);
 
                 google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
+                    h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png');
                     $thismap.closeInfoWindowCallBack();
                 });
             }
@@ -721,20 +757,19 @@ var locations =
             if (d != undefined) this.Lat = d;
             if (e != undefined) this.Lon = e;
             var f = $(this).find('select').val();
-            var g = '';
+            var l = [];
             $(this).find('input:checked').each(function() {
                 if ($(this).val().length > 0) {
-                    if (g.length > 0) g += ',';
-                    g += $(this).val()
+                    l.push($(this).val());
                 }
             });
+            l = l.map(Number);
+            var g = l.join(',');
             var h = $(this);
             var i = parseFloat(this.Lat);
             var j = parseFloat(this.Lon);
             this.Map.map.setCenter(new google.maps.LatLng(i, j));
-            if (g.length == 0) {
-                this.Map.ClearUtilitiesAroundPoint()
-            } else {
+
                 var k = {};
                 k.radius = f;
                 k.types = g;
@@ -744,15 +779,25 @@ var locations =
                 k.v = new Date().getTime();
 
                 console.log('load service nodes here~');
-
+                console.log(l);
                 $.ajax({
                     url: MAIN_URL+'/api/node_service.php',
                     data: k,
                     dataType: 'json',
                     type: 'get',
                     success: function(a, b, c) {
-                        console.log('call ShowUtilitiesAroundPoint');
-                        $utilthis.Map.ShowUtilitiesAroundPoint($utilthis.Lat, $utilthis.Lon, f, a, h)
+                        // when get all data, then filter here (not recommended)
+                        var data = [];
+                        for (key = 0; key < a.length; key++) {
+                            var vl = a[key];
+                            if (l.indexOf(vl.typeid) !== -1) {
+                                data.push(vl);
+                            }
+                        }
+                        console.log(data);
+
+                        //console.log('call ShowUtilitiesAroundPoint');
+                        $utilthis.Map.ShowUtilitiesAroundPoint($utilthis.Lat, $utilthis.Lon, f, data, h)
                     },
                     error: function(a, b, c) {
                         console.log(a+' ~ '+b+' ~ '+c)
@@ -760,12 +805,12 @@ var locations =
                     complete: function() {}
                 })
 
-            }
         };
         this.Map.ClearUtilitiesAroundCallback = function() {
             $utilthis.hide()
         };
         this.Map.ShowUtilitiesAroundCallback = function() {
+            console.log('ShowUtilitiesAroundCallback~');
             $utilthis.show()
         };
         return this
@@ -882,10 +927,10 @@ ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) 
 };
 ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     $input = this.ProductMap.input;
-    var a = "ptype=38";
+    var a = "ptype=" + ($input.type.value != undefined ? $input.type.value : '');
     a += "&cat=";
     a += "&city=" + ($input.city.value != undefined ? $input.city.value : '');
-    a += "&district=" + ($input.district.value != undefined ? this.searchVar.district : '');
+    a += "&district=" + ($input.district.value != undefined ? $input.district.value : '');
     a += "&area=" + ($input.area.value != undefined ? $input.area.value : '');
     a += "&price=" + ($input.price.value != undefined ? $input.price.value : '');
     a += "&ward=" + ($input.ward.value != undefined ? $input.ward.value : '');
@@ -906,11 +951,49 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     console.log('ChangeUrlForNewContext: '+window.location.pathname + '#' + a);
 };
 
+function render (isResizeSmaller = false, hideMapSide = false) {
+    var w = $(window).width();
+    var h = $(window).height();
+    $('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
+
+    oldWidth = w;
+    oldHeight = h;
+
+    if (isResizeSmaller) {
+        w = w + 12;
+        h = h + 12;
+    }
+
+    if (hideMapSide || (!hideMapSide && w < 1200) ) { // hide sidebar
+        $('.map-side-toggle').html('<i class="fa fa-angle-double-right"></i>');
+        $('.map-side').animate({
+            'left': -$('.map-side').width()
+        }, 100);
+        $('#map').css({
+            height: h - $('nav.navbar').height(),
+            width: w,
+            left: 0
+        })
+    } else {
+        $('.map-side-toggle').html('<i class="fa fa-angle-double-left"></i>');
+        $('.map-side').animate({
+            'left': 0
+        }, 100);
+        $('#map').css({
+            height: h - $('nav.navbar').height(),
+            width: w - $('.map-side').width(),
+            left: $('.map-side').width()
+        })
+    }
+}
 
 var markContext = "";
 var mapContext = {};
 var productControlerObj = null;
-$(document).ready(function() {
+var oldWidth = $(window).width();
+var oldHeight = $(window).height();
+
+$(window).ready(function() {
     if (window.location.hash != '') {
         markContext = window.location.hash;
         mapContext = {
@@ -949,16 +1032,9 @@ $(document).ready(function() {
     if (!mapContext.lstPoint)
         mapContext.lstPoint = "";
 
-
     $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
     //$("#price").ionRangeSlider();
-    $('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
-
-    $('#map').css({
-        height: $(window).height() - $('nav.navbar').height(),
-        width: $(window).width() - $('.map-side').width(),
-        left: $('.map-side').width()
-    })
+    render();
 
     productControlerObj = new ProductSearchControler({
         cityListOTher1: cityListOTher1,
@@ -970,4 +1046,18 @@ $(document).ready(function() {
         context: mapContext
     });
 
+    $(window).on('resize', function () {
+        var b = false;
+        if (oldWidth > $(window).width() || oldHeight > $(window).height()) b = true;
+        var currentlyHide = true;
+        if ($('.map-side').css('left') == '0px') currentlyHide = false; // is show
+        render(b, currentlyHide);
+        productControlerObj.ProductMap.resize();
+    });
+    $('.map-side-toggle').click(function () {
+        var currentlyHide = true;
+        if ($('.map-side').css('left') == '0px') currentlyHide = false; // is show
+        render(false, !currentlyHide);
+        productControlerObj.ProductMap.resize();
+    })
 })

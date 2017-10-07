@@ -488,19 +488,92 @@ nav.navbar a:hover, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.
 #map {
     top:50px;
 }
+/*
 #controlUtility{
-    left:100px;
-    top:10px;
+    left:120px;
+    top:10px!important;
     right:10px;
     background:#fff;
     border:1px solid #f2f2f2;
     padding:5px
 }
+.utility-head{
+    position: absolute;
+    top:40px;
+    left:-110px;
+    width:110px;
+    font-size: 13px;
+    background:#fff;
+    height:30px;
+    padding:5px 10px;
+}
+#cbbRadius{
+    position: absolute;
+    top:70px;
+    left:-110px;
+    *width:110px;
+    *font-size: 12px;
+    *background:#fff;
+    *height:30px;
+}
+.utility-type{
+    position: relative;
+    display: inline-block;
+    width:20%;
+}*/
+#controlUtility{
+    position: absolute;
+    top:10px!important;
+    right:10px!important;
+    width:200px;
+    background:#fff;
+    padding:10px;
+    font-size: 12px;
+    font-weight: 300;
+    display: none
+}
+.utility-head{font-size: 14px;padding-bottom: 10px;border-bottom: 1px solid #f2f2f2;margin-bottom: 10px;font-family: 'Open Sans Condensed', 'Roboto Condensed'}
+.utility-close{position: absolute;top:11px;right:15px;cursor: pointer;}
+label.utility-type{
+    position: relative;
+    display: block;
+    font-weight: 300;
+    height: 20px;
+}
+label.utility-type input{float:left;margin:1px 3px 2px 0!important}
+label.utility-type .uti-total{font-weight: 500}
+#cbbRadius{
+    margin-bottom: 6px;
+    width: 100%
+}
 #controlArea{
     left: 10px!important;
-    width:100px;
-    top:10px!important;
+    width:115px;
+    top:48px!important;
     height:25px
+}
+.gm-style-mtc{left: 30px!important}
+.gm-style-cc{display: none!important}
+.map-side-toggle{
+    position: absolute;
+    right:-30px; top:10px;
+    height:31px;width:30px;
+    padding:2px 8px;
+    text-align: center;
+    font-size: 18px;
+    background:#fff;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12);
+    border-radius: 0 2px 2px 0;
+}
+.map-side-toggle::before{
+    content: '';
+    position: absolute;
+    top:0;
+    left:-3px;
+    bottom:0;
+    width:6px;
+    background:#fff
 }
 .map-side{
     position: fixed;
@@ -508,25 +581,27 @@ nav.navbar a:hover, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.
     border-radius: 0;
     z-index: 10;
     top:50px;
-    *width:25%;
+    width:300px;
     bottom:0;
     left:0;
     background: #fff;
-    box-shadow: 5px 5px 6px rgba(0,0,0,.06);
+    box-shadow: 3px 3px 4px rgba(0,0,0,.15);
 }
 .map-side .tab-content{position: relative;overflow-y:auto}
-.controls-area span{
+#controlArea span{
     position: relative;
     display: block;
     padding:6px 10px 7px;
     font-size: 13px;
-    background:#fafafa;
+    background:#fff;
     cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12)
 }
-.controls-area span:hover{
-    background:#f4f4f4
+#controlArea span:hover{
+    background:#e3e3e3
 }
-.controls-area .delshape{display: none}
+#controlArea .delshape{display: none}
 .map-side #map_results{
     padding:5px
 }

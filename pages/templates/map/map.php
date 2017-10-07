@@ -1,6 +1,7 @@
 <style>.container{width:100%;padding:0;margin:0}</style>
 
-<div class="nav-tabs-custom map-side col-md-3 no-padding">
+<div class="nav-tabs-custom map-side no-padding">
+    <div class="map-side-toggle"></div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#map_search" data-toggle="tab">Search</a></li>
         <li><a href="#map_results" data-toggle="tab">Results</a></li>
@@ -110,16 +111,10 @@
                     <div id="lblResultMessage"></div>
                 </div>
 
-                <div class="form-group">
-                    <div class="control-label col-md-4 no-padding-left">
-
-                    </div>
-                    <div class="col-md-8 no-padding">
-                        <label><input type="checkbox" name="type_action" class="minimal" value="1" checked> Mua</label>
-                        <label><input type="checkbox" name="type_action" class="minimal" value="2" checked> Thuê</label>
-                        <label><input type="checkbox" name="type_action" class="minimal" value="3" checked> Dự án</label>
-                    </div>
-                    <div class="clearfix"></div>
+                <div class="form-group p_type">
+                    <label><input type="checkbox" name="type_action" class="minimal" value="1" checked> Mua</label>
+                    <label><input type="checkbox" name="type_action" class="minimal" value="2" checked> Thuê</label>
+                    <label><input type="checkbox" name="type_action" class="minimal" value="3" checked> Dự án</label>
                 </div>
 
                 <div class="form-group">
@@ -128,6 +123,7 @@
                     </div>
                     <div class="col-md-8 no-padding">
                         <select id="type" name="type" class="form-control">
+                            <option value="0" selected>Chọn loại bất động sản</option>
                             <option value="chungcu">Chung cư</option>
                             <optgroup label="Nhà bán">
                                 <option value="nharieng">Nhà riêng</option>
@@ -175,7 +171,7 @@
                     </div>
                     <div class="col-md-8 no-padding">
                         <select id="area" name="area" class="form-control">
-                            <option value="0">Chưa xác định</option>
+                            <option value="0" selected>Chưa xác định</option>
                             <option value="1"><= 30 m2</option>
                             <option value="2">30 - 50 m2</option>
                             <option value="3">50 - 80 m2</option>
@@ -198,7 +194,7 @@
                     </div>
                     <div class="col-md-8 no-padding">
                         <select name="price" id="price" class="form-control">
-                            <option value="0">Thoả thuận</option>
+                            <option value="0" selected>Thoả thuận</option>
                             <option value="1">< 500 triệu</option>
                             <option value="2">500 - 800 triệu</option>
                             <option value="3">800 triệu - 1 tỷ</option>
@@ -234,7 +230,7 @@
                         Đường
                     </div>
                     <div class="col-md-8 no-padding">
-                        <select id="street" name="street" class="form-control">
+                        <select id="street" name="street" class="form-control" placeholder="Đường">
                             <option value="hanoi">Hà Nội</option>
                             <option value="hochiminh">Hồ Chí Minh</option>
                         </select>
@@ -247,7 +243,7 @@
                         Số phòng ngủ
                     </div>
                     <div class="col-md-8 no-padding">
-                        <input id="room" name="room" type="number" min="0" class="form-control"/>
+                        <input id="room" name="room" type="number" min="0" class="form-control" placeholder="Số phòng ngủ"/>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -258,8 +254,13 @@
                     </div>
                     <div class="col-md-8 no-padding">
                         <select id="direction" name="direction" class="form-control">
-                            <option value="hanoi">Hà Nội</option>
-                            <option value="hochiminh">Hồ Chí Minh</option>
+                            <option value="0" selected>Chọn hướng</option>
+                            <option value="e">Đông</option>
+                            <option value="en">Đông Bắc</option>
+                            <option value="es">Đông Nam</option>
+                            <option value="w">Tây</option>
+                            <option value="wn">Tây Bắc</option>
+                            <option value="ws">Tây Nam</option>
                         </select>
                     </div>
                     <div class="clearfix"></div>
