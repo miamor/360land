@@ -102,7 +102,7 @@
                 <div id="map-input" class="hidden">
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="product" name="product"/>
-                    <input type="text" id="zoom" name="zoom" value="11"/>
+                    <input type="text" id="zoom" name="zoom" value="10"/>
                     <input type="text" id="center" name="center" value="21.0277644:105.83415979999995"/>
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="points" name="points"/>
@@ -321,16 +321,16 @@
     <div class="map-item-info-details left">
         <div class="map-item-info-des">
         </div>
-        <div class="map-item-info-buttons">
-            <div class="map-item-info-price left">
-                Price: <span></span>
-            </div>
-            <div class="map-item-info-btns right">
-                <span class="map-item-view-utilities">Tiện ích xung quanh</span>
-                <a href="#" class="btn btn-success btn-sm">More info</a>
-            </div>
-            <div class="clearfix"></div>
-        </div>
     </div>
     <div class="clearfix"></div>
+    <div class="map-item-info-buttons">
+        <div class="map-item-info-price left">
+            Price: <span></span>
+        </div>
+        <div class="map-item-info-btns right">
+            <span class="map-item-view-utilities">Tiện ích xung quanh</span>
+            <a href="#" class="btn btn-success btn-sm">More info</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
 </div>

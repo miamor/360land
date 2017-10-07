@@ -95,23 +95,25 @@ var locations =
         };
 
         this.initialize = function() {
-            //console.log(s);
             // set input value based on the window hash
-            if (this.context.type) this.input.type.value = this.context.ptype;
-            if (this.context.city) this.input.city.value = this.context.city;
-            if (this.context.district) this.input.district.value = this.context.district;
-            if (this.context.ward) this.input.ward.value = this.context.ward;
-            if (this.context.street) this.input.street.value = this.context.street;
-            if (this.context.room) this.input.room.value = this.context.room;
-            if (this.context.direction) this.input.direction.value = this.context.direction;
-            if (this.context.price) this.input.price.value = this.context.price;
-            if (this.context.area) this.input.area.value = this.context.area;
-            this.input.zoom.value = this.context.zoom;
-            this.input.center.value = this.context.center;
-            this.input.points.value = this.context.lstPoint;
+            if (s.type) this.input.type.value = s.ptype;
+            if (s.city) this.input.city.value = s.city;
+            if (s.district) this.input.district.value = s.district;
+            if (s.ward) this.input.ward.value = s.ward;
+            if (s.street) this.input.street.value = s.street;
+            if (s.room) this.input.room.value = s.room;
+            if (s.direction) this.input.direction.value = s.direction;
+            if (s.price) this.input.price.value = s.price;
+            if (s.area) this.input.area.value = s.area;
+            this.input.zoom.value = s.zoom;
+            this.input.center.value = s.center;
+            this.input.points.value = s.lstPoint;
             this.input.product.value = s.currentPID;
 
             this.currentPID = s.currentPID;
+
+            var cc = this.input.center.value.split(':');
+            this.centerPos = new google.maps.LatLng(cc[0], cc[1]);
 
             var e = 10;
             if (s.zoom != '') e = parseInt(s.zoom);
@@ -198,8 +200,12 @@ var locations =
         this.boundsChangeCallBack = function () {
             google.maps.event.addListener($thismap.map, 'bounds_changed', function () {
                 if ($thismap.isMapResize) {
-                    var c = $thismap.input.center.value.split(':');
-                    $thismap.map.setCenter(new google.maps.LatLng(c[0], c[1]));
+                    if ($thismap.currentPID) {
+                        var key = $thismap.findMarkerKey($thismap.currentPID);
+                        $thismap.map.setCenter($thismap.markers[key].position);
+                    } else {
+                        $thismap.map.setCenter($thismap.centerPos);
+                    }
                 }
                 $thismap.isMapResize = false;
             })
@@ -547,7 +553,6 @@ var locations =
 
             if (this.infoWindow != null) this.infoWindow.setMap(null);
             this.dataUtilities = $thismap.formatUtilities(f, h.position, e);
-            //console.log(this.dataUtilities);
 
             $('label .uti-total', $(g)).remove();
             $.each($('input:checked', $(g)), function() {
@@ -570,32 +575,23 @@ var locations =
                         }
                     });
                 });
-                for (var i = 0; i < this.dataUtilities.length; i++) {
-                    var j = this.dataUtilities[i];
-                    var k = '';
-                    k += '<div class="infowindow-util-preview">';
-                    k += '<div class="bold infowindow-util-preview-title">' + j.title + '</div>';
-                    if (j.address != null && j.address.length > 0) k += '<span>' + j.address + '</span><br/>';
-                    k += '<b>Khoảng cách: </b>' + j.distance + 'm';
-                    k += '</div>';
 
-                    this.markerUtilities[i].setMap(this.map);
-                    //this.markerUtilities.setTooltip(k);
-                    /*
-                    this.markerUtilities.push(new google.maps.Marker({
-                        position: new google.maps.LatLng(j.lat, j.lon),
-                        map: this.map,
-                        tooltip: k,
-                        icon: {
-                            url: 'http://file4.batdongsan.com.vn/images/Product/Maps/utility-' + this.dataUtilities[i].typeid + '.png',
-                            size: new google.maps.Size(30, 49)
-                        },
-                        zIndex: 9
-                    })); */
-                }
                 $.each(this.markerUtilities, function (i, oneMarkerUtility) {
-                    oneMarkerUtility.id = $thismap.dataUtilities[i].id;
+                    //oneMarkerUtility.id = $thismap.dataUtilities[i].id;
+                    oneMarkerUtility.setMap($thismap.map);
+                    //this.markerUtilities.setTooltip(k);
+
                     oneMarkerUtility.addListener('click', function() {
+                        var j = $thismap.dataUtilities[i];
+                        var k = '';
+                        k += '<div class="infowindow-util-preview">';
+                        k += '<div class="bold infowindow-util-preview-title">' + j.title + '</div>';
+                        if (j.address != null && j.address.length > 0) k += '<div class="infowindow-util-preview-adr"><i class="fa fa-map-marker"></i> <span>' + j.address + '</span></div>';
+                        k += '<div class="infowindow-util-preview-type">Loại tiện ích: ' + j.type + '</div>';
+                        k += '<div class="infowindow-util-preview-typeid">Typeid: ' + j.typeid + '</div>';
+                        k += '<div class="infowindow-util-preview-distance">Khoảng cách: ' + j.distance + 'm</div>';
+                        k += '</div>';
+
                         $thismap.infoWindow.setContent(k);
                         $thismap.infoWindow.open($thismap.map, oneMarkerUtility);
                         //$thismap.ShowUtilityWindow(this.id)
@@ -649,7 +645,9 @@ var locations =
         };
 
         this.closeInfoWindowCallBack = function () {
-            this.input.product.value = '';
+            this.input.product.value = this.currentPID = '';
+            this.map.setZoom(10);
+            this.map.setCenter(this.centerPos);
             productControlerObj.ChangeUrlForNewContext();
         };
 
@@ -685,7 +683,9 @@ var locations =
             }
 
             if (key != null && data) {
+                //this.map.setZoom(11);
                 var h = this.markers[key];
+                this.map.setCenter(h.position);
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
                 h.setZIndex(300);
                 this.currentPID = data.id;
@@ -778,8 +778,6 @@ var locations =
                 k.m = 'pddetail';
                 k.v = new Date().getTime();
 
-                console.log('load service nodes here~');
-                console.log(l);
                 $.ajax({
                     url: MAIN_URL+'/api/node_service.php',
                     data: k,
@@ -794,9 +792,6 @@ var locations =
                                 data.push(vl);
                             }
                         }
-                        console.log(data);
-
-                        //console.log('call ShowUtilitiesAroundPoint');
                         $utilthis.Map.ShowUtilitiesAroundPoint($utilthis.Lat, $utilthis.Lon, f, data, h)
                     },
                     error: function(a, b, c) {
@@ -810,7 +805,6 @@ var locations =
             $utilthis.hide()
         };
         this.Map.ShowUtilitiesAroundCallback = function() {
-            console.log('ShowUtilitiesAroundCallback~');
             $utilthis.show()
         };
         return this
@@ -843,14 +837,12 @@ ProductSearchControler = function(h) {
         //i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
     };
     this.ProductMap.callBackClearPointEvent = function(a) {
-        console.log('callBackClearPointEvent');
         i.ChangeUrlForNewContext();
         if (!i.ProductMap.isDrawing) {
             i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
         }
     };
     this.ProductMap.callBackDrawEvent = function(a, b, c, d, e, f, g) {
-        console.log('callBackDrawEvent');
         i.callBackDrawEvent(a, b, c, d, e, f, g);
     };
 
@@ -947,13 +939,17 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     //a += "&searchtype=" + (this.searchVar.isSearchForm ? 0 : 1);
     a += "&searchtype=1";
     window.location.href = window.location.pathname + '#' + a;
-    //console.log(this.ProductMap.isDrawing);
     console.log('ChangeUrlForNewContext: '+window.location.pathname + '#' + a);
 };
+
+
+var oldWidth = $(window).width();
+var oldHeight = $(window).height();
 
 function render (isResizeSmaller = false, hideMapSide = false) {
     var w = $(window).width();
     var h = $(window).height();
+
     $('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
 
     oldWidth = w;
@@ -963,6 +959,10 @@ function render (isResizeSmaller = false, hideMapSide = false) {
         w = w + 12;
         h = h + 12;
     }
+    $('.container').css({
+        height: h,
+        width: w
+    })
 
     if (hideMapSide || (!hideMapSide && w < 1200) ) { // hide sidebar
         $('.map-side-toggle').html('<i class="fa fa-angle-double-right"></i>');
@@ -990,8 +990,6 @@ function render (isResizeSmaller = false, hideMapSide = false) {
 var markContext = "";
 var mapContext = {};
 var productControlerObj = null;
-var oldWidth = $(window).width();
-var oldHeight = $(window).height();
 
 $(window).ready(function() {
     if (window.location.hash != '') {

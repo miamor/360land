@@ -2,7 +2,7 @@
 [
     {
         "id": "node1",
-        "title": "Ban chung cu Vinhomes Nguyen Trai",
+        "title": "Node 1",
         "latitude": 21.02003,
         "longitude": 105.799,
         "price": 12000,
@@ -37,7 +37,7 @@
     },
     {
         "id": "node2",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh",
+        "title": "Node 2",
         "latitude": 21.02002,
         "longitude": 105.7998,
         "price": 12000,
@@ -72,7 +72,7 @@
     },
     {
         "id": "node3",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "title": "Node 3",
         "latitude": 21.0201,
         "longitude": 105.8,
         "price": 12000,
@@ -107,7 +107,7 @@
     },
     {
         "id": "node4",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "title": "Node 4",
         "latitude": 21.0201,
         "longitude": 105.7998,
         "price": 12000,
@@ -142,7 +142,7 @@
     },
     {
         "id": "node5",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "title": "Node 5",
         "latitude": 21.0200001,
         "longitude": 105.8,
         "price": 12000,

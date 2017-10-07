@@ -1526,6 +1526,7 @@ var minZoom = 5;
                 this.circle.setMap(this.map);
                 if (this.infoWindow != null) this.infoWindow.setMap(null);
                 this.dataUtilities = $thismap.formatUtilities(f, h.position, e);
+                console.log(this.dataUtilities);
                 $('label .uti-total', $(g)).remove();
                 $.each($('input:checked', $(g)), function() {
                     var a = parseInt($(this).val());
@@ -2055,8 +2056,7 @@ ProjectControler.prototype.ShowProjectInfo = function(d) {
             },
             error: function(a, b, c) {
                 if (console) {
-                    console.log(b);
-                    console.log(c)
+                    console.log(a+' ~ '+b+' ~ '+c)
                 }
             },
             complete: function() {}
