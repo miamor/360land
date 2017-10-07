@@ -697,6 +697,7 @@ var locations =
                 $('.map-item-info-des').html(data.details);
                 $('.map-item-info-thumb').attr('src', data.avatar);
                 $('.map-item-view-utilities').html('<a href="javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ');">Tiện ích xung quanh</a>');
+                $('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
 
                 if (this.infoWindow) this.infoWindow.close();
 

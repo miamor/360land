@@ -329,7 +329,7 @@
         </div>
         <div class="map-item-info-btns right">
             <span class="map-item-view-utilities">Tiện ích xung quanh</span>
-            <a href="#" class="btn btn-success btn-sm">More info</a>
+            <a href="#" target="_blank" class="btn btn-success btn-sm map-item-gotoview">Xem chi tiết</a>
         </div>
         <div class="clearfix"></div>
     </div>
