@@ -738,7 +738,7 @@ var locations =
                 console.log('load service nodes here~');
 
                 $.ajax({
-                    url: 'http://localhost/360land/api/node_service.php',
+                    url: MAIN_URL+'/api/node_service.php',
                     data: k,
                     dataType: 'json',
                     type: 'get',
@@ -826,7 +826,7 @@ ProductSearchControler.prototype._SearchAction = function(d) {
     this.searchVar = d;
     var f = this;
     $.ajax({
-        url: 'http://localhost/360land/api/node.php',
+        url: MAIN_URL+'/api/node.php',
         type: 'get',
         success: function(data) {
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
