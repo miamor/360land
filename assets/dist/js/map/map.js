@@ -81,6 +81,7 @@ var locations =
         this.input.points = document.getElementById('points');
         this.input.searchtype = document.getElementById('searchtype');
         this.input.product = document.getElementById('product');
+        this.input.isShowUtil = document.getElementById('isShowUtil');
 
         this.setContext = function(a, b, c) {
             if (a != undefined && a != '') {
@@ -105,6 +106,10 @@ var locations =
             if (s.direction) this.input.direction.value = s.direction;
             if (s.price) this.input.price.value = s.price;
             if (s.area) this.input.area.value = s.area;
+            if (s.isShowUtil) {
+                this.input.isShowUtil.value = 1;
+                this.isShowUtil = true;
+            }
             this.input.zoom.value = s.zoom;
             this.input.center.value = s.center;
             this.input.points.value = s.lstPoint;
@@ -454,7 +459,6 @@ var locations =
             });
 
             $.each($thismap.markers, function (i, oneMarker) {
-            //for (var i = 0; i < $thismap.markers.length; i++) {
                 oneMarker.id = a[i].id;
                 oneMarker.addListener('click', function() {
                     $thismap.showInfoWindow(this.id)
@@ -489,7 +493,7 @@ var locations =
             }
 
             if (this.currentPID) {
-                this.showInfoWindow(this.currentPID)
+                this.showInfoWindow(this.currentPID, true);
             }
         };
 
@@ -522,7 +526,8 @@ var locations =
         this.dataUtilities = new Array();
         this.ShowUtilitiesAroundCallback = function() {};
         this.ShowUtilitiesAroundPoint = function(c, d, e, f, g) {
-            $thismap.isShowUtil = true;
+            $thismap.input.isShowUtil.value = $thismap.isShowUtil = true;
+            productControlerObj.ChangeUrlForNewContext();
             //$thismap.btnUpdateMapIdleResult.hide();
             var h = this.findMarker(this.currentPID);
 
@@ -644,8 +649,10 @@ var locations =
             return d
         };
 
-        this.closeInfoWindowCallBack = function () {
+        this.closeInfoWindowCallBack = function (h) {
+            console.log(this.isShowUtil);
             if (!this.isShowUtil) {
+                h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png');
                 this.input.product.value = this.currentPID = '';
                 this.map.setZoom(10);
                 this.map.setCenter(this.centerPos);
@@ -653,9 +660,12 @@ var locations =
             }
         };
 
-        this.showInfoWindow = function(d) {
+        this.showInfoWindow = function(d, isInit = false) {
             var data = null;
             var key = null;
+
+            var runSet = false;
+            if (!isInit && d != this.currentPID) runSet = true;
 
             if (d == undefined || d == null) {
                 d = this.currentPID;
@@ -678,6 +688,7 @@ var locations =
                     }
                 }
             } else if (d == this.currentPID) {}
+            this.input.product.value = d;
 
             if (this.markers != undefined) {
                 if (!key) key = this.findMarkerKey(d);
@@ -685,12 +696,19 @@ var locations =
             }
 
             if (key != null && data) {
-                //this.map.setZoom(11);
                 var h = this.markers[key];
-                this.map.setCenter(h.position);
+                if (runSet) {
+                    if (!this.isShowUtil) this.map.setZoom(12);
+                    this.map.setCenter(h.position);
+                }
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
-                h.setZIndex(300);
+                //h.setZIndex(300);
                 this.currentPID = data.id;
+
+                if (isInit && this.isShowUtil) {
+                    productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
+                }
+
                 $('.map-item-info-title').html(data.title);
                 $('.map-item-info-price span').html(data.price);
                 $('.map-item-info-type').html(data.type);
@@ -701,16 +719,21 @@ var locations =
                 $('.map-item-view-utilities').html('<a href="javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ');">Tiện ích xung quanh</a>');
                 $('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
 
-                if (this.infoWindow) this.infoWindow.close();
-
-                this.infoWindow = new google.maps.InfoWindow({
-                    content: $('.map-item-info-board').html()
-                });
+                if (this.infoWindow) {
+                    this.infoWindow.setOptions({
+                        maxWidth: 350,
+                        content: $('.map-item-info-board').html(),
+                        center: h.position
+                    })
+                } else {
+                    this.infoWindow = new google.maps.InfoWindow({
+                        content: $('.map-item-info-board').html()
+                    });
+                }
                 this.infoWindow.open(this.map, h);
 
                 google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
-                    h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png');
-                    $thismap.closeInfoWindowCallBack();
+                    //$thismap.closeInfoWindowCallBack(h);
                 });
             }
         };
@@ -939,6 +962,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&center=" + this.ProductMap.getCenter();
     a += "&page=0";
     a += "&product=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? this.ProductMap.currentPID : '');
+    a += "&isShowUtil=" + (this.ProductMap.isShowUtil && this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? 1 : 0);
     //a += "&searchtype=" + (this.searchVar.isSearchForm ? 0 : 1);
     a += "&searchtype=1";
     window.location.href = window.location.pathname + '#' + a;
@@ -1014,6 +1038,7 @@ $(window).ready(function() {
             center: markContext.getQueryHash('center'),
             page: markContext.getQueryHash('page', '1'),
             currentPID: markContext.getQueryHash('product'),
+            isShowUtil: markContext.getQueryHash('isShowUtil'),
             searchType: parseInt(markContext.getQueryHash('searchtype', '0'))
         };
     }

@@ -95,11 +95,12 @@
                             <input type="checkbox"  id="chk9" value="9" />
                             Tiện ích khác
                         </label>
-                        <span class="utility-close">X</span>
+                        <span class="utility-close"><i class="fa fa-times-circle"></i></span>
                     </div>
                 </div>
 
                 <div id="map-input" class="hidden">
+                    <input type="text" id="isShowUtil" name="isShowUtil" value="0"/>
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="product" name="product"/>
                     <input type="text" id="zoom" name="zoom" value="10"/>
