@@ -609,7 +609,8 @@ label.utility-type .uti-total{font-weight: 500}
     display: block;
     padding:8px 8px;
     color:#444;
-    border-bottom: 1px solid #e2e2e2
+    border-bottom: 1px solid #e2e2e2;
+    cursor: pointer;
 }
 .map-result-one-thumb{
     width: 80px;

@@ -433,7 +433,7 @@ var locations =
             this.data = [];
             for (var i = 0; i < a.length; i++) {
                 if (this.isInPolyline(a[i].latitude, a[i].longitude)) {
-                    if (a[i].avatar == null || a[i].avatar == '') a[i].avatar = 'http://file1.batdongsan.com.vn/Images/no-photo.jpg';
+                    if (a[i].avatar == null || a[i].avatar == '') a[i].avatar = MAIN_URL+'/assets/img/noimage.png';
                     this.data.push(a[i])
                 }
             }
@@ -454,14 +454,11 @@ var locations =
                 });
             });
 
-            $thismap.markerCluster = new MarkerClusterer(this.map, this.markers, {
-                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-            });
-
             $.each($thismap.markers, function (i, oneMarker) {
+                //if ($thismap.map.getZoom() >= 12) oneMarker.setMap($thismap.map);
                 oneMarker.id = a[i].id;
                 oneMarker.addListener('click', function() {
-                    $thismap.showInfoWindow(this.id)
+                    $thismap.showInfoWindow(this.id);
                     $thismap.input.product.value = this.id;
                     productControlerObj.ChangeUrlForNewContext();
                 });
@@ -495,6 +492,10 @@ var locations =
             if (this.currentPID) {
                 this.showInfoWindow(this.currentPID, true);
             }
+
+            $thismap.markerCluster = new MarkerClusterer($thismap.map, $thismap.markers, {
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+            });
         };
 
         this.findDataInfo = function(i) {
@@ -526,7 +527,8 @@ var locations =
         this.dataUtilities = new Array();
         this.ShowUtilitiesAroundCallback = function() {};
         this.ShowUtilitiesAroundPoint = function(c, d, e, f, g) {
-            $thismap.input.isShowUtil.value = $thismap.isShowUtil = true;
+            $thismap.input.isShowUtil.value = 1;
+            $thismap.isShowUtil = true;
             productControlerObj.ChangeUrlForNewContext();
             //$thismap.btnUpdateMapIdleResult.hide();
             var h = this.findMarker(this.currentPID);
@@ -607,6 +609,9 @@ var locations =
         };
         this.ClearUtilitiesAroundCallback = function() {};
         this.ClearUtilitiesAroundPoint = function(a) {
+            this.input.isShowUtil.value = 0;
+            this.isShowUtil = false;
+            productControlerObj.ChangeUrlForNewContext();
             if (this.circle != null) this.circle.setMap(null);
             if (this.markerUtilities != null && this.markerUtilities.length > 0) {
                 for (var i = 0; i < this.markerUtilities.length; i++) {
@@ -650,7 +655,6 @@ var locations =
         };
 
         this.closeInfoWindowCallBack = function (h) {
-            console.log(this.isShowUtil);
             if (!this.isShowUtil) {
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png');
                 this.input.product.value = this.currentPID = '';
@@ -659,6 +663,18 @@ var locations =
                 productControlerObj.ChangeUrlForNewContext();
             }
         };
+
+        this.onHover = function (k) {
+            if (this.markers) {
+                $.each(this.markers, function (i, v) {
+                    if (i == k) {
+                        v.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
+                    } else {
+                        v.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker5.png');
+                    }
+                })
+            }
+        }
 
         this.showInfoWindow = function(d, isInit = false) {
             var data = null;
@@ -698,7 +714,11 @@ var locations =
             if (key != null && data) {
                 var h = this.markers[key];
                 if (runSet) {
-                    if (!this.isShowUtil) this.map.setZoom(12);
+                    if (!this.isShowUtil && this.map.getZoom() < 12) this.map.setZoom(12);
+                    else {
+                        this.input.zoom.value = this.map.getZoom();
+                        productControlerObj.ChangeUrlForNewContext();
+                    }
                     this.map.setCenter(h.position);
                 }
                 h.setIcon('http://file4.batdongsan.com.vn/images/Product/Maps/marker-hover.png');
@@ -733,7 +753,7 @@ var locations =
                 this.infoWindow.open(this.map, h);
 
                 google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
-                    //$thismap.closeInfoWindowCallBack(h);
+                    $thismap.closeInfoWindowCallBack(h);
                 });
             }
         };
@@ -756,6 +776,8 @@ var locations =
             if (!a.data.Map.isDrawing) {
                 //a.data.Map.btnUpdateMapIdleResult.show()
             }
+            a.data.Map.map.setZoom(12);
+
             a.data.Map.ClearUtilitiesAroundPoint(false);
             a.data.Map.showInfoWindow()
         });
@@ -852,6 +874,7 @@ ProductSearchControler = function(h) {
     };
     this.formSearch = $('#map-search-form');
     this.postData = null;
+    this.mapResults = $('#map_results');
 
     this.ProductMap = $('#map').ProductMap('begindraw', 'delshape', 'fullscreen', 'exitfullscreen', mapContext);
 
@@ -903,11 +926,36 @@ ProductSearchControler.prototype._SearchAction = function(d) {
         type: 'get',
         success: function(data) {
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
+            // show list in the sidebar
+            f.showList(data);
         },
         error: function(a, b, c) {
             console.log(a+' ~ '+b+' ~ '+c)
         }
     });
+};
+
+ProductSearchControler.prototype.showList = function (d) {
+    var f = this;
+    f.mapResults.html('');
+    $.each(d, function (i, v) {
+        k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
+        k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
+        k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
+        k += '<div class="map-result-one-des">'+v.details+'</div>';
+        k += '<div class="map-result-one-price">Giá: <span>'+v.price+'</span></div>';
+        k += '<div class="clearfix"></div>';
+        k += '</div>';
+        f.mapResults.append(k);
+    });
+    $('.map-result-one').each(function () {
+        $(this).mouseenter(function () {
+            f.ProductMap.onHover($(this).attr('attr-marker-id'));
+        });
+        $(this).click(function () {
+            f.ProductMap.showInfoWindow($(this).attr('attr-id'));
+        })
+    })
 };
 
 ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) {

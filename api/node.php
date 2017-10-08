@@ -1,8 +1,10 @@
-<?php header('content-type: application/json'); ?>
+<?php include '../include/functions.php';
+header('content-type: application/json'); ?>
 [
     {
         "id": "node1",
         "title": "Ban chung cu Vinhomes Nguyen Trai",
+        "avatar": "<?php echo MAIN_URL ?>/data/images/h1.jpg",
         "latitude": 21.12,
         "longitude": 106.21,
         "price": 12000,
@@ -38,6 +40,7 @@
     {
         "id": "node2",
         "title": "chung cu Vinhomes Nguyen Chi Thanh",
+        "avatar": "<?php echo MAIN_URL ?>/data/images/h2.jpg",
         "latitude": 21.02,
         "longitude": 105.8,
         "price": 12000,
@@ -73,6 +76,7 @@
     {
         "id": "node3",
         "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "avatar": "<?php echo MAIN_URL ?>/data/images/h3.jpg",
         "latitude": 21.08,
         "longitude": 106.01,
         "price": 12000,
@@ -108,6 +112,7 @@
     {
         "id": "node4",
         "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "avatar": "<?php echo MAIN_URL ?>/data/images/h4.jpg",
         "latitude": 21.09,
         "longitude": 106.01,
         "price": 12000,
@@ -143,6 +148,7 @@
     {
         "id": "node5",
         "title": "chung cu Vinhomes Nguyen Chi Thanh 2",
+        "avatar": "<?php echo MAIN_URL ?>/data/images/h5.jpg",
         "latitude": 21.07,
         "longitude": 106.01,
         "price": 12000,

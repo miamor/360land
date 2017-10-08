@@ -10,7 +10,7 @@ define('MAIN_URL', 'http:'.HOST_URL);
 define('ASSETS', MAIN_URL.'/assets');
 define('CSS', ASSETS.'/dist/css');
 define('JS', ASSETS.'/dist/js');
-define('IMG', ASSETS.'/dist/img');
+define('IMG', ASSETS.'/img');
 define('PLUGINS', ASSETS.'/plugins');
 
 define('GG_API_KEY', 'AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc');
