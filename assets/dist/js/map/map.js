@@ -645,10 +645,12 @@ var locations =
         };
 
         this.closeInfoWindowCallBack = function () {
-            this.input.product.value = this.currentPID = '';
-            this.map.setZoom(10);
-            this.map.setCenter(this.centerPos);
-            productControlerObj.ChangeUrlForNewContext();
+            if (!this.isShowUtil) {
+                this.input.product.value = this.currentPID = '';
+                this.map.setZoom(10);
+                this.map.setCenter(this.centerPos);
+                productControlerObj.ChangeUrlForNewContext();
+            }
         };
 
         this.showInfoWindow = function(d) {
