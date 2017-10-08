@@ -4,26 +4,26 @@ var browser = {
 var minZoomAllowSearch = 10;
 var minZoom = 5;
 
-var markerSize = new google.maps.Size(25, 25);
+var markerSize = new google.maps.Size(23, 26);
 var iconMarker = {
     default: {
-        url: MAIN_URL+'/assets/img/marker-cyan.png',
+        url: MAIN_URL+'/assets/img/marker5.png',
         scaledSize: markerSize,
         size: markerSize,
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32)
     },
     hover: {
-        url: MAIN_URL+'/assets/img/marker-blue.png',
+        url: MAIN_URL+'/assets/img/marker-hover.png',
         scaledSize: markerSize,
         size: markerSize,
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32)
     },
     select: {
-        url: MAIN_URL+'/assets/img/marker-red.png',
-        scaledSize: markerSize,
-        size: markerSize,
+        url: MAIN_URL+'/assets/img/marker.png',
+        scaledSize: new google.maps.Size(30, 33),
+        size: new google.maps.Size(30, 30),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32)
     }
@@ -128,12 +128,15 @@ var zoom_utilityView = 16;
         google.maps.event.addListener(this.infoWindow, 'domready', function() {
             var iwOuter = $('.gm-style-iw:not(".iw-tip-custom")');
             iwOuter.removeClass('iw-tip-custom').addClass('iw-custom');
-            if (iwOuter.find('#iw-container').length) iwOuter.addClass('iw-node');
             var iwBackground = iwOuter.prev();
             iwBackground.removeClass('gw-tip-bg').addClass('gw-style-bg')
             iwBackground.children(':nth-child(2)').css({'display' : 'none'});
             iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-            iwOuter.parent().removeClass('iw-tip-parent').addClass('iw-parent');
+            iwOuter.parent().removeClass('iw-tip-parent');
+            if (iwOuter.find('#iw-container').length) {
+                iwOuter.addClass('iw-node');
+                iwOuter.parent().addClass('iw-parent');
+            } else iwOuter.parent().addClass('iw-ult-parent');
             //iwOuter.parent().parent().css('left', '115px');
             var iwCloseBtn = iwOuter.next();
             //iwCloseBtn.css({opacity: '1', right: '48px', top: '9px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px rgba(57, 144, 185, .4)'});

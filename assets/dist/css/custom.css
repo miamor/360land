@@ -660,7 +660,8 @@ label.utility-type .uti-total{font-weight: 500}
     margin-bottom: 0;
     max-height:198px
 }
-.iw-parent{margin-left:115px!important}
+.iw-parent{margin-left:115px}
+.iw-ult-parent{margin-left:65px}
 .iw-tip-parent{margin:200px 0 0 145px}
 .iw-tip-custom h3{font-size:14px;margin:0 0 4px 3px}
 .iw-custom.iw-node{height:198px!important}
