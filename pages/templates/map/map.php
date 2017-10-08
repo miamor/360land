@@ -306,32 +306,35 @@
 
 <div id="map"></div>
 
-
-<div class="map-item-info-board hide">
-    <span class="map-item-info-status label label-danger left" style="margin-right:10px;">Available For Sale</span>
-    <h4 class="map-item-info-title">
+<div class="map-item-info-board hide"><div id="iw-container">
+    <h4 class="map-item-info-title iw-title">
         Place title
     </h4>
-    <div class="map-item-info-more">
-        <span class="map-item-info-type"></span>,
-        Phone: <span class="map-item-info-contact_phone"></span>,
-        Address: <span class="map-item-info-address"></span>
-    </div>
+    <div class="iw-content">
+        <div class="iw-subTitle"><span class="map-item-info-address"></span></div>
+        <div class="map-item-info-more">
+            <span class="map-item-info-status label label-danger left" style="margin-right:10px;">Available For Sale</span>
+            <span class="map-item-info-type"></span>,
+            Phone: <span class="map-item-info-contact_phone"></span>
+        </div>
 
-    <img class="map-item-info-thumb right" src=""/>
-    <div class="map-item-info-details left">
-        <div class="map-item-info-des">
+        <div class="col-md-9 map-item-info-details no-padding-left">
+            <div class="map-item-info-des"></div>
+            <div class="iw-bottom-gradient"></div>
         </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="map-item-info-buttons">
-        <div class="map-item-info-price left">
-            Price: <span></span>
-        </div>
-        <div class="map-item-info-btns right">
-            <span class="map-item-view-utilities">Tiện ích xung quanh</span>
-            <a href="#" target="_blank" class="btn btn-success btn-sm map-item-gotoview">Xem chi tiết</a>
+        <div class="col-md-3 no-padding">
+            <img class="map-item-info-thumb" src=""/>
         </div>
         <div class="clearfix"></div>
+        <div class="map-item-info-buttons">
+            <div class="map-item-info-price left">
+                Price: <span></span>
+            </div>
+            <div class="map-item-info-btns right">
+                <span class="map-item-view-utilities">Tiện ích xung quanh</span>
+                <a href="#" target="_blank" class="btn btn-danger btn-sm map-item-gotoview">Xem chi tiết</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
     </div>
-</div>
+</div></div>

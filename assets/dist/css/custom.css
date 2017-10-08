@@ -612,6 +612,7 @@ label.utility-type .uti-total{font-weight: 500}
     border-bottom: 1px solid #e2e2e2;
     cursor: pointer;
 }
+.map-result-one-des{max-height: 70px;overflow: hidden;}
 .map-result-one-thumb{
     width: 80px;
     height: 60px;
@@ -636,15 +637,91 @@ label.utility-type .uti-total{font-weight: 500}
     box-shadow: 0 0 4px rgba(0,0,0,.05);
     z-index:12;
 }
-.map-item-info-status{margin-top:2px}
+.map-item-info-status{margin:2px 2px 0 -2px;line-height:10px!important}
 .map-item-info-title{margin:0}
-.map-item-info-more{margin:2px 0 4px}
-.map-item-info-thumb{margin-left:10px;width:90px;height:70px;border:1px solid #eee;padding:2px}
-.map-item-info-details{margin:5px 10px 5px 0;padding-left:10px;border-left:2px solid #eee}
-.map-item-view-utilities{float:left;margin:5px 8px 0 0}
-.map-item-info-des{font-size:12px;color:#888;text-align:justify;height:60px}
-.map-item-info-price{font-size:15px;height:30px;line-height:29px}
-.map-item-info-buttons{margin-top:10px}
+.map-item-info-more{margin:2px 0 6px}
+.map-item-info-thumb{margin-left:10px;width:100%;height:auto;border:1px solid #eee;padding:2px}
+.map-item-view-utilities{float:left;margin:6px 8px 0 0;color:rgb(235, 77, 77);border-bottom:1px dotted rgba(235, 77, 77, .5)}
+.map-item-view-utilities a{color:rgb(235,77,77)}
+.map-item-view-utilities:hover{border-bottom-color: rgb(235,77,77)}
+.map-item-info-des{font-size:12px;color:#888;text-align:justify;padding:0 5px 0;border-left:2px solid #eee}
+.map-item-info-price{font-size:15px;height:29px;line-height:27px}
+.map-item-info-buttons{margin-top:0px}
+.map-item-gotoview{margin-right:-5px!important;border-bottom-right-radius:10px}
+
+/* Infowindow */
+.iw-custom {
+    top: 16px !important;
+    left: 0px !important;
+    background-color: #fff;
+    *box-shadow: 0 1px 6px rgba(178, 178, 178, 0.1);
+    border: 1px solid rgb(235, 77, 77);
+    border-radius: 4px;
+    margin-bottom: 0;
+    max-height:198px
+}
+.iw-parent{margin-left:115px!important}
+.iw-tip-parent{margin:200px 0 0 145px}
+.iw-tip-custom h3{font-size:14px;margin:0 0 4px 3px}
+.iw-custom.iw-node{height:198px!important}
+.gw-style-bg>div:nth-child(1), .gw-style-bg>div:nth-child(3){left:76px!important;margin-top:-2px!important}
+.gw-style-bg>div:nth-child(1){
+    border-right-width: 10px!important;
+    border-left-width: 10px!important;
+    margin-left: 1px!important;
+    border-top: 23px solid rgba(235, 77, 77, 1)!important;
+}
+.gw-style-bg>div:nth-child(3)>div>div{
+    *box-shadow: rgba(235, 77, 77, 0.8) 0px 1px 6px!important;
+    box-shadow: none!important;
+    z-index:1
+}
+.gw-tip-bg>div:nth-child(1), .gw-tip-bg>div:nth-child(3){display: none!important}
+.iw-custom>div, .iw-custom>div>div{position: relative;max-width: 100%!important;width:100%!important;max-height: 100%!important;height:100%!important;overflow:hidden!important}
+.iw-custom .iw-title {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    padding: 10px;
+    background-color: rgb(235, 77, 77);
+    color: #fff;
+    position: relative;
+    z-index: 3;
+    *border-radius: 2px 2px 0 0;
+}
+.iw-custom .iw-content {
+    font-size: 13px;
+    line-height: 15px;
+    font-weight: 300;
+    padding: 7px 10px;
+    overflow: hidden;
+}
+#iw-container .iw-content {padding: 5px 5px 0 15px}
+.map-item-info-des{
+    max-height: 80px;
+    overflow-y: auto;
+    font-size: 11px
+}
+.iw-content img {
+    float: right;
+    margin: 0 5px 5px 10px;
+}
+.iw-subTitle {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 3px 0;
+}
+.iw-bottom-gradient {
+    position: absolute;
+    width: 326px;
+    height: 25px;
+    bottom: 0;
+    right: 18px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+}
 
 /*
  * Page: Place view
