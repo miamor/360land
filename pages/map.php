@@ -16,7 +16,7 @@ if ($n) {
     $config->addJS(-1, 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js');
     //$config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=drawing,geometry,places');
     $config->addJS(-1, '//maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByWSwMWPPl1SNLeQkKGd25V-YXSVZvt78&libraries=drawing,geometry,places');
-    $config->addJS('dist', $page.'/bds.js');
+    for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
     $config->addJS('dist', $page.'/map.js');
 
 //    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');

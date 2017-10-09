@@ -31,6 +31,7 @@ var iconMarker = {
 var zoom_markerView = 13;
 var zoom_moderate = 9;
 var zoom_utilityView = 16;
+var cityList = [];
 
 (function($) {
     function CoordMapType(a) {
@@ -993,8 +994,73 @@ ProductSearchControler = function(h) {
         i.ChangeUrlForNewContext();
         i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
         return false
-    })
+    });
+    this.catchInputChange();
 };
+
+ProductSearchControler.prototype.catchInputChange = function () {
+    var f = this.formSearch;
+    var options = {city:'',district:'',ward:'',street:''};
+    var c_city = c_district = city = district = ward = street = project = null;
+    f.find('#city').on('change', function () {
+        c_city = $(this).val();
+        for (var i = 0; i < cityList.length; i++) {
+            if (cityList[i].code == c_city) {
+                district = cityList[i].district;
+                for (var u = 0; u < district.length; u++) {
+                    district[u].order = district[u].id;
+                    if (city == 'HN') {
+                        if (district[u].id == 718)
+                            district[u].order = 15;
+                        else if(district[u].id > 15)
+                            district[u].order = district[u].id + 1;
+                    }
+                }
+                //district = district.sort(SortByOrder);
+                break;
+            }
+        }
+        console.log(district);
+        options.district = '';
+        for (var i = 0; i < district.length; i++) {
+            options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
+            street = district[i].street;
+        }
+        // update select box
+        f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
+        f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
+        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+    });
+    f.find('#district').on('change', function () {
+        c_district = $(this).val();
+        for (var i = 0; i < cityList.length; i++) {
+            if (cityList[i].code == c_city) {
+                for (var j = 0; j < cityList[i].district.length; j++) {
+                    if (cityList[i].district[j].id == c_district) {
+                        project = cityList[i].district[j].project;
+                        ward = cityList[i].district[j].ward;
+                        street = cityList[i].district[j].street;
+                        break;
+                    }
+
+                }
+            }
+        }
+        options.ward = '';
+        for (var j = 0; j < ward.length; j++) {
+            options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
+        }
+        f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
+        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+    });
+    f.find('#ward').on('change', function () {
+        options.street = '';
+        for (var j = 0; j < street.length; j++) {
+            options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
+        }
+        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
+    })
+}
 
 ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
     if (this.ProductMap.map.getZoom() < zoom_utilityView)
@@ -1039,12 +1105,14 @@ ProductSearchControler.prototype.showList = function (d) {
         v.address = adr.join(', ');
         k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
         k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
+        k += '<div class="map-result-one-info">'
         k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
         //k += '<div class="map-result-one-des">'+v.details+'</div>';
-        k += '<div class="map-result-one-adr">'+v.address+'</div>';
+        k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> '+v.address+'</div>';
         //k += '<div class="map-result-one-type">'+v.type+'</div>';
         //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
         k += '<div class="map-result-one-price">Giá: <span>'+v.price+'</span></div>';
+        k += '</div>';
         k += '<div class="clearfix"></div>';
         k += '</div>';
         f.mapResults.append(k);
@@ -1172,6 +1240,15 @@ var mapContext = {};
 var productControlerObj = null;
 
 $(window).ready(function() {
+    if (typeof cityListOther1 != 'undefined')
+        cityList = $.merge(cityList, cityListOther1);
+    if (typeof cityListOTher2 != 'undefined')
+        cityList = $.merge(cityList, cityListOther2);
+    if (typeof cityListOTher3 != 'undefined')
+        cityList = $.merge(cityList, cityListOther3);
+    if (typeof cityListOTher4 != 'undefined')
+        cityList = $.merge(cityList, cityListOther4);
+
     if (window.location.hash != '') {
         markContext = window.location.hash;
         mapContext = {
@@ -1218,12 +1295,6 @@ $(window).ready(function() {
     render(false, cHide);
 
     productControlerObj = new ProductSearchControler({
-        cityListOTher1: cityListOTher1,
-        cityListOTher2: cityListOTher2,
-        cityListOTher3: cityListOTher3,
-        cityListOTher4: cityListOTher4,
-        cateList: cateList,
-        directionList: directionList,
         context: mapContext
     });
 

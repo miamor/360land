@@ -582,8 +582,9 @@ label.utility-type .uti-total{font-weight: 500}
     cursor: pointer;
     font-weight: 300;
     font-size:12px;
-    line-height: 18px
+    line-height: 16px
 }
+.map-result-one-info{margin-left:90px}
 .map-result-one-des{max-height: 70px;overflow: hidden;}
 .map-result-one-thumb{
     width: 80px;
@@ -591,9 +592,12 @@ label.utility-type .uti-total{font-weight: 500}
     margin-right: 10px;
     float: left
 }
+.map-result-one-price{margin-top:3px}
+.map-result-one-price span{font-weight: 600;color:rgb(235,77,77)}
 .map-result-one h3{
     margin:0 0 3px;
     font-size:14px;
+    line-height: 18px;
     font-weight: 600
 }
 .map-result-one:hover{background:#f3f9fa}
