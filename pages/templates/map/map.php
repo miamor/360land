@@ -351,11 +351,11 @@
             Phone: <span class="map-item-info-contact_phone"></span>
         </div>
 
-        <div class="col-md-9 map-item-info-details no-padding-left">
+        <div class="map-item-info-details no-padding-left">
             <div class="map-item-info-des"></div>
             <div class="iw-bottom-gradient"></div>
         </div>
-        <div class="col-md-3 no-padding">
+        <div class="map-item-info-thumb-div">
             <img class="map-item-info-thumb" src=""/>
         </div>
         <div class="clearfix"></div>
