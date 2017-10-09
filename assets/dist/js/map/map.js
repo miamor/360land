@@ -127,34 +127,42 @@ var cityList = [];
         };
 
         google.maps.event.addListener(this.infoWindow, 'domready', function() {
-            var iwOuter = $('.gm-style-iw:not(".iw-tip-custom")');
-            iwOuter.removeClass('iw-tip-custom').addClass('iw-custom');
-            var iwBackground = iwOuter.prev();
-            iwBackground.removeClass('gw-tip-bg').addClass('gw-style-bg')
-            iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-            iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-            iwOuter.parent().removeClass('iw-tip-parent');
-            if (iwOuter.find('#iw-container').length) {
-                iwOuter.addClass('iw-node');
-                iwOuter.parent().addClass('iw-parent');
-            } else iwOuter.parent().addClass('iw-ult-parent');
-            //iwOuter.parent().parent().css('left', '115px');
-            var iwCloseBtn = iwOuter.next();
-            //iwCloseBtn.css({opacity: '1', right: '48px', top: '9px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px rgba(57, 144, 185, .4)'});
-            iwCloseBtn.css({opacity: '1', right: '45px', top: '27px'});
-            if ($('.iw-content').height() < 140)
-                $('.iw-bottom-gradient').css({display: 'none'});
-            iwCloseBtn.mouseout(function(){
-                $(this).css({opacity: '1'});
-            });
+            $('.gm-style-iw').each(function () {
+                var iwOuter = $(this);
+                if (iwOuter.find('.iw-content').length) {
+                    iwOuter.parent().removeClass('iw-tip-parent');
+                    iwOuter.removeClass('iw-tip-custom').addClass('iw-custom');
+                    var iwBackground = iwOuter.prev();
+                    iwBackground.removeClass('gw-tip-bg').addClass('gw-style-bg')
+                    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                    if (iwOuter.find('#iw-container').length) {
+                        iwOuter.addClass('iw-node');
+                        iwOuter.parent().addClass('iw-parent');
+                    } else iwOuter.parent().addClass('iw-ult-parent');
+                    //iwOuter.parent().parent().css('left', '115px');
+                    var iwCloseBtn = iwOuter.next();
+                    //iwCloseBtn.css({opacity: '1', right: '48px', top: '9px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px rgba(57, 144, 185, .4)'});
+                    iwCloseBtn.css({opacity: '1', right: '45px', top: '27px'});
+                    if ($('.iw-content').height() < 140)
+                        $('.iw-bottom-gradient').css({display: 'none'});
+                    iwCloseBtn.mouseout(function(){
+                        $(this).css({opacity: '1'});
+                    });
+                }
+            })
         });
         google.maps.event.addListener(this.infoTipWindow, 'domready', function() {
-            var iwOuter = $('.gm-style-iw:not(".iw-custom")');
-            iwOuter.removeClass('iw-custom').addClass('iw-tip-custom');
-            iwOuter.parent().removeClass('iw-parent').addClass('iw-tip-parent');
-            //iwOuter.parent().parent().css('left', '0px');
-            var iwBackground = iwOuter.prev();
-            iwBackground.removeClass('gw-style-bg').addClass('gw-tip-bg')
+            $('.gm-style-iw').each(function () {
+                var iwOuter = $(this);
+                if (!iwOuter.find('.iw-content').length) {
+                    iwOuter.parent().removeClass('iw-parent').addClass('iw-tip-parent');
+                    iwOuter.removeClass('iw-custom').addClass('iw-tip-custom');
+                    //iwOuter.parent().parent().css('left', '0px');
+                    var iwBackground = iwOuter.prev();
+                    iwBackground.removeClass('gw-style-bg').addClass('gw-tip-bg')
+                }
+            });
         });
 
         this.initialize = function() {
@@ -716,6 +724,17 @@ var cityList = [];
             }
         };
 
+        this.showInfoTipWindow = function (h, k) {
+            $thismap.infoTipWindow.close();
+            if (!k) k = 'Empty info';
+            $thismap.infoTipWindow.setOptions({
+                position: h.position,
+                //center: h.position,
+                content: k
+            });
+            $thismap.infoTipWindow.open($thismap.map.map_, h);
+        }
+
         this.mouseHover = function (k) {
             if (this.markers) {
                 var currentMarkerKey = null;
@@ -725,12 +744,10 @@ var cityList = [];
                 $.each(this.markers, function (i, v) {
                     if (i == k) {
                         v.setIcon(iconMarker.hover);
-                        $thismap.infoTipWindow.close();
-                        $thismap.infoTipWindow.setOptions({
-                            position: $thismap.markers[i].position,
-                            content: $('.map-result-one[attr-marker-id="'+i+'"]').html()
-                        })
-                        $thismap.infoTipWindow.open($thismap.map.map_, v)
+                        $thismap.showInfoTipWindow($thismap.markers[i], $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        /*
+                        if ($thismap.currentPID == i) $thismap.infoWindow.close();
+                        if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
                     } else if (i != currentMarkerKey) {
                         v.setIcon(iconMarker.default);
                     }
@@ -1027,7 +1044,8 @@ ProductSearchControler.prototype.catchInputChange = function () {
             street = district[i].street;
         }
         // update select box
-        f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
+        if (district) f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
+        else f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>');
         f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
         f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     });

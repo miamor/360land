@@ -512,7 +512,7 @@ label.utility-type{
 label.utility-type input{float:left;margin:1px 3px 2px 0!important}
 label.utility-type .uti-total{font-weight: 500}
 #cbbRadius{
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     width: 100%
 }
 #controlArea{
@@ -629,7 +629,6 @@ label.utility-type .uti-total{font-weight: 500}
 .map-item-gotoview{margin-right:-5px!important;border-bottom-right-radius:10px}
 
 /* Infowindow */
-.gm-style-iw{font-family:'Open Sans Condensed','Roboto Condensed'}
 .iw-custom {
     top: 16px !important;
     left: 0px !important;
@@ -640,9 +639,9 @@ label.utility-type .uti-total{font-weight: 500}
     margin-bottom: 0;
     max-height:198px
 }
-.iw-parent{margin-left:115px}
-.iw-ult-parent{margin-left:65px}
-.iw-tip-parent{margin:200px 0 0 145px}
+.iw-parent{margin-left:115px;font-family:'Open Sans Condensed','Roboto Condensed'}
+.iw-ult-parent{margin-left:65px;font-family:'Open Sans Condensed','Roboto Condensed'}
+.iw-tip-parent{margin:160px 0 0 145px;box-shadow:none!important;border:1px solid #eee!important}
 .iw-tip-custom h3{font-size:14px;margin:0 0 4px 3px}
 .iw-custom.iw-node{height:198px!important}
 .gw-style-bg>div:nth-child(1), .gw-style-bg>div:nth-child(3){left:76px!important;margin-top:-2px!important}
@@ -697,7 +696,7 @@ label.utility-type .uti-total{font-weight: 500}
     width: 326px;
     height: 25px;
     bottom: 0;
-    right: 18px;
+    right: 8px;
     background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
     background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
     background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
