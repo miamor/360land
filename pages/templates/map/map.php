@@ -274,32 +274,6 @@
         </div> <!-- /.tab-pane -->
 
         <div class="tab-pane" id="map_results">
-            <a href="#" attr-id="1" class="map-result-one">
-                <img class="map-result-one-thumb" src="http://codiator.com/real-estate-made-simple/timthumb.php?w=80&src=http://www.codiator.com/real-estate-made-simple/uploads/triworks_arch1__1328159428.jpg"/>
-                <h3 class="map-result-one-title">
-                    Place Title
-                </h3>
-                <div class="map-result-one-des">
-                    Description here~~~
-                </div>
-                <div class="map-result-one-price">
-                    Price: $<span>800</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
-            <a href="#" attr-id="2" class="map-result-one">
-                <img class="map-result-one-thumb" src="http://codiator.com/real-estate-made-simple/timthumb.php?w=80&src=http://www.codiator.com/real-estate-made-simple/uploads/triworks_arch1__1328159428.jpg"/>
-                <h3 class="map-result-one-title">
-                    Place Title
-                </h3>
-                <div class="map-result-one-des">
-                    Description here~~~
-                </div>
-                <div class="map-result-one-price">
-                    Price: $<span>800</span>
-                </div>
-                <div class="clearfix"></div>
-            </a>
         </div> <!-- /.tab-pane -->
     </div> <!-- /.tab-content -->
 </div>

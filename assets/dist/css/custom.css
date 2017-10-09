@@ -488,51 +488,20 @@ nav.navbar a:hover, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.
 #map {
     top:50px;
 }
-/*
-#controlUtility{
-    left:120px;
-    top:10px!important;
-    right:10px;
-    background:#fff;
-    border:1px solid #f2f2f2;
-    padding:5px
-}
-.utility-head{
-    position: absolute;
-    top:40px;
-    left:-110px;
-    width:110px;
-    font-size: 13px;
-    background:#fff;
-    height:30px;
-    padding:5px 10px;
-}
-#cbbRadius{
-    position: absolute;
-    top:70px;
-    left:-110px;
-    *width:110px;
-    *font-size: 12px;
-    *background:#fff;
-    *height:30px;
-}
-.utility-type{
-    position: relative;
-    display: inline-block;
-    width:20%;
-}*/
 #controlUtility{
     position: absolute;
     top:10px!important;
     right:10px!important;
     width:200px;
     background:#fff;
+    border: 1px solid #ddd;
+    box-shadow: 2px 7px 8px 3px rgba(0,0,0,.15);
     padding:10px;
     font-size: 12px;
     font-weight: 300;
     display: none
 }
-.utility-head{font-size: 14px;padding-bottom: 10px;border-bottom: 1px solid #f2f2f2;margin-bottom: 10px;font-family: 'Open Sans Condensed', 'Roboto Condensed'}
+.utility-head{font-size: 14px;padding-bottom: 10px;border-bottom: 2px solid rgb(235,77,77);margin-bottom: 10px;font-family: 'Open Sans Condensed', 'Roboto Condensed'}
 .utility-close{position: absolute;top:9px;right:15px;cursor: pointer;font-size:16px}
 label.utility-type{
     position: relative;
@@ -611,6 +580,9 @@ label.utility-type .uti-total{font-weight: 500}
     color:#444;
     border-bottom: 1px solid #e2e2e2;
     cursor: pointer;
+    font-weight: 300;
+    font-size:12px;
+    line-height: 18px
 }
 .map-result-one-des{max-height: 70px;overflow: hidden;}
 .map-result-one-thumb{

@@ -22,8 +22,8 @@ var iconMarker = {
     },
     select: {
         url: MAIN_URL+'/assets/img/marker.png',
-        scaledSize: new google.maps.Size(30, 33),
-        size: new google.maps.Size(30, 30),
+        scaledSize: new google.maps.Size(30, 36),
+        size: new google.maps.Size(30, 36),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(0, 32)
     }
@@ -1029,10 +1029,21 @@ ProductSearchControler.prototype.showList = function (d) {
     var f = this;
     f.mapResults.html('');
     $.each(d, function (i, v) {
+        var adr = [];
+        if (v.hem) adr.push(v.hem);
+        if (v.ngach) adr.push(v.ngach);
+        if (v.ngo) adr.push(v.ngo);
+        if (v.duong) adr.push(v.duong);
+        if (v.huyen) adr.push(v.huyen);
+        if (v.diachi) adr.push(v.diachi);
+        v.address = adr.join(', ');
         k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
         k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
         k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
-        k += '<div class="map-result-one-des">'+v.details+'</div>';
+        //k += '<div class="map-result-one-des">'+v.details+'</div>';
+        k += '<div class="map-result-one-adr">'+v.address+'</div>';
+        //k += '<div class="map-result-one-type">'+v.type+'</div>';
+        //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
         k += '<div class="map-result-one-price">Giá: <span>'+v.price+'</span></div>';
         k += '<div class="clearfix"></div>';
         k += '</div>';
@@ -1133,7 +1144,7 @@ function render (isResizeSmaller = false, hideMapSide = false) {
         width: w
     })
 
-    if (hideMapSide || (!hideMapSide && w < 1200) ) { // hide sidebar
+    if (hideMapSide) { // hide sidebar
         $('.map-side-toggle').html('<i class="fa fa-angle-double-right"></i>');
         $('.map-side').animate({
             'left': -$('.map-side').width()
@@ -1202,7 +1213,9 @@ $(window).ready(function() {
 
     $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
     //$("#price").ionRangeSlider();
-    render();
+    var cHide = false;
+    if ($(window).width() < 1200) cHide = true;
+    render(false, cHide);
 
     productControlerObj = new ProductSearchControler({
         cityListOTher1: cityListOTher1,
@@ -1218,8 +1231,10 @@ $(window).ready(function() {
         var b = false;
         if (oldWidth > $(window).width() || oldHeight > $(window).height()) b = true;
         var currentlyHide = true;
-        if ($('.map-side').css('left') == '0px') currentlyHide = false; // is show
-        render(b, currentlyHide);
+        if ($('.map-side').css('left') == '0px') { // is currently show
+            if ($(window).width() < 1200) currentlyHide = false;
+        }
+        render(b, !currentlyHide);
         productControlerObj.ProductMap.resize();
     });
     $('.map-side-toggle').click(function () {
