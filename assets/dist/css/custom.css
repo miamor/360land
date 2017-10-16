@@ -44,6 +44,7 @@ nav.navbar a:hover, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.
  .add-form-submit:not(.form-one-button) .btn.right:first-child,.add-form-submit:not(.form-one-button) .btn:not(.right):last-child{border-radius:0 3px 3px 0!important}
  .add-form-submit.form-one-button .btn{border-radius:3px!important}
  .form-control {
+     height: 24px;
   border-radius: 0;
   box-shadow: none;
   border-color: #d2d6de;
