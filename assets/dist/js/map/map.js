@@ -3,7 +3,10 @@ var browser = {
 };
 var minZoomAllowSearch = 10;
 var minZoom = 5;
-
+var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
+var options = {city:'',district:'',ward:'',street:''};
+//var c_city = c_district = null;
+var city = district = ward = street = project = null;
 var markerSize = new google.maps.Size(23, 26);
 var iconMarker = {
     default: {
@@ -29,7 +32,7 @@ var iconMarker = {
     }
 };
 var zoom_markerView = 13;
-var zoom_moderate = 15;
+var zoom_moderate = 11;
 var zoom_utilityView = 16;
 var cityList = [];
 
@@ -441,14 +444,14 @@ var cityList = [];
                 minLng = 100000;
             var e = '';
             for (var i = 0; i < c.length; i++) {
-                var adr = [];
+                /*var adr = [];
                 if (c[i].hem) adr.push(c[i].hem);
                 if (c[i].ngach) adr.push(c[i].ngach);
                 if (c[i].ngo) adr.push(c[i].ngo);
                 if (c[i].duong) adr.push(c[i].duong);
                 if (c[i].huyen) adr.push(c[i].huyen);
                 if (c[i].diachi) adr.push(c[i].diachi);
-                c[i].address = adr.join(', ');
+                c[i].address = adr.join(', ');*/
                 var f = c[i].lat();
                 var g = c[i].lng();
                 if (e.length > 0) e += ',';
@@ -683,14 +686,14 @@ var cityList = [];
             if (a == null || a.length == 0) return [];
             var d = [];
             for (var i = 0; i < a.length; i++) {
-                var adr = [];
+                /*var adr = [];
                 if (a[i].hem) adr.push(a[i].hem);
                 if (a[i].ngo) adr.push(a[i].ngo);
                 if (a[i].ngach) adr.push(a[i].ngach);
                 if (a[i].duong) adr.push(a[i].duong);
                 if (a[i].huyen) adr.push(a[i].huyen);
                 if (a[i].diachi) adr.push(a[i].diachi);
-                a[i].address = adr.join(', ');
+                a[i].address = adr.join(', ');*/
                 var e = parseInt(google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(a[i].latitude, a[i].longitude), b));
                 if (e <= c) {
                     a[i].distance = e;
@@ -818,7 +821,7 @@ var cityList = [];
                 $('.map-item-info-price span').html(data.price);
                 $('.map-item-info-type').html(data.type);
                 $('.map-item-info-contact_phone').html(data.contact_phone);
-                $('.map-item-info-address').html(data.ngach+' '+data.ngo+' '+data.duong+' '+data.huyen+' '+data.diachi);
+                $('.map-item-info-address').html(data.address);
                 $('.map-item-info-des').html(data.details);
                 $('.map-item-info-thumb').attr('src', data.avatar);
                 $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
@@ -981,7 +984,8 @@ ProductSearchControler = function(h) {
 
     this.ProductMap.initialize();
 
-    this.showCitySearch();
+    var context = h.context;
+    if (!context.city && !context.currentPID) this.showCitySearch();
 
     if (!this.ProductMap.isDrawing) {
         this._SearchAction(JSON.parse(JSON.stringify(this.formSearch.serializeArray())));
@@ -1007,7 +1011,10 @@ ProductSearchControler.prototype.showCitySearch = function () {
     popup(html);
     $('.popup-content [role="close"]').hide();
     $('.select-city-done').click(function () {
-        $('select#city').val($('select#city_first').val());
+        var cityy = $('select#city_first').val();
+        if (cityy == 'HN') i.ProductMap.input.center.value = '21.0277644:105.83415979999995';
+        $('select#city').val(cityy);
+        i.changeCityCallback(cityy);
         remove_popup();
         i.ChangeUrlForNewContext();
         i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
@@ -1015,77 +1022,101 @@ ProductSearchControler.prototype.showCitySearch = function () {
     })
 }
 
-ProductSearchControler.prototype.catchInputChange = function () {
+ProductSearchControler.prototype.changeCityCallback = function (c_city) {
     var f = this.formSearch;
-    var options = {city:'',district:'',ward:'',street:''};
-    var c_city = c_district = city = district = ward = street = project = null;
-    f.find('#city').on('change', function () {
-        c_city = $(this).val();
-        district = {};
-        for (var i = 0; i < cityList.length; i++) {
-            if (cityList[i].code == c_city) {
-                district = cityList[i].district;
-                for (var u = 0; u < district.length; u++) {
-                    district[u].order = district[u].id;
-                    if (city == 'HN') {
-                        if (district[u].id == 718)
-                            district[u].order = 15;
-                        else if(district[u].id > 15)
-                            district[u].order = district[u].id + 1;
-                    }
+    for (var i = 0; i < cityList.length; i++) {
+        if (cityList[i].code == c_city) {
+            district = cityList[i].district;
+            for (var u = 0; u < district.length; u++) {
+                district[u].order = district[u].id;
+                if (city == 'HN') {
+                    if (district[u].id == 718)
+                        district[u].order = 15;
+                    else if(district[u].id > 15)
+                        district[u].order = district[u].id + 1;
                 }
-                //district = district.sort(SortByOrder);
-                break;
+            }
+            //district = district.sort(SortByOrder);
+            break;
+        }
+    }
+    console.log(district);
+    options.district = '';
+    if (district != null && district) {
+        for (var i = 0; i < district.length; i++) {
+            options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
+            street = district[i].street;
+        }
+    }
+    f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
+    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+}
+
+ProductSearchControler.prototype.changeDistrictCallback = function (c_district) {
+    var f = this.formSearch;
+    ward = {};
+    street = {};
+    for (var i = 0; i < cityList.length; i++) {
+        if (cityList[i].code == c_city) {
+            for (var j = 0; j < cityList[i].district.length; j++) {
+                if (cityList[i].district[j].id == c_district) {
+                    project = cityList[i].district[j].project;
+                    ward = cityList[i].district[j].ward;
+                    street = cityList[i].district[j].street;
+                    break;
+                }
+
             }
         }
-        console.log(district);
-        options.district = '';
-        if (district != null && district) {
-            for (var i = 0; i < district.length; i++) {
-                options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
-                street = district[i].street;
-            }
+    }
+
+    options.ward = '';
+    if (ward != null && ward) {
+        for (var j = 0; j < ward.length; j++) {
+            options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
         }
-        f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
-        f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
-        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+    }
+    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+}
+
+ProductSearchControler.prototype.changeWardCallback = function (c_ward) {
+    var f = this.formSearch;
+    options.street = '';
+    if (street != null && street) {
+        for (var j = 0; j < street.length; j++) {
+            options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
+        }
+    }
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
+}
+
+ProductSearchControler.prototype.catchInputChange = function () {
+    var i = this;
+    var f = i.formSearch;
+    f.find('#city').on('change', function () {
+        i.changeCityCallback($(this).val());
     });
     f.find('#district').on('change', function () {
-        c_district = $(this).val();
-        ward = {};
-        street = {};
-        for (var i = 0; i < cityList.length; i++) {
-            if (cityList[i].code == c_city) {
-                for (var j = 0; j < cityList[i].district.length; j++) {
-                    if (cityList[i].district[j].id == c_district) {
-                        project = cityList[i].district[j].project;
-                        ward = cityList[i].district[j].ward;
-                        street = cityList[i].district[j].street;
-                        break;
-                    }
-
-                }
-            }
-        }
-
-        options.ward = '';
-        if (ward != null && ward) {
-            for (var j = 0; j < ward.length; j++) {
-                options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
-            }
-        }
-        f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
-        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+        i.changeDistrictCallback($(this).val());
     });
     f.find('#ward').on('change', function () {
-        options.street = '';
-        if (street != null && street) {
-            for (var j = 0; j < street.length; j++) {
-                options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
-            }
-        }
-        f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
+        i.changeWardCallback($(this).val());
     })
+}
+
+ProductSearchControler.prototype.closePopup = function () {
+    this.ProductMap.input.details.value = 0;
+    this.ProductMap.isDetails = false;
+    this.ChangeUrlForNewContext();
+}
+
+ProductSearchControler.prototype.ShowMoreInfoAndHidePopup = function (id, lat, lon) {
+    remove_popup();
+    this.closePopup();
+    this.ProductMap.showInfoWindow(id);
+    this.ShowMoreInfo(lat,lon);
 }
 
 ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
@@ -1105,18 +1136,20 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
     }
     $.get(MAIN_URL+'/api/node_one.php', function (place) {
         console.log(place);
-        var adr = [];
+        /*var adr = [];
         if (place.hem) adr.push(place.hem);
         if (place.ngach) adr.push(place.ngach);
         if (place.ngo) adr.push(place.ngo);
         if (place.duong) adr.push(place.duong);
         if (place.huyen) adr.push(place.huyen);
         if (place.diachi) adr.push(place.diachi);
-        place.address = adr.join(', ');
-        html = '<div class="col-lg-8 v-place-imgs no-padding">';
+        place.address = adr.join(', ');*/
+        html = '<div class="v-place-view">';
+        html += '<div class="col-lg-8 v-place-imgs no-padding">';
         html += '<div class="v-place-board v-place-v-thumbs">';
         html +=     '<div class="v-place-bg" style="background-image:url('+place.thumbs[0]+')"></div>';
         html +=     '<div class="v-place-thumbs">';
+        html +=         '<img class="v-place-thumb active" src="'+place.thumbs[0]+'"/>';
         html +=         '<img class="v-place-thumb" src="'+place.thumbs[1]+'"/>';
         html +=         '<img class="v-place-thumb" src="'+place.thumbs[2]+'"/>';
         html +=         '<img class="v-place-thumb" src="'+place.thumbs[3]+'"/>';
@@ -1128,7 +1161,12 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         html += '</div>';
         html += '<div class="v-place-board v-place-v-video hide">';
         html += '</div>';
-        html += '<div class="v-place-switch-buttons"><div class="v-place-mode active" id="v-thumbs"><i class="fa fa-picture-o"></i></div>  <div class="v-place-mode" id="v-360"><i class="fa fa-map"></i></div>  <div class="v-place-mode" id="v-streetview"><i class="fa fa-map-signs"></i></div>  <div class="v-place-mode" id="v-video"><i class="fa fa-play-circle"></i></div></div>';
+        html += '<div class="v-place-switch-buttons">';
+        html +=     '<div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>';
+        html +=     '<div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>';
+        html +=     '<div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>';
+        html +=     '<div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>';
+        html += '</div>';
         html += '</div>';
         html += '<div class="col-lg-4 popup-section section-light v-place-info">';
         html += '<img class="v-place-avt left" src="'+place.avatar+'"/>';
@@ -1140,7 +1178,19 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         html += '<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>';
         html += '<div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>';
         html += '</div>';
+        html += '<div class="clearfix"></div>';
+        html += '</div>';
+        html += '<div class="v-place-related popup-section section-light">';
+        html +=     '<h4>Dự án tương tự</h4><div class="v-place-related-list"></div>';
+        html += '</div>';
         popup(html);
+        $.get(MAIN_URL+'/api/node.php', function (similar) {
+            //console.log(similar);
+            for (si = 0; si < 4; si++) {
+                sv = similar[si];
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup('+sv.id+','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title">'+sv.title+'<br/><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+            }
+        })
         $('.v-place-mode').click(function () {
             vid = $(this).attr('id');
             $('.v-place-board').hide();
@@ -1148,10 +1198,14 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
             $('.v-place-mode').removeClass('active');
             $(this).addClass('active');
         });
+        $('.v-place-thumb').click(function () {
+            img = $(this).attr('src');
+            $('.v-place-bg').css('background-image', 'url('+img+')');
+            $('.v-place-thumb').removeClass('active');
+            $(this).addClass('active');
+        });
         $('.popup-content [role="close"]').click(function () {
-            i.ProductMap.input.details.value = 0;
-            i.ProductMap.isDetails = false;
-            i.ChangeUrlForNewContext();
+            i.closePopup();
         })
     });
 };
@@ -1181,14 +1235,14 @@ ProductSearchControler.prototype.showList = function (d) {
     var f = this;
     f.mapResults.html('');
     $.each(d, function (i, v) {
-        var adr = [];
+        /*var adr = [];
         if (v.hem) adr.push(v.hem);
         if (v.ngach) adr.push(v.ngach);
         if (v.ngo) adr.push(v.ngo);
         if (v.duong) adr.push(v.duong);
         if (v.huyen) adr.push(v.huyen);
         if (v.diachi) adr.push(v.diachi);
-        v.address = adr.join(', ');
+        v.address = adr.join(', ');*/
         k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
         k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
         k += '<div class="map-result-one-info">'
@@ -1351,7 +1405,7 @@ $(window).ready(function() {
             direction: markContext.getQueryHash('direction'),
             projectid: markContext.getQueryHash('project'),
             lstPoint: markContext.getQueryHash('points'),
-            zoom: markContext.getQueryHash('zoom', '5'),
+            zoom: markContext.getQueryHash('zoom', zoom_moderate),
             center: markContext.getQueryHash('center'),
             page: markContext.getQueryHash('page', '1'),
             currentPID: markContext.getQueryHash('product'),
@@ -1370,9 +1424,9 @@ $(window).ready(function() {
     if (mapContext.direction == "-1")
         mapContext.direction = "";
     if (!mapContext.center)
-        mapContext.center = "20.9947910308838:105.86784362793003";
+        mapContext.center = defaultCenter;
     if (!mapContext.zoom)
-        mapContext.zoom = 6;
+        mapContext.zoom = zoom_moderate;
     if (!mapContext.lstPoint)
         mapContext.lstPoint = "";
 

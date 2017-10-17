@@ -3,6 +3,7 @@ function popup (html) {
 	//var topp = $(document).scrollTop() + 100;
     var topp = $('nav.navbar').height() + 20;
 	$('.popup-content').slideDown(400, function () {
+        //$('.popup-inner>div').height($('.popup-content').height());
         $('body').addClass('fixed');
         $('.popup').show();
 		flatApp();

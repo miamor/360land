@@ -1,4 +1,4 @@
-<style>.container{width:100%;padding:0;margin:0}</style>
+<style>body{position:fixed}.container{width:100%;padding:0;margin:0}</style>
 
 <div class="nav-tabs-custom map-side no-padding">
     <div class="map-side-toggle"></div>
@@ -103,8 +103,8 @@
                     <input type="text" id="isShowUtil" name="isShowUtil" value="0"/>
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="product" name="product"/>
-                    <input type="text" id="zoom" name="zoom" value="10"/>
-                    <input type="text" id="center" name="center" value="21.0277644:105.83415979999995"/>
+                    <input type="text" id="zoom" name="zoom" value=""/>
+                    <input type="text" id="center" name="center" value=""/>
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="points" name="points"/>
                     <input type="text" id="details" name="details"/>
@@ -384,9 +384,9 @@
 </div></div>
 
 
-<div class="popup popup-dark hide"><div class="popup-inner">
+<div class="popup popup-dark hide"><div class="popup-inner"><div>
 	<div class="popup-content hide">
 		<a class="popup-btn" role="close"></a>
 		<div class="the-board"></div>
 	</div>
-</div></div>
+</div></div></div>
