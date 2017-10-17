@@ -29,7 +29,7 @@ var iconMarker = {
     }
 };
 var zoom_markerView = 13;
-var zoom_moderate = 9;
+var zoom_moderate = 15;
 var zoom_utilityView = 16;
 var cityList = [];
 
@@ -996,14 +996,23 @@ ProductSearchControler = function(h) {
 };
 
 ProductSearchControler.prototype.showCitySearch = function () {
+    var i = this;
     cityOptions = $('select#city').html();
-    html = '<div class="popup-select-city popup-section section-light"><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div><div class="callout callout-info">Blah blah~~~ Some messages here~</div></div></div>';
+    html = '<div class="popup-select-city popup-section section-light"><div class="callout callout-info">Blah blah~~~ Some messages here~</div><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div></div>  <div class="center"><a href="#" class="btn btn-danger select-city-done">Tìm kiếm</a></div> </div>';
     $('.popup-content').css({
         left: '25%',
         right: '25%',
         height: 200
     });
     popup(html);
+    $('.popup-content [role="close"]').hide();
+    $('.select-city-done').click(function () {
+        $('select#city').val($('select#city_first').val());
+        remove_popup();
+        i.ChangeUrlForNewContext();
+        i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
+        return false
+    })
 }
 
 ProductSearchControler.prototype.catchInputChange = function () {

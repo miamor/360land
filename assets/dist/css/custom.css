@@ -549,7 +549,7 @@ label.utility-type .uti-total{font-weight: 500}
     position: absolute;
     right:-30px; top:10px;
     height:31px;width:30px;
-    padding:2px 8px;
+    padding:4px 8px;
     text-align: center;
     font-size: 18px;
     background:#fff;
@@ -582,7 +582,7 @@ label.utility-type .uti-total{font-weight: 500}
 #controlArea span{
     position: relative;
     display: block;
-    padding:6px 10px 7px;
+    padding:6px 10px;
     font-size: 13px;
     background:#fff;
     cursor: pointer;
@@ -672,11 +672,11 @@ label.utility-type .uti-total{font-weight: 500}
 .fullwidth-pp{position:relative;width:100%}
 body.fixed{position: fixed}
 
-.select-city-board{padding:10px 5px}
+.select-city-board{margin-bottom:10px}
 .select-city-board h4{margin-top:14px}
-select#city_first{height:50px;width:100%;background-color:#f4f4f4!important;border-radius:6px;border:1px solid #ddd;padding:10px;font-size:16px}
+select#city_first{height:50px;width:100%;background-color:#f4f4f4!important;border-radius:6px;border:1px solid #ddd;padding:9px 12px 10px;font-size:16px}
 select#city_first:focus{background:#fff!important}
-.select-city-board .callout{margin-top:20px;font-size: 14px}
+.popup-select-city .callout{margin:5px 0 10px;font-size: 14px}
 
 /* Place details on popup */
 .popup-content .the-board{position:relative;width:100%;height:100%;font-weight:300}
