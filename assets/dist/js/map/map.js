@@ -72,6 +72,7 @@ var cityList = [];
         this.isMapIdle = false;
         this.isShowRefreshButton = false;
         this.isShowUtil = false;
+        this.isDetails = false;
         this.infoBoxOptions = {
             disableAutoPan: false,
             maxWidth: 0,
@@ -113,6 +114,7 @@ var cityList = [];
         this.input.searchtype = document.getElementById('searchtype');
         this.input.product = document.getElementById('product');
         this.input.isShowUtil = document.getElementById('isShowUtil');
+        this.input.details = document.getElementById('details');
 
         this.setContext = function(a, b, c) {
             if (a != undefined && a != '') {
@@ -129,40 +131,20 @@ var cityList = [];
         google.maps.event.addListener(this.infoWindow, 'domready', function() {
             $('.gm-style-iw').each(function () {
                 var iwOuter = $(this);
-                if (iwOuter.find('.iw-content').length) {
-                    iwOuter.parent().removeClass('iw-tip-parent');
-                    iwOuter.removeClass('iw-tip-custom').addClass('iw-custom');
+                iwOuter.parent().attr('class', '');
+                if (iwOuter.find('#iw-container').length) {
+                    iwOuter.parent().addClass('gw-style-parent');
+                    //iwOuter.parent().css('height', 250);
                     var iwBackground = iwOuter.prev();
-                    iwBackground.removeClass('gw-tip-bg').addClass('gw-style-bg')
-                    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-                    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-                    if (iwOuter.find('#iw-container').length) {
-                        iwOuter.addClass('iw-node');
-                        iwOuter.parent().addClass('iw-parent');
-                    } else iwOuter.parent().addClass('iw-ult-parent');
-                    //iwOuter.parent().parent().css('left', '115px');
-                    var iwCloseBtn = iwOuter.next();
-                    //iwCloseBtn.css({opacity: '1', right: '48px', top: '9px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px rgba(57, 144, 185, .4)'});
-                    iwCloseBtn.css({opacity: '1', right: '45px', top: '27px'});
-                    if ($('.iw-content').height() < 140)
-                        $('.iw-bottom-gradient').css({display: 'none'});
-                    iwCloseBtn.mouseout(function(){
-                        $(this).css({opacity: '1'});
-                    });
-                }
-            })
-        });
-        google.maps.event.addListener(this.infoTipWindow, 'domready', function() {
-            $('.gm-style-iw').each(function () {
-                var iwOuter = $(this);
-                if (!iwOuter.find('.iw-content').length) {
-                    iwOuter.parent().removeClass('iw-parent').addClass('iw-tip-parent');
-                    iwOuter.removeClass('iw-custom').addClass('iw-tip-custom');
-                    //iwOuter.parent().parent().css('left', '0px');
+                    iwBackground.removeClass('gw-style-bg').addClass('gw-style-bg');
+                    //iwBackground.children(':nth-child(2),:nth-child(4)').css('height','250px!important');
+                } else {
+                    console.log('tip');
+                    iwOuter.parent().addClass('gw-tip-parent');
                     var iwBackground = iwOuter.prev();
                     iwBackground.removeClass('gw-style-bg').addClass('gw-tip-bg')
                 }
-            });
+            })
         });
 
         this.initialize = function() {
@@ -176,6 +158,10 @@ var cityList = [];
             if (s.direction) this.input.direction.value = s.direction;
             if (s.price) this.input.price.value = s.price;
             if (s.area) this.input.area.value = s.area;
+            if (s.details == 1) {
+                this.input.details.value = 1;
+                this.isDetails = true;
+            }
             if (s.isShowUtil == 1) {
                 this.input.isShowUtil.value = 1;
                 this.isShowUtil = true;
@@ -730,6 +716,7 @@ var cityList = [];
             $thismap.infoTipWindow.setOptions({
                 position: h.position,
                 //center: h.position,
+                maxWidth: 220,
                 content: k
             });
             $thismap.infoTipWindow.open($thismap.map.map_, h);
@@ -805,20 +792,6 @@ var cityList = [];
             if (this.infoTipWindow) this.infoTipWindow.close();
             if (this.infoWindow) this.infoWindow.close();
 
-            /*
-            var mc = null;
-            if ($thismap.markerCluster) {
-                // trigger click cluster event
-                mc = $thismap.markerCluster.getMarkerClusterer();
-                google.maps.event.trigger(mc, "click", $thismap.markerCluster);
-                var clusters = clusterManager.getClusters(); // use the get clusters method which returns an array of objects
-                for( var i=0, l=clusters.length; i<l; i++ ){
-                    for( var j=0, le=clusters[i].markers_.length; j<le; j++ ){
-                        marker = clusters[i].markers_[j]; // <-- Here's your clustered marker
-                    }
-                }
-            }*/
-
             if (key != null && data) {
                 var h = this.markers[key];
                 if (runSet) {
@@ -833,8 +806,12 @@ var cityList = [];
                 //h.setZIndex(300);
                 this.currentPID = data.id;
 
-                if (isInit && this.isShowUtil) {
-                    productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
+                if (isInit) {
+                    if (this.isDetails) {
+                        productControlerObj.ShowDetails(this.currentPID);
+                    } else if (this.isShowUtil) {
+                        productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
+                    }
                 }
 
                 $('.map-item-info-title').html(data.title);
@@ -844,12 +821,13 @@ var cityList = [];
                 $('.map-item-info-address').html(data.ngach+' '+data.ngo+' '+data.duong+' '+data.huyen+' '+data.diachi);
                 $('.map-item-info-des').html(data.details);
                 $('.map-item-info-thumb').attr('src', data.avatar);
-                $('.map-item-view-utilities').html('<a href="javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ');">Tiện ích xung quanh</a>');
-                $('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
+                $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
+                //$('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
+                $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '")');
 
                 this.infoWindow.setOptions({
                     position: h.position,
-                    maxWidth: 350,
+                    maxWidth: 470,
                     content: $('.map-item-info-board').html()
                 });
                 this.infoWindow.open(this.map, h);
@@ -1003,6 +981,8 @@ ProductSearchControler = function(h) {
 
     this.ProductMap.initialize();
 
+    this.showCitySearch();
+
     if (!this.ProductMap.isDrawing) {
         this._SearchAction(JSON.parse(JSON.stringify(this.formSearch.serializeArray())));
     }
@@ -1015,12 +995,24 @@ ProductSearchControler = function(h) {
     this.catchInputChange();
 };
 
+ProductSearchControler.prototype.showCitySearch = function () {
+    cityOptions = $('select#city').html();
+    html = '<div class="popup-select-city popup-section section-light"><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div><div class="callout callout-info">Blah blah~~~ Some messages here~</div></div></div>';
+    $('.popup-content').css({
+        left: '25%',
+        right: '25%',
+        height: 200
+    });
+    popup(html);
+}
+
 ProductSearchControler.prototype.catchInputChange = function () {
     var f = this.formSearch;
     var options = {city:'',district:'',ward:'',street:''};
     var c_city = c_district = city = district = ward = street = project = null;
     f.find('#city').on('change', function () {
         c_city = $(this).val();
+        district = {};
         for (var i = 0; i < cityList.length; i++) {
             if (cityList[i].code == c_city) {
                 district = cityList[i].district;
@@ -1039,18 +1031,20 @@ ProductSearchControler.prototype.catchInputChange = function () {
         }
         console.log(district);
         options.district = '';
-        for (var i = 0; i < district.length; i++) {
-            options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
-            street = district[i].street;
+        if (district != null && district) {
+            for (var i = 0; i < district.length; i++) {
+                options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
+                street = district[i].street;
+            }
         }
-        // update select box
-        if (district) f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
-        else f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>');
+        f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
         f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
         f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     });
     f.find('#district').on('change', function () {
         c_district = $(this).val();
+        ward = {};
+        street = {};
         for (var i = 0; i < cityList.length; i++) {
             if (cityList[i].code == c_city) {
                 for (var j = 0; j < cityList[i].district.length; j++) {
@@ -1064,17 +1058,22 @@ ProductSearchControler.prototype.catchInputChange = function () {
                 }
             }
         }
+
         options.ward = '';
-        for (var j = 0; j < ward.length; j++) {
-            options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
+        if (ward != null && ward) {
+            for (var j = 0; j < ward.length; j++) {
+                options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
+            }
         }
         f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
         f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     });
     f.find('#ward').on('change', function () {
         options.street = '';
-        for (var j = 0; j < street.length; j++) {
-            options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
+        if (street != null && street) {
+            for (var j = 0; j < street.length; j++) {
+                options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
+            }
         }
         f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
     })
@@ -1086,6 +1085,66 @@ ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
 
     this.utilityTool.ResetRadius();
     this.utilityTool.SearchAction(lat, lon);
+};
+
+ProductSearchControler.prototype.ShowDetails = function (id) {
+    var i = this;
+    if (!i.ProductMap.isDetails) {
+        i.ProductMap.input.details.value = 1;
+        i.ProductMap.isDetails = true;
+        i.ChangeUrlForNewContext();
+    }
+    $.get(MAIN_URL+'/api/node_one.php', function (place) {
+        console.log(place);
+        var adr = [];
+        if (place.hem) adr.push(place.hem);
+        if (place.ngach) adr.push(place.ngach);
+        if (place.ngo) adr.push(place.ngo);
+        if (place.duong) adr.push(place.duong);
+        if (place.huyen) adr.push(place.huyen);
+        if (place.diachi) adr.push(place.diachi);
+        place.address = adr.join(', ');
+        html = '<div class="col-lg-8 v-place-imgs no-padding">';
+        html += '<div class="v-place-board v-place-v-thumbs">';
+        html +=     '<div class="v-place-bg" style="background-image:url('+place.thumbs[0]+')"></div>';
+        html +=     '<div class="v-place-thumbs">';
+        html +=         '<img class="v-place-thumb" src="'+place.thumbs[1]+'"/>';
+        html +=         '<img class="v-place-thumb" src="'+place.thumbs[2]+'"/>';
+        html +=         '<img class="v-place-thumb" src="'+place.thumbs[3]+'"/>';
+        html +=     '</div>';
+        html += '</div>';
+        html += '<div class="v-place-board v-place-v-360 hide">';
+        html += '</div>';
+        html += '<div class="v-place-board v-place-v-streetview hide">';
+        html += '</div>';
+        html += '<div class="v-place-board v-place-v-video hide">';
+        html += '</div>';
+        html += '<div class="v-place-switch-buttons"><div class="v-place-mode active" id="v-thumbs"><i class="fa fa-picture-o"></i></div>  <div class="v-place-mode" id="v-360"><i class="fa fa-map"></i></div>  <div class="v-place-mode" id="v-streetview"><i class="fa fa-map-signs"></i></div>  <div class="v-place-mode" id="v-video"><i class="fa fa-play-circle"></i></div></div>';
+        html += '</div>';
+        html += '<div class="col-lg-4 popup-section section-light v-place-info">';
+        html += '<img class="v-place-avt left" src="'+place.avatar+'"/>';
+        html += '<h4 class="v-place-title">'+place.title+'</h4>';
+        html += '<div class="v-place-type">'+place.type+'</div>';
+        html += '<div class="clearfix"></div>';
+        html += '<div class="v-place-address"><i class="fa fa-map-marker"></i> '+place.address+'</div>';
+        html += '<div class="v-place-price"><i class="fa fa-dollar"></i> Giá bán: <span class="v-place-pricenum">'+place.price+'</span></div>';
+        html += '<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>';
+        html += '<div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>';
+        html += '</div>';
+        popup(html);
+        $('.v-place-mode').click(function () {
+            vid = $(this).attr('id');
+            $('.v-place-board').hide();
+            $('.v-place-'+vid).show();
+            $('.v-place-mode').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('.popup-content [role="close"]').click(function () {
+            i.ProductMap.input.details.value = 0;
+            i.ProductMap.isDetails = false;
+            i.ChangeUrlForNewContext();
+        })
+    });
 };
 
 ProductSearchControler.prototype._SearchAction = function(d) {
@@ -1204,6 +1263,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&isShowUtil=" + (this.ProductMap.isShowUtil && this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? 1 : 0);
     //a += "&searchtype=" + (this.searchVar.isSearchForm ? 0 : 1);
     a += "&searchtype=1";
+    a += "&details=" + (this.ProductMap.isDetails ? 1 : 0);
     window.location.href = window.location.pathname + '#' + a;
     //console.log('ChangeUrlForNewContext: '+window.location.pathname + '#' + a);
 };
@@ -1287,6 +1347,7 @@ $(window).ready(function() {
             page: markContext.getQueryHash('page', '1'),
             currentPID: markContext.getQueryHash('product'),
             isShowUtil: markContext.getQueryHash('isShowUtil'),
+            details: markContext.getQueryHash('details'),
             searchType: parseInt(markContext.getQueryHash('searchtype', '0'))
         };
     }

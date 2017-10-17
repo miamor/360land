@@ -107,6 +107,7 @@
                     <input type="text" id="center" name="center" value="21.0277644:105.83415979999995"/>
                     <input type="text" id="searchtype" name="searchtype" value="1"/>
                     <input type="text" id="points" name="points"/>
+                    <input type="text" id="details" name="details"/>
                 </div>
                 <div class="search-result-map">
                     <div id="lblResultMessage"></div>
@@ -273,7 +274,9 @@
                     <div class="clearfix"></div>
                 </div>
 
-                <div class="divide"></div>
+                <div class="txt-with-line center">
+                	<span class="txt generate-new-button">Tìm kiếm nâng cao <span class="fa fa-caret-down"></span></span>
+            	</div>
 
                 <div class="form-group">
                     <div class="control-label col-md-4 no-padding">
@@ -340,29 +343,37 @@
 <div id="map"></div>
 
 <div class="map-item-info-board hide"><div id="iw-container">
-    <h4 class="map-item-info-title iw-title">
-        Place title
-    </h4>
-    <div class="iw-content">
-        <div class="iw-subTitle"><span class="map-item-info-address"></span></div>
+    <div class="map-item-info-thumb-div">
+        <img class="map-item-info-thumb" src=""/>
+        <div class="map-item-info-price center">
+            Giá: <span></span>
+        </div>
+        <!--
+        <div class="btn-group map-item-info-buttons">
+            <a class="btn btn-danger btn-sm map-item-view-utilities" title="Tiện ich"><i class="fa fa-share-alt"></i></a>
+            <a class="btn btn-danger btn-sm map-item-gotoview" title="Chi tiết"><i class="fa fa-feed"></i></a>
+        </div>
+        -->
+        <div class="btn-group-vertical map-item-info-buttons center">
+            <a class="btn btn-default btn-sm map-item-view-utilities"><i class="fa fa-share-alt"></i> Tiện ich</a>
+            <a class="btn btn-default btn-sm map-item-gotoview"><i class="fa fa-feed"></i> Chi tiết</a>
+        </div>
+    </div>
+    <div class="iw-content map-item-info-details">
+        <h4 class="map-item-info-title iw-title">Place title</h4>
+        <div class="iw-subTitle"><i class="fa fa-map-marker"></i> <span class="map-item-info-address"></span></div>
         <div class="map-item-info-more">
             <span class="map-item-info-status label label-danger left" style="margin-right:10px;">Available For Sale</span>
             <span class="map-item-info-type"></span>,
             Phone: <span class="map-item-info-contact_phone"></span>
         </div>
 
-        <div class="map-item-info-details no-padding-left">
+        <div class=" no-padding-left">
             <div class="map-item-info-des"></div>
             <div class="iw-bottom-gradient"></div>
         </div>
-        <div class="map-item-info-thumb-div">
-            <img class="map-item-info-thumb" src=""/>
-        </div>
         <div class="clearfix"></div>
-        <div class="map-item-info-buttons">
-            <div class="map-item-info-price left">
-                Price: <span></span>
-            </div>
+        <div class="map-item-info-buttons hidden">
             <div class="map-item-info-btns right">
                 <span class="map-item-view-utilities">Tiện ích xung quanh</span>
                 <a href="#" target="_blank" class="btn btn-danger btn-sm map-item-gotoview">Xem chi tiết</a>
@@ -370,4 +381,12 @@
             <div class="clearfix"></div>
         </div>
     </div>
+</div></div>
+
+
+<div class="popup popup-dark hide"><div class="popup-inner">
+	<div class="popup-content hide">
+		<a class="popup-btn" role="close"></a>
+		<div class="the-board"></div>
+	</div>
 </div></div>

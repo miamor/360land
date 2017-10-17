@@ -1,3 +1,26 @@
+function popup (html) {
+    $('.the-board').html(html);
+	//var topp = $(document).scrollTop() + 100;
+    var topp = $('nav.navbar').height() + 20;
+	$('.popup-content').slideDown(400, function () {
+        $('body').addClass('fixed');
+        $('.popup').show();
+		flatApp();
+		$(this).css({
+			'overflow': 'visible'
+		})
+	}).css('top', topp);
+	$('.popup-content [role="close"]').click(function () {
+		remove_popup()
+	});
+}
+function remove_popup () {
+    $('.the-board').html('');
+	$('.popup-content').attr('style', '').slideUp(400, function () {
+		$('.popup').hide();
+        $('body').removeClass('fixed');
+	})
+}
 
 function flatApp () {
     $('input[type="submit"]').addClass('btn btn-danger');
