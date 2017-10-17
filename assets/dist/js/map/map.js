@@ -1184,6 +1184,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         html +=     '<h4>Dự án tương tự</h4><div class="v-place-related-list"></div>';
         html += '</div>';
         popup(html);
+        $('.popup-content [role="close"]').show();
         $.get(MAIN_URL+'/api/node.php', function (similar) {
             //console.log(similar);
             for (si = 0; si < 4; si++) {
