@@ -734,7 +734,8 @@ var cityList = [];
                 $.each(this.markers, function (i, v) {
                     if (i == k) {
                         v.setIcon(iconMarker.hover);
-                        $thismap.showInfoTipWindow($thismap.markers[i], $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        $thismap.map.setCenter(v.position);
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
@@ -751,6 +752,7 @@ var cityList = [];
                 this.markers[k].setIcon(iconMarker.default);
                 if ($thismap.currentPID) {
                     currentMarkerKey = this.findMarkerKey($thismap.currentPID);
+                    $thismap.map.setCenter(this.markers[currentMarkerKey].position);
                     if (currentMarkerKey == k) {
                         this.markers[currentMarkerKey].setIcon(iconMarker.select);
                         this.infoWindow.close();
@@ -1189,7 +1191,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
             //console.log(similar);
             for (si = 0; si < 4; si++) {
                 sv = similar[si];
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup('+sv.id+','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title">'+sv.title+'<br/><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title">'+sv.title+'<br/><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
             }
         })
         $('.v-place-mode').click(function () {
@@ -1456,5 +1458,19 @@ $(window).ready(function() {
         if ($('.map-side').css('left') == '0px') currentlyHide = false; // is show
         render(false, !currentlyHide);
         productControlerObj.ProductMap.resize();
+    });
+    $('.toggle-search-advanced').click(function () {
+        if ($('.map-search-advanced').is(':visible')) {
+            $('.map-search-advanced').slideUp(200);
+        } else {
+            $('.map-search-advanced').slideDown(200);
+        }
+    });
+    $('.map-search-button').click(function () {
+        var type = $(this).attr('attr-id');
+        $('.map-search-button').removeClass('active');
+        $(this).addClass('active');
+        $('.form-group[attr-type]').hide();
+        $('.form-group[attr-type="'+type+'"]').show();
     })
 })
