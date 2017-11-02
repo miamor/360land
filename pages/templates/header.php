@@ -21,7 +21,7 @@ $config->addJS('dist', 'main.js'); ?>
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
 
 	<script src="<?php echo MAIN_URL ?>/assets/jquery/jquery-2.2.3.min.js"></script>
-	<script>var MAIN_URL = '<?php echo MAIN_URL ?>' </script>
+	<script>var MAIN_URL = '<?php echo MAIN_URL ?>'; var API_URL = 'http://localhost:5001'; </script>
 
 </head>
 <body>

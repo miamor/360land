@@ -9,7 +9,10 @@ function popup (html) {
 		flatApp();
 		$(this).css({
 			'overflow': 'visible'
-		})
+		});
+        if ($('.map-item-info-board').length) {
+            setWidth($(window).width());
+        }
 	}).css('top', topp);
 	$('.popup-content [role="close"]').click(function () {
 		remove_popup()
