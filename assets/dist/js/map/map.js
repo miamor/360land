@@ -121,7 +121,7 @@ var cityList = [];
         this.input.zoom = document.getElementById('zoom');
         this.input.center = document.getElementById('center');
         this.input.points = document.getElementById('points');
-        this.input.searchtype = document.getElementById('searchtype');
+        //this.input.searchtype = document.getElementById('searchtype');
         this.input.product = document.getElementById('product');
         this.input.isShowUtil = document.getElementById('isShowUtil');
         this.input.details = document.getElementById('details');
@@ -177,7 +177,7 @@ var cityList = [];
             }
             if (s.searchtype == 1) {
                 this.searchtype = 1;
-                this.input.searchtype.value = 1;
+                //this.input.searchtype.value = 1;
             }
             this.input.zoom.value = s.zoom;
             this.input.center.value = s.center;
@@ -1295,7 +1295,9 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     this.searchVar = d;
     console.log(d);
-    var type = (d.searchtype == 1 ? 'project' : 'node');
+    console.log(f.ProductMap);
+    var type = (f.ProductMap.searchtype == 1 ? 'project' : 'node');
+    console.log(MAIN_URL+'/api/'+type+'.php');
 
     //f.ChangeUrlForNewContext();
 
@@ -1351,10 +1353,17 @@ ProductSearchControler.prototype.showList = function (d) {
         });
         $(this).click(function () {
             f.ProductMap.showInfoWindow($(this).attr('attr-id'));
+            if (f.ProductMap.searchtype) {
+                f.getProjectNodes();
+            }
             f.ChangeUrlForNewContext();
         })
     })
 };
+
+ProductSearchControler.prototype.getProjectNodes = function () {
+    
+}
 
 ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) {
     this.lstPoint = this.ProductMap.input.points.value;
@@ -1409,7 +1418,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&page=0";
     a += "&product=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? this.ProductMap.currentPID : '');
     a += "&isShowUtil=" + (this.ProductMap.isShowUtil && this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? 1 : 0);
-    a += "&searchtype=" + (this.searchtype ? 0 : 1);
+    a += "&searchtype=" + (this.ProductMap.searchtype ? 1 : 0);
     a += "&details=" + (this.ProductMap.isDetails ? 1 : 0);
     window.location.href = window.location.pathname + '#' + a;
     //console.log('ChangeUrlForNewContext: '+window.location.pathname + '#' + a);
@@ -1529,7 +1538,7 @@ $(window).ready(function() {
             currentPID: markContext.getQueryHash('product'),
             isShowUtil: markContext.getQueryHash('isShowUtil'),
             details: markContext.getQueryHash('details'),
-            searchType: parseInt(markContext.getQueryHash('searchtype', '0'))
+            searchtype: parseInt(markContext.getQueryHash('searchtype', '0'))
         };
     }
     // Fix content from product list linking

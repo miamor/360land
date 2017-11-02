@@ -5,7 +5,7 @@
         <input type="text" id="product" name="product"/>
         <input type="text" id="zoom" name="zoom" value=""/>
         <input type="text" id="center" name="center" value=""/>
-        <input type="text" id="searchtype" name="searchtype" value="0"/>
+        <!--<input type="text" id="searchtype" name="searchtype" value="0"/>
         <!-- 0 for node, 1 for project -->
         <input type="text" id="points" name="points"/>
         <input type="text" id="details" name="details"/>

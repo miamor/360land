@@ -3,7 +3,7 @@ header('content-type: application/json'); ?>
 [
     {
         "id": "project1",
-        "title": "Ban chung cu Vinhomes Nguyen Trai",
+        "title": "Project 1 name",
         "avatar": "<?php echo MAIN_URL ?>/data/images/h1.jpg",
         "latitude": 21.12,
         "longitude": 106.21,
@@ -40,7 +40,7 @@ header('content-type: application/json'); ?>
     },
     {
         "id": "project2",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh",
+        "title": "Project 2 title",
         "avatar": "<?php echo MAIN_URL ?>/data/images/h2.jpg",
         "latitude": 21.02,
         "longitude": 105.8,
@@ -77,7 +77,7 @@ header('content-type: application/json'); ?>
     },
     {
         "id": "project3",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 3",
+        "title": "Project 3 blah blah",
         "avatar": "<?php echo MAIN_URL ?>/data/images/h3.jpg",
         "latitude": 21.08,
         "longitude": 106.01,
@@ -114,7 +114,7 @@ header('content-type: application/json'); ?>
     },
     {
         "id": "project4",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 4",
+        "title": "Project 4 bleh bleh",
         "avatar": "<?php echo MAIN_URL ?>/data/images/h4.jpg",
         "latitude": 21.09,
         "longitude": 106.01,
@@ -151,7 +151,7 @@ header('content-type: application/json'); ?>
     },
     {
         "id": "project5",
-        "title": "chung cu Vinhomes Nguyen Chi Thanh 5",
+        "title": "Project 5",
         "avatar": "<?php echo MAIN_URL ?>/data/images/h5.jpg",
         "latitude": 21.07,
         "longitude": 106.01,
