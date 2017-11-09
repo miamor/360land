@@ -130,7 +130,7 @@
             </select>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" attr-type="node">
             <select name="price" id="price" class="form-control">
                 <option value="-1">Chọn giá tiền</option>
                 <option value="CN">Thoả thuận</option>

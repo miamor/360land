@@ -5,6 +5,22 @@
         <ul class="nav nav-tabs">
             <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
             <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
+            <li class="controls-area" id="controlArea">
+                <span class="begindraw">
+                    <i class="fa fa-pencil"></i> Vẽ để tìm
+                </span>
+                <span class="delshape">
+                    <i class="fa fa-times"></i> Xóa
+                </span>
+                <span class="fullscreen hidden">
+                    <img src="https://file4.batdongsan.com.vn/images/Product/Maps/full-screen.png" title="Mở rộng toàn màn hình" />
+                    Toàn màn hình
+                </span>
+                <span class="exitfullscreen hidden">
+                    <img src="https://file4.batdongsan.com.vn/images/Product/Maps/exit-full-screen.png" title="Thoát chế độ rộng toàn màn hình" />
+                    Mặc định
+                </span>
+            </li>
             <div class="map-tabs-toggle" attr-tab="search"><i class="fa fa-angle-double-down"></i></div>
         </ul>
         <div class="tab-content map-search-tabs hide">
@@ -30,24 +46,6 @@
 
 <div class="btn-map-update-result hidden">
     <span>Click để cập nhật kết quả mới nhất</span>
-</div>
-<div class="controls-area" id="controlArea">
-    <span class="begindraw">
-        <img src="https://file4.batdongsan.com.vn/images/Product/Maps/icon-pen.png" width="16" title="Khoanh vùng" />
-        Vẽ để tìm
-    </span>
-    <span class="delshape">
-        <img src="https://file4.batdongsan.com.vn/images/Product/Maps/icon-delete.png" title="Xóa vùng đã khoanh" />
-        Xóa
-    </span>
-    <span class="fullscreen hidden">
-        <img src="https://file4.batdongsan.com.vn/images/Product/Maps/full-screen.png" title="Mở rộng toàn màn hình" />
-        Toàn màn hình
-    </span>
-    <span class="exitfullscreen hidden">
-        <img src="https://file4.batdongsan.com.vn/images/Product/Maps/exit-full-screen.png" title="Thoát chế độ rộng toàn màn hình" />
-        Mặc định
-    </span>
 </div>
 
 <div class="controls-utility" id="controlUtility">

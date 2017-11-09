@@ -36,6 +36,7 @@ var iconMarker = {
         anchor: new google.maps.Point(0, 32)
     }
 };
+
 var zoom_markerView = 13;
 var zoom_moderate = 11;
 var zoom_utilityView = 16;
@@ -228,7 +229,7 @@ var cityList = [];
                 panControl: false,
                 rotateControl: false,
                 scaleControl: false,
-                mapTypeControl: true,
+                mapTypeControl: false,
                 mapTypeControlOptions: {
                     style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                     position: google.maps.ControlPosition.LEFT_TOP
@@ -247,7 +248,7 @@ var cityList = [];
                 }
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
-            this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('controlArea'));
+            //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('controlArea'));
             this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
 
@@ -1078,15 +1079,16 @@ ProductSearchControler.prototype.changeCityCallback = function (c_city) {
     }
     console.log(district);
     options.district = '';
+    f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>');
+    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     if (district != null && district) {
         for (var i = 0; i < district.length; i++) {
             options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
             street = district[i].street;
         }
     }
-    f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>'+options.district);
-    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
-    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+    f.find('#district').append(options.district);
 }
 
 ProductSearchControler.prototype.changeDistrictCallback = function (c_district) {
@@ -1108,24 +1110,26 @@ ProductSearchControler.prototype.changeDistrictCallback = function (c_district) 
     }
 
     options.ward = '';
+    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     if (ward != null && ward) {
         for (var j = 0; j < ward.length; j++) {
             options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
         }
     }
-    f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>'+options.ward);
-    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
+    f.find('#ward').append(options.ward);
 }
 
 ProductSearchControler.prototype.changeWardCallback = function (c_ward) {
     var f = this.formSearch;
     options.street = '';
+    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
     if (street != null && street) {
         for (var j = 0; j < street.length; j++) {
             options.street += "<option value='" + street[j].id + "'>" + street[j].name + "</option>";
         }
     }
-    f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
+    f.find('#street').append(options.street);
 }
 
 ProductSearchControler.prototype.catchInputChange = function () {
@@ -1362,7 +1366,7 @@ ProductSearchControler.prototype.showList = function (d) {
 };
 
 ProductSearchControler.prototype.getProjectNodes = function () {
-    
+
 }
 
 ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) {
@@ -1452,23 +1456,25 @@ function render (isResizeSmaller = false, searchVisible = false, resultVisible =
 
     if (resultVisible) {
         $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-up"></i>');
-        $('.map-result-tabs').slideDown(100);
+        $('.map-result-tabs').slideDown(100).closest('.nav-tabs-custom').addClass('open');
     } else {
         $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-down"></i>');
-        $('.map-result-tabs').slideUp(100);
+        $('.map-result-tabs').slideUp(100).closest('.nav-tabs-custom').removeClass('open');
     }
 
     if (searchVisible) { // show search
         $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-up"></i>');
         $('.map-search-tabs').slideDown(100, function () {
+            $(this).closest('.nav-tabs-custom').addClass('open');
             $('.map-side-result').animate({
                 top: $('.map-side-search').height() - 9,
-            },100);
+            },100).closest('.nav-tabs-custom').removeClass('open');
             //$('#map_search_project').height($('#map_search_node').height());
         });
     } else {
         $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-down"></i>');
         $('.map-search-tabs').slideUp(100, function () {
+            $(this).closest('.nav-tabs-custom').removeClass('open');
             $('.map-side-result').animate({
                 top: 30
             },100);
@@ -1487,6 +1493,10 @@ function render (isResizeSmaller = false, searchVisible = false, resultVisible =
         },100);
         e.preventDefault();
     })
+
+    if (w <= 500) {
+        $('#mapSide').width(w-20).css('right','10px!important')
+    }
 }
 
 function setWidth(w) {
@@ -1559,7 +1569,7 @@ $(window).ready(function() {
 
     $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
-    render(false, false, false);
+    render(false, true, false);
 
     productControlerObj = new ProductSearchControler({
         context: mapContext
@@ -1603,4 +1613,13 @@ $(window).ready(function() {
         }
         render(false, searchVisible, resultVisible);
     });
+    $('#mapSide .nav-tabs>li>a').click(function () {
+        var $div = $(this).closest('.nav-tabs-custom');
+        if ($div.is('.map-side-search')) {
+            console.log($div);
+            render(false, true, false)
+        } else if ($div.is('.map-side-result')) {
+            render(false, false, true)
+        }
+    })
 })
