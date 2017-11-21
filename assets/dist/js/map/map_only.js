@@ -42,44 +42,6 @@ var zoom_moderate = 11;
 var zoom_utilityView = 16;
 var cityList = [];
 
-(function($){
-	$.fn.extend({
-		donetyping: function (callback,timeout) {
-//			timeout = timeout || 1e3; // 1 second default timeout
-			timeout = timeout || 100
-			var timeoutReference,
-				doneTyping = function(el) {
-					if (!timeoutReference) return;
-					timeoutReference = null;
-					callback.call(el);
-				};
-			return this.each (function (i,el) {
-				var $el = $(el);
-				// Chrome Fix (Use keyup over keypress to detect backspace)
-				// thank you @palerdot
-				$el.is(':input') && $el.on('keyup keypress',function(e) {
-					// This catches the backspace button in chrome, but also prevents
-					// the event from triggering too premptively. Without this line,
-					// using tab/shift+tab will make the focused element fire the callback.
-					if (e.type=='keyup' && e.keyCode!=8) return;
-
-					// Check if timeout has been set. If it has, "reset" the clock and
-					// start over again.
-					if (timeoutReference) clearTimeout(timeoutReference);
-					timeoutReference = setTimeout(function() {
-						// if we made it here, our timeout has elapsed. Fire the
-						// callback
-						doneTyping(el);
-					}, timeout);
-				}).on('blur',function() {
-					// If we can, fire the event since we're leaving the field
-					doneTyping(el);
-				});
-			})
-		}
-	});
-})(jQuery);
-
 (function($) {
     ProductMap = function(o, p, q, r, s) {
         var v = $(this).attr('id');
@@ -128,9 +90,6 @@ var cityList = [];
         this.deleteShapeButton = $('.' + p);
         this.fullScreenButton = $('.' + q);
         this.exitFullScreenButton = $('.' + r);
-
-        //this.sv = new google.maps.StreetViewService();
-        this.panorama = null;
 
         this.searchtype = 0;
 
@@ -243,9 +202,8 @@ var cityList = [];
                     }
                 }
             }
-            var latlng = new google.maps.LatLng(f, g);
             var k = {
-                center: latlng,
+                center: new google.maps.LatLng(f, g),
                 zoom: e,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 draggable: true,
@@ -276,11 +234,6 @@ var cityList = [];
                 }
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
-            var styles = [{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]}];
-            var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
-            this.map.mapTypes.set('styled_map', styledMap);
-            this.map.setMapTypeId('styled_map');
-
             //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('controlArea'));
             this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
@@ -298,39 +251,7 @@ var cityList = [];
                 this.polyline.setMap(this.map);
                 this.findPoint(this.polyline);
             }
-
         };
-
-        /*this.processSVData = function (data, status) {
-            if (status === 'OK') {
-                var marker = new google.maps.Marker({
-                    position: data.location.latLng,
-                    map: map,
-                    title: data.location.description
-                });
-
-                this.panorama.setPano(data.location.pano);
-                this.panorama.setPov({
-                    heading: 270,
-                    pitch: 0
-                });
-                this.panorama.setVisible(true);
-
-                marker.addListener('click', function() {
-                    var markerPanoID = data.location.pano;
-                    // Set the Pano to use the passed panoID.
-                    this.panorama.setPano(markerPanoID);
-                    this.panorama.setPov({
-                        heading: 270,
-                        pitch: 0
-                    });
-                    this.panorama.setVisible(true);
-                });
-            } else {
-                console.error('Street View data not found for this location.');
-            }
-        }*/
-
 
         this.resize = function () {
             google.maps.event.trigger($thismap.map, 'resize');
@@ -567,7 +488,6 @@ var cityList = [];
 
         this.showMap = function(a, b) {
             this.data = [];
-            this.map.setZoom(zoom_moderate);
             for (var i = 0; i < a.length; i++) {
                 if (this.isInPolyline(a[i].latitude, a[i].longitude)) {
                     if (a[i].avatar == null || a[i].avatar == '') a[i].avatar = MAIN_URL+'/assets/img/noimage.png';
@@ -793,8 +713,8 @@ var cityList = [];
             //if (!this.isShowUtil) {
                 h.setIcon(iconMarker.default);
                 this.input.product.value = this.currentPID = '';
-                //this.map.setZoom(zoom_moderate);
-                //this.map.setCenter(this.centerPos);
+                this.map.setZoom(zoom_moderate);
+                this.map.setCenter(this.centerPos);
 
                 this.input.isShowUtil.value = 0;
                 this.isShowUtil = false;
@@ -920,12 +840,10 @@ var cityList = [];
                 $('.map-item-info-title').html(data.title);
                 $('.map-item-info-price span').html(data.price);
                 $('.map-item-info-type').html(data.type);
-                $('.map-item-info-contact_phone').html(data.dienthoai);
+                $('.map-item-info-contact_phone').html(data.contact_phone);
                 $('.map-item-info-address').html(data.address);
                 $('.map-item-info-des').html(data.details);
                 $('.map-item-info-thumb').attr('src', data.avatar);
-                $('.map-item-info-bed').html(data.sophongngu);
-                $('.map-item-info-huong').html(data.huong);
                 $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
                 //$('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
                 $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '")');
@@ -933,7 +851,7 @@ var cityList = [];
                 if (!isInit || !this.isShowUtil) {
                     this.infoWindow.setOptions({
                         position: h.position,
-                        maxWidth: 300,
+                        maxWidth: 470,
                         content: $('.map-item-info-board').html()
                     });
                     this.infoWindow.open(this.map, h);
@@ -1089,10 +1007,8 @@ ProductSearchControler = function(h) {
 
     this.ProductMap.initialize();
 
-    this.SearchProjectName();
-
     var context = h.context;
-    if (!context.city && !context.currentPID) this.showCitySearch();
+    //if (!context.city && !context.currentPID) this.showCitySearch();
 
     if (!this.ProductMap.isDrawing) {
         this._SearchAction();
@@ -1105,58 +1021,6 @@ ProductSearchControler = function(h) {
     });
     this.catchInputChange();
 };
-
-ProductSearchControler.prototype.SearchProjectName = function () {
-    $('#project_name').keydown(function () {
-		k = $(this).attr('name').split('town')[1];
-		$dr = $('#project_name').next('.ville-dropdown');
-		loading = '<div class="spinner loading-sending"><div></div><div></div><div></div></div>';
-		if (!$dr.length) $('#project_name').after('<div class="ville-dropdown">'+loading+'</div>');
-		else $dr.show().html(loading);
-	}).donetyping(function () {
-		val = $(this).val();
-		$.ajax({
-			url: MAIN_URL+'/api/search_name.php?n='+val.length,
-			type: 'get',
-			data: 'city='+val,
-			success: function (data) {
-                $dr = $('#project_name').next('.ville-dropdown');
-                $dr.show().html('');
-                $.each(data, function (i, d) {
-    				var vO = '<div class="sthumb"><img src="'+d.thumb+'"/></div> <div class="stit"><b>'+d.title+'</b> <div class="sadr"><i class="fa fa-map-marker"></i> '+d.address+'</div></div><div class="clearfix"></div>';
-    				$dr.append('<div class="ville-one" id="v'+i+'">'+vO+'</div>');
-    				$('.ville-one#v'+i).click(function () {
-                        console.log(vO);
-    					$dr.remove()
-    				})
-                })
-			}
-		})
-	});
-}
-
-ProductSearchControler.prototype.showCitySearch = function () {
-    var i = this;
-    cityOptions = $('select#city').html();
-    html = '<div class="popup-select-city popup-section section-light"><div class="callout callout-info">Blah blah~~~ Some messages here~</div><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div></div>  <div class="center"><a href="#" class="btn btn-danger select-city-done">Tìm kiếm</a></div> </div>';
-    $('.popup-content').css({
-        left: '25%',
-        right: '25%',
-        height: 200
-    });
-    popup(html);
-    $('.popup-content [role="close"]').hide();
-    $('.select-city-done').click(function () {
-        var cityy = $('select#city_first').val();
-        if (cityy == 'HN') i.ProductMap.input.center.value = '21.0277644:105.83415979999995';
-        $('select#city').val(cityy);
-        i.changeCityCallback(cityy);
-        remove_popup();
-        i.ChangeUrlForNewContext();
-        i._SearchAction();
-        return false
-    })
-}
 
 ProductSearchControler.prototype.changeCityCallback = function (c_city) {
     var f = this.formSearch;
@@ -1252,8 +1116,6 @@ ProductSearchControler.prototype.closePopup = function () {
 }
 
 ProductSearchControler.prototype.ShowMoreInfoAndHidePopup = function (id, lat, lon) {
-    remove_popup();
-    this.closePopup();
     this.ProductMap.showInfoWindow(id);
     this.ShowMoreInfo(lat,lon);
 }
@@ -1273,106 +1135,8 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         i.ProductMap.isDetails = true;
         i.ChangeUrlForNewContext();
     }
-    $.get(MAIN_URL+'/api/node_one.php', function (place) {
-        console.log(place);
-        /*var adr = [];
-        if (place.hem) adr.push(place.hem);
-        if (place.ngach) adr.push(place.ngach);
-        if (place.ngo) adr.push(place.ngo);
-        if (place.duong) adr.push(place.duong);
-        if (place.huyen) adr.push(place.huyen);
-        if (place.diachi) adr.push(place.diachi);
-        place.address = adr.join(', ');*/
-        html = '<div class="v-place-view">';
-        html += '<div class="col-lg-8 v-place-imgs no-padding">';
-        html += '<div class="v-place-board v-place-v-thumbs">';
-        html +=     '<div class="v-place-bg" style="background-image:url('+place.thumbs[0]+')"></div>';
-        html +=     '<div class="v-place-thumbs">';
-        html +=         '<img class="v-place-thumb active" src="'+place.thumbs[0]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[1]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[2]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[3]+'"/>';
-        html +=     '</div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-360">';
-        html += '  	  <div class="panorama"><img src="http://www.thepetedesign.com/demos/panorama_viewer/demo_photo3.jpg"></div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-streetview hide">';
-        html += '<div id="pano"></div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-video hide">';
-        html += '</div>';
-        html += '<div class="v-place-switch-buttons">';
-        html +=     '<div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>';
-        html += '</div>';
-        html += '</div>';
-        html += '<div class="col-lg-4 popup-section section-light v-place-info">';
-        html += '<img class="v-place-avt left" src="'+place.avatar+'"/>';
-        html += '<h4 class="v-place-title">'+place.title+'</h4>';
-        html += '<div class="v-place-type">'+place.type+'</div>';
-        html += '<div class="clearfix"></div>';
-        html += '<div class="v-place-address"><i class="fa fa-map-marker"></i> '+place.address+'</div>';
-        html += '<div class="v-place-price"><i class="fa fa-dollar"></i> Giá bán: <span class="v-place-pricenum">'+place.price+'</span></div>';
-        html += '<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>';
-        html += '<div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>';
-        html += '</div>';
-        html += '<div class="clearfix"></div>';
-        html += '</div>';
-        html += '<div class="v-place-related popup-section section-light">';
-        html +=     '<h4>Dự án tương tự</h4><div class="v-place-related-list"></div>';
-        html += '</div>';
-        popup(html);
-
-        $(".panorama").panorama_viewer({
-            animationTime: 300,         // This allows you to set the easing time when the image is being dragged. Set this to 0 to make it instant. The default value is 700.
-        });
-
-        var interval = null;
-        var check = function() {
-            if ($('.panorama .pv-inner').length) {
-                clearInterval(interval);
-                $('.v-place-v-360').hide();
-            }
-        };
-        interval = setInterval(check, 1200);
-
-        //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
-        //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
-        //i.ProductMap.sv.getPanorama({location: latlng, radius: 50}, i.ProductMap.processSVData);
-
-        //setWidth();
-        $('.popup-content [role="close"]').show();
-        $.get(MAIN_URL+'/api/node.php', function (similar) {
-            //console.log(similar);
-            for (si = 0; si < 4; si++) {
-                sv = similar[si];
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title">'+sv.title+'<br/><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-            }
-        })
-        $('.v-place-mode').click(function () {
-            vid = $(this).attr('id');
-            $('.v-place-board').hide();
-            $('.v-place-'+vid).show();
-            $('.v-place-mode').removeClass('active');
-            $(this).addClass('active');
-            if (vid == 'v-360') {
-                console.log('panorama');
-            }
-        });
-        $('.v-place-thumb').click(function () {
-            img = $(this).attr('src');
-            $('.v-place-bg').css('background-image', 'url('+img+')');
-            $('.v-place-thumb').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('.popup-content [role="close"]').click(function () {
-            i.closePopup();
-        })
-    });
 };
+
 
 ProductSearchControler.prototype._SearchAction = function(g) {
     var f = this;
@@ -1527,200 +1291,3 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     window.location.href = window.location.pathname + '#' + a;
     //console.log('ChangeUrlForNewContext: '+window.location.pathname + '#' + a);
 };
-
-
-var oldWidth = $(window).width();
-var oldHeight = $(window).height();
-
-function render (isResizeSmaller = false, searchVisible = false, resultVisible = false) {
-    var w = $(window).width();
-    var h = $(window).height();
-
-    $('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
-
-    oldWidth = w;
-    oldHeight = h;
-
-    if (isResizeSmaller) {
-        w = w + 12;
-        h = h + 12;
-    }
-    $('.container').css({
-        height: h,
-        width: w
-    })
-
-    //while ($('.v-place-imgs').width() <= 10 || $('.v-place-info').width() <= 10) {
-        setWidth(w);
-    //}
-
-    if (resultVisible) {
-        $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-up"></i>');
-        $('.map-result-tabs').slideDown(100).closest('.nav-tabs-custom').addClass('open');
-    } else {
-        $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-down"></i>');
-        $('.map-result-tabs').slideUp(100).closest('.nav-tabs-custom').removeClass('open');
-    }
-
-    if (searchVisible) { // show search
-        $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-up"></i>');
-        $('.map-search-tabs').slideDown(100, function () {
-            $(this).closest('.nav-tabs-custom').addClass('open');
-            $('.map-side-result').animate({
-                top: $('.map-side-search').height() - 9,
-            },100).closest('.nav-tabs-custom').removeClass('open');
-            //$('#map_search_project').height($('#map_search_node').height());
-        });
-    } else {
-        $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-down"></i>');
-        $('.map-search-tabs').slideUp(100, function () {
-            $(this).closest('.nav-tabs-custom').removeClass('open');
-            $('.map-side-result').animate({
-                top: 30
-            },100);
-        });
-    }
-
-    $('.map-side-search ul.nav>li>a').click(function (e) {
-        var type = $(this).parent('li').attr('attr-type');
-        $('#map-search-form .form-group[attr-type]').hide();
-        $('#map-search-form .form-group[attr-type="'+type+'"]').show();
-        $('#map-search-form input#searchtype').val(type == 'node' ? 0 : 1);
-        setTimeout(function () {
-            $('.map-side-result').css({
-                top: $('.map-side-search').height() - 9
-            })
-        },100);
-        e.preventDefault();
-    })
-
-    if (w <= 500) {
-        $('#mapSide').width(w-20).css('right','10px!important')
-    }
-}
-
-function setWidth(w) {
-    if (w <= 900) {
-        var vheight = $('.v-place-imgs').height();
-        if ($('.v-place-imgs').width() == $('.v-place-info').width()+40) {
-            $('.v-place-view').height($('.v-place-imgs').height() + $('.v-place-info').height() + 80);
-            $('.v-place-imgs').height(vheight);
-            $('.v-place-info').css('height','auto');
-        }
-    } else {
-        $('.v-place-view').css('height', '90%');
-        $('.v-place-imgs,.v-place-info').css('height', '100%');
-    }
-}
-
-var markContext = "";
-var mapContext = {};
-var productControlerObj = null;
-
-$(window).ready(function() {
-    if (typeof cityListOther1 != 'undefined')
-        cityList = $.merge(cityList, cityListOther1);
-    if (typeof cityListOTher2 != 'undefined')
-        cityList = $.merge(cityList, cityListOther2);
-    if (typeof cityListOTher3 != 'undefined')
-        cityList = $.merge(cityList, cityListOther3);
-    if (typeof cityListOTher4 != 'undefined')
-        cityList = $.merge(cityList, cityListOther4);
-
-    if (window.location.hash != '') {
-        markContext = window.location.hash;
-        mapContext = {
-            ptype: parseInt(markContext.getQueryHash('ptype', '38')),
-            catid: markContext.getQueryHash('cat'),
-            city: markContext.getQueryHash('city'),
-            district: markContext.getQueryHash('district'),
-            area: markContext.getQueryHash('area'),
-            price: markContext.getQueryHash('price'),
-            ward: markContext.getQueryHash('ward'),
-            street: markContext.getQueryHash('street'),
-            room: markContext.getQueryHash('room'),
-            direction: markContext.getQueryHash('direction'),
-            projectid: markContext.getQueryHash('project'),
-            lstPoint: markContext.getQueryHash('points'),
-            zoom: markContext.getQueryHash('zoom', zoom_moderate),
-            center: markContext.getQueryHash('center'),
-            page: markContext.getQueryHash('page', '1'),
-            currentPID: markContext.getQueryHash('product'),
-            isShowUtil: markContext.getQueryHash('isShowUtil'),
-            details: markContext.getQueryHash('details'),
-            searchtype: parseInt(markContext.getQueryHash('searchtype', '0'))
-        };
-    }
-    // Fix content from product list linking
-    if (mapContext.area == "-1")
-        mapContext.area = "";
-    if (mapContext.pricelevel == "-1")
-        mapContext.pricelevel = "";
-    if (mapContext.room == "-1")
-        mapContext.room = "";
-    if (mapContext.direction == "-1")
-        mapContext.direction = "";
-    if (!mapContext.center)
-        mapContext.center = defaultCenter;
-    if (!mapContext.zoom)
-        mapContext.zoom = zoom_moderate;
-    if (!mapContext.lstPoint)
-        mapContext.lstPoint = "";
-
-    $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
-
-    render(false, true, false);
-
-    productControlerObj = new ProductSearchControler({
-        context: mapContext
-    });
-
-    $(window).on('resize', function () {
-        var b = false;
-        if (oldWidth > $(window).width() || oldHeight > $(window).height()) b = true;
-        var searchVisible = $('.map-search-tabs').is(':visible'),
-            resultVisible = $('.map-result-tabs').is(':visible');
-        render(b, searchVisible, resultVisible);
-        productControlerObj.ProductMap.resize();
-    });
-    $('.toggle-search-advanced').click(function () {
-        if ($('.map-search-advanced').is(':visible')) {
-            $('.map-search-advanced').slideUp(200, function () {
-                $('.map-side-result').animate({
-                    top: $('.map-side-search').height() - 9
-                },100)
-            });
-        } else {
-            $('.map-search-advanced').slideDown(200, function () {
-                $('.map-side-result').animate({
-                    top: $('.map-side-search').height() - 9
-                },100)
-            });
-        }
-    });
-    $('.map-tabs-toggle').click(function () {
-        var currentlyHide = true;
-        var tabs = $(this).attr('attr-tab');
-        var $this = $(this);
-        var searchVisible, resultVisible;
-        if (tabs == 'search') {
-            searchVisible = !$('.map-search-tabs').is(':visible');
-            resultVisible = false;
-        }
-        else {
-            resultVisible = !$('.map-result-tabs').is(':visible');
-            searchVisible = false;
-        }
-        render(false, searchVisible, resultVisible);
-    });
-    $('#mapSide .nav-tabs>li>a').click(function () {
-        var $div = $(this).closest('.nav-tabs-custom');
-        if ($div.is('.map-side-search')) {
-            console.log($div);
-            render(false, true, false)
-        } else if ($div.is('.map-side-result')) {
-            render(false, false, true)
-        }
-    });
-
-})

@@ -37,7 +37,8 @@
     </div>
 
     <div class="form-group p_name hide" attr-type="project">
-        <input type="text" name="project_name" class="form-control" placeholder="Input project name"/>
+        <input type="text" name="project_name" id="project_name" class="form-control" placeholder="Input project name"/>
+        <div class="ville-dropdown hide"></div>
     </div>
 
     <div class="form-group">

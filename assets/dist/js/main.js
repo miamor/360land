@@ -27,12 +27,12 @@ function remove_popup () {
 }
 
 function flatApp () {
-    $('input[type="submit"]').addClass('btn btn-danger');
+    $('input[type="submit"]').addClass('btn btn-success');
 
     //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-red',
-      radioClass: 'iradio_minimal-red'
+      checkboxClass: 'icheckbox_minimal-green',
+      radioClass: 'iradio_minimal-green'
     });
 }
 

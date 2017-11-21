@@ -25,6 +25,7 @@ else if ($n) {
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';
+    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css">';
 
     //echo '<link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.css"><link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.skinNice.css">';
     //$config->addJS('plugins', 'ionslider/ion.rangeSlider.min.js');
@@ -34,6 +35,9 @@ else {
     $config->addJS('plugins', 'markerWithLabel/markerWithLabel.min.js');
     //$config->addJS('dist', 'ratings.min.js');
     for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
+
+    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.js');
+
     $config->addJS('dist', $page.'/map.js');
 
 //    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');

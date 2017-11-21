@@ -138,26 +138,23 @@
         <h4 class="map-item-info-title iw-title">Place title</h4>
         <div class="iw-subTitle"><i class="fa fa-map-marker"></i> <span class="map-item-info-address"></span></div>
         <div class="map-item-info-more">
-            <span class="map-item-info-status label label-danger left" style="margin-right:10px;">Available For Sale</span>
-            <span class="map-item-info-type"></span>,
-            Phone: <span class="map-item-info-contact_phone"></span>
+            <div>Loại: <span class="map-item-info-type"></span></div>
+            <div><i class="fa fa-bed"></i> <span class="map-item-info-bed"></span></div>
+            <div>Hướng: <span class="map-item-info-huong"></span></div>
+            <div><i class="fa fa-phone"></i> <span class="map-item-info-contact_phone"></span></div>
         </div>
 
-        <div class=" no-padding-left">
+        <div class="hidden no-padding-left">
             <div class="map-item-info-des"></div>
             <div class="iw-bottom-gradient"></div>
         </div>
         <div class="clearfix"></div>
-        <div class="map-item-info-buttons hidden">
-            <div class="map-item-info-btns right">
-                <span class="map-item-view-utilities">Tiện ích xung quanh</span>
-                <a href="#" target="_blank" class="btn btn-danger btn-sm map-item-gotoview">Xem chi tiết</a>
-            </div>
-            <div class="clearfix"></div>
-        </div>
+
     </div>
 </div></div>
 
+<!--<div id="pano" style="z-index:1000;width:100%;height:100%">
+</div>-->
 
 <div class="popup popup-dark hide"><div class="popup-inner"><div>
 	<div class="popup-content hide">
