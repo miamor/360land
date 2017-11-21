@@ -649,7 +649,7 @@ label.utility-type .uti-total{font-weight: 500}
 .ville-dropdown .ville-one{background:#fff;border-top:1px solid #ddd;padding:2px 5px 3px;cursor:pointer}
 .ville-dropdown .ville-one:first-child{border-top:0}
 .ville-dropdown .ville-one:hover{background:#f7f7f7}
-.ville-one .sthumb{width:60px;float:left;margin-right:6px;margin-top:3px}
+.ville-one .sthumb{width:60px;float:left;margin-right:6px;margin-top:4px}
 .ville-one .sthumb img{position:relative;width:100%}
 .ville-one .stit{margin-left:66px}
 
