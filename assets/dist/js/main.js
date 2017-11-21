@@ -31,8 +31,8 @@ function flatApp () {
 
     //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-green',
-      radioClass: 'iradio_minimal-green'
+        checkboxClass: 'icheckbox_minimal-green',
+        radioClass: 'iradio_minimal-green'
     });
 }
 

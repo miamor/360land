@@ -39,7 +39,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user1",
-        "type": "typereal1",
+        "type": "resort",
         "duanid": "duan1",
         "modid": "mod1"
     }

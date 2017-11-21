@@ -447,7 +447,7 @@ select,.select.form-control{
     border:0!important;
     font-size:14px
 }
-.nav-tabs-custom > .nav-tabs > li.active > a{background:#fff;color:#444;padding:10px 10px!important;margin-top:-5px;margin-bottom:-1px;box-shadow:none!important;font-size:15px;box-shadow:4px -4px 4px -4px rgba(0,0,0,.3)!important}
+.nav-tabs-custom > .nav-tabs > li.active > a{background:#fff;color:#444;padding:10px 10px 8px!important;margin-top:-5px;margin-bottom:-1px;box-shadow:none!important;font-size:15px;box-shadow:4px -4px 4px -4px rgba(0,0,0,.3)!important}
 .nav-tabs-custom > .nav-tabs > li > a.text-muted {
   color: #999;
 }
@@ -519,15 +519,16 @@ select,.select.form-control{
     font-weight: 300;
     display: none
 }
-.utility-head{font-size: 14px;padding-bottom: 10px;border-bottom: 2px solid rgb(235,77,77);margin-bottom: 10px;font-family: 'Open Sans Condensed', 'Roboto Condensed'}
+.utility-head{font-size: 14px;padding-bottom: 10px;border-bottom: 2px solid #00a65a;margin-bottom: 10px;font-family: 'Open Sans Condensed', 'Roboto Condensed'}
 .utility-close{position: absolute;top:9px;right:15px;cursor: pointer;font-size:16px}
 label.utility-type{
     position: relative;
     display: block;
     font-weight: 300;
-    height: 20px;
+    height: 22px;
 }
-label.utility-type input{float:left;margin:1px 3px 2px 0!important}
+[class*="icheckbox_minimal"]{float:left;margin:0 3px 2px 0}
+label.utility-type [class*="icheckbox_minimal"]{float:left;margin:-1px 3px 2px 0}
 label.utility-type .uti-total{font-weight: 500}
 #cbbRadius{
     margin-bottom: 8px;
@@ -613,8 +614,9 @@ label.utility-type .uti-total{font-weight: 500}
 .map-side #map_results{
     padding:5px
 }
+.empty_results{padding:10px}
 .marker-label,.marker-utility-label{padding:0 2px;height:15px;border:1px solid #eb3a44;border-radius:2px;background:#fee1d7;*background:rgba(73, 184, 158, 0.3);text-align:center;line-height:13px;*font-weight:300;font-size:9px;color:#eb3a44}
-.marker-label{margin:-7px 0 0 -6px!important}
+.marker-label{margin:-1px 0 0 -16px!important}
 .marker-utility-label{width:24px;height:14px;border-color:#eb3a44;background:#fee1d7;line-height:12px;font-weight:400;font-size:10px;color:#eb3a44}
 .map-result-one{position: relative;
     display: block;
@@ -769,10 +771,10 @@ select#city_first:focus{background:#fff!important}
     background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
 .gm-style-iw h3.map-result-one-title{font-size:15px;margin:0 0 4px 3px}
-.gw-tip-bg>div:nth-child(1), .gw-tip-bg>div:nth-child(3){display: none!important}
+/*.gw-tip-bg>div:nth-child(1), .gw-tip-bg>div:nth-child(3){display: none!important}
 .gw-tip-bg>div:nth-child(1), .gw-tip-bg>div:nth-child(3){display:none!important}
-.gw-tip-parent{margin:30px 0 0 -87px}
-
+.gw-tip-parent{margin:35px 0 0 -57px}
+*/
 /*
  * Page: Place view
  * ---------------

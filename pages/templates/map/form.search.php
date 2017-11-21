@@ -15,8 +15,13 @@
     </div>
 
     <div class="form-group p_type" attr-type="node">
-        <label><input type="checkbox" name="type_action" class="minimal" value="1" checked> Mua</label>
-        <label><input type="checkbox" name="type_action" class="minimal" value="2" checked> Thuê</label>
+        <div class="col-lg-6 no-padding">
+            <label><input type="checkbox" name="type_action" class="minimal" value="1" checked> Mua</label>
+        </div>
+        <div class="col-lg-6 no-padding">
+            <label><input type="checkbox" name="type_action" class="minimal" value="2" checked> Thuê</label>
+        </div>
+        <div class="clearfix"></div>
     </div>
 
     <div class="form-group" attr-type="node">

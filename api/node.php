@@ -34,7 +34,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user1",
-        "type": "typereal1",
+        "type": "apartment",
         "duanid": "duan1",
         "modid": "mod1"
     },
@@ -71,7 +71,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal2",
+        "type": "house",
         "duanid": "duan2",
         "modid": "mod1"
     },
@@ -108,7 +108,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "housestreet",
         "duanid": "duan1",
         "modid": "mod1"
     },
@@ -145,8 +145,8 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal7",
-        "duanid": "duan1",
+        "type": "resort",
+        "duanid": "villa",
         "modid": "mod1"
     },
     {
@@ -182,7 +182,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "office",
         "duanid": "duan1",
         "modid": "mod1"
     }

@@ -51,7 +51,7 @@
 <div class="controls-utility" id="controlUtility">
     <div class="utility-head">Các loại tiện ích</div>
     <div class="utility-body">
-        <select id="cbbRadius">
+        <select id="cbbRadius" class="form-control">
           <option value="500">Chọn bán kính</option>
           <option value="200">200 m</option>
           <option value="500">500 m</option>
@@ -61,55 +61,55 @@
           <option value="10000">10 km</option>
         </select>
         <label class="utility-type" for="chk4">
-            <input type="checkbox" checked="checked" id="chk4" value="4" />
+            <input type="checkbox" class="minimal" checked="checked" id="chk4" value="4" />
             Trường học
         </label>
         <label class="utility-type" for="chk6">
-            <input type="checkbox"  id="chk6" value="6" />
+            <input type="checkbox" class="minimal" id="chk6" value="6" />
             Bến xe, trạm xe
         </label>
         <label class="utility-type" for="chk7">
-            <input type="checkbox"  id="chk7" value="7" />
+            <input type="checkbox" class="minimal" id="chk7" value="7" />
             Công trình công cộng
         </label>
         <label class="utility-type" for="chk5">
-            <input type="checkbox"  id="chk5" value="5" />
+            <input type="checkbox" class="minimal" id="chk5" value="5" />
             Cơ sở y tế
         </label>
         <label class="utility-type" for="chk0">
-            <input type="checkbox"  id="chk0" value="0" />
+            <input type="checkbox" class="minimal" id="chk0" value="0" />
             Nhà hàng
         </label>
         <label class="utility-type" for="chk3">
-            <input type="checkbox"  id="chk3" value="3" />
+            <input type="checkbox" class="minimal" id="chk3" value="3" />
             Cơ quan hành chính
         </label>
         <label class="utility-type" for="chk8">
-            <input type="checkbox"  id="chk8" value="8" />
+            <input type="checkbox" class="minimal" id="chk8" value="8" />
             Khách sạn
         </label>
         <label class="utility-type" for="chk2">
-            <input type="checkbox" checked="checked" id="chk2" value="2" />
+            <input type="checkbox" class="minimal"checked="checked" id="chk2" value="2" />
             TT thể thao, giải trí
         </label>
         <label class="utility-type" for="chk1">
-            <input type="checkbox" checked="checked" id="chk1" value="1" />
+            <input type="checkbox" class="minimal"checked="checked" id="chk1" value="1" />
             Địa điểm mua sắm
         </label>
         <label class="utility-type" for="chk11">
-            <input type="checkbox"  id="chk11" value="11" />
+            <input type="checkbox" class="minimal" id="chk11" value="11" />
             Làm đẹp, Spa
         </label>
         <label class="utility-type" for="chk12">
-            <input type="checkbox"  id="chk12" value="12" />
+            <input type="checkbox" class="minimal" id="chk12" value="12" />
             ATM, Ngân hàng
         </label>
         <label class="utility-type" for="chk13">
-            <input type="checkbox"  id="chk13" value="13" />
+            <input type="checkbox" class="minimal" id="chk13" value="13" />
             Các công ty dịch vụ
         </label>
         <label class="utility-type" for="chk9">
-            <input type="checkbox"  id="chk9" value="9" />
+            <input type="checkbox" class="minimal" id="chk9" value="9" />
             Tiện ích khác
         </label>
         <span class="utility-close"><i class="fa fa-times-circle"></i></span>

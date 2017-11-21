@@ -7,35 +7,7 @@ var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
 var options = {city:'',district:'',ward:'',street:''};
 //var c_city = c_district = null;
 var city = district = ward = street = project = null;
-var markerSize = new google.maps.Size(23, 26);
 var labelOrigin = new google.maps.Point(0,0);
-var iconMarker = {
-    default: {
-        url: MAIN_URL+'/assets/img/marker5.png',
-        scaledSize: markerSize,
-        size: markerSize,
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)
-    },
-    hover: {
-        url: MAIN_URL+'/assets/img/marker-hover.png',
-        scaledSize: markerSize,
-        size: markerSize,
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)
-    },
-    select: {
-        url: MAIN_URL+'/assets/img/marker.png',
-        /*scaledSize: new google.maps.Size(30, 36),
-        size: new google.maps.Size(30, 36),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)*/
-        scaledSize: markerSize,
-        size: markerSize,
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)
-    }
-};
 
 var zoom_markerView = 13;
 var zoom_moderate = 11;
@@ -98,6 +70,7 @@ var cityList = [];
         this.currentPID = null;
         this.currentPjID = null;
         this.currentUID = null;
+        this.currentMarkerKey = null;
         this.BoxSearchPlace = null;
         this.tooltip = null;
         //this.btnUpdateMapIdleResult = $('.btn-map-update-result');
@@ -213,6 +186,7 @@ var cityList = [];
             this.input.product.value = s.currentPID;
 
             this.currentPID = s.currentPID;
+            this.currentMarkerKey = this.findMarkerKey(this.currentPID);
 
             var cc = this.input.center.value.split(':');
             this.centerPos = new google.maps.LatLng(cc[0], cc[1]);
@@ -588,7 +562,7 @@ var cityList = [];
                 });*/
                 return new MarkerWithLabel({
                     position: new google.maps.LatLng(location.latitude, location.longitude),
-                    icon: iconMarker.default,
+                    icon: nodeMarker[location.type].default,
                     labelContent: location.price,
                     labelAnchor: labelOrigin,
                     labelClass: "marker-label", // your desired CSS class
@@ -606,12 +580,12 @@ var cityList = [];
                 });
                 oneMarker.addListener('mouseover', function() {
                     if (this.id != $thismap.currentPID) {
-                        this.setIcon(iconMarker.hover)
+                        this.setIcon(nodeMarker[a[i].type].hover)
                     }
                 });
                 oneMarker.addListener('mouseout', function() {
                     if (this.id != $thismap.currentPID) {
-                        this.setIcon(iconMarker.default)
+                        this.setIcon(nodeMarker[a[i].type].default)
                     }
                 })
             })
@@ -667,7 +641,8 @@ var cityList = [];
             var h = this.findMarker(this.currentPID);
 
             if (h == undefined || h == null) return;
-            h.setIcon(iconMarker.select);
+            var key = this.findMarkerKey(this.currentPID);
+            h.setIcon(nodeMarker[$thismap.data[key].type].select);
             h.setZIndex(300);
             e = parseInt(e);
             this.ClearUtilitiesAroundPoint();
@@ -695,10 +670,10 @@ var cityList = [];
             $.each($('input:checked', $(g)), function() {
                 var a = parseInt($(this).val());
                 var b = $thismap.getTotalUtility($thismap.dataUtilities, a);
-                if ($(this).parent().find('.uti-total').length > 0) {
-                    $(this).parent().find('.uti-total').html('(' + b + ')')
+                if ($(this).closest('label').find('.uti-total').length > 0) {
+                    $(this).closest('label').find('.uti-total').html('(' + b + ')')
                 } else {
-                    $(this).parent().append(' <span class="uti-total">(' + b + ')</span>')
+                    $(this).closest('label').append(' <span class="uti-total">(' + b + ')</span>')
                 }
             });
 
@@ -710,10 +685,7 @@ var cityList = [];
                 this.markerUtilities = this.dataUtilities.map(function(utility, i) {
                     return new google.maps.Marker({
                         position: new google.maps.LatLng(utility.latitude, utility.longitude),
-                        icon: {
-                            url: 'http://file4.batdongsan.com.vn/images/Product/Maps/utility-' + utility.typeid + '.png',
-                            size: new google.maps.Size(30, 49)
-                        }
+                        icon: ultiMarker[utility.type]
                     });
                 });
 
@@ -791,8 +763,11 @@ var cityList = [];
 
         this.closeInfoWindowCallBack = function (h) {
             //if (!this.isShowUtil) {
-                h.setIcon(iconMarker.default);
+            var key = this.findMarkerKey(this.currentPID);
+                h.setIcon(nodeMarker[$thismap.data[key].type].default);
                 this.input.product.value = this.currentPID = '';
+                this.currentMarkerKey = null;
+
                 //this.map.setZoom(zoom_moderate);
                 //this.map.setCenter(this.centerPos);
 
@@ -817,20 +792,20 @@ var cityList = [];
 
         this.mouseHover = function (k) {
             if (this.markers) {
-                var currentMarkerKey = null;
+                /*var currentMarkerKey = null;
                 if ($thismap.currentPID) {
                     currentMarkerKey = this.findMarkerKey($thismap.currentPID);
-                }
+                }*/
                 $.each(this.markers, function (i, v) {
                     if (i == k) {
-                        v.setIcon(iconMarker.hover);
+                        v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
                         $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
                         $thismap.map.setCenter(v.position);
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
                     } else if (i != currentMarkerKey) {
-                        v.setIcon(iconMarker.default);
+                        v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].default);
                     }
                 })
             }
@@ -838,16 +813,15 @@ var cityList = [];
         this.mouseOut = function (k) {
             this.infoTipWindow.close();
             if (this.markers) {
-                var currentMarkerKey = null;
-                this.markers[k].setIcon(iconMarker.default);
+                this.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
                 if ($thismap.currentPID) {
-                    currentMarkerKey = this.findMarkerKey($thismap.currentPID);
-                    $thismap.map.setCenter(this.markers[currentMarkerKey].position);
-                    if (currentMarkerKey == k) {
-                        this.markers[currentMarkerKey].setIcon(iconMarker.select);
+                    //currentMarkerKey = this.findMarkerKey($thismap.currentPID);
+                    $thismap.map.setCenter(this.markers[$thismap.currentMarkerKey].position);
+                    if ($thismap.currentMarkerKey == k) {
+                        this.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
                         if (!this.isShowUtil) {
                             this.infoWindow.close();
-                            this.infoWindow.open(this.map, this.markers[currentMarkerKey]);
+                            this.infoWindow.open(this.map, this.markers[$thismap.currentMarkerKey]);
                         }
                     }
                 }
@@ -874,12 +848,12 @@ var cityList = [];
                 var u = this.markers[t];
 
                 this.input.product.value = this.currentPID = d;
-                key = this.findMarkerKey(this.currentPID);
+                this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
                 var e = this.markers[key];
                 var f = this.findDataInfo(key);
                 data = f;
                 if (u != undefined && u != null) {
-                    u.setIcon(iconMarker.default);
+                    u.setIcon(nodeMarker[$thismap.data[key].type].default);
                     if (f != undefined && f != null) {
                         u.setZIndex(6 - f.vip)
                     }
@@ -888,7 +862,7 @@ var cityList = [];
             this.input.product.value = d;
 
             if (this.markers != undefined) {
-                if (!key) key = this.findMarkerKey(d);
+                if (!key) this.currentMarkerKey = key = this.findMarkerKey(d);
                 if (!data) data = this.findDataInfo(key);
             }
 
@@ -905,9 +879,10 @@ var cityList = [];
                     }
                     this.map.setCenter(h.position);
                 }
-                h.setIcon(iconMarker.select);
+                h.setIcon(nodeMarker[$thismap.data[key].type].select);
                 //h.setZIndex(300);
                 this.currentPID = data.id;
+                this.currentMarkerKey = this.findMarkerKey(this.currentPID);
 
                 if (isInit) {
                     if (this.isDetails) {
@@ -1099,6 +1074,7 @@ ProductSearchControler = function(h) {
     }
     this.formSearch.submit(function () {
         i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
+        i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
         i.ChangeUrlForNewContext();
         i._SearchAction();
         return false

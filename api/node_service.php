@@ -31,7 +31,7 @@
         "timeto": "2017-08-20",
         "typeid": 2,
         "userid": "user1",
-        "type": "typereal1",
+        "type": "school",
         "duanid": "duan1",
         "modid": "mod1"
     },
@@ -66,7 +66,7 @@
         "timeto": "2017-08-20",
         "typeid": 1,
         "userid": "user2",
-        "type": "typereal2",
+        "type": "busstop",
         "duanid": "duan2",
         "modid": "mod1"
     },
@@ -101,7 +101,7 @@
         "timeto": "2017-08-20",
         "typeid": 1,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "restaurant",
         "duanid": "duan1",
         "modid": "mod1"
     },
@@ -136,7 +136,7 @@
         "timeto": "2017-08-20",
         "typeid": 1,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "hospital",
         "duanid": "duan1",
         "modid": "mod1"
     },
@@ -171,7 +171,7 @@
         "timeto": "2017-08-20",
         "typeid": 4,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "supermarket",
         "duanid": "duan1",
         "modid": "mod1"
     }

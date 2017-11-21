@@ -38,6 +38,7 @@ else {
 
     $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.js');
 
+    $config->addJS('dist', $page.'/markers.js');
     $config->addJS('dist', $page.'/map.js');
 
 //    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');
