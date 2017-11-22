@@ -161,48 +161,8 @@
 </div>-->
 
 <div class="popup popup-dark hide"><div class="popup-inner"><div>
-	<div class="popup-content hide">
+	<div class="popup-content hide" style="background:#fff">
 		<a class="popup-btn" role="close"></a>
-		<div class="the-board">
-
-<div class="v-place-view">
-    <div class="col-lg-8 v-place-imgs no-padding">
-        <div class="v-place-board v-place-v-thumbs">
-            <div class="v-place-bg"></div>
-            <div class="v-place-thumbs">
-            </div>
-        </div>
-        <div class="v-place-board v-place-v-360">
-          	  <div class="panorama" data-paver data-start-position="0"><img src="http://localhost/paver-master/demo/images/p5.jpg"></div>
-        </div>
-        <div class="v-place-board v-place-v-streetview hide">
-            <div id="pano"></div>
-        </div>
-        <div class="v-place-board v-place-v-video hide">
-        </div>
-        <div class="v-place-switch-buttons">
-            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>
-            <div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>
-            <div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>
-            <div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>
-        </div>
+		<div class="the-board"></div>
     </div>
-    <div class="col-lg-4 popup-section section-light v-place-info">
-        <img class="v-place-avt left" src="'+place.avatar+'"/>
-        <h4 class="v-place-title">'+place.title+'</h4>
-        <div class="v-place-type">'+place.type+'</div>
-        <div class="clearfix"></div>
-        <div class="v-place-address"><i class="fa fa-map-marker"></i> '+place.address+'</div>
-        <div class="v-place-price"><i class="fa fa-dollar"></i> Giá bán: <span class="v-place-pricenum">'+place.price+'</span></div>
-        <div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
-        <div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>
-    </div>
-    <div class="clearfix"></div>
-</div>
-<div class="v-place-related popup-section section-light">
-    <h4>Dự án tương tự</h4><div class="v-place-related-list"></div>
-</div>
-
-</div>
-</div>
 </div></div></div>

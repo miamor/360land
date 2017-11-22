@@ -342,20 +342,6 @@ select,.select.form-control{padding-right:20px;-webkit-appearance:none;-moz-appe
 .pagination.pagination-flat > li > a{border-radius:0!important}
 
 
-nav{position:relative;height:50px}
-nav ul{margin:0!important;position:relative;height:50px}
-nav ul.nav>li{position:relative;float:left;height:100%}
-nav ul.nav>li>a{position:relative;display:block;height:100%}
-/* mobile */
-body.mobile nav{position:fixed;bottom:0!important;left:0;right:0;height:49px!important;background:#f7f7f7!important;box-shadow:3px 4px 4px 5px rgba(0,0,0,.07);border-top:1px solid #eee}
-body.mobile nav ul.nav>li{margin-right:0px;width:25%;text-align:center}
-body.mobile nav ul.nav>li>a{font-size:12px;color:#b4b4b4!important;line-height:19px;padding:5px 15px}
-body.mobile nav ul.nav>li>a .fa{display:block;font-size:20px!important;font-weight:500;}
-body.mobile nav ul.nav>li.active>a,body.mobile nav ul.nav>li>a:hover{color:#00a65a!important;background:#efefef!important}
-@media (max-width:992px){
-    nav ul.nav>li>a{line-height:30px}
-}
-
 /*
  * Page: Map
  * ---------------
@@ -528,12 +514,7 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .ville-one .sthumb img{position:relative;width:100%}
 .ville-one .stit{margin-left:66px}
 
-.panorama {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      overflow:hidden
-}
+.panorama {width: 100%;height: 100%;position: relative;overflow:hidden}
 .panorama img{height:100%;position:relative;z-index:-1}
 
 #pano{position: relative;width:100%;height:100%}
@@ -568,7 +549,7 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .popup-inner{position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto}
 .popup-dark:before{background:rgba(0,0,0,.7)}
 .popup-inner>div{position:relative;z-index:1000;width:100%;height:100%;display:block;overflow:auto}
-.popup-content{position:absolute;z-index:1000;left:5%;right:5%;bottom:5%}
+.popup-content{position:absolute;background:transparent;z-index:1000;left:5%;right:5%;bottom:5%}
 .popup-content > div{*margin-bottom:18%}
 .popup-content-large{left:10%;right:10%}
 .popup-main,.popup-right{float:left}
@@ -591,7 +572,7 @@ select#city_first:focus{background:#fff!important}
 
 /* Place details on popup */
 .popup-content .the-board{position:relative;width:100%;height:100%;*font-weight:300}
-.v-place-view{height:90%}
+.v-place-view{*height:90%}
 .v-place-imgs,.v-place-board{height:100%;background:#ddd}
 .v-place-thumbs{position:absolute;bottom:0;left:0;right:0;height:92px;text-align:center;background:rgba(0,0,0,.6)}
 .v-place-thumb{display:inline;width:80px;height:80px;margin:6px 3px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
@@ -614,11 +595,11 @@ select#city_first:focus{background:#fff!important}
 .v-place-mode:last-child{border-radius:0 0 0 4px}
 .v-place-mode.active{border-radius:4px 0 0 4px; padding:11px 8px 10px 13px;height:42px;width:42px; margin-left:-6px;font-size:18px;color:#e84c3d}
 .v-place-mode:hover{color:#e94c3d}
-.v-place-related{margin:20px 0;height:235px;padding-top:5px!important}
+.v-place-related{margin:20px 0 20px;height:235px;padding:2px 10px 5px!important}
 .v-place-related:hover{*margin-top:-225px}
-.v-place-related h4{border-bottom:2px solid rgb(224,89,70);float:left;padding-bottom:5px}
+.v-place-related h4{border-bottom:2px solid #00a65a;float:left;padding-bottom:5px;margin-left:.5%}
 .v-place-related-list{clear:both;position:relative}
-.v-place-related-one{position:relative;display:inline-block;width:24%;margin-right:1%;height:170px}
+.v-place-related-one{position:relative;display:inline-block;width:24%;margin:0 .5%;height:170px}
 .v-place-related-one-thumb{position:absolute;height:100%;width:100%}
 .v-place-related-one-title{position:absolute;bottom:0;left:0;right:0;padding:5px 8px 6px;background:rgba(0,0,0,.5);color:#fff;font-weight:600}
 .v-place-related-one-address{font-size:14px;*font-weight:300}
@@ -722,6 +703,33 @@ select#city_first:focus{background:#fff!important}
 #map_select{position:relative;width:100%;height:500px}
 #map_adr + #infowindow-content{display:none}
 
+
+nav{position:relative;height:50px}
+nav ul{margin:0!important;position:relative;height:50px}
+nav ul.nav>li{position:relative;float:left;height:100%}
+nav ul.nav>li>a{position:relative;display:block;height:100%}
+/* mobile */
+body.mobile nav{position:fixed;bottom:0!important;left:0;right:0;height:49px!important;background:#f7f7f7!important;box-shadow:3px 4px 4px 5px rgba(0,0,0,.07);border-top:1px solid #eee}
+body.mobile nav ul.nav>li{margin-right:0px;width:25%;text-align:center}
+body.mobile nav ul.nav>li>a{font-size:12px;color:#b4b4b4!important;line-height:19px;padding:6px 15px}
+body.mobile nav ul.nav>li>a .fa{display:block;font-size:20px!important;font-weight:500;}
+body.mobile nav ul.nav>li.active>a,body.mobile nav ul.nav>li>a:hover{color:#00a65a!important;background:#efefef!important}
+@media (max-width:992px){
+    nav ul.nav>li>a{line-height:30px}
+}
+body.mobile .popup, body.mobile .popup-inner, body.mobile .popup-inner > div, body.mobile .popup-content{overflow-x:hidden!important}
+body:not(.mobile) .popup-content{background:transparent!important}
+body.mobile .popup, body.mobile .popup-content{top:0!important;left:0;right:0;bottom:50px}
+body.mobile .popup-content{bottom:0;right:0;overflow-x:hidden!important}
+body.mobile .popup:before{display:none}
+body.mobile .popup-btn{z-index:999;top:15px;right:auto!important;left:25px!important;position:fixed;display:block}
+body.mobile .popup-btn:before{color:#555;content:'\f0a8';right:auto;left:-16px}
+body.mobile .popup-btn:after{display:none; content:'';position:fixed;top:0;left:0;right:0;height:30px;background:rgba(0,0,0,.1)}
+body.mobile .v-place-related{height:425px;margin:-10px 0 0;padding:0 30px}
+body.mobile .v-place-related-one{width:49%}
+body.mobile .v-place-imgs, body.mobile .v-place-board{height:300px}
+body.mobile .v-place-thumbs{height:62px}
+body.mobile .v-place-thumb{display:inline;width:50px;height:50px;margin:6px 3px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
 
 
 .no-padding{padding:0}

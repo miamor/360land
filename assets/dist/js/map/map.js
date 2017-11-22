@@ -1372,9 +1372,9 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         html += '<div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>';
         html += '</div>';
         html += '<div class="clearfix"></div>';
-        html += '</div>';
         html += '<div class="v-place-related popup-section section-light">';
         html +=     '<h4>Dự án tương tự</h4><div class="v-place-related-list"></div>';
+        html += '</div>';
         html += '</div>';
         popup(html);
 
@@ -1390,7 +1390,6 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         $(".panorama").panorama_viewer({
             animationTime: 300
         });
-        console.log('panorama');
 
         //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
         //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
@@ -1598,7 +1597,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
     })
 
     //while ($('.v-place-imgs').width() <= 10 || $('.v-place-info').width() <= 10) {
-        setWidth(w);
+        //setWidth(w);
     //}
 
     if (searchVisible) { // show search
@@ -1633,6 +1632,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
     } else {
         $('body').removeClass('mobile');
     }
+
 }
 
 function setWidth(w) {
@@ -1640,6 +1640,10 @@ function setWidth(w) {
         var vheight = $('.v-place-imgs').height();
         if ($('.v-place-imgs').width() == $('.v-place-info').width()+40) {
             $('.v-place-view').height($('.v-place-imgs').height() + $('.v-place-info').height() + 80);
+            console.log($('.v-place-imgs').width());
+            console.log($('.v-place-info').width());
+            console.log($('.v-place-imgs').height() + $('.v-place-info').height());
+            console.log('~~');
             $('.v-place-imgs').height(vheight);
             $('.v-place-info').css('height','auto');
         }

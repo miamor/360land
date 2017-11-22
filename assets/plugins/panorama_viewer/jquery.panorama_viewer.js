@@ -74,8 +74,6 @@ var width = height = 0;
         document.addEventListener("touchend", touchHandler, true);
         document.addEventListener("touchcancel", touchHandler, true);
 
-        console.log(this);
-
         return this.each(function(){
             var settings = $.extend({}, defaults, options),
             el = $(this);
@@ -84,7 +82,6 @@ var width = height = 0;
                 el.find("> img").addClass("pv-pano");
                 if (width < el.find(".pv-pano").width()) width = el.find(".pv-pano").width();
                 if (height < el.find(".pv-pano").height()) height = el.find(".pv-pano").height();
-                console.log(width+'~~');
 
                 //if ($(this).width() <= 0) return false;
                 el.addClass("pv-container").wrapInner("<div class='pv-inner pv-animating'></div>");
