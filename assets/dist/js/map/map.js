@@ -1628,6 +1628,9 @@ function render (isResizeSmaller = false, searchVisible = false) {
         isMobile = true;
         $('body').addClass('mobile');
         $('#place_search').width(w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-45)
+        $('nav').removeClass('navbar-fixed-top');
+    } else {
+        $('body').removeClass('mobile');
     }
 }
 
