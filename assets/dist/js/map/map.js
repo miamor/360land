@@ -231,11 +231,11 @@ var cityList = [];
                 mapTypeControl: false,
                 zoomControl: true,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                    position: google.maps.ControlPosition.LEFT_CENTER
                 },
                 fullscreenControl: true,
                 fullscreenControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                    position: google.maps.ControlPosition.LEFT_CENTER
                 },
                 streetViewControl: false,
             };
@@ -665,7 +665,7 @@ var cityList = [];
                 strokeOpacity: 0.5,
                 strokeWeight: 2,
                 fillColor: '#FF0000',
-                fillOpacity: 0.15
+                fillOpacity: 0.1
                 //fillOpacity: 0.4
             });
             else this.circle.setOptions({
