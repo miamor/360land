@@ -3,7 +3,7 @@
 //$config->addJS('plugins', 'sceditor/minified/jquery.sceditor.bbcode.min.js');
 $config->addJS(-1, 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 $config->addJS('bootstrap', 'js/bootstrap.min.js');
-$config->addJS('plugins', 'iCheck/icheck.js');
+//$config->addJS('plugins', 'iCheck/icheck.js');
 $config->addJS('dist', 'main.js'); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,6 @@ $config->addJS('dist', 'main.js'); ?>
 
 	<link rel="stylesheet" href="<?php echo MAIN_URL ?>/assets/bootstrap/css/bootstrap.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="<?php echo PLUGINS ?>/iCheck/all.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
 
 	<script src="<?php echo MAIN_URL ?>/assets/jquery/jquery-2.2.3.min.js"></script>

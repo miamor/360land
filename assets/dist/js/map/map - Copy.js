@@ -224,20 +224,30 @@ var cityList = [];
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 draggable: true,
 
-                overviewMapControl: false,
+                overviewMapControl: true,
+                overviewMapControlOptions: {
+                    opened: false
+                },
                 panControl: false,
                 rotateControl: false,
                 scaleControl: false,
                 mapTypeControl: false,
+                mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                    position: google.maps.ControlPosition.LEFT_TOP
+                },
                 zoomControl: true,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                    position: google.maps.ControlPosition.RIGHT_BOTTOM
                 },
                 fullscreenControl: true,
                 fullscreenControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                    position: google.maps.ControlPosition.BOTTOM_RIGHT
                 },
-                streetViewControl: false,
+                streetViewControl: true,
+                streetViewControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_BOTTOM
+                }
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
             var styles = [{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]}];
@@ -246,11 +256,8 @@ var cityList = [];
             this.map.setMapTypeId('styled_map');
 
             //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('controlArea'));
-            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('controlUtility'));
+            this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
-            if ($(window).width() <= 500) {
-                $('#controlUtility').addClass('small')
-            }
 
             var locationData = null;
             if (this.listLatlgn != null) {
@@ -678,18 +685,14 @@ var cityList = [];
             this.dataUtilities = $thismap.formatUtilities(f, h.position, e);
 
             $('label .uti-total', $(g)).remove();
-            $('#uti_selected').html();
-            var ut = [];
             $.each($('input:checked', $(g)), function() {
                 var a = parseInt($(this).val());
                 var b = $thismap.getTotalUtility($thismap.dataUtilities, a);
                 if ($(this).closest('label').find('.uti-total').length > 0) {
                     $(this).closest('label').find('.uti-total').html('(' + b + ')')
                 } else {
-                    ut.push($(this).closest('label').text());
-                    $(this).closest('label').append(' <span class="uti-total">(' + b + ')</span>');
+                    $(this).closest('label').append(' <span class="uti-total">(' + b + ')</span>')
                 }
-                $('#uti_selected').html(ut.join(', '))
             });
 
             $thismap.input.isShowUtil.value = 1;
@@ -963,14 +966,13 @@ var cityList = [];
             a.data.Map.showInfoWindow()
         });
         $(this).find('select, input').bind('change', this, function(a) {
-            console.log('hiu');
             if ($(this).val().length > 0) {
                 if ($(this).attr('checked') == undefined) {
-                    $(this).closest('label').find('.uti-total').remove()
+                    $(this).parent().find('.uti-total').remove()
                 }
                 a.data.SearchAction()
             } else {
-                $(this).closest('label').find('.uti-total').remove();
+                $(this).parent().find('.uti-total').remove();
                 var b = $(this).attr('checked');
                 $(a.data).find('select, input').each(function() {
                     if ($(this).val().length > 0) {
@@ -1079,10 +1081,6 @@ ProductSearchControler = function(h) {
     };
 
     this.ProductMap.initialize();
-
-    $('#uti_selected').click(function () {
-        $('.utility-body').toggle();
-    })
 
     this.SearchProjectName();
 
@@ -1528,11 +1526,14 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
 var oldWidth = $(window).width();
 var oldHeight = $(window).height();
 
-function render (isResizeSmaller = false, searchVisible = false) {
+function render (isResizeSmaller = false, searchVisible = false, resultVisible = false) {
     var w = $(window).width();
     var h = $(window).height();
 
     //$('.map-side .tab-content').height($(window).height() - $('nav.navbar').height() - $('.map-side>ul.nav').height());
+
+    oldWidth = w;
+    oldHeight = h;
 
     if (isResizeSmaller) {
         w = w + 12;
@@ -1547,32 +1548,48 @@ function render (isResizeSmaller = false, searchVisible = false) {
         setWidth(w);
     //}
 
+    if (resultVisible) {
+        $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-up"></i>');
+        $('.map-result-tabs').slideDown(100).closest('.nav-tabs-custom').addClass('open');
+    } else {
+        $('.map-tabs-toggle[attr-tab="result"]').html('<i class="fa fa-angle-double-down"></i>');
+        $('.map-result-tabs').slideUp(100).closest('.nav-tabs-custom').removeClass('open');
+    }
+
     if (searchVisible) { // show search
-        $('.map-tabs-toggle').html('<i class="fa fa-angle-double-up"></i>');
+        $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-up"></i>');
         $('.map-search-tabs').slideDown(100, function () {
             $(this).closest('.nav-tabs-custom').addClass('open');
+            $('.map-side-result').animate({
+                top: $('#map-side-search').height() - 9,
+            },100).closest('.nav-tabs-custom').removeClass('open');
+            //$('#map_search_project').height($('#map_search_node').height());
         });
     } else {
-        $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
+        $('.map-tabs-toggle[attr-tab="search"]').html('<i class="fa fa-angle-double-down"></i>');
         $('.map-search-tabs').slideUp(100, function () {
             $(this).closest('.nav-tabs-custom').removeClass('open');
+            $('.map-side-result').animate({
+                top: 30
+            },100);
         });
     }
 
-    $('ul.map_search_select>li>a').click(function (e) {
+    $('#map-side-search ul.nav>li>a').click(function (e) {
         var type = $(this).parent('li').attr('attr-type');
         $('#map-search-form .form-group[attr-type]').hide();
         $('#map-search-form .form-group[attr-type="'+type+'"]').show();
         $('#map-search-form input#searchtype').val(type == 'node' ? 0 : 1);
-    });
-
-    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height()-30;
-    $('.map-search-tabs').css({
-        'height': 'auto'
-    }).attr('style', 'max-height:'+sidePaneHeight+'px!important');
+        setTimeout(function () {
+            $('.map-side-result').css({
+                top: $('#map-side-search').height() - 9
+            })
+        },100);
+        e.preventDefault();
+    })
 
     if (w <= 500) {
-        $('#mapSide').width(w-20).css('right','10px!important');
+        $('#mapSide').width(w-20).css('right','10px!important')
     }
 }
 
@@ -1646,7 +1663,7 @@ $(window).ready(function() {
 
     $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
-    render(false, ($(window).width() <= 500 ? false : true));
+    render(false, true, false);
 
     productControlerObj = new ProductSearchControler({
         context: mapContext
@@ -1655,26 +1672,49 @@ $(window).ready(function() {
     $(window).on('resize', function () {
         var b = false;
         if (oldWidth > $(window).width() || oldHeight > $(window).height()) b = true;
-        var searchVisible = $('.map-search-tabs').is(':visible')
-        render(b, searchVisible);
+        var searchVisible = $('.map-search-tabs').is(':visible'),
+            resultVisible = $('.map-result-tabs').is(':visible');
+        render(b, searchVisible, resultVisible);
         productControlerObj.ProductMap.resize();
     });
     $('.toggle-search-advanced').click(function () {
         if ($('.map-search-advanced').is(':visible')) {
-            $('.map-search-advanced').slideUp(200)
+            $('.map-search-advanced').slideUp(200, function () {
+                $('.map-side-result').animate({
+                    top: $('#map-side-search').height() - 9
+                },100)
+            });
         } else {
-            $('.map-search-advanced').slideDown(200)
+            $('.map-search-advanced').slideDown(200, function () {
+                $('.map-side-result').animate({
+                    top: $('#map-side-search').height() - 9
+                },100)
+            });
         }
     });
     $('.map-tabs-toggle').click(function () {
         var currentlyHide = true;
+        var tabs = $(this).attr('attr-tab');
         var $this = $(this);
-        var searchVisible = !$('.map-search-tabs').is(':visible');
-        render(false, searchVisible);
+        var searchVisible, resultVisible;
+        if (tabs == 'search') {
+            searchVisible = !$('.map-search-tabs').is(':visible');
+            resultVisible = false;
+        }
+        else {
+            resultVisible = !$('.map-result-tabs').is(':visible');
+            searchVisible = false;
+        }
+        render(false, searchVisible, resultVisible);
     });
     $('#mapSide .nav-tabs>li>a').click(function () {
         var $div = $(this).closest('.nav-tabs-custom');
-        render(false, true)
+        if ($div.is('#map-side-search')) {
+            console.log($div);
+            render(false, true, false)
+        } else if ($div.is('.map-side-result')) {
+            render(false, false, true)
+        }
     });
 
 })
