@@ -17,6 +17,7 @@ $config->addJS('dist', 'main.js'); ?>
 
 	<link rel="stylesheet" href="<?php echo MAIN_URL ?>/assets/bootstrap/css/bootstrap.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
+	<link href="https://fonts.googleapis.com/css?family=Dosis|Nunito|Quicksand" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
 
 	<script src="<?php echo MAIN_URL ?>/assets/jquery/jquery-2.2.3.min.js"></script>
@@ -26,20 +27,20 @@ $config->addJS('dist', 'main.js'); ?>
 <body>
 
     <nav class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
-		<a class="navbar-brand" href="#">Top navbar</a>
-		<div class="collapse navbar-collapse" id="navbarCollapse">
-	        <ul class="nav navbar-nav mr-auto">
+	        <ul class="nav navbar-nav">
 	    		<li class="nav-item active">
-					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="#"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Link</a>
+					<a class="nav-link" href="#"><i class="fa fa-search"></i> Search</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" href="#">Disabled</a>
+					<a class="nav-link disabled" href="#"><i class="fa fa-heart"></i> Saved</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Bleh</a>
 				</li>
 			</ul>
-		</div>
 	</nav>
 
     <div class="container">

@@ -1,11 +1,28 @@
 <style>body{position:fixed}.container{width:100%;padding:0;margin:0}</style>
 
 <div id="mapSide">
+    <div class="controls-area" id="controlArea">
+        <div class="begindraw">
+            <i class="fa fa-pencil"></i>
+        </div>
+        <div class="delshape">
+            <i class="fa fa-times"></i>
+        </div>
+        <div class="fullscreen hidden">
+            <img src="https://file4.batdongsan.com.vn/images/Product/Maps/full-screen.png" title="Mở rộng toàn màn hình" />
+            Toàn màn hình
+        </div>
+        <div class="exitfullscreen hidden">
+            <img src="https://file4.batdongsan.com.vn/images/Product/Maps/exit-full-screen.png" title="Thoát chế độ rộng toàn màn hình" />
+            Mặc định
+        </div>
+    </div>
 
     <div class="map-side nav-tabs-custom no-padding open" id="map-side-search">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#map_search" data-toggle="tab">Tìm kiếm</a></li>
-            <li><a href="#map_results" data-toggle="tab">Kết quả tìm kiếm</a></li>
+            <li class="li-list"><a href="#map_results" data-toggle="tab">List</a></li>
+            <li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>
+            <li class="li-filter active"><a href="#map_search" data-toggle="tab">Filter</a></li>
             <div class="map-tabs-toggle"><i class="fa fa-angle-double-down"></i></div>
         </ul>
         <div class="tab-content map-search-tabs">
@@ -13,22 +30,6 @@
                 <ul class="nav nav-tabs map_search_select">
                     <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
                     <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
-                    <li class="controls-area" id="controlArea">
-                        <span class="begindraw">
-                            <i class="fa fa-pencil"></i> Vẽ để tìm
-                        </span>
-                        <span class="delshape">
-                            <i class="fa fa-times"></i> Xóa
-                        </span>
-                        <span class="fullscreen hidden">
-                            <img src="https://file4.batdongsan.com.vn/images/Product/Maps/full-screen.png" title="Mở rộng toàn màn hình" />
-                            Toàn màn hình
-                        </span>
-                        <span class="exitfullscreen hidden">
-                            <img src="https://file4.batdongsan.com.vn/images/Product/Maps/exit-full-screen.png" title="Thoát chế độ rộng toàn màn hình" />
-                            Mặc định
-                        </span>
-                    </li>
                 </ul>
 
                 <?php include 'form.search.php' ?>
@@ -50,9 +51,8 @@
 <div class="controls-utility" id="controlUtility">
     <div class="utility-head">
         <select id="cbbRadius" class="form-control">
-          <option value="500">Chọn bán kính</option>
           <option value="200">200 m</option>
-          <option value="500">500 m</option>
+          <option selected value="500">500 m</option>
           <option value="1000">1 km</option>
           <option value="2000">2 km</option>
           <option value="5000">5 km</option>
@@ -118,7 +118,9 @@
 </div>
 
 
-<div class="map-item-info-board hide"><div id="iw-container">
+<div class="map-item-info-board hide" id="mapInfoBoard">
+    <div class="map-item-info-board-close fa fa-times"></div>
+<div id="iw-container">
     <div class="map-item-info-thumb-div">
         <img class="map-item-info-thumb" src=""/>
         <div class="map-item-info-price center">
@@ -130,10 +132,6 @@
             <a class="btn btn-danger btn-sm map-item-gotoview" title="Chi tiết"><i class="fa fa-feed"></i></a>
         </div>
         -->
-        <div class="btn-group-vertical map-item-info-buttons center">
-            <a class="btn btn-default btn-sm map-item-view-utilities"><i class="fa fa-share-alt"></i> Tiện ich</a>
-            <a class="btn btn-default btn-sm map-item-gotoview"><i class="fa fa-feed"></i> Chi tiết</a>
-        </div>
     </div>
     <div class="iw-content map-item-info-details">
         <h4 class="map-item-info-title iw-title">Place title</h4>
@@ -151,6 +149,10 @@
         </div>
         <div class="clearfix"></div>
 
+        <div class="btn-group map-item-info-buttons center">
+            <a class="btn btn-default btn-sm map-item-view-utilities"><i class="fa fa-share-alt"></i> Tiện ich</a>
+            <a class="btn btn-default btn-sm map-item-gotoview"><i class="fa fa-feed"></i> Chi tiết</a>
+        </div>
     </div>
 </div></div>
 
