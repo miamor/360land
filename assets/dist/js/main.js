@@ -2,6 +2,16 @@
 
 var isMobile = ($(window).width() <= 500 ? true : false);
 
+function randStr() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 10; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
 function popup (html) {
     $('.the-board').html(html);
 	//var topp = $(document).scrollTop() + 100;

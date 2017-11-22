@@ -821,8 +821,9 @@ var cityList = [];
 
         this.closeInfoWindowCallBack = function (h) {
             //if (!this.isShowUtil) {
-            var key = this.findMarkerKey(this.currentPID);
-            console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
+            if (currentPID) {
+                var key = this.findMarkerKey(this.currentPID);
+                console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
                 h.setIcon(nodeMarker[$thismap.data[key].type].default);
                 this.input.product.value = this.currentPID = '';
                 this.currentMarkerKey = null;
@@ -834,6 +835,7 @@ var cityList = [];
                 this.isShowUtil = false;
                 this.ClearUtilitiesAroundPoint();
                 productControlerObj.ChangeUrlForNewContext();
+            }
             //}
         };
 
@@ -1324,6 +1326,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
     }
     $.get(MAIN_URL+'/api/node_one.php', function (place) {
         console.log(place);
+        //var rand = randStr();
         /*var adr = [];
         if (place.hem) adr.push(place.hem);
         if (place.ngach) adr.push(place.ngach);
@@ -1375,18 +1378,19 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         html += '</div>';
         popup(html);
 
-        $(".panorama").panorama_viewer({
-            animationTime: 300,         // This allows you to set the easing time when the image is being dragged. Set this to 0 to make it instant. The default value is 700.
-        });
-
         var interval = null;
         var check = function() {
             if ($('.panorama .pv-inner').length) {
                 clearInterval(interval);
-                $('.v-place-v-360').hide();
+                if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
             }
         };
         interval = setInterval(check, 1200);
+
+        $(".panorama").panorama_viewer({
+            animationTime: 300
+        });
+        console.log('panorama');
 
         //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
         //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
@@ -1407,9 +1411,6 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
             $('.v-place-'+vid).show();
             $('.v-place-mode').removeClass('active');
             $(this).addClass('active');
-            if (vid == 'v-360') {
-                console.log('panorama');
-            }
         });
         $('.v-place-thumb').click(function () {
             img = $(this).attr('src');

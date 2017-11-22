@@ -530,11 +530,12 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 
 .panorama {
       width: 100%;
-      float: left;
       height: 100%;
       position: relative;
       overflow:hidden
 }
+.panorama img{height:100%;position:relative;z-index:-1}
+
 #pano{position: relative;width:100%;height:100%}
 
 .map-item-info-board{position:fixed;bottom:0!important;left:0!important;right:0!important;padding:10px;background:#fff;box-shadow: 5px 8px 8px 10px rgba(0,0,0,.1);z-index:9;height:130px;font-size:14px;font-family:'Roboto Condensed'}
