@@ -688,9 +688,11 @@ body.mobile .popup, body.mobile .popup-inner, body.mobile .popup-inner > div, bo
 body:not(.mobile) .popup-content{background:transparent!important}
 body.mobile .popup, body.mobile .popup-content{top:0!important;left:0;right:0;bottom:50px}
 body.mobile .popup-content{bottom:0;right:0;overflow-x:hidden!important}
-body.mobile .popup:before{display:none}
-body.mobile .popup-btn{z-index:999;top:15px;right:auto!important;left:25px!important;position:fixed;display:block}
-body.mobile .popup-btn:before{color:#555;content:'\f0a8';right:auto;left:-16px}
+body.mobile .popup:before{bottom:50px;right:0}
+body.mobile .popup-content{padding-top:39px}
+body.mobile .popup-content .page-title{padding-left:30px}
+body.mobile .popup-btn{z-index:999;top:8px;right:auto!important;left:25px!important;position:fixed;display:block}
+body.mobile .popup-btn:before{*color:#555;font-family: 'Flat-UI-Icons';content:'\e02d';right:auto;left:-16px;font-size:20px}
 body.mobile .popup-btn:after{display:none; content:'';position:fixed;top:0;left:0;right:0;height:30px;background:rgba(0,0,0,.1)}
 body.mobile .v-place-related{height:425px;margin:-10px 0 0;padding:0 30px}
 body.mobile .v-place-related-one{width:49%}

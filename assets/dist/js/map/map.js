@@ -254,25 +254,25 @@ var cityList = [];
                 $('#controlUtility').addClass('small').css('bottom',($('.map-item-info-board').height()+40).toString()+'px!important');
             }
 
+            var input = document.getElementById('place_search');
+            var options = {
+                //types: ['(cities)'],
+                componentRestrictions: {country: 'vn'}
+            };
+            $thismap.autocomplete = new google.maps.places.Autocomplete(input, options);
+            $thismap.autocomplete.bindTo('bounds', $thismap.map);
+            google.maps.event.addDomListener(input, 'keydown', function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                }
+            });
+            $thismap.autocomplete.addListener('place_changed', function() {
+                var place = $thismap.autocomplete.getPlace();
+                $thismap.searchByLocation(place);
+                //return false;
+            });
+
             google.maps.event.addListenerOnce(this.map, 'idle', function(){
-                var input = document.getElementById('place_search');
-                var options = {
-                    //types: ['(cities)'],
-                    componentRestrictions: {country: 'vn'}
-                };
-                $thismap.autocomplete = new google.maps.places.Autocomplete(input, options);
-                $thismap.autocomplete.bindTo('bounds', $thismap.map);
-                console.log($thismap.autocomplete);
-                google.maps.event.addDomListener(input, 'keydown', function(event) {
-                    if (event.keyCode === 13) {
-                        event.preventDefault();
-                    }
-                });
-                $thismap.autocomplete.addListener('place_changed', function() {
-                    var place = $thismap.autocomplete.getPlace();
-                    $thismap.searchByLocation(place);
-                    //return false;
-                });
             });
 
             var locationData = null;
@@ -666,6 +666,10 @@ var cityList = [];
                     position: new google.maps.LatLng(location.latitude, location.longitude),
                     icon: iconMarker.default
                 });*/
+                if (location.type == 'typereal1') location.type = 'house';
+                else if (location.type == 'typereal2') location.type = 'office';
+                else if (location.type == 'typereal7') location.type = 'apartment';
+                else location.type = 'villa';
                 return new MarkerWithLabel({
                     position: new google.maps.LatLng(location.latitude, location.longitude),
                     icon: nodeMarker[location.type].default,
@@ -875,7 +879,7 @@ var cityList = [];
             //if (!this.isShowUtil) {
             if (this.currentPID) {
                 var key = this.findMarkerKey(this.currentPID);
-                console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
+                //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
                 h.setIcon(nodeMarker[$thismap.data[key].type].default);
                 this.input.product.value = this.currentPID = '';
                 this.currentMarkerKey = null;
@@ -1115,11 +1119,12 @@ var cityList = [];
                 k.v = new Date().getTime();
 
                 $.ajax({
-                    url: MAIN_URL+'/api/node_service.php',
+                    url: 'http://45.119.82.40:8000/user/servicenodes/',
                     data: k,
-                    dataType: 'json',
+                    //dataType: 'json',
                     type: 'get',
                     success: function(a, b, c) {
+                        console.log(a);
                         // when get all data, then filter here (not recommended)
                         var data = [];
                         for (key = 0; key < a.length; key++) {
@@ -1241,11 +1246,22 @@ ProductSearchControler.prototype.showCitySearch = function () {
     var i = this;
     cityOptions = $('select#city').html();
     html = '<div class="popup-select-city popup-section section-light"><div class="callout callout-info">Blah blah~~~ Some messages here~</div><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div></div>  <div class="center"><a href="#" class="btn btn-danger select-city-done">Tìm kiếm</a></div> </div>';
-    $('.popup-content').css({
-        left: '25%',
-        right: '25%',
-        height: 200
-    });
+    if (isMobile) {
+        $('.popup-content').css({
+            left: '5%',
+            right: '5%',
+            'margin-top': '35%',
+            'padding-top': 0,
+            height: 220
+        });
+    }
+    else {
+        $('.popup-content').css({
+            left: '25%',
+            right: '25%',
+            height: 200
+        });
+    }
     popup(html);
     $('.popup-content [role="close"]').hide();
     $('.select-city-done').click(function () {
@@ -1387,6 +1403,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         if (place.diachi) adr.push(place.diachi);
         place.address = adr.join(', ');*/
         html = '<div class="v-place-view">';
+        html += '<h4 class="page-title">Item view</h4>';
         html += '<div class="col-lg-8 v-place-imgs no-padding">';
         html += '<div class="v-place-board v-place-v-thumbs">';
         html +=     '<div class="v-place-bg" style="background-image:url('+place.thumbs[0]+')"></div>';
@@ -1505,8 +1522,12 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     //f.ChangeUrlForNewContext();
 
+    /*$.get('http://45.119.82.40:8000/user/node-buy/', function (data) {
+        console.log(data);
+    });*/
+
     $.ajax({
-        url: MAIN_URL+'/api/'+type+'.php',
+        url: 'http://45.119.82.40:8000/user/nodebuy/',
         type: 'get',
         success: function(data) {
             // show on map
@@ -1691,10 +1712,10 @@ function setWidth(w) {
         var vheight = $('.v-place-imgs').height();
         if ($('.v-place-imgs').width() == $('.v-place-info').width()+40) {
             $('.v-place-view').height($('.v-place-imgs').height() + $('.v-place-info').height() + 80);
-            console.log($('.v-place-imgs').width());
+            /*console.log($('.v-place-imgs').width());
             console.log($('.v-place-info').width());
             console.log($('.v-place-imgs').height() + $('.v-place-info').height());
-            console.log('~~');
+            console.log('~~');*/
             $('.v-place-imgs').height(vheight);
             $('.v-place-info').css('height','auto');
         }
