@@ -655,6 +655,7 @@ var cityList = [];
                 }
             }
             this.showPoint(this.data, b);
+            productControlerObj.showList(this.data);
             return this.data
         };
 
@@ -921,7 +922,7 @@ var cityList = [];
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
-                    } else if (i != currentMarkerKey) {
+                    } else if (i != thismap.currentMarkerKey) {
                         v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].default);
                     }
                 })
@@ -1026,6 +1027,7 @@ var cityList = [];
                     $('.map-item-info-board').show().addClass('mobile');
                     $('.map-item-info-board-close').show().click(function () {
                         $('.map-item-info-board').hide();
+                        h.setIcon(nodeMarker[data.type].default)
                         $thismap.closeInfoWindowCallBack(h);
                     })
                 } else {
@@ -1040,6 +1042,7 @@ var cityList = [];
                     }
 
                     google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
+                        h.setIcon(nodeMarker[data.type].default)
                         $thismap.closeInfoWindowCallBack(h);
                     });
                 }
@@ -1516,9 +1519,8 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     this.searchVar = d;
     console.log(d);
-    console.log(f.ProductMap);
+    //console.log(f.ProductMap);
     var type = (f.ProductMap.searchtype == 1 ? 'project' : 'node');
-    console.log(MAIN_URL+'/api/'+type+'.php');
 
     //f.ChangeUrlForNewContext();
 
@@ -1532,7 +1534,10 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         success: function(data) {
             // show on map
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
-            f.showList(data);
+            //f.showList(data);
+            $('.map-search-tabs').slideUp(100, function () {
+                $('#mapSide').removeClass('open');
+            });
         },
         error: function(a, b, c) {
             console.log(a+' ~ '+b+' ~ '+c)
@@ -1570,17 +1575,22 @@ ProductSearchControler.prototype.showList = function (d) {
         f.mapResults.append(k);
     });
     $('.map-result-one').each(function () {
-        $(this).mouseenter(function () {
-            f.ProductMap.mouseHover($(this).attr('attr-marker-id'));
-        });
-        $(this).mouseleave(function () {
-            f.ProductMap.mouseOut($(this).attr('attr-marker-id'));
-        });
+        if (!isMobile) {
+            $(this).mouseenter(function () {
+                f.ProductMap.mouseHover($(this).attr('attr-marker-id'));
+            });
+            $(this).mouseleave(function () {
+                f.ProductMap.mouseOut($(this).attr('attr-marker-id'));
+            });
+        }
         $(this).click(function () {
             f.ProductMap.showInfoWindow($(this).attr('attr-id'));
             if (f.ProductMap.searchtype) {
                 f.getProjectNodes();
             }
+            $('.map-search-tabs').slideUp(100, function () {
+                $('#mapSide').removeClass('open');
+            });
             f.ChangeUrlForNewContext();
         })
     })
@@ -1692,8 +1702,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
     });
 
     var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
-    $('.map-search-tabs .tab-pane').attr('style', 'height:'+sidePaneHeight+'px!important');
-    console.log('height:'+sidePaneHeight+'px!important');
+    $('.map-search-tabs .tab-pane').height(sidePaneHeight);
 
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');
