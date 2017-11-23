@@ -1018,7 +1018,6 @@ var cityList = [];
             a.data.Map.showInfoWindow()
         });
         $(this).find('select, input').bind('change', this, function(a) {
-            console.log('hiu');
             if ($(this).val().length > 0) {
                 if ($(this).attr('checked') == undefined) {
                     $(this).closest('label').find('.uti-total').remove()
@@ -1401,7 +1400,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
             //console.log(similar);
             for (si = 0; si < 4; si++) {
                 sv = similar[si];
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title">'+sv.title+'<br/><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
             }
         })
         $('.v-place-mode').click(function () {
@@ -1621,7 +1620,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
 
     var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
     $('.map-search-tabs .tab-pane').attr('style', 'height:'+sidePaneHeight+'px!important');
-    console.log('height:'+sidePaneHeight+'px!important');
+    //console.log('height:'+sidePaneHeight+'px!important');
 
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');

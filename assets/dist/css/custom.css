@@ -2,7 +2,7 @@ html, body, .container{
     height:100%;
     font-size: 14px;
     line-height: 20px;
-    font-family: 'Roboto Condensed'
+    font-family: 'Source Sans Pro', sans-serif
 }
 a,a:hover,a:active{text-decoration: none}
 .navbar{
@@ -355,7 +355,8 @@ body.mobile #map{bottom:50px!important;top:0!important}
     font-size: 12px;
     font-weight: 300;
     display: none;
-    z-index:998!important
+    z-index:998!important;
+    border-radius:6px
 }
 #controlUtility:not(.small){bottom:20px!important;right:20px!important;width:350px}
 #controlUtility.small{left:10px!important;right:10px!important;bottom:140px!important}
@@ -363,18 +364,13 @@ body.mobile #map{bottom:50px!important;top:0!important}
 .utility-close{position: absolute;bottom:0;right:0;cursor: pointer;font-size:22px;top:0;line-height:54px;padding:0 15px;border-left:1px solid #eee;background:#f5f5f5}
 .utility-close:hover{background:#f0f0f0}
 .utility-body{background:#fff;position:absolute;bottom:60px;left:0;right:0;max-height:350px;overflow:auto;padding:3px 10px 15px;display:none;box-shadow:0 2px 3px rgba(0,0,0,.15)}
-body.mobile .utility-body{max-height:180px}
 .utility-body.open{display:block}
-label.utility-type{
-    position: relative;
-    display: block;
-    font-weight: 300;
-    height: 22px;
-}
+label.utility-type{position: relative;display: block;font-weight: 300;height: 22px}
 [class*="icheckbox_minimal"]{float:left;margin:0 3px 2px 0}
 label.utility-type [class*="icheckbox_minimal"]{float:left;margin:-1px 3px 2px 0}
 label.utility-type .uti-total{font-weight: 500}
-#cbbRadius{width:70px;position: absolute;bottom:0!important;left:0;height:100%!important;line-height:54px!important;border:0!important;background:#f5f5f5!important;cursor:pointer;border-right:1px solid #eee!important}
+#cbbRadius{width:70px;position: absolute;bottom:0!important;left:0;height:100%!important;border:0!important;background:#f5f5f5!important;cursor:pointer;border-right:1px solid #eee!important;border-radius:0!important}
+body:not(.mobile) #cbbRadius{line-height:54px!important}
 #uti_selected{position: absolute;top:0;bottom:0;left:80px;right:50px;overflow:hidden;line-height:54px;text-overflow:ellipsis}
 #controlArea{position:relative;*margin-top:-80px!important}
 .gm-style-mtc{top:0px!important}
@@ -391,23 +387,10 @@ body:not(.mobile) #mapSide{width:320px}
 #mapSide:not(.open) .nav-tabs-custom > .nav-tabs{border-radius:3px!important}
 #mapSide .nav-tabs-custom .tab-pane{max-height:400px;overflow:auto;padding:0!important}
 .map-side-search form{padding:10px!important}
-#mapSide .nav-tabs-custom{margin: 0!important;font-family:'Roboto Condensed';*font-weight:300}
+#mapSide .nav-tabs-custom{margin: 0!important;font-family:'Source Sans Pro', sans-serif;*font-weight:300}
 .map-tabs-toggle{position:absolute;top:0;right:0;bottom:0;width:36px;padding:2px 12px 6px;font-size:20px;background:rgba(0,0,0,.06);cursor:pointer;color:#fff!important}
 
 #mapSide .map-side-result{top:30px}
-
-body.mobile #mapSide{top:0!important;left:0!important;right:0!important;height:39px!important;margin-top:20px!important}
-body.mobile #mapSide .nav-tabs-custom, body.mobile #mapSide .nav-tabs-custom > .nav-tabs{border-radius:0!important}
-body.mobile .nav-tabs-custom > .nav-tabs{height:39px;box-shadow:none!important}
-body.mobile .nav-tabs-custom > .nav-tabs, body.mobile .nav-tabs-custom > .nav-tabs>li:not(.active)>a{background:#1fb36f!important}
-body.mobile #mapSide .nav-tabs-custom>ul.nav>li>a{padding:9px 10px 10px!important}
-body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{padding:13px 10px 11px!important;border:0!important;margin-left:0!important;margin-right:5px!important;font-size:14px}
-#place_search{display:none}
-body.mobile #place_search{display:block;background:transparent;border:0;height:39px;color:#fff;padding:0 10px 0 28px;font-size:14px;transition:.2s}
-body.mobile #place_search:focus{background:#0a8e51;transition:.2s}
-body.mobile .li-input{margin-left:-4px}
-body.mobile .li-input:before{position:absolute;top:10px;left:6px;content:'\f002';font-family:'FontAwesome';font-size:16px;color:#fff;opacity:.6}
-body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 
 /*
 .map-side-toggle{
@@ -447,14 +430,14 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 form#map-search-form{padding:10px}
 .map_search_select{position:relative;width:100%;border-color:#eee!important;background:#f7f7f7}
 .map_search_select>li{display:inline-block}
-.map_search_select>li>a{display:block;padding:6px 10px!important;border:0!important;font-size:14px;border-radius:0!important}
+.map_search_select>li>a{display:block;padding:6px 10px!important;border:0!important;font-size:14px!important;border-radius:0!important}
 .map_search_select>li.active>a{background:#fff!important}
 map_search_select>li>a:hover{border-bottom:1px solid #eee!important}
 a[href*="https://maps.google.com"]{display:none!important}
 #controlArea > div, button[title*="Toggle"]{
     position: relative;
     width:28px!important;height:28px!important;line-height:26px!important;text-align:center!important;
-    margin:6px 10px!important;
+    margin:4px 10px 5px!important;
     font-size: 15px!important;
     background:#fff!important;
     color:#666;
@@ -462,6 +445,8 @@ a[href*="https://maps.google.com"]{display:none!important}
     border-radius: 2px;
     box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12);
 }
+button[title*="Toggle"]{margin-top:-100px!important}
+.gm-bundled-control{margin-top:-104px!important}
 button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 #controlArea > div:hover{
     color:#000
@@ -519,7 +504,8 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 
 #pano{position: relative;width:100%;height:100%}
 
-.map-item-info-board{position:fixed;bottom:0!important;left:0!important;right:0!important;padding:10px;background:#fff;box-shadow: 5px 8px 8px 10px rgba(0,0,0,.1);z-index:9;height:130px;font-size:14px;font-family:'Roboto Condensed'}
+.map-item-info-board{position:fixed;bottom:0!important;left:0!important;right:0!important;padding:10px;background:#fff;box-shadow: 5px 8px 8px 10px rgba(0,0,0,.1);z-index:9;height:130px;font-size:14px}
+#iw-container{font-family:'Source Sans Pro', sans-serif}
 .map-item-info-more>div{display:inline-block;width:49%}
 .map-item-info-board-close{font-size:20px;position:absolute;right:5px;top:5px;z-index:10;cursor:pointer}
 .map-item-info-status{margin-right:3px!important;margin-bottom:-5px!important;line-height:14px!important}
@@ -730,6 +716,25 @@ body.mobile .v-place-related-one{width:49%}
 body.mobile .v-place-imgs, body.mobile .v-place-board{height:300px}
 body.mobile .v-place-thumbs{height:62px}
 body.mobile .v-place-thumb{display:inline;width:50px;height:50px;margin:6px 3px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
+
+body.mobile #uti_selected, body.mobile .utility-close,body.mobile #cbbRadius{line-height:47px!important}
+body.mobile #controlUtility{height:47px}
+body.mobile .utility-close{line-height:44px!important}
+body.mobile #cbbRadius{height:47px!important}
+body.mobile .utility-body{max-height:180px;bottom:55px}
+
+body.mobile #mapSide{top:0!important;left:0!important;right:0!important;height:39px!important;margin-top:20px!important}
+body.mobile #mapSide .nav-tabs-custom, body.mobile #mapSide .nav-tabs-custom > .nav-tabs{border-radius:0!important}
+body.mobile .nav-tabs-custom > .nav-tabs{height:39px;box-shadow:none!important}
+body.mobile .nav-tabs-custom > .nav-tabs, body.mobile .nav-tabs-custom > .nav-tabs>li:not(.active)>a{background:#1fb36f!important}
+body.mobile #mapSide .nav-tabs-custom>ul.nav>li>a{padding:9px 10px 10px!important}
+body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{padding:13px 10px 11px!important;border:0!important;margin-left:0!important;margin-right:5px!important;font-size:14px}
+#place_search{display:none}
+body.mobile #place_search{display:block;background:transparent;border:0;height:39px;color:#fff;padding:0 10px 0 28px;font-size:14px;transition:.2s}
+body.mobile #place_search:focus{background:#0a8e51;transition:.2s}
+body.mobile .li-input{margin-left:-4px}
+body.mobile .li-input:before{position:absolute;top:10px;left:6px;content:'\f002';font-family:'FontAwesome';font-size:16px;color:#fff;opacity:.6}
+body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 
 
 .no-padding{padding:0}
