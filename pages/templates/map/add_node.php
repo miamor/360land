@@ -1,18 +1,18 @@
 <div class="col-md-1"></div>
 
 <form class="place-add col-md-10">
-    <h4 class="with-border">Thêm địa điểm</h4>
+    <h4 class="with-border"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
     <div class="form-group">
         <div class="col-md-4 no-padding control-label">Tiêu đề * </div>
         <div class="col-md-8 no-padding">
-            <input type="text" class="form-control" name="title"/>
+            <input type="text" class="form-control" placeholder="Tiêu đề *" name="title"/>
         </div>
         <div class="clearfix"></div>
     </div>
     <div class="form-group">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ * </div>
         <div class="col-md-8 no-padding">
-            <div class="col-md-6 no-padding-left">
+            <div class="col-md-6 select-city no-padding-left">
                 <select class="form-control" id="city" name="adr_city">
                     <option value="-1">--Chọn Tỉnh/Thành phố *--</option>
                     <option value="SG">Hồ Chí Minh</option>
@@ -80,7 +80,7 @@
                     <option value="CB">Cao Bằng</option>
                 </select>
             </div>
-            <div class="col-md-6 no-padding">
+            <div class="col-md-6 select-district no-padding-left">
                 <select class="form-control" id="district" name="adr_district">
                     <option value="-1">--Chọn Quận/Huyện *--</option>
                 </select>
@@ -114,7 +114,7 @@
     <div class="form-group">
         <div class="col-md-4 no-padding control-label">Diện tích </div>
         <div class="col-md-8 no-padding">
-            <input type="number" min="1" value="1" class="form-control" name="area"/>
+            <input type="number" min="1" placeholder="Diện tích" class="form-control" name="area"/>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -134,18 +134,17 @@
         <div class="clearfix"></div>
     </div>
     <div class="form-group">
-        <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá (đơn vị: nghìn đồng) </div>
+        <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá * </div>
         <div class="col-md-3 no-padding">
-            <input type="number" min="1" value="1" class="form-control" name="price"/>
+            <input type="text" placeholder="Giá *" class="form-control" name="price"/>
         </div>
-        <div class="col-md-3 no-padding control-label">&nbsp; k/tháng</div>
         <div class="clearfix"></div>
     </div>
 
     <div class="form-group">
         <div class="col-md-4 no-padding control-label">Thông tin chi tiết * </div>
         <div class="col-md-8 no-padding">
-            <textarea class="form-control" name="r_content"></textarea>
+            <textarea class="form-control" name="r_content" placeholder="Thông tin chi tiết *"></textarea>
         </div>
         <div class="clearfix"></div>
     </div>

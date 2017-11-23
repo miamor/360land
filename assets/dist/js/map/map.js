@@ -288,6 +288,45 @@ var cityList = [];
 
         };
 
+        this.drawBoundary = function (c, d, w) {
+            d = locdau(d);
+            if (c == 'Hanoi') c = 'HN';
+
+            var pData = {
+                distric: d,
+                province: c
+            };
+            console.log(pData);
+            console.log('~~');
+            var formData = new FormData($('#place_search_form')[0]);
+            formData.append('distric', d);
+            formData.append('province', c);
+            $.ajax({
+                url: 'http://45.119.82.40:8000/user/distric/',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                cache: false,
+                dataType: 'json',
+                success: function(data) {
+                    data = response.message[0];
+                    list = data.split(' ');
+                    latlnglist = [];
+                    $.each(data, function (i, v) {
+                        v = v.split(',');
+                        latlnglist.push(new le.maps.LatLng(v[0], v[1]));
+                    });
+                    //this.listLatlgn =
+                    this.drawPolyline(latlnglist);
+                    console.log(data);
+                },
+                error: function(a, b, c) {
+                    console.log(a.responseText)
+                }
+            })
+        }
+
         this.searchByLocation = function (place) {
             if (place) {
                 if (!place.geometry) {
@@ -297,9 +336,16 @@ var cityList = [];
                 if (place.geometry.viewport) {
                     $thismap.map.fitBounds(place.geometry.viewport);
                 } else {
-                    //$thismap.map.setCenter(place.geometry.location);
-                    //$thismap.map.setZoom(zoom_moderate);
+                    $thismap.map.setCenter(place.geometry.location);
+                    $thismap.map.setZoom(zoom_moderate);
                 }
+                var lv = place.address_components.length;
+                var s_city = s_district = s_ward = null;
+                s_city = place.address_components[lv-2].long_name;
+                if (place.address_components[lv-3]) s_district = place.address_components[lv-3].long_name;
+                if (place.address_components[lv-4]) s_ward = place.address_components[lv-4].long_name;
+                this.drawBoundary(s_city, s_district, s_ward);
+                productControlerObj._SearchAction();
                 //$thismap.markerPoint.setPosition(place.geometry.location);
                 //$thismap.markerPoint.setVisible(true);
                 console.log(place);
@@ -482,15 +528,7 @@ var cityList = [];
                 }
                 $thismap.input.points.value = points.join(',');
 
-                $thismap.polyline = new google.maps.Polygon({
-                    path: b,
-                    strokeColor: '#00a65a',
-                    strokeWeight: 2,
-                    editable: true,
-                    fillColor: "#5de0a4",
-                    fillOpacity: 0.25
-                });
-                $thismap.polyline.setMap($thismap.map);
+                this.drawPolyline(b);
                 $thismap.findPoint($thismap.polyline);
                 this.catchChangePolyline();
 
@@ -498,6 +536,18 @@ var cityList = [];
             }
             this.listLatlgn = null
         };
+
+        this.drawPolyline = function (b) {
+            $thismap.polyline = new google.maps.Polygon({
+                path: b,
+                strokeColor: '#00a65a',
+                strokeWeight: 2,
+                editable: true,
+                fillColor: "#5de0a4",
+                fillOpacity: 0.25
+            });
+            $thismap.polyline.setMap($thismap.map);
+        }
 
         this.catchChangePolyline = function () {
             google.maps.event.addListener($thismap.polyline.getPath(), 'set_at', function() {
@@ -821,7 +871,7 @@ var cityList = [];
 
         this.closeInfoWindowCallBack = function (h) {
             //if (!this.isShowUtil) {
-            if (currentPID) {
+            if (this.currentPID) {
                 var key = this.findMarkerKey(this.currentPID);
                 console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
                 h.setIcon(nodeMarker[$thismap.data[key].type].default);
@@ -1620,7 +1670,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
 
     var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
     $('.map-search-tabs .tab-pane').attr('style', 'height:'+sidePaneHeight+'px!important');
-    //console.log('height:'+sidePaneHeight+'px!important');
+    console.log('height:'+sidePaneHeight+'px!important');
 
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');

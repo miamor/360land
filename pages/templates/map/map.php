@@ -22,7 +22,12 @@
     <div class="map-side nav-tabs-custom no-padding open" id="map-side-search">
         <ul class="nav nav-tabs">
             <li class="li-list"><a href="#map_results" data-toggle="tab">List</a></li>
-            <li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>
+            <li class="li-input">
+                <form id="place_search_form" enctype="multipart/form-data">
+                    <input type="hidden" name="blah"/>
+                    <input type="text" id="place_search" placeholder="Search place"/>
+                </form>
+            </li>
             <li class="li-filter active"><a href="#map_search" data-toggle="tab">Filter</a></li>
             <div class="map-tabs-toggle"><i class="fa fa-angle-double-down"></i></div>
         </ul>
