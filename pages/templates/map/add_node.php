@@ -1,7 +1,7 @@
 <div class="col-md-1"></div>
 
 <form class="place-add col-md-10">
-    <h4 class="with-border"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
+    <h4 class="page-title with-border"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
     <div class="form-group">
         <div class="col-md-4 no-padding control-label">Tiêu đề * </div>
         <div class="col-md-8 no-padding">

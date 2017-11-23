@@ -245,31 +245,35 @@ var cityList = [];
             this.map.mapTypes.set('styled_map', styledMap);
             this.map.setMapTypeId('styled_map');
 
-            var input = document.getElementById('place_search');
-            var options = {
-                //types: ['(cities)'],
-                componentRestrictions: {country: 'vn'}
-            };
-            this.autocomplete = new google.maps.places.Autocomplete(input, options);
-            this.autocomplete.bindTo('bounds', this.map);
-            google.maps.event.addDomListener(input, 'keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-            this.autocomplete.addListener('place_changed', function() {
-                var place = $thismap.autocomplete.getPlace();
-                $thismap.searchByLocation(place);
-                //return false;
-            });
-
             this.map.controls[google.maps.ControlPosition.LEFT_CENTER].push(document.getElementById('controlArea'));
             this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
             this.map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('mapInfoBoard'));
+
             if (isMobile) {
                 $('#controlUtility').addClass('small').css('bottom',($('.map-item-info-board').height()+40).toString()+'px!important');
             }
+
+            google.maps.event.addListenerOnce(this.map, 'idle', function(){
+                var input = document.getElementById('place_search');
+                var options = {
+                    //types: ['(cities)'],
+                    componentRestrictions: {country: 'vn'}
+                };
+                $thismap.autocomplete = new google.maps.places.Autocomplete(input, options);
+                $thismap.autocomplete.bindTo('bounds', $thismap.map);
+                console.log($thismap.autocomplete);
+                google.maps.event.addDomListener(input, 'keydown', function(event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                    }
+                });
+                $thismap.autocomplete.addListener('place_changed', function() {
+                    var place = $thismap.autocomplete.getPlace();
+                    $thismap.searchByLocation(place);
+                    //return false;
+                });
+            });
 
             var locationData = null;
             if (this.listLatlgn != null) {
@@ -303,13 +307,11 @@ var cityList = [];
             formData.append('province', c);
             $.ajax({
                 url: 'http://45.119.82.40:8000/user/distric/',
-                type: 'POST',
+                type: 'post',
                 data: formData,
-                contentType: false,
                 processData: false,
-                cache: false,
-                dataType: 'json',
-                success: function(data) {
+                contentType: false,
+                success: function (response) {
                     data = response.message[0];
                     list = data.split(' ');
                     latlnglist = [];
@@ -322,7 +324,7 @@ var cityList = [];
                     console.log(data);
                 },
                 error: function(a, b, c) {
-                    console.log(a.responseText)
+                    console.log(a)
                 }
             })
         }
