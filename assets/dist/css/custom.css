@@ -662,7 +662,7 @@ h4.with-border+*{clear:both}
 html{overflow:hidden}
 body.mobile{overflow:hidden!important;padding-bottom:100px!important}
 body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto}
-body.mobile .place-add{padding:0 2px!important}
+body.mobile .place-add{*padding:0 2px!important}
 body.mobile .place-add .control-label, body.mobile .place-add .control-labels{display:none}
 body.mobile .place-add .radio{margin-top:0!important;display:inline-block;width:49%}
 body.mobile .place-add .form-group{margin:5px 0}
