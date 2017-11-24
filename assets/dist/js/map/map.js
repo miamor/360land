@@ -310,9 +310,11 @@ var cityList = [];
                 url: 'http://45.119.82.40:8000/user/distric/',
                 type: 'post',
                 data: formData,
+                //dataType: 'json',
                 processData: false,
                 contentType: false,
                 success: function (response) {
+                    console.log(response);
                     data = response.message[0];
                     list = data.split(' ');
                     latlnglist = [];
@@ -1306,25 +1308,6 @@ ProductSearchControler.prototype.genPopup = function () {
     };
     interval_map = setInterval(check_map, 1200);
 
-    $('.v-place-box').each(function () {
-        if ($(this).children('h4').length) {
-            if ($(this).children('.v-place-box-content').is('.open')) {
-                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-up right"></i> ');
-            } else {
-                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-right right"></i> ');
-            }
-            $(this).children('h4').click(function () {
-                if ($(this).next('.v-place-box-content').is('.open')) {
-                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-up').addClass('fa-chevron-right');
-                    $(this).next('.v-place-box-content').removeClass('open');
-                } else {
-                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-right').addClass('fa-chevron-up');
-                    $(this).next('.v-place-box-content').addClass('open');
-                }
-            })
-        }
-    })
-
     $('.v-place-details-more, .v-place-details').click(function () {
         if ($('.v-place-details').is('.all')) {
             $('.v-place-details-more').html('Xem thêm');
@@ -1660,7 +1643,8 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     if (f.ProductMap.searchtype == 1) { // project
         $.ajax({
             url: MAIN_URL+'/api/node.php',
-            type: 'get',
+            type: 'post',
+            data: $().serialize(),
             success: function(data) {
                 // show on map
                 f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
@@ -1804,7 +1788,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //productControlerObj.ChangeUrlForNewContext();
     });
 
-    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
+    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height()-53;
     $('.map-search-tabs .tab-pane').height(sidePaneHeight);
 
     $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-55)
@@ -1813,6 +1797,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         isMobile = true;
         $('body').addClass('mobile');
         $('nav').removeClass('navbar-fixed-top');
+        $('.v-place-related').removeClass('popup-section section-light');
     } else {
         $('body').removeClass('mobile');
     }

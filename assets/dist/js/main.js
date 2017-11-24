@@ -72,6 +72,26 @@ function flatApp () {
     $(':radio').parent('label').addClass('radio');
     if ($(':checkbox').length) $(':checkbox').not('[data-toggle="switch"], .onoffswitch-checkbox').checkbox();
     if ($(':radio').length) $(':radio').radio();
+
+    $('.v-box').each(function () {
+        if ($(this).children('h4').length) {
+            if ($(this).children('.v-box-content').is('.open')) {
+                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-up right"></i> ');
+            } else {
+                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-right right"></i> ');
+            }
+            $(this).children('h4').click(function () {
+                if ($(this).next('.v-box-content').is('.open')) {
+                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-up').addClass('fa-chevron-right');
+                    $(this).next('.v-box-content').removeClass('open');
+                } else {
+                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-right').addClass('fa-chevron-up');
+                    $(this).next('.v-box-content').addClass('open');
+                }
+            })
+        }
+    })
+
 }
 
 var waitForFinalEvent = (function () {

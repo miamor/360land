@@ -25,17 +25,19 @@
     <div class="form-group" attr-type="node">
         <select id="type" name="type" class="form-control">
             <option value="CN">Chọn loại bất động sản</option>
-            <option value="chungcu">Chung cư</option>
+            <option value="apartment">Chung cư</option>
             <optgroup label="Nhà bán">
-                <option value="nharieng">Nhà riêng</option>
-                <option value="bietthu">Biệt thự, liền kề</option>
-                <option value="matpho">Nhà mặt phố</option>
+                <option value="house">Nhà riêng</option>
+                <option value="housestreet">Nhà mặt phố</option>
+                <option value="villa">Biệt thự, liền kề</option>
             </optgroup>
             <optgroup label="Đất bán">
-                <option value="datnen">Đất nền dự án</option>
-                <option value="bandat">Bán đất</option>
+                <option value="projectland">Đất nền dự án</option>
+                <option value="land">Bán đất</option>
             </optgroup>
             <option value="resort">Trang trại, khu nghỉ dưỡng</option>
+            <option value="office">Văn phòng</option>
+            <option value="other">Khác</option>
         </select>
     </div>
 

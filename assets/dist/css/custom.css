@@ -538,11 +538,13 @@ select#city_first:focus{background:#fff!important}
 .v-place-mode:last-child{border-radius:0 0 0 4px}
 .v-place-mode.active{border-radius:4px 0 0 4px; padding:11px 8px 10px 13px;height:42px;width:42px; margin-left:-6px;font-size:18px;color:#e84c3d}
 .v-place-mode:hover{color:#e94c3d}
-.v-place-related{margin:20px 0 20px;height:235px;padding:2px 10px 5px!important}
-.v-place-related:hover{*margin-top:-225px}
-.v-place-related h4{border-bottom:2px solid #00a65a;float:left;padding-bottom:5px;margin-left:.5%}
+body:not(.mobile) .v-place-related{margin:20px 0 20px;height:235px;padding:2px 10px 5px!important}
+body:not(.mobile) .v-place-related h4{border-bottom:2px solid #00a65a;float:left;padding-bottom:5px;margin-left:.5%}
 .v-place-related-list{clear:both;position:relative}
 .v-place-related-one{position:relative;display:inline-block;width:24%;margin:0 .5%;height:170px}
+body.mobile .v-place-related{padding:0 20px!important;height:235px!important;border-bottom:0}
+body.mobile .v-place-related-one{height:100px}
+body.mobile .v-place-related-list{padding:5px 0!important}
 .v-place-related-one-thumb{position:absolute;height:100%;width:100%}
 .v-place-related-one-title{position:absolute;bottom:0;left:0;right:0;padding:5px 8px 5px;background:rgba(0,0,0,.5);color:#fff;line-height:16px;*font-weight:600}
 .v-place-related-one-address{font-size:14px;*font-weight:300}
@@ -556,16 +558,16 @@ select#city_first:focus{background:#fff!important}
 .v-place-more-btns>div:hover:not(.contact-more){background:#1fabc9}
 
 body.mobile .v-place-info{padding-top:6px}
-.v-place-box{border-bottom:1px solid #eee}
+.v-box{border-bottom:1px solid #eee}
 .v-place-more{list-style:none}
 .v-place-more-one{display:inline-block;width:49%}
-.v-place-box h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
-.v-place-box-content{padding:10px 0 10px;margin:0}
-.v-place-box.v-place-box-content{padding:6px 0}
-.v-place-box-content.open{display:block}
-.v-place-box h4 + .v-place-box-content{padding-top:0}
-.v-place-box h4 + .v-place-box-content:not(.open){display:none}
-.v-place-box h4 .toggle-box-btn{color:#d6d6d6;margin-top:1px}
+.v-box h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
+.v-box-content{padding:10px 0 10px;margin:0}
+.v-box.v-box-content{padding:6px 0}
+.v-box-content.open{display:block}
+.v-box h4 + .v-box-content{padding-top:0}
+.v-box h4 + .v-box-content:not(.open){display:none}
+.v-box h4 .toggle-box-btn{color:#d6d6d6;margin-top:1px}
 .v-place-details:not(.all){max-height:80px}
 .v-place-details{cursor:pointer;overflow:hidden}
 
@@ -673,12 +675,32 @@ h4.with-border{float: left;border-bottom:2px solid #00a65a;padding-bottom:5px;co
 h4.with-border+*{clear:both}
 
 .place-add{margin-bottom:15px}
-
+.text-lg{font-size:22px;line-height:25px}
 
 nav{position:relative;height:50px}
 nav ul{margin:0!important;position:relative;height:50px}
 nav ul.nav>li{position:relative;float:left;height:100%}
 nav ul.nav>li>a{position:relative;display:block;height:100%}
+
+
+/* User */
+.v-user-top{padding:10px 0 15px;border-bottom:1px solid #eee}
+body:not(.mobile) .v-user-top{padding:20px 0}
+body:not(.mobile) .v-user-avt{float:left;width:180px;height:180px;margin-right:15px}
+.v-user-ratings{height:26px;line-height:25px;margin:6px 0}
+.v-user-ratings .ratings{float:left;margin-right:5px}
+.v-user-name{margin:0}
+.v-user-phone span, .v-user-mail span{font-size:15px;font-weight:600;line-height:23px}
+.v-user-stat{list-style:none}
+.v-user-property{border-bottom:1px solid #f4f4f4;margin:0 10px;padding:10px 0}
+.listings_image{float:left;width:100px;height:100px;position:relative;margin-right:10px}
+.image_url{width:100%;height:100%}
+.listings_price{float:right}
+.listings_info h4{margin:0 0 5px}
+
+
+body.mobile .v-user-avt{float:none;width:100%;height:180px;margin:0 auto 10px}
+body:not(.mobile) .page-title{display:none}
 
 body.mobile{overflow:hidden}
 body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto;margin-top:39px;padding-top:10px}

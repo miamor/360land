@@ -198,32 +198,32 @@
         <div class="v-place-type"></div>
         <div class="clearfix"></div>
         -->
-        <div class="v-place-box"><div class="v-place-box-content">
+        <div class="v-box"><div class="v-box-content">
             <div class="v-place-price"><i class="fa fa-dollar"></i> <span class="v-place-pricenum"></span></div>
             <div class="v-place-address"><i class="fa fa-map-marker"></i> <span></span></div>
         </div></div>
-        <div class="v-place-box v-place-more"><h4>Thông tin</h4><ul class="v-place-box-content open">
+        <div class="v-box v-place-more"><h4>Thông tin</h4><ul class="v-box-content open">
             <li class="v-place-more-one v-place-area">Diện tích: <span></span></li>
             <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
             <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
             <li class="v-place-more-one v-place-type">Loại: <span></span></li>
         </ul></div>
-        <div class="v-place-box"><h4>Chi tiết </h4><div class="v-place-box-content open"><div class="v-place-details"></div><a href="#" class="v-place-details-more">Xem thêm</a></div></div>
+        <div class="v-box"><h4>Chi tiết </h4><div class="v-box-content open"><div class="v-place-details"></div><a href="#" class="v-place-details-more">Xem thêm</a></div></div>
         <!--//<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
-        //<div class="v-place-box v-place-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
-        //<div class="v-place-box v-place-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Dẫn đường</a></div>-->
-        <div class="v-place-box"><h4>Liên hệ</h4>
-            <ul class="v-place-more v-place-box-content">
+        //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
+        //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Dẫn đường</a></div>-->
+        <div class="v-box"><h4>Liên hệ</h4>
+            <ul class="v-place-more v-box-content open">
                 <li><i class="fa fa-user"></i> Tên liên hệ: <span class="v-place-ten bold"></span></li>
                 <li><i class="fa fa-phone"></i> Số điện thoại: <span class="v-place-phone bold"></span></li>
-                <li><i class="fa fa-email"></i> Email: <span class="v-place-email bold"></span></li>
+                <li><i class="fa fa-envelope-square"></i> Email: <span class="v-place-email bold"></span></li>
             </ul>
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="v-place-related popup-section section-light">
+    <div class="v-box v-place-related popup-section section-light">
         <h4>Dự án tương tự</h4>
-        <div class="v-place-related-list"></div>
+        <div class="v-place-related-list v-box-content open"></div>
     </div>
 
     <div class="v-place-more-btns">
