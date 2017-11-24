@@ -61,7 +61,7 @@
                         <span class="listings_address"><a href="/property/5030920293-165-W-66th-St-12X-New-York-NY-10023">165 West 66th Street #12X, New York NY</a></span>
                     </div>
                     <div class="line listings_description">
-                        <div class=""
+                        <div class="listings_room"><i class="fa fa-bed"></i> <span>5</span></div>
                     </div>
                     <div class="line mts listings_type">
                         <strong class="listingBadge badgeSecondary">for sale</strong>
