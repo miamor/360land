@@ -180,8 +180,7 @@ var cityList = [];
                 this.searchtype = 1;
                 //this.input.searchtype.value = 1;
             }
-            console.log(s);
-            console.log('~~~');
+            //console.log(s);
             this.input.zoom.value = s.zoom;
             this.input.center.value = s.center;
             this.input.points.value = s.lstPoint;
@@ -1651,14 +1650,11 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         for (var key in g) d[key] = g[key];
         //d = Object.assign({}, e, g);
     }
-    //d.searchtype = f.ProductMap.searchtype;
+    d.searchtype = f.ProductMap.searchtype;
     this.searchVar = d;
 
-    console.log(e);
     console.log(d);
-    f.ProductMap.searchtype = d.searchtype;
-    console.log(d.searchtype);
-    console.log(f.ProductMap.searchtype);
+
     var type = (f.ProductMap.searchtype == 1 ? 'project' : 'node');
 
     if (f.ProductMap.searchtype == 1) { // project
@@ -1811,11 +1807,11 @@ function render (isResizeSmaller = false, searchVisible = false) {
     var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
     $('.map-search-tabs .tab-pane').height(sidePaneHeight);
 
+    $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-55)
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');
         isMobile = true;
         $('body').addClass('mobile');
-        $('#place_search').width(w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-55)
         $('nav').removeClass('navbar-fixed-top');
     } else {
         $('body').removeClass('mobile');
