@@ -180,6 +180,8 @@ var cityList = [];
                 this.searchtype = 1;
                 //this.input.searchtype.value = 1;
             }
+            console.log(s);
+            console.log('~~~');
             this.input.zoom.value = s.zoom;
             this.input.center.value = s.center;
             this.input.points.value = s.lstPoint;
@@ -655,8 +657,55 @@ var cityList = [];
                 }
             }
             this.showPoint(this.data, b);
-            productControlerObj.showList(this.data);
+            this.showList(this.data);
             return this.data
+        };
+
+        this.showList = function (d) {
+            var f = productControlerObj;
+            f.mapResults.html('');
+            $.each(d, function (i, v) {
+                /*var adr = [];
+                if (v.hem) adr.push(v.hem);
+                if (v.ngach) adr.push(v.ngach);
+                if (v.ngo) adr.push(v.ngo);
+                if (v.duong) adr.push(v.duong);
+                if (v.huyen) adr.push(v.huyen);
+                if (v.diachi) adr.push(v.diachi);
+                v.address = adr.join(', ');*/
+                k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
+                k += '<div class="map-result-one-left">';
+                k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
+                k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
+                k += '</div>';
+                k += '<div class="map-result-one-info">'
+                k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
+                //k += '<div class="map-result-one-des">'+v.details+'</div>';
+                k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> '+v.address+'</div>';
+                //k += '<div class="map-result-one-type">'+v.type+'</div>';
+                //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
+                k += '</div>';
+                k += '<div class="clearfix"></div>';
+                k += '</div>';
+                f.mapResults.append(k);
+            });
+            $('.map-result-one').each(function () {
+                if (!isMobile) {
+                    $(this).mouseenter(function () {
+                        $thismap.mouseHover($(this).attr('attr-marker-id'));
+                    });
+                    $(this).mouseleave(function () {
+                        $thismap.mouseOut($(this).attr('attr-marker-id'));
+                    });
+                }
+                $(this).click(function () {
+                    $thismap.showInfoWindow($(this).attr('attr-id'));
+                    $('.map-search-tabs').slideUp(100, function () {
+                        $('#mapSide').removeClass('open');
+                    });
+                    f.ChangeUrlForNewContext();
+                })
+            })
         };
 
         this.showPoint = function(a, b) {
@@ -1010,42 +1059,52 @@ var cityList = [];
                     }
                 }
 
-                $('.map-item-info-title').html(data.title);
-                $('.map-item-info-price span').html(data.price);
-                $('.map-item-info-type').html(data.type);
-                $('.map-item-info-contact_phone').html(data.dienthoai);
-                $('.map-item-info-address').html(data.address);
-                $('.map-item-info-des').html(data.details);
-                $('.map-item-info-thumb').attr('src', data.avatar);
-                $('.map-item-info-bed').html(data.sophongngu);
-                $('.map-item-info-huong').html(data.huong);
-                $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
-                //$('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
-                $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '")');
+                if (this.searchtype) this.showInfoWindowProject(data, isInit);
+                else this.showInfoWindowNode(data, isInit)
+            }
+        }
 
-                if (isMobile) {
-                    $('.map-item-info-board').show().addClass('mobile');
-                    $('.map-item-info-board-close').show().click(function () {
-                        $('.map-item-info-board').hide();
-                        h.setIcon(nodeMarker[data.type].default)
-                        $thismap.closeInfoWindowCallBack(h);
-                    })
-                } else {
-                    $('.map-item-info-board-close').hide();
-                    if (!isInit || !this.isShowUtil) {
-                        this.infoWindow.setOptions({
-                            position: h.position,
-                            maxWidth: 300,
-                            content: $('.map-item-info-board').html()
-                        });
-                        this.infoWindow.open(this.map, h);
-                    }
+        this.showInfoWindowProject = function (data, isInit = false) {
+        }
 
-                    google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
-                        h.setIcon(nodeMarker[data.type].default)
-                        $thismap.closeInfoWindowCallBack(h);
+        this.showInfoWindowNode = function (data, isInit = false) {
+            console.log(data);
+
+            $('.map-item-info-title').html(data.title);
+            $('.map-item-info-price span').html(data.price);
+            $('.map-item-info-type').html(data.type);
+            $('.map-item-info-contact_phone').html(data.dienthoai);
+            $('.map-item-info-address').html(data.address);
+            $('.map-item-info-des').html(data.details);
+            $('.map-item-info-thumb').attr('src', data.avatar);
+            $('.map-item-info-bed').html(data.sophongngu);
+            $('.map-item-info-huong').html(data.huong);
+            $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
+            //$('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
+            $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '")');
+
+            if (isMobile) {
+                $('.map-item-info-board').show().addClass('mobile');
+                $('.map-item-info-board-close').show().click(function () {
+                    $('.map-item-info-board').hide();
+                    h.setIcon(nodeMarker[data.type].default)
+                    $thismap.closeInfoWindowCallBack(h);
+                })
+            } else {
+                $('.map-item-info-board-close').hide();
+                if (!isInit || !this.isShowUtil) {
+                    this.infoWindow.setOptions({
+                        position: h.position,
+                        maxWidth: 300,
+                        content: $('.map-item-info-board').html()
                     });
+                    this.infoWindow.open(this.map, h);
                 }
+
+                google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
+                    h.setIcon(nodeMarker[data.type].default)
+                    $thismap.closeInfoWindowCallBack(h);
+                });
             }
         };
 
@@ -1183,16 +1242,18 @@ ProductSearchControler = function(h) {
         //i._SearchAction(JSON.parse(JSON.stringify(i.formSearch.serializeArray())));
     };
     this.ProductMap.callBackClearPointEvent = function(a) {
-        i.ChangeUrlForNewContext();
         if (!i.ProductMap.isDrawing) {
             i._SearchAction();
         }
+        i.ChangeUrlForNewContext();
     };
     this.ProductMap.callBackDrawEvent = function(a, b, c, d, e, f, g) {
         i.callBackDrawEvent(a, b, c, d, e, f, g);
     };
 
     this.ProductMap.initialize();
+
+    this.genPopup();
 
     $('#uti_selected').click(function () {
         $('.utility-body').toggle();
@@ -1209,12 +1270,74 @@ ProductSearchControler = function(h) {
     this.formSearch.submit(function () {
         i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
         i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
-        i.ChangeUrlForNewContext();
         i._SearchAction();
+        i.ChangeUrlForNewContext();
         return false
     });
     this.catchInputChange();
 };
+
+ProductSearchControler.prototype.genPopup = function () {
+    var k = {
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        draggable: true,
+
+        overviewMapControl: false,
+        panControl: false,
+        rotateControl: false,
+        scaleControl: false,
+        mapTypeControl: false,
+        streetViewControl: true,
+    };
+    this.map = new google.maps.Map(document.getElementById('map_direction'), k);
+    var styles = [{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]}];
+    var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
+    this.map.mapTypes.set('styled_map', styledMap);
+    this.map.setMapTypeId('styled_map');
+
+    var i = this;
+    var interval_map = null;
+    var check_map = function() {
+        if ($('#map_direction>div').length) {
+            clearInterval(interval_map);
+            if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
+            if (!$('#v-direction').is('.active')) $('.v-place-v-direction').hide();
+        }
+    };
+    interval_map = setInterval(check_map, 1200);
+
+    $('.v-place-box').each(function () {
+        if ($(this).children('h4').length) {
+            if ($(this).children('.v-place-box-content').is('.open')) {
+                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-up right"></i> ');
+            } else {
+                $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-right right"></i> ');
+            }
+            $(this).children('h4').click(function () {
+                if ($(this).next('.v-place-box-content').is('.open')) {
+                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-up').addClass('fa-chevron-right');
+                    $(this).next('.v-place-box-content').removeClass('open');
+                } else {
+                    $(this).children('.toggle-box-btn').removeClass('fa-chevron-right').addClass('fa-chevron-up');
+                    $(this).next('.v-place-box-content').addClass('open');
+                }
+            })
+        }
+    })
+
+    $('.v-place-details-more, .v-place-details').click(function () {
+        if ($('.v-place-details').is('.all')) {
+            $('.v-place-details-more').html('Xem thêm');
+            $('.v-place-details').removeClass('all');
+        }
+        else {
+            $('.v-place-details-more').html('Rút gọn');
+            $('.v-place-details').addClass('all');
+        }
+        return false
+    })
+}
 
 ProductSearchControler.prototype.SearchProjectName = function () {
     $('#project_name').keydown(function () {
@@ -1273,8 +1396,8 @@ ProductSearchControler.prototype.showCitySearch = function () {
         $('select#city').val(cityy);
         i.changeCityCallback(cityy);
         remove_popup();
-        i.ChangeUrlForNewContext();
         i._SearchAction();
+        i.ChangeUrlForNewContext();
         return false
     })
 }
@@ -1373,7 +1496,7 @@ ProductSearchControler.prototype.closePopup = function () {
 }
 
 ProductSearchControler.prototype.ShowMoreInfoAndHidePopup = function (id, lat, lon) {
-    remove_popup();
+    remove_popup_info();
     this.closePopup();
     this.ProductMap.showInfoWindow(id);
     this.ShowMoreInfo(lat,lon);
@@ -1387,6 +1510,37 @@ ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
     this.utilityTool.SearchAction(lat, lon);
 };
 
+ProductSearchControler.prototype.ShowDirection = function (lat, lng) {
+}
+
+function popup_info (f, lat, lng) {
+    var topp = $('nav.navbar').height() + 20;
+	$('.popup-content').slideDown(400, function () {
+        $('body').addClass('fixed');
+        $('.popup').show();
+		$(this).css({
+			'overflow': 'visible'
+		});
+        if ($('.map-item-info-board').length) {
+            setWidth($(window).width());
+        }
+
+        $('#map_direction').width($('.v-place-imgs').width()).height($('.v-place-imgs').height());
+        google.maps.event.trigger(f.map, 'resize');
+        f.map.setCenter(new google.maps.LatLng(lat, lng));
+        f.ShowDirection(lat, lng);
+
+	}).css('top', topp);
+	$('.popup-content [role="close"]').click(function () {
+		remove_popup_info()
+	});
+}
+
+function remove_popup_info () {
+    $('.popup-content, .popup').attr('style', '').hide();
+    $('body').removeClass('fixed');
+}
+
 ProductSearchControler.prototype.ShowDetails = function (id) {
     var i = this;
     if (!i.ProductMap.isDetails) {
@@ -1396,58 +1550,39 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
     }
     $.get(MAIN_URL+'/api/node_one.php', function (place) {
         console.log(place);
+        //$.getScript('//maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByWSwMWPPl1SNLeQkKGd25V-YXSVZvt78&libraries=drawing,geometry,places');
         //var rand = randStr();
-        /*var adr = [];
+        var adr = [];
         if (place.hem) adr.push(place.hem);
         if (place.ngach) adr.push(place.ngach);
         if (place.ngo) adr.push(place.ngo);
         if (place.duong) adr.push(place.duong);
         if (place.huyen) adr.push(place.huyen);
         if (place.diachi) adr.push(place.diachi);
-        place.address = adr.join(', ');*/
-        html = '<div class="v-place-view">';
-        html += '<h4 class="page-title">Item view</h4>';
-        html += '<div class="col-lg-8 v-place-imgs no-padding">';
-        html += '<div class="v-place-board v-place-v-thumbs">';
-        html +=     '<div class="v-place-bg" style="background-image:url('+place.thumbs[0]+')"></div>';
-        html +=     '<div class="v-place-thumbs">';
-        html +=         '<img class="v-place-thumb active" src="'+place.thumbs[0]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[1]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[2]+'"/>';
-        html +=         '<img class="v-place-thumb" src="'+place.thumbs[3]+'"/>';
-        html +=     '</div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-360">';
-        html += '  	  <div class="panorama"><img src="http://www.thepetedesign.com/demos/panorama_viewer/demo_photo3.jpg"></div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-streetview hide">';
-        html += '<div id="pano"></div>';
-        html += '</div>';
-        html += '<div class="v-place-board v-place-v-video hide">';
-        html += '</div>';
-        html += '<div class="v-place-switch-buttons">';
-        html +=     '<div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>';
-        html +=     '<div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>';
-        html += '</div>';
-        html += '</div>';
-        html += '<div class="col-lg-4 popup-section section-light v-place-info">';
-        html += '<img class="v-place-avt left" src="'+place.avatar+'"/>';
-        html += '<h4 class="v-place-title">'+place.title+'</h4>';
-        html += '<div class="v-place-type">'+place.type+'</div>';
-        html += '<div class="clearfix"></div>';
-        html += '<div class="v-place-address"><i class="fa fa-map-marker"></i> '+place.address+'</div>';
-        html += '<div class="v-place-price"><i class="fa fa-dollar"></i> Giá bán: <span class="v-place-pricenum">'+place.price+'</span></div>';
-        html += '<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>';
-        html += '<div class="txt-with-line"><span class="txt generate-new-button">Thông tin chi tiết <span class="fa fa-caret-down"></span></span></div><div class="v-place-details">'+place.details+'</div>';
-        html += '</div>';
-        html += '<div class="clearfix"></div>';
-        html += '<div class="v-place-related popup-section section-light">';
-        html +=     '<h4>Dự án tương tự</h4><div class="v-place-related-list"></div>';
-        html += '</div>';
-        html += '</div>';
-        popup(html);
+        place.address = adr.join(', ');
+
+        $('.v-place-pricenum').html(place.price);
+        $('.v-place-address span').html(place.address);
+        $('.v-place-area span').html(place.area);
+        $('.v-place-direction span').html(place.huong);
+        $('.v-place-room span').html(place.sophongngu);
+        $('.v-place-type span').html(place.type);
+        $('.v-place-details').html(place.details);
+        $('.v-place-title').html(place.title);
+        $('.v-place-ten').html(place.tenlienhe);
+        $('.v-place-phone').html(place.dienthoai);
+        $('.v-place-email').html(place.email);
+
+        $('.v-place-thumbs').html('');
+        $.each(place.thumbs, function (ti, tv) {
+            $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
+        });
+        $('.v-place-thumb:first').addClass('active');
+        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
+
+        $('.panorama').html('<img src="http://www.thepetedesign.com/demos/panorama_viewer/demo_photo3.jpg">').panorama_viewer({
+            animationTime: 300
+        });
 
         var interval = null;
         var check = function() {
@@ -1458,9 +1593,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
         };
         interval = setInterval(check, 1200);
 
-        $(".panorama").panorama_viewer({
-            animationTime: 300
-        });
+        popup_info(i, place.latitude, place.longitude);
 
         //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
         //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
@@ -1468,6 +1601,8 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
 
         //setWidth();
         $('.popup-content [role="close"]').show();
+
+        $('.v-place-related-list').html('');
         $.get(MAIN_URL+'/api/node.php', function (similar) {
             //console.log(similar);
             for (si = 0; si < 4; si++) {
@@ -1496,7 +1631,7 @@ ProductSearchControler.prototype.ShowDetails = function (id) {
 
 ProductSearchControler.prototype._SearchAction = function(g) {
     var f = this;
-    e = this.formSearch.serialize().split('&');
+    e = f.formSearch.serialize().split('&');
     var d = {};
     d.filter = 0;
     d.sort = 0;
@@ -1516,85 +1651,56 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         for (var key in g) d[key] = g[key];
         //d = Object.assign({}, e, g);
     }
-
+    //d.searchtype = f.ProductMap.searchtype;
     this.searchVar = d;
+
+    console.log(e);
     console.log(d);
-    //console.log(f.ProductMap);
+    f.ProductMap.searchtype = d.searchtype;
+    console.log(d.searchtype);
+    console.log(f.ProductMap.searchtype);
     var type = (f.ProductMap.searchtype == 1 ? 'project' : 'node');
+
+    if (f.ProductMap.searchtype == 1) { // project
+        $.ajax({
+            url: MAIN_URL+'/api/node.php',
+            type: 'get',
+            success: function(data) {
+                // show on map
+                f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
+                $('.map-search-tabs').slideUp(100, function () {
+                    $('#mapSide').removeClass('open');
+                });
+            },
+            error: function(a, b, c) {
+                console.log(a+' ~ '+b+' ~ '+c)
+            }
+        });
+    } else { // node
+        $.ajax({
+            url: 'http://45.119.82.40:8000/user/nodebuy/',
+            type: 'get',
+            success: function(data) {
+                // show on map
+                f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
+                //f.showList(data);
+                $('.map-search-tabs').slideUp(100, function () {
+                    $('#mapSide').removeClass('open');
+                });
+            },
+            error: function(a, b, c) {
+                console.log(a+' ~ '+b+' ~ '+c)
+            }
+        });
+    }
 
     //f.ChangeUrlForNewContext();
 
     /*$.get('http://45.119.82.40:8000/user/node-buy/', function (data) {
         console.log(data);
     });*/
-
-    $.ajax({
-        url: 'http://45.119.82.40:8000/user/nodebuy/',
-        type: 'get',
-        success: function(data) {
-            // show on map
-            f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
-            //f.showList(data);
-            $('.map-search-tabs').slideUp(100, function () {
-                $('#mapSide').removeClass('open');
-            });
-        },
-        error: function(a, b, c) {
-            console.log(a+' ~ '+b+' ~ '+c)
-        }
-    });
 };
 
-
-ProductSearchControler.prototype.showList = function (d) {
-    var f = this;
-    f.mapResults.html('');
-    $.each(d, function (i, v) {
-        /*var adr = [];
-        if (v.hem) adr.push(v.hem);
-        if (v.ngach) adr.push(v.ngach);
-        if (v.ngo) adr.push(v.ngo);
-        if (v.duong) adr.push(v.duong);
-        if (v.huyen) adr.push(v.huyen);
-        if (v.diachi) adr.push(v.diachi);
-        v.address = adr.join(', ');*/
-        k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
-        k += '<div class="map-result-one-left">';
-        k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
-        k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
-        k += '</div>';
-        k += '<div class="map-result-one-info">'
-        k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
-        //k += '<div class="map-result-one-des">'+v.details+'</div>';
-        k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> '+v.address+'</div>';
-        //k += '<div class="map-result-one-type">'+v.type+'</div>';
-        //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
-        k += '</div>';
-        k += '<div class="clearfix"></div>';
-        k += '</div>';
-        f.mapResults.append(k);
-    });
-    $('.map-result-one').each(function () {
-        if (!isMobile) {
-            $(this).mouseenter(function () {
-                f.ProductMap.mouseHover($(this).attr('attr-marker-id'));
-            });
-            $(this).mouseleave(function () {
-                f.ProductMap.mouseOut($(this).attr('attr-marker-id'));
-            });
-        }
-        $(this).click(function () {
-            f.ProductMap.showInfoWindow($(this).attr('attr-id'));
-            if (f.ProductMap.searchtype) {
-                f.getProjectNodes();
-            }
-            $('.map-search-tabs').slideUp(100, function () {
-                $('#mapSide').removeClass('open');
-            });
-            f.ChangeUrlForNewContext();
-        })
-    })
-};
 
 ProductSearchControler.prototype.getProjectNodes = function () {
 
@@ -1699,6 +1805,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         $('#map-search-form .form-group[attr-type]').hide();
         $('#map-search-form .form-group[attr-type="'+type+'"]').show();
         $('#map-search-form input#searchtype').val(type == 'node' ? 0 : 1);
+        //productControlerObj.ChangeUrlForNewContext();
     });
 
     var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
@@ -1708,7 +1815,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //$('#mapSide').width(w-20).css('right','10px!important');
         isMobile = true;
         $('body').addClass('mobile');
-        $('#place_search').width(w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-45)
+        $('#place_search').width(w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-55)
         $('nav').removeClass('navbar-fixed-top');
     } else {
         $('body').removeClass('mobile');
@@ -1769,7 +1876,7 @@ $(window).ready(function() {
             currentPID: markContext.getQueryHash('product'),
             isShowUtil: markContext.getQueryHash('isShowUtil'),
             details: markContext.getQueryHash('details'),
-            searchtype: parseInt(markContext.getQueryHash('searchtype', '0'))
+            searchtype: markContext.getQueryHash('searchtype', '0')
         };
     }
     // Fix content from product list linking

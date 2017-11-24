@@ -44,6 +44,9 @@ function popup (html) {
         if ($('.map-item-info-board').length) {
             setWidth($(window).width());
         }
+        if (productControlerObj && $('.popup .v-place-v-direction').length) {
+            productControlerObj.ShowDirection(place.latitude, place.longitude);
+        }
 	}).css('top', topp);
 	$('.popup-content [role="close"]').click(function () {
 		remove_popup()

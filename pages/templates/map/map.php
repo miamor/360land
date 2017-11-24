@@ -3,10 +3,10 @@
 
 <div id="mapSide">
     <div class="controls-area" id="controlArea">
-        <div class="begindraw">
+        <div class="begindraw" title="Vẽ để tìm">
             <i class="fa fa-pencil"></i>
         </div>
-        <div class="delshape">
+        <div class="delshape" title="Xóa">
             <i class="fa fa-times"></i>
         </div>
         <div class="fullscreen hidden">
@@ -160,9 +160,82 @@
 <!--<div id="pano" style="z-index:1000;width:100%;height:100%">
 </div>-->
 
-<div class="popup popup-dark hide"><div class="popup-inner"><div>
-	<div class="popup-content hide" style="background:#fff">
+<div class="popup popup-dark "><div class="popup-inner"><div>
+	<div class="popup-content " style="background:#fff">
 		<a class="popup-btn" role="close"></a>
-		<div class="the-board"></div>
+		<div class="the-board">
+
+<div class="v-place-view">
+    <h4 class="page-title v-place-title"></h4>
+    <div class="col-lg-8 v-place-imgs no-padding">
+        <div class="v-place-board v-place-v-thumbs">
+            <div class="v-place-bg"></div>
+            <div class="v-place-thumbs">
+            </div>
+        </div>
+        <div class="v-place-board v-place-v-360">
+              <div class="panorama"></div>
+        </div>
+        <div class="v-place-board v-place-v-direction">
+              <div id="map_direction"></div>
+        </div>
+        <div class="v-place-board v-place-v-streetview hide">
+            <div id="pano"></div>
+        </div>
+        <div class="v-place-board v-place-v-video hide">
+        </div>
+        <div class="v-place-switch-buttons">
+            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>
+            <div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>
+            <div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>
+            <div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i></div>
+            <div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>
+        </div>
+    </div>
+    <div class="col-lg-4 popup-section section-light v-place-info">
+        <!--<img class="v-place-avt left" src="'+place.avatar+'"/>
+        <h4 class="v-place-title"></h4>
+        <div class="v-place-type"></div>
+        <div class="clearfix"></div>
+        -->
+        <div class="v-place-box"><div class="v-place-box-content">
+            <div class="v-place-price"><i class="fa fa-dollar"></i> <span class="v-place-pricenum"></span></div>
+            <div class="v-place-address"><i class="fa fa-map-marker"></i> <span></span></div>
+        </div></div>
+        <div class="v-place-box v-place-more"><h4>Thông tin</h4><ul class="v-place-box-content open">
+            <li class="v-place-more-one v-place-area">Diện tích: <span></span></li>
+            <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
+            <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
+            <li class="v-place-more-one v-place-type">Loại: <span></span></li>
+        </ul></div>
+        <div class="v-place-box"><h4>Chi tiết </h4><div class="v-place-box-content open"><div class="v-place-details"></div><a href="#" class="v-place-details-more">Xem thêm</a></div></div>
+        <!--//<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
+        //<div class="v-place-box v-place-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
+        //<div class="v-place-box v-place-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Dẫn đường</a></div>-->
+        <div class="v-place-box"><h4>Liên hệ</h4>
+            <ul class="v-place-more v-place-box-content">
+                <li><i class="fa fa-user"></i> Tên liên hệ: <span class="v-place-ten bold"></span></li>
+                <li><i class="fa fa-phone"></i> Số điện thoại: <span class="v-place-phone bold"></span></li>
+                <li><i class="fa fa-email"></i> Email: <span class="v-place-email bold"></span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="v-place-related popup-section section-light">
+        <h4>Dự án tương tự</h4>
+        <div class="v-place-related-list"></div>
+    </div>
+
+    <div class="v-place-more-btns">
+        <div class="contact-call"><i class="fa fa-phone"></i></div>
+        <div class="contact-mail"><i class="fa fa-envelope"></i></div>
+        <div class="contact-chat"><i class="fa fa-comments-o"></i></div>
+        <div class="contact-save"><i class="fa fa-bookmark"></i></div>
+        <div class="contact-more"><i class="fa fa-ellipsis-h"></i></div>
+    </div>
+
+</div>
+
+        </div>
     </div>
 </div></div></div>

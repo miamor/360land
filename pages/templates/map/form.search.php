@@ -1,12 +1,10 @@
 <form id="map-search-form">
     <div id="map-input" class="hidden">
         <input type="text" id="isShowUtil" name="isShowUtil" value="0"/>
-        <input type="text" id="searchtype" name="searchtype" value="1"/>
+        <input type="text" id="searchtype" name="searchtype"/>
         <input type="text" id="product" name="product"/>
         <input type="text" id="zoom" name="zoom" value=""/>
         <input type="text" id="center" name="center" value=""/>
-        <!--<input type="text" id="searchtype" name="searchtype" value="0"/>
-        <!-- 0 for node, 1 for project -->
         <input type="text" id="points" name="points"/>
         <input type="text" id="details" name="details"/>
     </div>
