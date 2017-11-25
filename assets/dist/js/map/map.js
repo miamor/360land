@@ -96,6 +96,9 @@ var cityList = [];
             maxWidth: 250,
             maxHeight: 120
         });
+        this.currentPosMarker = null;
+
+        this.zoom = null;
 
         this.beginDrawButton = $('.' + o);
         this.deleteShapeButton = $('.' + p);
@@ -126,6 +129,8 @@ var cityList = [];
         this.input.product = document.getElementById('product');
         this.input.isShowUtil = document.getElementById('isShowUtil');
         this.input.details = document.getElementById('details');
+
+        this.bounds = null;
 
         this.setContext = function(a, b, c) {
             if (a != undefined && a != '') {
@@ -192,8 +197,8 @@ var cityList = [];
             var cc = this.input.center.value.split(':');
             this.centerPos = new google.maps.LatLng(cc[0], cc[1]);
 
-            var e = zoom_moderate;
-            if (s.zoom != '') e = parseInt(s.zoom);
+            var e = this.zoom = zoom_moderate;
+            if (s.zoom != '') e = this.zoom = parseInt(s.zoom);
             var f = 10.843928;
             var g = 106.717672;
             if (s.center != '') {
@@ -218,6 +223,11 @@ var cityList = [];
                     }
                 }
             }
+
+            if (!f || !g) {
+                f = 21.02;
+                g = 105.8;
+            }
             var latlng = new google.maps.LatLng(f, g);
             var k = {
                 center: latlng,
@@ -241,6 +251,30 @@ var cityList = [];
                 streetViewControl: false,
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    if (!$thismap.currentPosMarker) {
+                        new google.maps.Marker({
+                            position: pos,
+                            map: $thismap.map
+                        });
+                    } else {
+                        $thismap.currentPosMarker.setPosition(pos);
+                    }
+                    $thismap.map.setCenter(pos);
+                }, function(a) {
+                    console.log(a);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                console.log("Browser doesn't support Geolocation");
+            }
+
             var styles = [{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]}];
             var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
             this.map.mapTypes.set('styled_map', styledMap);
@@ -273,7 +307,14 @@ var cityList = [];
                 //return false;
             });
 
-            google.maps.event.addListenerOnce(this.map, 'idle', function(){
+            google.maps.event.addListener($thismap.map, 'dragend', function() {
+                $thismap.boundsChangeCallBack();
+            });
+            google.maps.event.addListener($thismap.map, 'zoom_changed', function() {
+                var oldzoom = $thismap.zoom;
+                $thismap.zoom = $thismap.map.getZoom();
+                if (!oldzoom || oldzoom > $thismap.zoom) $thismap.boundsChangeCallBack();
+                productControlerObj.ChangeUrlForNewContext();
             });
 
             var locationData = null;
@@ -291,7 +332,23 @@ var cityList = [];
                 this.catchChangePolyline();
             }
 
+            var loaded = false;
+            google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
+                $thismap.boundsChangeCallBack();
+                loaded = true;
+            });
+
+            return loaded;
         };
+
+        this.findPointByBounds = function () {
+            this.clearPoint();
+            if (this.callBackFindBound) {
+                this.callBackFindBound()
+            }
+        }
+
+        this.callBackFindBound = function () {}
 
         this.drawBoundary = function (c, d, w) {
             d = locdau(d);
@@ -309,22 +366,21 @@ var cityList = [];
             $.ajax({
                 url: 'http://45.119.82.40:8000/user/distric/',
                 type: 'post',
-                data: formData,
-                //dataType: 'json',
-                processData: false,
-                contentType: false,
+                data: pData,
                 success: function (response) {
                     console.log(response);
-                    data = response.message[0];
-                    list = data.split(' ');
+                    data = response.message[0].outerBoundaryIs;
+                    list = data.split("\n");
+                    console.log(list);
                     latlnglist = [];
-                    $.each(data, function (i, v) {
-                        v = v.split(',');
-                        latlnglist.push(new le.maps.LatLng(v[0], v[1]));
+                    $.each(list, function (i, v) {
+                        if (v.indexOf(',') > -1) {
+                            v = v.split(',');
+                            latlnglist.push(new google.maps.LatLng(v[0], v[1]));
+                        }
                     });
                     //this.listLatlgn =
-                    this.drawPolyline(latlnglist);
-                    console.log(data);
+                    $thismap.drawPolyline(latlnglist);
                 },
                 error: function(a, b, c) {
                     console.log(a)
@@ -395,17 +451,31 @@ var cityList = [];
         }
 
         this.boundsChangeCallBack = function () {
-            google.maps.event.addListener($thismap.map, 'bounds_changed', function () {
+            //google.maps.event.addListener($thismap.map, 'bounds_changed', function () {
+                var oldbounds = $thismap.bounds;
+                $thismap.bounds = $thismap.map.getBounds();
+                if (!$thismap.listLatlgn && (
+                      oldbounds == null ||
+                      (
+                          $thismap.bounds.f.f != oldbounds.f.f &&
+                          $thismap.bounds.f.b != oldbounds.f.b &&
+                          $thismap.bounds.b.b != oldbounds.b.b &&
+                          $thismap.bounds.b.f != oldbounds.b.f
+                      )
+                  ) ) {
+                    $thismap.findPointByBounds();
+                }
                 if ($thismap.isMapResize) {
                     if ($thismap.currentPID) {
                         var key = $thismap.findMarkerKey($thismap.currentPID);
-                        $thismap.map.setCenter($thismap.markers[key].position);
+                        console.log(key);
+                        if (key) $thismap.map.setCenter($thismap.markers[key].position);
                     } else {
                         $thismap.map.setCenter($thismap.centerPos);
                     }
+                    $thismap.isMapResize = false;
                 }
-                $thismap.isMapResize = false;
-            })
+            //})
         }
 
         this.beginDrawButton.bind('click', this, function(b) {
@@ -552,6 +622,8 @@ var cityList = [];
                 fillOpacity: 0.25
             });
             $thismap.polyline.setMap($thismap.map);
+            console.log(b);
+            console.log($thismap.polyline);
         }
 
         this.catchChangePolyline = function () {
@@ -1060,15 +1132,15 @@ var cityList = [];
                     }
                 }
 
-                if (this.searchtype) this.showInfoWindowProject(data, isInit);
-                else this.showInfoWindowNode(data, isInit)
+                if (this.searchtype) this.showInfoWindowProject(h, data, isInit);
+                else this.showInfoWindowNode(h, data, isInit)
             }
         }
 
-        this.showInfoWindowProject = function (data, isInit = false) {
+        this.showInfoWindowProject = function (h, data, isInit = false) {
         }
 
-        this.showInfoWindowNode = function (data, isInit = false) {
+        this.showInfoWindowNode = function (h, data, isInit = false) {
             console.log(data);
 
             $('.map-item-info-title').html(data.title);
@@ -1252,6 +1324,10 @@ ProductSearchControler = function(h) {
         i.callBackDrawEvent(a, b, c, d, e, f, g);
     };
 
+    this.ProductMap.callBackFindBound = function () {
+        i.callBackFindBound();
+    }
+
     this.ProductMap.initialize();
 
     this.genPopup();
@@ -1265,9 +1341,6 @@ ProductSearchControler = function(h) {
     var context = h.context;
     if (!context.city && !context.currentPID) this.showCitySearch();
 
-    if (!this.ProductMap.isDrawing) {
-        this._SearchAction();
-    }
     this.formSearch.submit(function () {
         i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
         i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
@@ -1352,6 +1425,7 @@ ProductSearchControler.prototype.SearchProjectName = function () {
 
 ProductSearchControler.prototype.showCitySearch = function () {
     var i = this;
+    /*
     cityOptions = $('select#city').html();
     html = '<div class="popup-select-city popup-section section-light"><div class="callout callout-info">Blah blah~~~ Some messages here~</div><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div></div>  <div class="center"><a href="#" class="btn btn-danger select-city-done">Tìm kiếm</a></div> </div>';
     if (isMobile) {
@@ -1382,6 +1456,7 @@ ProductSearchControler.prototype.showCitySearch = function () {
         i.ChangeUrlForNewContext();
         return false
     })
+    */
 }
 
 ProductSearchControler.prototype.changeCityCallback = function (c_city) {
@@ -1634,6 +1709,15 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         //d = Object.assign({}, e, g);
     }
     d.searchtype = f.ProductMap.searchtype;
+
+    if (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) {
+        //f.ProductMap.boundsChangeCallBack();
+        d.minLat = f.ProductMap.bounds.f.b;
+        d.minLng = f.ProductMap.bounds.b.b;
+        d.maxLat = f.ProductMap.bounds.f.f;
+        d.maxLng = f.ProductMap.bounds.b.f;
+    }
+
     this.searchVar = d;
 
     console.log(d);
@@ -1686,6 +1770,12 @@ ProductSearchControler.prototype.getProjectNodes = function () {
 
 }
 
+ProductSearchControler.prototype.callBackFindBound = function () {
+    var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
+    console.log(this.ProductMap.bounds);
+    this._SearchAction(g)
+}
+
 ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) {
     this.lstPoint = this.ProductMap.input.points.value;
     if (this.lstPoint != null && this.lstPoint.length > 0) {
@@ -1703,9 +1793,9 @@ ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) 
         g.lstPoint = this.lstPoint;
         g.isSearchForm = false;
         g.isPageLoad = false;
-        g.minlat = b;
+        g.minLat = b;
         g.minlong = c;
-        g.maxlat = d;
+        g.maxLat = d;
         g.maxlong = e;
         g.m = "shape";
         if (f != undefined) {

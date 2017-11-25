@@ -36,6 +36,7 @@ header('content-type: application/json'); ?>
         "userid": "user1",
         "type": "apartment",
         "duanid": "duan1",
+        "type_action": "1",
         "modid": "mod1"
     },
     {
@@ -73,6 +74,7 @@ header('content-type: application/json'); ?>
         "userid": "user2",
         "type": "house",
         "duanid": "duan2",
+        "type_action": "2",
         "modid": "mod1"
     },
     {
@@ -110,6 +112,7 @@ header('content-type: application/json'); ?>
         "userid": "user2",
         "type": "housestreet",
         "duanid": "duan1",
+        "type_action": "1",
         "modid": "mod1"
     },
     {
@@ -147,6 +150,7 @@ header('content-type: application/json'); ?>
         "userid": "user2",
         "type": "resort",
         "duanid": "villa",
+        "type_action": "1",
         "modid": "mod1"
     },
     {
@@ -184,6 +188,7 @@ header('content-type: application/json'); ?>
         "userid": "user2",
         "type": "office",
         "duanid": "duan1",
+        "type_action": "2",
         "modid": "mod1"
     }
 ]

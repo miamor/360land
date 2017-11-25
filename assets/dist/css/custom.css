@@ -12,6 +12,7 @@ a,a:hover,a:active{text-decoration: none}
 .italic{font-style: italic}
 .clearfix,.clear{clear:both}
 .left{float: left} .right{float: right} .center{text-align: center}
+ul, .v-place-more{list-style:none;padding:0;margin:0}
 
 .control-label{height:25px;line-height: 24px}
 .btn{border-radius:0!important}
@@ -558,16 +559,15 @@ body.mobile .v-place-related-list{padding:5px 0!important}
 .v-place-more-btns>div:hover:not(.contact-more){background:#1fabc9}
 
 body.mobile .v-place-info{padding-top:6px}
-.v-box{border-bottom:1px solid #eee}
-.v-place-more{list-style:none}
+.v-box:not(:last-child){border-bottom:1px solid #eee}
 .v-place-more-one{display:inline-block;width:49%}
-.v-box h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
+.v-box>h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
 .v-box-content{padding:10px 0 10px;margin:0}
 .v-box.v-box-content{padding:6px 0}
 .v-box-content.open{display:block}
-.v-box h4 + .v-box-content{padding-top:0}
-.v-box h4 + .v-box-content:not(.open){display:none}
-.v-box h4 .toggle-box-btn{color:#d6d6d6;margin-top:1px}
+.v-box>h4 + .v-box-content{padding-top:0}
+.v-box>h4 + .v-box-content:not(.open){display:none}
+.v-box>h4 .toggle-box-btn{color:#d6d6d6;margin-top:1px}
 .v-place-details:not(.all){max-height:80px}
 .v-place-details{cursor:pointer;overflow:hidden}
 
@@ -676,12 +676,14 @@ h4.with-border+*{clear:both}
 
 .place-add{margin-bottom:15px}
 .text-lg{font-size:22px;line-height:25px}
+.text-sm{font-size:12px;line-height:14px}
 
 nav{position:relative;height:50px}
 nav ul{margin:0!important;position:relative;height:50px}
 nav ul.nav>li{position:relative;float:left;height:100%}
 nav ul.nav>li>a{position:relative;display:block;height:100%}
 
+.label{padding:.2em .6em}
 
 /* User */
 .v-user-top{padding:10px 0 15px;border-bottom:1px solid #eee}
@@ -691,12 +693,29 @@ body:not(.mobile) .v-user-avt{float:left;width:180px;height:180px;margin-right:1
 .v-user-ratings .ratings{float:left;margin-right:5px}
 .v-user-name{margin:0}
 .v-user-phone span, .v-user-mail span{font-size:15px;font-weight:600;line-height:23px}
-.v-user-stat{list-style:none}
 .v-user-property{border-bottom:1px solid #f4f4f4;margin:0 10px;padding:10px 0}
+.v-user-stat{margin:15px 0 0 10px}
 .listings_image{float:left;width:100px;height:100px;position:relative;margin-right:10px}
+body.mobile .listings_image{width:50px;height:50px}
 .image_url{width:100%;height:100%}
-.listings_price{float:right}
-.listings_info h4{margin:0 0 5px}
+.listings_price{float:right;margin:4px 0 -4px 0!important}
+.listings_info .h4{margin:0 0 5px}
+.listings_info{position:relative;float:left;margin:-103px 0 0 110px}
+body.mobile .listings_info{margin:-53px 0 0 60px}
+.listings_description>div{display:inline-block;width:49%}
+.listings_type{margin-top:4px}
+.listings_price{color:#e84c3d;font-weight:600}
+
+#sales-chart{position:relative;height:150px;width:150px;float:left}
+
+
+/* Ratings list */
+.rating-one-sm{height:40px;margin-bottom:6px;border-bottom:1px solid #eee}
+.rating-one-sm:last-child{border-bottom:0}
+.rating-one-sm-avt{float:left;width:30px;height:30px;margin-right:6px;border-radius:100%;margin-top:1px}
+.rating-one-sm-username{padding:0;margin:0 4px 0 0;font-size:14px;line-height:14px}
+.rating-one-sm .ratings{line-height:15px;margin:1px 5px -2px 0;float:left}
+.rating-one-sm-details{max-height:30px;line-height:15px}
 
 
 body.mobile .v-user-avt{float:none;width:100%;height:180px;margin:0 auto 10px}
@@ -783,3 +802,4 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 .no-margin-bottom{margin-bottom:0}
 .no-margin-left{margin-left:0}
 .no-margin-right{margin-right:0}
+.left{float:left} .right{float:right}
