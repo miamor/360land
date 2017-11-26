@@ -7,7 +7,7 @@ var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
 var options = {city:'',district:'',ward:'',street:''};
 //var c_city = c_district = null;
 var city = district = ward = street = project = null;
-var labelOrigin = new google.maps.Point(0,0);
+var labelOrigin = new google.maps.Point(20,20);
 
 var zoom_markerView = 13;
 var zoom_moderate = 11;
@@ -132,6 +132,7 @@ var cityList = [];
 
         this.bounds = null;
 
+        /*
         this.setContext = function(a, b, c) {
             if (a != undefined && a != '') {
                 this.showInfoWindow(a)
@@ -142,7 +143,7 @@ var cityList = [];
                 this.map.setCenter(new google.maps.LatLng(d, e));
                 this.map.setZoom(parseInt(b))
             }
-        };
+        };*/
 
         google.maps.event.addListener(this.infoWindow, 'domready', function() {
             $('.gm-style-iw').each(function () {
@@ -252,27 +253,42 @@ var cityList = [];
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    if (!$thismap.currentPosMarker) {
-                        new google.maps.Marker({
-                            position: pos,
-                            map: $thismap.map
-                        });
-                    } else {
-                        $thismap.currentPosMarker.setPosition(pos);
+            if ($thismap.currentPID) {
+                // get data of this node to get latitude and longitude to set center, to get bounds, to get other nodes around it.
+                $.ajax({
+                    url: MAIN_URL+'/api/node_one.php',
+                    type: 'get',
+                    success: function (data) {
+                        console.log(data);
+                        $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
+                    },
+                    error: function (a, b, c) {
+                        console.log(a);
                     }
-                    $thismap.map.setCenter(pos);
-                }, function(a) {
-                    console.log(a);
-                });
+                })
             } else {
-                // Browser doesn't support Geolocation
-                console.log("Browser doesn't support Geolocation");
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        if (!$thismap.currentPosMarker) {
+                            new google.maps.Marker({
+                                position: pos,
+                                map: $thismap.map
+                            });
+                        } else {
+                            $thismap.currentPosMarker.setPosition(pos);
+                        }
+                        $thismap.map.setCenter(pos);
+                    }, function(a) {
+                        console.log(a);
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    console.log("Browser doesn't support Geolocation");
+                }
             }
 
             var styles = [{"featureType":"administrative","elementType":"geometry","stylers":[{"visibility":"off"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]}];
@@ -318,22 +334,23 @@ var cityList = [];
             });
 
             var locationData = null;
-            if (this.listLatlgn != null) {
-                this.polyline = new google.maps.Polygon({
-                    path: this.listLatlgn,
-                    strokeColor: '#00a65a',
-                    strokeWeight: 2,
-                    editable: true,
-                    fillColor: "#5de0a4",
-                    fillOpacity: 0.25
-                });
-                this.polyline.setMap(this.map);
-                this.findPoint(this.polyline);
-                this.catchChangePolyline();
-            }
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
+                if ($thismap.listLatlgn != null) {
+                    $thismap.polyline = new google.maps.Polygon({
+                        path: $thismap.listLatlgn,
+                        strokeColor: '#00a65a',
+                        strokeWeight: 2,
+                        editable: true,
+                        fillColor: "#5de0a4",
+                        fillOpacity: 0.25
+                    });
+                    $thismap.polyline.setMap($thismap.map);
+                    $thismap.findPoint($thismap.polyline);
+                    $thismap.catchChangePolyline();
+                }
+
                 $thismap.boundsChangeCallBack();
                 loaded = true;
             });
@@ -465,6 +482,7 @@ var cityList = [];
                   ) ) {
                     $thismap.findPointByBounds();
                 }
+                /*
                 if ($thismap.isMapResize) {
                     if ($thismap.currentPID) {
                         var key = $thismap.findMarkerKey($thismap.currentPID);
@@ -474,7 +492,7 @@ var cityList = [];
                         $thismap.map.setCenter($thismap.centerPos);
                     }
                     $thismap.isMapResize = false;
-                }
+                }*/
             //})
         }
 
@@ -795,10 +813,11 @@ var cityList = [];
                 else location.type = 'villa';
                 return new MarkerWithLabel({
                     position: new google.maps.LatLng(location.latitude, location.longitude),
-                    icon: nodeMarker[location.type].default,
-                    labelContent: location.price,
+                    //icon: nodeMarker[location.type].default,
+                    icon: nodeMarker.empty,
+                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')"><span class="marker-type type-'+location.type+'"><i class="fa fa-bed"></i></span><span class="marker-label-content">'+location.price+'</span></a>',
                     labelAnchor: labelOrigin,
-                    labelClass: "marker-label", // your desired CSS class
+                    labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : ""), // your desired CSS class
                     labelInBackground: true,
                 });
             });
@@ -811,16 +830,20 @@ var cityList = [];
                     $thismap.input.product.value = this.id;
                     productControlerObj.ChangeUrlForNewContext();
                 });
-                oneMarker.addListener('mouseover', function() {
+                /*oneMarker.addListener('mouseover', function() {
                     if (this.id != $thismap.currentPID) {
-                        this.setIcon(nodeMarker[a[i].type].hover)
+                        //this.setIcon(nodeMarker[a[i].type].hover)
+                        //this.labelClass = 'marker-label marker-label-active';
+                        //this.label.setStyles();
                     }
                 });
                 oneMarker.addListener('mouseout', function() {
                     if (this.id != $thismap.currentPID) {
-                        this.setIcon(nodeMarker[a[i].type].default)
+                        //this.setIcon(nodeMarker[a[i].type].default)
+                        //this.labelClass = 'marker-label';
+                        //this.label.setStyles();
                     }
-                })
+                })*/
             })
             if (b !== undefined && b) {
                 if (this.polyline != undefined && this.polyline != null) {
@@ -875,7 +898,11 @@ var cityList = [];
 
             if (h == undefined || h == null) return;
             var key = this.findMarkerKey(this.currentPID);
-            h.setIcon(nodeMarker[$thismap.data[key].type].select);
+            //h.setIcon(nodeMarker[$thismap.data[key].type].select);
+            //h.labelClass = 'marker-label marker-label-active';
+            //h.label.setStyles();
+            this.activeMarker(key);
+
             h.setZIndex(300);
             e = parseInt(e);
             this.ClearUtilitiesAroundPoint();
@@ -1003,7 +1030,11 @@ var cityList = [];
             if (this.currentPID) {
                 var key = this.findMarkerKey(this.currentPID);
                 //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
-                h.setIcon(nodeMarker[$thismap.data[key].type].default);
+                //h.setIcon(nodeMarker[$thismap.data[key].type].default);
+                //h.labelClass = 'marker-label';
+                //h.label.setStyles();
+                this.deactiveMarker(key);
+
                 this.input.product.value = this.currentPID = '';
                 this.currentMarkerKey = null;
 
@@ -1038,14 +1069,19 @@ var cityList = [];
                 }*/
                 $.each(this.markers, function (i, v) {
                     if (i == k) {
-                        v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
+                        //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
+                        //v.labelClass = 'marker-label marker-label-active';
+                        //v.label.setStyles();
+
                         $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
                         $thismap.map.setCenter(v.position);
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
                     } else if (i != thismap.currentMarkerKey) {
-                        v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].default);
+                        //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].default);
+                        //v.labelClass = 'marker-label';
+                        //v.label.setStyles();
                     }
                 })
             }
@@ -1053,12 +1089,18 @@ var cityList = [];
         this.mouseOut = function (k) {
             this.infoTipWindow.close();
             if (this.markers) {
-                this.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
+                //$thismap.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
+                //$thismap.markers[k].labelClass = 'marker-label';
+                //$thismap.markers[k].label.setStyles();
+
                 if ($thismap.currentPID) {
-                    //currentMarkerKey = this.findMarkerKey($thismap.currentPID);
+                    //$thismap.currentMarkerKey = this.findMarkerKey($thismap.currentPID);
                     $thismap.map.setCenter(this.markers[$thismap.currentMarkerKey].position);
                     if ($thismap.currentMarkerKey == k) {
-                        this.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
+                        //$thismap.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
+                        //$thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label marker-label-active';
+                        //$thismap.markers[$thismap.currentMarkerKey].label.setStyles();
+
                         if (!this.isShowUtil) {
                             this.infoWindow.close();
                             this.infoWindow.open(this.map, this.markers[$thismap.currentMarkerKey]);
@@ -1093,7 +1135,11 @@ var cityList = [];
                 var f = this.findDataInfo(key);
                 data = f;
                 if (u != undefined && u != null) {
-                    u.setIcon(nodeMarker[$thismap.data[key].type].default);
+                    //u.setIcon(nodeMarker[$thismap.data[key].type].default);
+                    //u.labelClass = 'marker-label';
+                    //u.label.setStyles();
+                    this.deactiveMarker(key);
+
                     if (f != undefined && f != null) {
                         u.setZIndex(6 - f.vip)
                     }
@@ -1112,14 +1158,21 @@ var cityList = [];
             if (key != null && data) {
                 var h = this.markers[key];
                 if (runSet) {
-                    if (!this.isShowUtil && this.map.getZoom() < zoom_markerView) this.map.setZoom(zoom_markerView);
+                    if (!this.isShowUtil && this.map.getZoom() < zoom_markerView) {
+                        this.map.setZoom(zoom_markerView);
+                    }
                     else {
                         this.input.zoom.value = this.map.getZoom();
                         productControlerObj.ChangeUrlForNewContext();
                     }
-                    this.map.setCenter(h.position);
+                    //this.map.setCenter(h.position);
+                    if (isInit) {
+                        this.map.setCenter(h.position);
+                    }
                 }
-                h.setIcon(nodeMarker[$thismap.data[key].type].select);
+                //h.setIcon(nodeMarker[$thismap.data[key].type].select);
+                this.activeMarker(key);
+
                 //h.setZIndex(300);
                 this.currentPID = data.id;
                 this.currentMarkerKey = this.findMarkerKey(this.currentPID);
@@ -1132,15 +1185,30 @@ var cityList = [];
                     }
                 }
 
-                if (this.searchtype) this.showInfoWindowProject(h, data, isInit);
-                else this.showInfoWindowNode(h, data, isInit)
+                if (this.searchtype) this.showInfoWindowProject(h, key, data, isInit);
+                else this.showInfoWindowNode(h, key, data, isInit);
+
+                /*google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
+                    h.labelClass = 'marker-label marker-label-active';
+                    h.label.setStyles();
+                })*/
             }
         }
 
-        this.showInfoWindowProject = function (h, data, isInit = false) {
+        this.activeMarker = function (key) {
+            console.log('~~~~ '+key);
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:eq('+key+')').addClass('marker-label-active');
         }
 
-        this.showInfoWindowNode = function (h, data, isInit = false) {
+        this.deactiveMarker = function (key) {
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:eq('+key+')').removeClass('marker-label-active');
+        }
+
+        this.showInfoWindowProject = function (h, key, data, isInit = false) {
+        }
+
+        this.showInfoWindowNode = function (h, key, data, isInit = false) {
             console.log(data);
 
             $('.map-item-info-title').html(data.title);
@@ -1160,7 +1228,6 @@ var cityList = [];
                 $('.map-item-info-board').show().addClass('mobile');
                 $('.map-item-info-board-close').show().click(function () {
                     $('.map-item-info-board').hide();
-                    h.setIcon(nodeMarker[data.type].default)
                     $thismap.closeInfoWindowCallBack(h);
                 })
             } else {
@@ -1175,7 +1242,6 @@ var cityList = [];
                 }
 
                 google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
-                    h.setIcon(nodeMarker[data.type].default)
                     $thismap.closeInfoWindowCallBack(h);
                 });
             }
@@ -1199,7 +1265,7 @@ var cityList = [];
             if (!a.data.Map.isDrawing) {
                 //a.data.Map.btnUpdateMapIdleResult.show()
             }
-            a.data.Map.map.setZoom(zoom_markerView);
+            //a.data.Map.map.setZoom(zoom_markerView);
 
             a.data.Map.input.isShowUtil.value = 0;
             a.data.Map.isShowUtil = false;
@@ -1243,7 +1309,7 @@ var cityList = [];
             var h = $(this);
             var i = parseFloat(this.Lat);
             var j = parseFloat(this.Lon);
-            this.Map.map.setCenter(new google.maps.LatLng(i, j));
+            //this.Map.map.setCenter(new google.maps.LatLng(i, j));
 
                 var k = {};
                 k.radius = f;
@@ -1560,9 +1626,9 @@ ProductSearchControler.prototype.ShowMoreInfoAndHidePopup = function (id, lat, l
 }
 
 ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
-    if (this.ProductMap.map.getZoom() < zoom_utilityView)
-        this.ProductMap.map.setZoom(zoom_utilityView);
-
+    if (this.ProductMap.map.getZoom() < zoom_utilityView) {
+        //this.ProductMap.map.setZoom(zoom_utilityView);
+    }
     this.utilityTool.ResetRadius();
     this.utilityTool.SearchAction(lat, lon);
 };

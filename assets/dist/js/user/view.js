@@ -12,12 +12,27 @@ $(document).ready(function () {
         hideHover: 'auto'
     });
 
+    var ratingsDonut = new Morris.Donut({
+        element: 'ratings-chart',
+        resize: true,
+        colors: ["#eecd56", "#f56954", "#00a65a"],
+        data: [
+          {label: "Neutral reviews", value: 8},
+          {label: "Critical reviews", value: 4},
+          {label: "Good reviews", value: 20}
+        ],
+        hideHover: 'auto'
+    });
+
+    $('.ratings-more').width($('.ratings-stat').width()-$('#ratings-chart').width()+5);
+
     // properties
     $('.v-user-properties').html('');
     $.ajax({
         url: MAIN_URL+'/api/node.php',
         type: 'get',
         success: function (data) {
+            $('.v-user-properties-total').html('('+data.length+')');
             $.each(data, function (i, v) {
                 html = '<div class="v-user-property line">\
                     <div class="listings_image mbs prl col cols6">\
@@ -28,8 +43,8 @@ $(document).ready(function () {
                             <span class="listings_address"><a href="#">'+v.address+'</a></span>\
                         </div>\
                         <div class="line listings_description">\
-                            <div class="listings_area">Diện tích: <span>'+v.area+'</span>m2</div>\
-                            <div class="listings_room"> Số phòng ngủ:  <span>'+v.sophongngu+'</span></div>\
+                            <div class="listings_area">D.tích: <span>'+v.area+'</span>m2</div>\
+                            <div class="listings_room"> Phòng ngủ:  <span>'+v.sophongngu+'</span></div>\
                             <div class="listings_direction">Hướng: <span>'+v.huong+'</span></div>\
                             <div class="listings_area">Loại: <span>'+v.type+'</span></div>\
                         </div>\
@@ -41,10 +56,13 @@ $(document).ready(function () {
                     <div class="clearfix"></div>\
                 </div>';
                 $('.v-user-properties').append(html);
+                $('.listings_info').width($('.v-user-property').width()-$('.listings_image').width()-10);
             })
         },
         error: function (a, b, c) {
             console.log(a);
         }
-    })
+    });
+
+    //$('body').append('<style>.listings_info{width:'+wi+'px}</style>');
 })

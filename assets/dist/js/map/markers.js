@@ -1,4 +1,5 @@
 var nodeMarker = {
+	empty: MAIN_URL+'/assets/img/markers/empty.png',
 	apartment: {
 		default: MAIN_URL+'/assets/img/markers/apartment-d.png',
 		hover: MAIN_URL+'/assets/img/markers/apartment-h.png',

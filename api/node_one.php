@@ -10,8 +10,8 @@ header('content-type: application/json'); ?>
             "<?php echo MAIN_URL ?>/data/images/h8.jpg",
             "<?php echo MAIN_URL ?>/data/images/h9.jpg"
         ],
-        "latitude": 21.12,
-        "longitude": 106.21,
+        "latitude": 21.027666,
+        "longitude": 105.824105,
         "price": "35tr/m2",
         "area": 100.0,
         "tinh": "Ha Noi",

@@ -120,5 +120,5 @@ String.prototype.getQueryHash = function (name, defaultVal) {
 jQuery(document).ready(function ($) {
     flatApp();
     if (isMobile) $('body').addClass('mobile');
-    else $('.container').height($(window).height());
+    //else $('.container').height($(window).height());
 })
