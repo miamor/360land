@@ -378,16 +378,20 @@ body:not(.mobile) #cbbRadius{line-height:54px!important}
 
 #mapSide{margin-top:30px!important;position:absolute;left:10px!important;z-index:999!important}
 body:not(.mobile) #mapSide{width:380px}
-body:not(.mobile) #mapSide .nav-tabs{height:42px}
+body:not(.mobile) #mapSide .nav-tabs:not(.map_search_select){height:42px}
 #mapSide .nav-tabs-custom ul.nav>li{margin-right:-2px;float:left}
 #mapSide .nav-tabs-custom{position:absolute;z-index:100;top:-20px;left:0;right:0;box-shadow:0 2px 3px rgba(0,0,0,.15);font-size: 13px}
 #mapSide:not(.open) .nav-tabs-custom > .nav-tabs > li > a{background:transparent!important;box-shadow:none!important;color:#fff!important;font-size:14px!important;padding:10px 14px 9px !important;margin-top:0!important;cursor:pointer}
+#mapSide.open .nav-tabs-custom > .nav-tabs > li > a{padding:10px 14px 11px!important}
 .map-side-result{z-index:99}
 #mapSide:not(.open) .nav-tabs-custom > .nav-tabs{border-radius:3px!important}
 body:not(.mobile) #mapSide .nav-tabs-custom .tab-pane{max-height:400px;overflow:auto;padding:0!important}
 .map-side-search form{padding:10px!important}
 #mapSide .nav-tabs-custom{margin: 0!important;font-family:'Source Sans Pro', sans-serif;*font-weight:300}
 .map-tabs-toggle{position:absolute;top:0;right:0;bottom:0;width:36px;padding:2px 12px 6px;font-size:20px;background:rgba(0,0,0,.06);cursor:pointer;color:#fff!important}
+body:not(.mobile) .map-tabs-toggle{padding-top:6px}
+
+body:not(.mobile) #mapSide .nav-tabs:not(.map_search_select)>li>a{font-size:15px!important}
 
 body:not(.mobile) #mapSide.open .nav-tabs-custom > .nav-tabs > li.active > a{padding:14px 14px 12px!important}
 
@@ -450,7 +454,7 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .marker-label>a:hover .marker-type, .marker-label>a:hover .marker-label-content, .marker-label>a:hover .marker-label-content:after,
 .marker-label-active>a .marker-type, .marker-label-active>a .marker-label-content, .marker-label-active>a .marker-label-content:after{background:#49dcc3;cursor:pointer}
 
-#map .gm-style > div:first-child > div:nth-child(4) > div:first-child{z-index:9999!important}
+#map .gm-style > div:first-child > div:nth-child(4) > div:first-child, #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4){z-index:999!important}
 
 .map-result-one{position: relative;
     display: block;
@@ -599,7 +603,8 @@ body.mobile .v-place-info{padding-top:6px}
 
 /* Infowindow */
 /*.gw-style-parent, .gm-style-iw > div, .gw-style-bg>div:nth-child(2), .gw-style-bg>div:nth-child(4),.gm-style-iw>div>div{max-height:250px!important}
-*/.gm-style-iw > div > div {overflow:hidden!important}
+*/.gw-style-parent{margin:-15px 0 0 3px}
+.gm-style-iw > div > div {overflow:hidden!important}
 .map-item-info-des{position:relative;height:110px;overflow:hidden}
 .map-item-info-des:after{
     content:'';
@@ -824,7 +829,7 @@ body.mobile .nav-tabs-custom > .nav-tabs{height:39px}
 body.mobile .nav-tabs-custom > .nav-tabs, body.mobile .nav-tabs-custom > .nav-tabs>li:not(.active)>a{background:#0bc39b!important;box-shadow:none!important}
 body.mobile #mapSide .nav-tabs-custom>ul.nav>li>a{padding:9px 10px 10px!important}
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{padding:13px 10px 11px!important;border:0!important;font-size:14px}
-#mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-left:0!important;margin-right:4px!important}
+#mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-left:0!important;margin-right:5px!important}
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-right:5px!important}
 #place_search{display:block;background:transparent;border:0;height:33px;color:#fff;padding:0 10px 1px 28px;font-size:14px;transition:.2s}
 body.mobile #place_search{padding-top:5px;line-height:29px}

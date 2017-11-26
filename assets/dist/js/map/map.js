@@ -1195,7 +1195,6 @@ var cityList = [];
         }
 
         this.activeMarker = function (key) {
-            console.log('~~~~ '+key);
             $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
             $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:eq('+key+')').addClass('marker-label-active');
         }
