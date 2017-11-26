@@ -243,15 +243,19 @@ var cityList = [];
                 mapTypeControl: false,
                 zoomControl: true,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.RIGHT_CENTER
+                    position: google.maps.ControlPosition.LEFT_CENTER
                 },
-                fullscreenControl: true,
+                fullscreenControl: false,
                 fullscreenControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
                 },
                 streetViewControl: false,
             };
             this.map = new google.maps.Map(document.getElementById(v), k);
+
+            $thismap.currentPosMarker = new google.maps.Marker({
+                map: $thismap.map
+            });
 
             if ($thismap.currentPID) {
                 // get data of this node to get latitude and longitude to set center, to get bounds, to get other nodes around it.
@@ -273,14 +277,7 @@ var cityList = [];
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
-                        if (!$thismap.currentPosMarker) {
-                            new google.maps.Marker({
-                                position: pos,
-                                map: $thismap.map
-                            });
-                        } else {
-                            $thismap.currentPosMarker.setPosition(pos);
-                        }
+                        $thismap.currentPosMarker.setPosition(pos);
                         $thismap.map.setCenter(pos);
                     }, function(a) {
                         console.log(a);
@@ -387,17 +384,19 @@ var cityList = [];
                 success: function (response) {
                     console.log(response);
                     data = response.message[0].outerBoundaryIs;
-                    list = data.split("\n");
-                    console.log(list);
-                    latlnglist = [];
-                    $.each(list, function (i, v) {
-                        if (v.indexOf(',') > -1) {
-                            v = v.split(',');
-                            latlnglist.push(new google.maps.LatLng(v[0], v[1]));
-                        }
-                    });
-                    //this.listLatlgn =
-                    $thismap.drawPolyline(latlnglist);
+                    if (data) {
+                        list = data.split("\n");
+                        console.log(list);
+                        latlnglist = [];
+                        $.each(list, function (i, v) {
+                            if (v.indexOf(',') > -1) {
+                                v = v.split(',');
+                                latlnglist.push(new google.maps.LatLng(v[1], v[0]));
+                            }
+                        });
+                        //this.listLatlgn =
+                        $thismap.drawPolyline(latlnglist, false);
+                    }
                 },
                 error: function(a, b, c) {
                     console.log(a)
@@ -417,6 +416,7 @@ var cityList = [];
                     $thismap.map.setCenter(place.geometry.location);
                     $thismap.map.setZoom(zoom_moderate);
                 }
+                $thismap.currentPosMarker.setPosition(place.geometry.location);
                 var lv = place.address_components.length;
                 var s_city = s_district = s_ward = null;
                 s_city = place.address_components[lv-2].long_name;
@@ -630,18 +630,17 @@ var cityList = [];
             this.listLatlgn = null
         };
 
-        this.drawPolyline = function (b) {
+        this.drawPolyline = function (b, isEditable = true) {
             $thismap.polyline = new google.maps.Polygon({
                 path: b,
                 strokeColor: '#00a65a',
                 strokeWeight: 2,
-                editable: true,
+                editable: isEditable,
                 fillColor: "#5de0a4",
                 fillOpacity: 0.25
             });
             $thismap.polyline.setMap($thismap.map);
-            console.log(b);
-            console.log($thismap.polyline);
+            //console.log($thismap.polyline);
         }
 
         this.catchChangePolyline = function () {
@@ -1944,16 +1943,17 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //productControlerObj.ChangeUrlForNewContext();
     });
 
-    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height()-53;
-    $('.map-search-tabs .tab-pane').height(sidePaneHeight);
+    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
+    $('.map-search-tabs .tab-pane').css('height', sidePaneHeight+'px!important');
 
-    $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-55)
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');
         isMobile = true;
         $('body').addClass('mobile');
         $('nav').removeClass('navbar-fixed-top');
         $('.v-place-related').removeClass('popup-section section-light');
+
+        $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-50)
     } else {
         $('body').removeClass('mobile');
     }
@@ -2035,6 +2035,12 @@ $(window).ready(function() {
     if (!isMobile) $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
     render(false, ($(window).width() <= 500 ? false : true));
+
+    if (isMobile) {
+        $('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+    } else {
+        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+    }
 
     productControlerObj = new ProductSearchControler({
         context: mapContext

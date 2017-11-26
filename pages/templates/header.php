@@ -29,20 +29,29 @@ $config->addJS('dist', 'main.js'); ?>
 <body>
 
     <nav class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
-	        <ul class="nav navbar-nav">
-	    		<li class="nav-item active">
-					<a class="nav-link" href="#"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"><i class="fa fa-search"></i> Search</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link disabled" href="#"><i class="fa fa-heart"></i> Saved</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Bleh</a>
-				</li>
-			</ul>
+		<ul class="nav navbar-nav">
+			<li class="nav-item active">
+				<a class="nav-link" href="#"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#"><i class="fa fa-search"></i> Search</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#"><i class="fa fa-heart"></i> Saved</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Bleh</a>
+			</li>
+		</ul>
+
+		<div class="nav-user">
+			<img class="nav-user-avt" src="https://thumbs.trulia-cdn.com/pictures/thumbs_5/zillowstatic/IS2b9tl546el6w1000000000.jpg"/>
+			<h4 class="nav-user-name">Tu Nguyen</h4>
+		</div>
+
+		<form class="nav-search">
+			<input type="text" id="search_key" placeholder="Search"/>
+		</form>
 	</nav>
 
     <div class="container">

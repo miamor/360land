@@ -121,4 +121,4 @@
     <div class="clearfix"></div>
 
 </div>
-<style>.container{padding:0 70px 20px}</style>
+<style>body:not(.mobile) .container{padding:0 70px 20px}</style>
