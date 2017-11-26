@@ -14,6 +14,18 @@ var zoom_moderate = 11;
 var zoom_utilityView = 16;
 var cityList = [];
 
+var typeRealEstate = {
+    typereal1: 'Chung cư',
+    typereal2: 'Nhà riêng',
+    typereal3: 'Biệt thự, liền kề',
+    typereal4: 'Nhà mặt phố',
+    typereal5: 'Đất nền dự án',
+    typereal6: 'Đất bán',
+    typereal7: 'Trang trại, khu nghỉ dưỡng',
+    typereal8: 'Nhà kho, nhà xưởng',
+    typereal9: 'Bất động sản khác',
+};
+
 (function($){
 	$.fn.extend({
 		donetyping: function (callback,timeout) {
@@ -192,6 +204,8 @@ var cityList = [];
             this.input.points.value = s.lstPoint;
             this.input.product.value = s.currentPID;
 
+            $('#place_search').val(s.place_search);
+
             this.currentPID = s.currentPID;
             this.currentMarkerKey = this.findMarkerKey(this.currentPID);
 
@@ -210,11 +224,13 @@ var cityList = [];
             this.input.points.value = s.lstPoint;
 
             if (s.lstPoint != '') {
-                $thismap.isDrawing = true;
-                this.isMapIdle = false;
-                this.beginDrawButton.hide();
-                this.deleteShapeButton.show();
-                //this.btnUpdateMapIdleResult.hide();
+                if (!s.place_search) {
+                    $thismap.isDrawing = true;
+                    this.isMapIdle = false;
+                    this.beginDrawButton.hide();
+                    this.deleteShapeButton.show();
+                    //this.btnUpdateMapIdleResult.hide();
+                }
                 var h = s.lstPoint.split(',');
                 if (h.length >= 5) {
                     this.listLatlgn = new Array();
@@ -339,7 +355,7 @@ var cityList = [];
                         path: $thismap.listLatlgn,
                         strokeColor: '#00a65a',
                         strokeWeight: 2,
-                        editable: true,
+                        editable: (s.place_search ? false : true),
                         fillColor: "#5de0a4",
                         fillOpacity: 0.25
                     });
@@ -377,8 +393,10 @@ var cityList = [];
             var formData = new FormData($('#place_search_form')[0]);
             formData.append('distric', d);
             formData.append('province', c);
+            $thismap.input.city.value = c;
+            $thismap.input.district.value = d;
             $.ajax({
-                url: 'http://45.119.82.40:8000/user/distric/',
+                url: API_URL+'/user/distric/',
                 type: 'post',
                 data: pData,
                 success: function (response) {
@@ -387,15 +405,20 @@ var cityList = [];
                     if (data) {
                         list = data.split("\n");
                         console.log(list);
-                        latlnglist = [];
+                        var latlnglist = [];
+                        var points = [];
                         $.each(list, function (i, v) {
                             if (v.indexOf(',') > -1) {
                                 v = v.split(',');
                                 latlnglist.push(new google.maps.LatLng(v[1], v[0]));
+                                points.push(v[1] + ':' + v[0]);
                             }
                         });
                         //this.listLatlgn =
+                        $thismap.input.points.value = points.join(',');
                         $thismap.drawPolyline(latlnglist, false);
+                        $thismap.findPoint($thismap.polyline);
+                        productControlerObj.ChangeUrlForNewContext();
                     }
                 },
                 error: function(a, b, c) {
@@ -631,6 +654,7 @@ var cityList = [];
         };
 
         this.drawPolyline = function (b, isEditable = true) {
+            if ($thismap.polyline) $thismap.polyline.setMap(null);
             $thismap.polyline = new google.maps.Polygon({
                 path: b,
                 strokeColor: '#00a65a',
@@ -806,15 +830,12 @@ var cityList = [];
                     position: new google.maps.LatLng(location.latitude, location.longitude),
                     icon: iconMarker.default
                 });*/
-                if (location.type == 'typereal1') location.type = 'house';
-                else if (location.type == 'typereal2') location.type = 'office';
-                else if (location.type == 'typereal7') location.type = 'apartment';
-                else location.type = 'villa';
+                location.typeTxt = typeRealEstate[location.type];
                 return new MarkerWithLabel({
                     position: new google.maps.LatLng(location.latitude, location.longitude),
                     //icon: nodeMarker[location.type].default,
                     icon: nodeMarker.empty,
-                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')"><span class="marker-type type-'+location.type+'"><i class="fa fa-bed"></i></span><span class="marker-label-content">'+location.price+'</span></a>',
+                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')"><span class="marker-type type-'+location.type+'"><i class="fa fa-bed"></i></span><span class="marker-label-content">'+location.price.replace(' triệu','tr')+'</span></a>',
                     labelAnchor: labelOrigin,
                     labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : ""), // your desired CSS class
                     labelInBackground: true,
@@ -1200,7 +1221,7 @@ var cityList = [];
         }
 
         this.deactiveMarker = function (key) {
-            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:eq('+key+')').removeClass('marker-label-active');
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
         }
 
         this.showInfoWindowProject = function (h, key, data, isInit = false) {
@@ -1211,8 +1232,9 @@ var cityList = [];
 
             $('.map-item-info-title').html(data.title);
             $('.map-item-info-price span').html(data.price);
-            $('.map-item-info-type').html(data.type);
+            $('.map-item-info-type').html(typeRealEstate[data.type]);
             $('.map-item-info-contact_phone').html(data.dienthoai);
+            $('.map-item-info-contact_name').html(data.tenlienhe);
             $('.map-item-info-address').html(data.address);
             $('.map-item-info-des').html(data.details);
             $('.map-item-info-thumb').attr('src', data.avatar);
@@ -1233,13 +1255,13 @@ var cityList = [];
                 if (!isInit || !this.isShowUtil) {
                     this.infoWindow.setOptions({
                         position: h.position,
-                        maxWidth: 300,
+                        maxWidth: 280,
                         content: $('.map-item-info-board').html()
                     });
                     this.infoWindow.open(this.map, h);
                 }
 
-                google.maps.event.addListener(this.infoWindow, 'closeclick', function () {
+                google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
                     $thismap.closeInfoWindowCallBack(h);
                 });
             }
@@ -1318,7 +1340,7 @@ var cityList = [];
                 k.v = new Date().getTime();
 
                 $.ajax({
-                    url: 'http://45.119.82.40:8000/user/servicenodes/',
+                    url: API_URL+'/user/servicenodes/',
                     data: k,
                     //dataType: 'json',
                     type: 'get',
@@ -1774,7 +1796,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     }
     d.searchtype = f.ProductMap.searchtype;
 
-    if (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) {
+    if (!f.ProductMap.listLatlgn && (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) ) {
         //f.ProductMap.boundsChangeCallBack();
         d.minLat = f.ProductMap.bounds.f.b;
         d.minLng = f.ProductMap.bounds.b.b;
@@ -1806,7 +1828,8 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         });
     } else { // node
         $.ajax({
-            url: 'http://45.119.82.40:8000/user/nodebuy/',
+            //url: API_URL+'/user/nodebuy/',
+            url: MAIN_URL+'/api/node.php',
             type: 'get',
             success: function(data) {
                 // show on map
@@ -1824,7 +1847,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     //f.ChangeUrlForNewContext();
 
-    /*$.get('http://45.119.82.40:8000/user/node-buy/', function (data) {
+    /*$.get(API_URL+'/user/node-buy/', function (data) {
         console.log(data);
     });*/
 };
@@ -1887,7 +1910,9 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&direction=" + ($input.direction.value != undefined ? $input.direction.value : '');
     //a += "&project=" + ($input.project.value != undefined ? $input.project.value : '');
     a += "&project=";
-    a += "&points=" + (this.ProductMap.isDrawing ? ($input.points.value != undefined ? $input.points.value : '') : '');
+    //a += "&points=" + ( (this.ProductMap.isDrawing || $input.district.value) ? ($input.points.value != undefined ? $input.points.value : '') : '');
+    a += "&place_search="+$('#place_search').val();
+    a += "&points=" + ($input.points.value != undefined ? $input.points.value : '');
     a += "&zoom=" + this.ProductMap.getZoom();
     a += "&center=" + this.ProductMap.getCenter();
     a += "&page=0";
@@ -2005,6 +2030,7 @@ $(window).ready(function() {
             room: markContext.getQueryHash('room'),
             direction: markContext.getQueryHash('direction'),
             projectid: markContext.getQueryHash('project'),
+            place_search: markContext.getQueryHash('place_search'),
             lstPoint: markContext.getQueryHash('points'),
             zoom: markContext.getQueryHash('zoom', zoom_moderate),
             center: markContext.getQueryHash('center'),
@@ -2036,9 +2062,11 @@ $(window).ready(function() {
     render(false, ($(window).width() <= 500 ? false : true));
 
     if (isMobile) {
-        $('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+        //$('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+        $('.nav-search .li-input').remove();
     } else {
-        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+        //$('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
+        $('#mapSide .li-input').remove()
     }
 
     productControlerObj = new ProductSearchControler({

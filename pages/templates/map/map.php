@@ -124,23 +124,25 @@
     <div class="map-item-info-thumb-div">
         <img class="map-item-info-thumb" src=""/>
         <div class="map-item-info-price center">
-            Giá: <span></span>
+            <i class="fa fa-dollar"></i> <span></span>
         </div>
-        <!--
-        <div class="btn-group map-item-info-buttons">
-            <a class="btn btn-danger btn-sm map-item-view-utilities" title="Tiện ich"><i class="fa fa-share-alt"></i></a>
-            <a class="btn btn-danger btn-sm map-item-gotoview" title="Chi tiết"><i class="fa fa-feed"></i></a>
+
+        <div class="btn-group map-item-info-buttons center">
+            <a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-share-alt"></i></a>
+            <a class="btn btn-default btn-sm map-item-gotoview center" title="Chi tiết"><i class="fa fa-feed"></i></a>
         </div>
-        -->
+
     </div>
     <div class="iw-content map-item-info-details">
         <h4 class="map-item-info-title iw-title">Place title</h4>
         <div class="iw-subTitle"><i class="fa fa-map-marker"></i> <span class="map-item-info-address"></span></div>
         <div class="map-item-info-more">
-            <div>Loại: <span class="map-item-info-type"></span></div>
-            <div><i class="fa fa-bed"></i> <span class="map-item-info-bed"></span></div>
-            <div>Hướng: <span class="map-item-info-huong"></span></div>
-            <div><i class="fa fa-phone"></i> <span class="map-item-info-contact_phone"></span></div>
+                <div title="Loại bất động sản"><i class="fa fa-building"></i> Loại: <span class="map-item-info-type"></span></div>
+
+                <div title="Số phòng ngủ"><i class="fa fa-bed"></i> Số phòng ngủ: <span class="map-item-info-bed"></span></div>
+                <div title="Hướng"><i class="fa fa-map-signs"></i> Hướng: <span class="map-item-info-huong"></span></div>
+
+                <div title="Liên hệ"><i class="fa fa-phone"></i> Liên hệ: <span class="map-item-info-contact_phone"></span> (<span class="map-item-info-contact_name"></span>)</div>
         </div>
 
         <div class="hidden no-padding-left">
@@ -149,10 +151,6 @@
         </div>
         <div class="clearfix"></div>
 
-        <div class="btn-group map-item-info-buttons center">
-            <a class="btn btn-default btn-sm map-item-view-utilities"><i class="fa fa-share-alt"></i> Tiện ich</a>
-            <a class="btn btn-default btn-sm map-item-gotoview"><i class="fa fa-feed"></i> Chi tiết</a>
-        </div>
     </div>
 </div></div>
 

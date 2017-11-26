@@ -29,6 +29,7 @@ $config->addJS('dist', 'main.js'); ?>
 <body>
 
     <nav class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
+		<div class="nav-icon"><i class="fa fa-reorder"></i></div>
 		<ul class="nav navbar-nav">
 			<li class="nav-item active">
 				<a class="nav-link" href="#"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
@@ -50,7 +51,7 @@ $config->addJS('dist', 'main.js'); ?>
 		</div>
 
 		<form class="nav-search">
-			<input type="text" id="search_key" placeholder="Search"/>
+			<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>
 		</form>
 	</nav>
 
