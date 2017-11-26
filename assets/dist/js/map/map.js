@@ -224,13 +224,13 @@ var typeRealEstate = {
             this.input.points.value = s.lstPoint;
 
             if (s.lstPoint != '') {
-                if (!s.place_search) {
+                //if (!s.place_search) {
                     $thismap.isDrawing = true;
                     this.isMapIdle = false;
                     this.beginDrawButton.hide();
                     this.deleteShapeButton.show();
                     //this.btnUpdateMapIdleResult.hide();
-                }
+                //}
                 var h = s.lstPoint.split(',');
                 if (h.length >= 5) {
                     this.listLatlgn = new Array();
