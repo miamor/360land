@@ -158,6 +158,8 @@
 <!--<div id="pano" style="z-index:1000;width:100%;height:100%">
 </div>-->
 
+<div id="overlapNodes"></div>
+
 <div class="popup popup-dark "><div class="popup-inner"><div>
 	<div class="popup-content " style="background:#fff">
 		<a class="popup-btn" role="close"></a>

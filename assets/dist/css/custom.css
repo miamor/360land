@@ -437,7 +437,7 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 
 .marker-label{position:relative;width:76px;height:45px;margin:-31px 0 0 -14px!important}
 .marker-label>a, .marker-label .marker-type>i{position:relative;display:block;width:100%;height:100%}
-.marker-label-content{position:absolute;z-index:3;top:0;left:0;right:3px;background:#0bc39b;color:#fff;height:18px;padding:0 3px 0 2px;border-radius:0 5px 5px 0;line-height:12px;font-size:11px;font-weight:600;border:2px solid #fff;text-align:center;margin:10px 0 0 30px;border-left:0;box-shadow:1px 1px 1px rgba(0,0,0,.2)}
+.marker-label-content{position:absolute;z-index:3;top:0;left:0;right:3px;background:#0bc39b;color:#fff;height:18px;padding:0 3px 0 1px;border-radius:0 5px 5px 0;line-height:12px;font-size:11px;font-weight:600;border:2px solid #fff;text-align:center;margin:10px 0 0 30px;border-left:0;box-shadow:1px 1px 1px rgba(0,0,0,.2)}
 .marker-label .marker-type{position:absolute;z-index:2;top:4px;left:4px;width:30px;height:30px;border-radius:100%;line-height:28px;text-align:center;background:#0bc39b;color:#fff;border:2px solid #fff;box-shadow:-2px 0 2px 0 rgba(0,0,0,.4)}
 .marker-label .marker-type>i{line-height:25px}
 
@@ -455,6 +455,9 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 
 #map .gm-style > div:first-child > div:nth-child(4) > div:first-child, #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4){z-index:999!important}
 
+#overlapNodes{display:none;margin:15px;border-radius:3px;width:250px;max-height:250px;overflow:auto;padding:0;background:#fff;box-shadow:0 2px 3px rgba(0,0,0,.15)}
+#overlapNodes .map-result-one:last-child{border-bottom:0}
+
 .map-result-one{position: relative;
     display: block;
     padding:8px 8px;
@@ -465,7 +468,7 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
     font-size:12px;
     line-height: 16px
 }
-.map-result-one-title{}
+.map-result-one-title{font-size:15px;margin:0 }
 .map-result-one-info{margin-left:70px}
 .map-result-one-des{max-height: 70px;overflow: hidden;}
 .map-result-one-left{position:relative;width: 60px;margin-right: 10px;float: left}
