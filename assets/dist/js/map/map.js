@@ -223,7 +223,7 @@ var typeRealEstate = {
             this.input.points.value = s.lstPoint;
             this.input.product.value = s.currentPID;
 
-            this.input.place_search.value = this.place_search = s.place_search;
+            if (s.place_search && s.place_search != undefined && s.place_search != 'undefined') this.input.place_search.value = this.place_search = s.place_search;
 
             this.currentPID = s.currentPID;
             this.currentMarkerKey = this.findMarkerKey(this.currentPID);
