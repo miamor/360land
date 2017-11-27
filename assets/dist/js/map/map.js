@@ -1198,28 +1198,38 @@ var typeRealEstate = {
             var count = 0;
             $.each($thismap.data, function (i, v) {
                 if (v.latitude == lat && v.longitude == lng) {
-                    count++;
-                    k += '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
-                    k += '<div class="map-result-one-left">';
-                    k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
-                    k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
-                    k += '</div>';
-                    k += '<div class="map-result-one-info">'
-                    k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
-                    //k += '<div class="map-result-one-des">'+v.details+'</div>';
-                    k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> '+v.address+'</div>';
-                    //k += '<div class="map-result-one-type">'+v.type+'</div>';
-                    //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
-                    k += '</div>';
-                    k += '<div class="clearfix"></div>';
-                    k += '</div>';
+                    if (!isMobile || v.id != $thismap.currentPID) {
+                        count++;
+                        k += '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
+                        k += '<div class="map-result-one-left">';
+                        k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
+                        k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
+                        k += '</div>';
+                        k += '<div class="map-result-one-info">'
+                        k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
+                        //k += '<div class="map-result-one-des">'+v.details+'</div>';
+                        k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> '+v.address+'</div>';
+                        //k += '<div class="map-result-one-type">'+v.type+'</div>';
+                        //k += '<div class="map-result-one-phone">'+v.phone+'</div>';
+                        k += '</div>';
+                        k += '<div class="clearfix"></div>';
+                        k += '</div>';
+                    }
                 }
             });
-            if (count > 1) {
-                $('#overlapNodes').show().append(k);
+            if (isMobile) $('#overlapNodes').remove();
+            if ( (isMobile && count > 0) || (!isMobile && count > 1) ) {
+                if (isMobile && count > 0) {
+                    $('#mapInfoBoard').append('<div id="overlapNodes" style="display:block">'+k+'</div>');
+                } else {
+                    $('#overlapNodes').show().append(k);
+                }
                 console.log('showOverlapNodes');
                 $('#overlapNodes .map-result-one').click(function () {
                     $thismap.showInfoWindow($(this).attr('attr-id'));
+                    $('#mapInfoBoard').animate({
+                        scrollTop: 0
+                    });
                     $('.map-search-tabs').slideUp(100, function () {
                         $('#mapSide').removeClass('open');
                     });
@@ -1250,8 +1260,8 @@ var typeRealEstate = {
             this.input.product.value = this.currentPID;
 
             if (this.markers != undefined) {
-                if (!key) this.currentMarkerKey = key = this.findMarkerKey(d);
-                if (!data) data = this.findDataInfo(key);
+                this.currentMarkerKey = key = this.findMarkerKey(d);
+                data = this.findDataInfo(key);
             }
 
             if (this.infoTipWindow) this.infoTipWindow.close();
@@ -1270,11 +1280,14 @@ var typeRealEstate = {
                     }
                 }
                 //h.setIcon(nodeMarker[$thismap.data[key].type].select);
-                this.activeMarker(key);
 
                 //h.setZIndex(300);
-                this.currentPID = data.id;
+                /*this.currentPID = data.id;
                 this.currentMarkerKey = this.findMarkerKey(this.currentPID);
+
+                this.activeMarker(this.currentMarkerKey);*/
+
+                this.activeMarker(this.currentMarkerKey);
 
                 if (isInit) {
                     if (this.isDetails) {
