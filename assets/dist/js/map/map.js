@@ -1235,9 +1235,6 @@ var typeRealEstate = {
                     $('#mapInfoBoard').animate({
                         scrollTop: 0
                     });
-                    $('.map-search-tabs').slideUp(100, function () {
-                        $('#mapSide').removeClass('open');
-                    });
                     productControlerObj.ChangeUrlForNewContext();
                 })
             }
