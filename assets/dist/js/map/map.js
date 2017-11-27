@@ -467,6 +467,8 @@ var typeRealEstate = {
                         //this.listLatlgn =
                         $thismap.input.points.value = points.join(',');
                         $thismap.drawPolyline(latlnglist, false);
+                        $thismap.beginDrawButton.hide();
+                        $thismap.deleteShapeButton.show();
                         $thismap.findPoint($thismap.polyline);
                         productControlerObj.ChangeUrlForNewContext();
                     }
