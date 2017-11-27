@@ -371,6 +371,8 @@ label.utility-type .uti-total{font-weight: 500}
 body:not(.mobile) #cbbRadius{line-height:54px!important}
 #uti_selected{position: absolute;top:0;bottom:0;left:80px;right:50px;overflow:hidden;line-height:54px;text-overflow:ellipsis}
 #controlArea{position:relative;*margin-top:-80px!important}
+body:not(.mobile) #controlArea{top:10px!important;left:390px!important}
+body:not(.mobile) .gm-bundled-control{margin:-390px 0 0 400px!important}
 .gm-style-mtc{top:0px!important}
 .gm-style-cc{display: none!important}
 
@@ -471,18 +473,26 @@ body.mobile #overlapNodes{bottom:0!important}
     border-bottom: 1px solid #e2e2e2;
     cursor: pointer;
     font-weight: 300;
-    font-size:12px;
+    font-size:13px;
     line-height: 16px
 }
-.map-result-one-title{font-size:15px;margin:0 }
-.map-result-one-info{margin-left:70px}
-.map-result-one-des{max-height: 70px;overflow: hidden;}
-.map-result-one-left{position:relative;width: 60px;margin-right: 10px;float: left}
-.map-result-one-thumb{position:relative;width:60px;height:40px}
+#map_results .map-result-one{font-size:15px}
+#map_results .map-result-one-title{font-size:17px;line-height:21px}
+
+.map-result-one-title{margin:0 0 5px;font-size:15px;line-height:17px;font-weight:600}
+.map-result-one-info{margin-left:90px}
+.map-result-one-des{max-height: 70px;overflow:hidden}
+.map-result-one-left{position:relative;width: 80px;margin-right: 10px;float: left}
+.map-result-one-thumb{position:relative;width:80px;height:70px}
+body.mobile #map_results .map-result-one{font-size:14px}
+body.mobile .map-result-one-left, #overlapNodes .map-result-one-left{width:60px}
+body.mobile .map-result-one-thumb, #overlapNodes .map-result-one-thumb{width:60px;height:40px}
+body.mobile .map-result-one-info, #overlapNodes .map-result-one-info{margin-left:70px}
+body.mobile #map_results .map-result-one-title, #overlapNodes .map-result-one-title{font-size:15px;line-height:17px}
 .map-result-one-price{margin-top:5px;text-align:center}
 .map-result-one-price i{font-size:12px}
 .map-result-one-price span, .map-item-info-price span{margin-left:-2px;font-weight: 600;color:rgb(235,77,77)}
-.map-result-one h3{margin:0 0 3px;font-size:13px;line-height:16px;font-weight:600}
+body:not(.mobile) .map-result-one-price{font-size:17px;line-height:21px}
 .map-result-one:hover{background:#f3f9fa}
 
 .map-side-search{z-index:200!important}
@@ -570,10 +580,10 @@ select#city_first:focus{background:#fff!important}
 .v-place-address i.fa{font-size:18px;opacity:.8}
 .v-place-pricenum{font-size:19px;font-weight:600;color:#e84c3d}
 .v-place-details{font-size:14px}
-.v-place-info{height:100%;overflow: auto;}
+.v-place-info{height:100%;overflow: auto;z-index:10}
 .v-place-info .txt-with-line .txt{font-size:15px;padding-left:0;color:#777}
 .v-place-info .txt-with-line:before{border-top:2px dashed #dfdfdf}
-.v-place-switch-buttons{position:absolute;top:40%;right:0;z-index:100}
+.v-place-switch-buttons{position:absolute;top:40%;right:0;*z-index:99}
 .v-place-mode{background:#fff;padding:8px 7px 8px 9px; width:36px;height:36px;font-size:15px;*font-weight:300;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.3);cursor: pointer;}
 .v-place-mode:first-child{border-radius:4px 0 0 0}
 .v-place-mode:last-child{border-radius:0 0 0 4px}

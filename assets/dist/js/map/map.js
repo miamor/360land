@@ -845,7 +845,7 @@ var typeRealEstate = {
                 k = '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
                 k += '<div class="map-result-one-left">';
                 k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
-                k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
+                k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price.replace(" triệu", "tr")+'</span></div>';
                 k += '</div>';
                 k += '<div class="map-result-one-info">'
                 k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
@@ -869,9 +869,11 @@ var typeRealEstate = {
                 }
                 $(this).click(function () {
                     $thismap.showInfoWindow($(this).attr('attr-id'));
-                    $('.map-search-tabs').slideUp(100, function () {
-                        $('#mapSide').removeClass('open');
-                    });
+                    if (isMobile) {
+                        $('.map-search-tabs').slideUp(100, function () {
+                            $('#mapSide').removeClass('open');
+                        });
+                    }
                     f.ChangeUrlForNewContext();
                 })
             })
@@ -1110,6 +1112,7 @@ var typeRealEstate = {
         this.closeInfoWindowCallBack = function (h) {
             //if (!this.isShowUtil) {
             if (this.currentPID) {
+                $('#overlapNodes').remove();
                 var key = this.findMarkerKey(this.currentPID);
                 //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
                 //h.setIcon(nodeMarker[$thismap.data[key].type].default);
@@ -1203,7 +1206,7 @@ var typeRealEstate = {
                         k += '<div attr-id="'+v.id+'" attr-marker-id="'+i+'" class="map-result-one">';
                         k += '<div class="map-result-one-left">';
                         k += '<img class="map-result-one-thumb" src="'+v.avatar+'">';
-                        k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price+'</span></div>';
+                        k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>'+v.price.replace(" triệu", "tr")+'</span></div>';
                         k += '</div>';
                         k += '<div class="map-result-one-info">'
                         k += '<h3 class="map-result-one-title">'+v.title+'</h3>';
@@ -1289,13 +1292,14 @@ var typeRealEstate = {
 
                 this.activeMarker(this.currentMarkerKey);
 
-                if (isInit) {
+                //if (isInit) {
                     if (this.isDetails) {
+                        console.log(this.isDetails);
                         productControlerObj.ShowDetails(this.currentPID);
                     } else if (this.isShowUtil) {
                         productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
                     }
-                }
+                //}
 
                 if (this.searchtype) this.showInfoWindowProject(h, key, data, isInit);
                 else this.showInfoWindowNode(h, key, data, isInit);
@@ -1918,9 +1922,11 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             success: function(data) {
                 // show on map
                 f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
-                $('.map-search-tabs').slideUp(100, function () {
-                    $('#mapSide').removeClass('open');
-                });
+                if (isMobile) {
+                    $('.map-search-tabs').slideUp(100, function () {
+                        $('#mapSide').removeClass('open');
+                    });
+                }
             },
             error: function(a, b, c) {
                 console.log(a+' ~ '+b+' ~ '+c)
@@ -1935,9 +1941,11 @@ ProductSearchControler.prototype._SearchAction = function(g) {
                 // show on map
                 f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
                 //f.showList(data);
-                $('.map-search-tabs').slideUp(100, function () {
-                    $('#mapSide').removeClass('open');
-                });
+                if (isMobile) {
+                    $('.map-search-tabs').slideUp(100, function () {
+                        $('#mapSide').removeClass('open');
+                    });
+                }
             },
             error: function(a, b, c) {
                 console.log(a+' ~ '+b+' ~ '+c)
@@ -2047,6 +2055,17 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //setWidth(w);
     //}
 
+    $('ul.map_search_select>li>a').click(function (e) {
+        var type = $(this).parent('li').attr('attr-type');
+        $('#map-search-form .form-group[attr-type]').hide();
+        $('#map-search-form .form-group[attr-type="'+type+'"]').show();
+        $('#map-search-form input#searchtype').val(type == 'node' ? 0 : 1);
+        //productControlerObj.ChangeUrlForNewContext();
+    });
+
+    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
+    $('.map-search-tabs .tab-pane').css('height', sidePaneHeight+'px!important');
+
     if (searchVisible) { // show search
         $('.map-tabs-toggle').html('<i class="fa fa-angle-double-up"></i>');
         $('.map-search-tabs').slideDown(100, function () {
@@ -2058,17 +2077,6 @@ function render (isResizeSmaller = false, searchVisible = false) {
             $(this).closest('#mapSide').removeClass('open');
         });
     }
-
-    $('ul.map_search_select>li>a').click(function (e) {
-        var type = $(this).parent('li').attr('attr-type');
-        $('#map-search-form .form-group[attr-type]').hide();
-        $('#map-search-form .form-group[attr-type="'+type+'"]').show();
-        $('#map-search-form input#searchtype').val(type == 'node' ? 0 : 1);
-        //productControlerObj.ChangeUrlForNewContext();
-    });
-
-    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
-    $('.map-search-tabs .tab-pane').css('height', sidePaneHeight+'px!important');
 
     if (w <= 500) {
         //$('#mapSide').width(w-20).css('right','10px!important');
@@ -2159,7 +2167,7 @@ $(window).ready(function() {
 
     if (!isMobile) $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
-    render(false, ($(window).width() <= 500 ? false : true));
+    render(false, (isMobile ? false : true));
 
     if (isMobile) {
         //$('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
