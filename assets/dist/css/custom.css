@@ -441,8 +441,8 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .marker-label-active{z-index:99999!important}
 .marker-label>a, .marker-label .marker-type>i{position:relative;display:block;width:100%;height:100%}
 .marker-label-content{position:absolute;z-index:3;top:0;left:0;right:3px;background:#0bc39b;color:#fff;height:18px;padding:0 3px 0 1px;border-radius:0 5px 5px 0;line-height:12px;font-size:11px;font-weight:600;border:2px solid #fff;text-align:center;margin:10px 0 0 30px;border-left:0;box-shadow:1px 1px 1px rgba(0,0,0,.2)}
-.marker-label .marker-type{position:absolute;z-index:2;top:4px;left:4px;width:30px;height:30px;border-radius:100%;line-height:28px;text-align:center;background:#0bc39b;color:#fff;border:2px solid #fff;box-shadow:-2px 0 2px 0 rgba(0,0,0,.4)}
-.marker-label .marker-type>i{line-height:25px}
+.marker-label .marker-type{position:absolute;z-index:2;top:4px;left:4px;width:30px;height:30px;border-radius:100%;text-align:center;background:#0bc39b;color:#fff;border:2px solid #fff;box-shadow:-2px 0 2px 0 rgba(0,0,0,.4)}
+.marker-label .marker-type>i{font-size:14px;line-height:24px;margin-left:-1px}
 
 /*.marker-label .marker-type>i:after{content:'';position:absolute;bottom:-2px;height:2px;background:#fff;left:8px;right:8px}
 
@@ -490,7 +490,7 @@ body.mobile .map-result-one-thumb, #overlapNodes .map-result-one-thumb{width:60p
 body.mobile .map-result-one-info, #overlapNodes .map-result-one-info{margin-left:70px}
 body.mobile #map_results .map-result-one-title, #overlapNodes .map-result-one-title{font-size:15px;line-height:17px}
 .map-result-one-price{margin-top:5px;text-align:center}
-.map-result-one-price i{font-size:12px}
+.map-result-one-price i{display:none;font-size:12px}
 .map-result-one-price span, .map-item-info-price span{margin-left:-2px;font-weight: 600;color:rgb(235,77,77)}
 body:not(.mobile) .map-result-one-price{font-size:17px;line-height:21px}
 .map-result-one:hover{background:#f3f9fa}
@@ -623,7 +623,7 @@ body.mobile .v-place-info{padding-top:6px}
 
 /* Infowindow */
 /*.gw-style-parent, .gm-style-iw > div, .gw-style-bg>div:nth-child(2), .gw-style-bg>div:nth-child(4),.gm-style-iw>div>div{max-height:250px!important}
-*/.gw-style-parent{margin:-15px 0 0 3px}
+*/.gw-window{margin:-15px 0 0 3px}
 .gm-style-iw > div > div {overflow:hidden!important}
 .map-item-info-des{position:relative;height:110px;overflow:hidden}
 .map-item-info-des:after{

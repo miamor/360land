@@ -34,7 +34,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user1",
-        "type": "typereal1",
+        "type": "apartment",
         "duanid": "duan1",
         "type_action": "1",
         "modid": "mod1"
@@ -72,7 +72,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal2",
+        "type": "house",
         "duanid": "duan2",
         "type_action": "2",
         "modid": "mod1"
@@ -110,7 +110,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal3",
+        "type": "housestreet",
         "duanid": "duan1",
         "type_action": "1",
         "modid": "mod1"
@@ -148,7 +148,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal4",
+        "type": "villa",
         "duanid": "villa",
         "type_action": "1",
         "modid": "mod1"
@@ -186,7 +186,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal5",
+        "type": "warehouse",
         "duanid": "duan1",
         "type_action": "2",
         "modid": "mod1"
@@ -224,7 +224,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal6",
+        "type": "land",
         "duanid": "duan1",
         "type_action": "2",
         "modid": "mod1"
@@ -262,7 +262,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal7",
+        "type": "projectland",
         "duanid": "duan1",
         "type_action": "2",
         "modid": "mod1"
@@ -300,7 +300,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal8",
+        "type": "resort",
         "duanid": "duan1",
         "type_action": "2",
         "modid": "mod1"
@@ -338,7 +338,7 @@ header('content-type: application/json'); ?>
         "timeto": "2017-08-20",
         "typenode": true,
         "userid": "user2",
-        "type": "typereal8",
+        "type": "villa",
         "duanid": "duan1",
         "type_action": "2",
         "modid": "mod1"

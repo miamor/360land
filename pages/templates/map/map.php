@@ -53,7 +53,7 @@
     <div class="utility-head">
         <select id="cbbRadius" class="form-control">
           <option value="200">200 m</option>
-          <option selected value="500">500 m</option>
+          <option value="500">500 m</option>
           <option value="1000">1 km</option>
           <option value="2000">2 km</option>
           <option value="5000">5 km</option>

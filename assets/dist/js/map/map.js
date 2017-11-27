@@ -30,7 +30,7 @@ var iconMarker = {
 };
 
 var typeRealEstate = {
-    typereal1: 'Chung cư',
+/*    typereal1: 'Chung cư',
     typereal2: 'Nhà riêng',
     typereal3: 'Biệt thự, liền kề',
     typereal4: 'Nhà mặt phố',
@@ -39,6 +39,16 @@ var typeRealEstate = {
     typereal7: 'Trang trại, khu nghỉ dưỡng',
     typereal8: 'Nhà kho, nhà xưởng',
     typereal9: 'Bất động sản khác',
+*/
+    apartment: 'Chung cư',
+    house: 'Nhà riêng',
+    villa: 'Biệt thự, liền kề',
+    housestreet: 'Nhà mặt phố',
+    projectland: 'Đất nền dự án',
+    land: 'Đất bán',
+    resort: 'Trang trại, khu nghỉ dưỡng',
+    warehouse: 'Nhà kho, nhà xưởng',
+    other: 'Bất động sản khác',
 };
 
 (function($){
@@ -119,11 +129,13 @@ var typeRealEstate = {
             enableEventPropagation: false
         };
         this.infoWindow = new google.maps.InfoWindow();
+        this.infoUtiWindow = new google.maps.InfoWindow();
         this.infoTipWindow = new google.maps.InfoWindow({
             maxWidth: 250,
             maxHeight: 120
         });
         this.currentPosMarker = null;
+        this.utilArea = null;
 
         this.zoom = null;
 
@@ -162,6 +174,12 @@ var typeRealEstate = {
         this.place_search = null;
 
         this.enableSetCenter = true;
+        if (s.utilArea && s.utilArea != undefined && s.utilArea != NaN && s.utilArea != "NaN") {
+            this.utilArea = parseInt(s.utilArea);
+        } else {
+            this.utilArea = 500;
+        }
+        $('#cbbRadius').val(this.utilArea);
 
         /*
         this.setContext = function(a, b, c) {
@@ -177,9 +195,16 @@ var typeRealEstate = {
         };*/
 
         google.maps.event.addListener(this.infoWindow, 'domready', function() {
+            $thismap.styleInfoWindow();
+        });
+        google.maps.event.addListener(this.infoTipWindow, 'domready', function() {
+            $thismap.styleInfoWindow();
+        });
+
+        this.styleInfoWindow = function () {
             $('.gm-style-iw').each(function () {
                 var iwOuter = $(this);
-                iwOuter.parent().attr('class', '');
+                iwOuter.parent().attr('class', 'gw-window');
                 if (iwOuter.find('#iw-container').length) {
                     iwOuter.parent().addClass('gw-style-parent');
                     //iwOuter.parent().css('height', 250);
@@ -192,7 +217,7 @@ var typeRealEstate = {
                     iwBackground.removeClass('gw-style-bg').addClass('gw-tip-bg')
                 }
             })
-        });
+        }
 
         this.initialize = function() {
             // set input value based on the window hash
@@ -894,7 +919,7 @@ var typeRealEstate = {
                     position: new google.maps.LatLng(location.latitude, location.longitude),
                     //icon: nodeMarker[location.type].default,
                     icon: nodeMarker.empty,
-                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')"><span class="marker-type type-'+location.type+'"><i class="fa fa-bed"></i></span><span class="marker-label-content">'+location.price.replace(' triệu','tr')+'</span></a>',
+                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')" attr-marker-id="'+location.id+'"><span class="marker-type type-'+location.type+'"><i class="icon-'+location.type+'"></i></span><span class="marker-label-content">'+location.price.replace(' triệu','tr')+'</span></a>',
                     labelAnchor: labelOrigin,
                     labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : ""), // your desired CSS class
                     labelInBackground: true,
@@ -927,8 +952,6 @@ var typeRealEstate = {
             });
             //console.log($thismap.oms);
 
-            $('#map .gm-style > div:first-child > div:nth-child(4) > img').remove();
-
             if (b !== undefined && b) {
                 if (this.polyline != undefined && this.polyline != null) {
                     var g = new google.maps.LatLngBounds();
@@ -940,8 +963,29 @@ var typeRealEstate = {
             }
 
             if (this.currentPID) {
-                this.showInfoWindow(this.currentPID);
+                this.showInfoWindow(this.currentPID, true);
             }
+
+            google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
+                $('#map .gm-style > div:first-child > div:nth-child(4) > img').remove();
+
+                $('.marker-label').each(function () {
+                    var mID = $(this).children('a').attr('attr-marker-id');
+                    var mkey = $thismap.findMarkerKey(mID);
+                    var mv = $thismap.markers[mkey];
+                    $(this).mouseenter(function () {
+                        //$thismap.mouseHover($(this).children('a').attr('attr-marker-id'), false);
+                        if (mID != $thismap.currentPID) {
+                            $thismap.showInfoTipWindow(mv, $('.map-result-one[attr-id="'+mID+'"]').html());
+                        }
+                    }).mouseleave(function () {
+                        //$thismap.mouseOut($(this).children('a').attr('attr-marker-id'));
+                        if (mID != $thismap.currentPID) {
+                            $thismap.infoTipWindow.close();
+                        }
+                    });
+                })
+            })
 
             /*$thismap.markerCluster = new MarkerClusterer($thismap.map, $thismap.markers, {
                 imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
@@ -991,6 +1035,7 @@ var typeRealEstate = {
 
             h.setZIndex(300);
             e = parseInt(e);
+            this.utilArea = e;
             this.ClearUtilitiesAroundPoint();
 
             if (this.circle == null) this.circle = new google.maps.Circle({
@@ -1009,7 +1054,8 @@ var typeRealEstate = {
             });
             this.circle.setMap(this.map);
 
-            if (this.infoWindow != null) this.infoWindow.setMap(null);
+            if (this.infoUtiWindow != null) this.infoUtiWindow.setMap(null);
+
             this.dataUtilities = $thismap.formatUtilities(f, h.position, e);
 
             $('label .uti-total', $(g)).remove();
@@ -1055,12 +1101,12 @@ var typeRealEstate = {
                         k += '<div class="infowindow-util-preview-distance">Khoảng cách: ' + j.distance + 'm</div>';
                         k += '</div>';
 
-                        $thismap.infoWindow.setOptions({
+                        $thismap.infoUtiWindow.setOptions({
                             position: oneMarkerUtility.position,
                             maxWidth: 250,
                             content: k
                         });
-                        $thismap.infoWindow.open($thismap.map, oneMarkerUtility);
+                        $thismap.infoUtiWindow.open($thismap.map, oneMarkerUtility);
                         //$thismap.ShowUtilityWindow(this.id)
                     })
                 })
@@ -1075,7 +1121,9 @@ var typeRealEstate = {
                     this.markerUtilities[i].setMap(null)
                 }
             }
-            if (this.infoWindow != null) this.infoWindow.setMap(null);
+            if (this.infoUtiWindow != null) this.infoUtiWindow.setMap(null);
+
+            if (!$thismap.infoWindow) $thismap.closeInfoWindowCallBack(a);
 
             if (a == undefined || a == true) {
                 this.ClearUtilitiesAroundCallback()
@@ -1148,7 +1196,7 @@ var typeRealEstate = {
             $thismap.infoTipWindow.open($thismap.map.map_, h);
         }
 
-        this.mouseHover = function (k) {
+        this.mouseHover = function (k, setCenter = true) {
             if (this.markers) {
                 /*var currentMarkerKey = null;
                 if ($thismap.currentPID) {
@@ -1159,9 +1207,8 @@ var typeRealEstate = {
                         //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
                         //v.labelClass = 'marker-label marker-label-active';
                         //v.label.setStyles();
-
                         $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
-                        $thismap.map.setCenter(v.position);
+                        if (setCenter) $thismap.map.setCenter(v.position);
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
@@ -1241,12 +1288,12 @@ var typeRealEstate = {
         }
 
         this.showInfoWindow = function(d, isInit = false) {
-            if (!isInit) {
+            /*if (!isInit) {
                 this.ClearUtilitiesAroundPoint();
                 this.isShowUtil = false;
                 this.input.isShowUtil.value = 0;
                 productControlerObj.ChangeUrlForNewContext();
-            }
+            }*/
             var data = null;
             var key = null;
 
@@ -1268,7 +1315,6 @@ var typeRealEstate = {
 
             if (this.infoTipWindow) this.infoTipWindow.close();
             if (this.infoWindow) this.infoWindow.close();
-            console.log($thismap.enableSetCenter+'~~~');
 
             if (key != null && data) {
                 var h = this.markers[key];
@@ -1293,7 +1339,6 @@ var typeRealEstate = {
 
                 //if (isInit) {
                     if (this.isDetails) {
-                        console.log(this.isDetails);
                         productControlerObj.ShowDetails(this.currentPID);
                     } else if (this.isShowUtil) {
                         productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
@@ -1311,14 +1356,12 @@ var typeRealEstate = {
                 })*/
 
                 if ($thismap.enableSetCenter) {
-                    this.map.setCenter(h.position);
+                    //this.map.setCenter(h.position);
                 }
             }
         }
 
         this.activeMarker = function (key) {
-            console.log(key);
-            console.log($('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')'));
             $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
             $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('marker-label-active');
         }
@@ -1355,17 +1398,18 @@ var typeRealEstate = {
                 })
             } else {
                 $('.map-item-info-board-close').hide();
-                if (!isInit || !this.isShowUtil) {
-                    this.infoWindow.setOptions({
-                        //position: h.position,
+                //console.log(isInit);
+                if (!isInit || !$thismap.isShowUtil) {
+                    $thismap.infoWindow.setOptions({
+                        position: h.position,
                         maxWidth: 280,
                         content: $('.map-item-info-board').html()
                     });
-                    this.infoWindow.open(this.map, h);
+                    $thismap.infoWindow.open($thismap.map, h);
                 }
 
                 google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
-                    $thismap.closeInfoWindowCallBack(h);
+                    if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
                 });
             }
         };
@@ -1415,7 +1459,9 @@ var typeRealEstate = {
             }
         });
         this.ResetRadius = function() {
-            $('#cbbRadius').val(500)
+            if (!this.utilArea) this.utilArea = 500;
+            console.log('ResetRadius '+this.utilArea);
+            $('#cbbRadius').val(this.utilArea)
         };
         this.SearchAction = function(d, e) {
             if (d != undefined) this.Lat = d;
@@ -1443,12 +1489,13 @@ var typeRealEstate = {
                 k.v = new Date().getTime();
 
                 $.ajax({
-                    url: API_URL+'/user/servicenodes/',
+                    //url: API_URL+'/user/servicenodes/',
+                    url: MAIN_URL+'/api/node_service.php',
                     data: k,
                     //dataType: 'json',
                     type: 'get',
                     success: function(a, b, c) {
-                        console.log(a);
+                        //console.log(a);
                         // when get all data, then filter here (not recommended)
                         var data = [];
                         for (key = 0; key < a.length; key++) {
@@ -1752,7 +1799,8 @@ ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
     if (this.ProductMap.map.getZoom() < zoom_utilityView) {
         //this.ProductMap.map.setZoom(zoom_utilityView);
     }
-    this.utilityTool.ResetRadius();
+    //this.utilityTool.ResetRadius();
+    //console.log(this.ProductMap.utilArea);
     this.utilityTool.SearchAction(lat, lon);
 };
 
@@ -2025,6 +2073,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&page=0";
     a += "&product=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? this.ProductMap.currentPID : '');
     a += "&isShowUtil=" + (this.ProductMap.isShowUtil && this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? 1 : 0);
+    a += "&utilArea="+(this.ProductMap.isShowUtil ? this.ProductMap.utilArea : '');
     a += "&searchtype=" + (this.ProductMap.searchtype ? 1 : 0);
     a += "&details=" + (this.ProductMap.isDetails ? 1 : 0);
     window.location.href = window.location.pathname + '#' + a;
@@ -2144,6 +2193,7 @@ $(window).ready(function() {
             page: markContext.getQueryHash('page', '1'),
             currentPID: markContext.getQueryHash('product'),
             isShowUtil: markContext.getQueryHash('isShowUtil'),
+            utilArea: markContext.getQueryHash('utilArea'),
             details: markContext.getQueryHash('details'),
             searchtype: markContext.getQueryHash('searchtype', '0')
         };
