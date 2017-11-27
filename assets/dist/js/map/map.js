@@ -1112,7 +1112,7 @@ var typeRealEstate = {
         this.closeInfoWindowCallBack = function (h) {
             //if (!this.isShowUtil) {
             if (this.currentPID) {
-                $('#overlapNodes').remove();
+                $('#overlapNodes').hide();
                 var key = this.findMarkerKey(this.currentPID);
                 //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
                 //h.setIcon(nodeMarker[$thismap.data[key].type].default);
