@@ -7,7 +7,7 @@ var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
 var options = {city:'',district:'',ward:'',street:''};
 //var c_city = c_district = null;
 var city = district = ward = street = project = null;
-var labelOrigin = new google.maps.Point(20,20);
+var labelOrigin = new google.maps.Point(0,0);
 
 var zoom_markerView = 13;
 var zoom_moderate = 11;
@@ -140,9 +140,14 @@ var typeIcon = {
             alignBottom: true,
             enableEventPropagation: false
         };
-        this.infoWindow = new google.maps.InfoWindow();
-        this.infoUtiWindow = new google.maps.InfoWindow();
+        this.infoWindow = new google.maps.InfoWindow({
+            disableAutoPan: true
+        });
+        this.infoUtiWindow = new google.maps.InfoWindow({
+            disableAutoPan: true
+        });
         this.infoTipWindow = new google.maps.InfoWindow({
+            disableAutoPan: true,
             maxWidth: 250,
             maxHeight: 120
         });
@@ -152,6 +157,8 @@ var typeIcon = {
         if (s.isProject) this.isProject = s.isProject;
 
         this.zoom = null;
+
+        this.currentProduct = null;
 
         this.beginDrawButton = $('.' + o);
         this.deleteShapeButton = $('.' + p);
@@ -340,7 +347,9 @@ var typeIcon = {
                     type: 'post',
                     data: {id: $thismap.currentPID},
                     success: function (data) {
-                        console.log(data);
+                        $thismap.isProject = data.isProject = (data.pricefrom > 0 ? true : false);
+                        $thismap.currentProduct = data;
+                        console.log($thismap.currentProduct);
                         //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
                     },
                     error: function (a, b, c) {
@@ -375,6 +384,7 @@ var typeIcon = {
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
             this.map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('mapInfoBoard'));
             this.map.controls[google.maps.ControlPosition.RIGHT].push(document.getElementById('overlapNodes'));
+            this.map.controls[google.maps.ControlPosition.TOP].push(document.getElementById('map_search'));
 
             if (isMobile) {
                 $('#controlUtility').addClass('small').css('bottom',($('.map-item-info-board').height()+40).toString()+'px!important');
@@ -395,6 +405,7 @@ var typeIcon = {
             $thismap.autocomplete.addListener('place_changed', function() {
                 var place = $thismap.autocomplete.getPlace();
                 $thismap.searchByLocation(place);
+                toggleFilterBoard('close');
                 //return false;
             });
 
@@ -508,7 +519,7 @@ var typeIcon = {
                                 points.push(v[1] + ':' + v[0]);
                             }
                         });
-                        //this.listLatlgn =
+                        $thismap.listLatlgn = latlnglist;
                         $thismap.input.points.value = points.join(',');
                         $thismap.drawPolyline(latlnglist, false);
                         $thismap.beginDrawButton.hide();
@@ -544,8 +555,8 @@ var typeIcon = {
                 console.log(place);
                 this.drawBoundary(s_city, s_district, s_ward);
                 this.searchtype = 0;
-                if ($thismap.listLatlgn) productControlerObj._SearchAction();
-                else $thismap.boundsChangeCallBack();
+                //if ($thismap.listLatlgn) productControlerObj._SearchAction();
+                //else $thismap.boundsChangeCallBack();
                 //$thismap.markerPoint.setPosition(place.geometry.location);
                 //$thismap.markerPoint.setVisible(true);
                 //console.log(place);
@@ -867,10 +878,19 @@ var typeIcon = {
         this.showMap = function(a, b) {
             this.data = [];
             //if (!this.isDrawing) this.map.setZoom(zoom_moderate);
-            for (var i = 0; i < a.length; i++) {
-                if (this.isInPolyline(a[i].latitude, a[i].longitude)) {
-                    if (a[i].avatar == null || a[i].avatar == '') a[i].avatar = MAIN_URL+'/assets/img/noimage.png';
-                    this.data.push(a[i])
+            for (var i = 0; i < a.node.length; i++) {
+                if (this.isInPolyline(a.node[i].latitude, a.node[i].longitude)) {
+                    if (a.node[i].avatar == null || a.node[i].avatar == '') a.node[i].avatar = MAIN_URL+'/assets/img/noimage.png';
+                    a.node[i].isProject = false;
+                    this.data.push(a.node[i])
+                }
+            }
+            for (var i = 0; i < a.project.length; i++) {
+                if (this.isInPolyline(a.project[i].latitude, a.project[i].longitude)) {
+                    if (a.project[i].avatar == null || a.project[i].avatar == '') a.project[i].avatar = MAIN_URL+'/assets/img/noimage.png';
+                    a.project[i].title = a.project[i].name;
+                    a.project[i].isProject = true;
+                    this.data.push(a.project[i])
                 }
             }
             this.showPoint(this.data, b);
@@ -881,6 +901,7 @@ var typeIcon = {
         this.showList = function (d) {
             var f = productControlerObj;
             f.mapResults.html('');
+            f.mapResultsProject.html('');
             $.each(d, function (i, v) {
                 /*var adr = [];
                 if (v.hem) adr.push(v.hem);
@@ -890,6 +911,7 @@ var typeIcon = {
                 if (v.huyen) adr.push(v.huyen);
                 if (v.diachi) adr.push(v.diachi);
                 v.address = adr.join(', ');*/
+                if (v.isProject) v.price = v.pricefrom;
                 if (v.price < 1) { // trăm triệu
                     v.priceTxt = v.price*100+'tr';
                 } else v.priceTxt = v.price+' tỷ';
@@ -907,8 +929,15 @@ var typeIcon = {
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';
-                f.mapResults.append(k);
+                if (v.isProject) f.mapResultsProject.append(k);
+                else f.mapResults.append(k);
             });
+            if (!f.mapResults.find('.map-result-one').length) {
+                f.mapResults.html('<div class="empty_results">Không có kết quả.</div>')
+            }
+            if (!f.mapResultsProject.find('.map-result-one').length) {
+                f.mapResultsProject.html('<div class="empty_results">Không có kết quả.</div>')
+            }
             $('.map-result-one').each(function () {
                 if (!isMobile) {
                     $(this).mouseenter(function () {
@@ -921,13 +950,11 @@ var typeIcon = {
                 $(this).click(function () {
                     $thismap.showInfoWindow($(this).attr('attr-id'));
                     if (isMobile) {
-                        $('.map-search-tabs').slideUp(100, function () {
-                            $('#mapSide').removeClass('open');
-                        });
+                        toggleFilterBoard('close')
                     }
                     f.ChangeUrlForNewContext();
                 })
-            })
+            });
         };
 
         this.showPoint = function(a, b) {
@@ -939,6 +966,7 @@ var typeIcon = {
                     icon: iconMarker.default
                 });*/
                 location.typeTxt = typeRealEstate[location.type];
+                if (location.isProject) location.price = location.pricefrom;
                 if (location.price < 1) { // trăm triệu
                     location.priceTxt = location.price*100+'tr';
                 } else location.priceTxt = location.price+' tỷ';
@@ -948,7 +976,7 @@ var typeIcon = {
                     icon: nodeMarker.empty,
                     labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')" attr-marker-id="'+location.id+'"><span class="marker-type type-'+typeIcon[location.type]+'"><i class="icon-'+typeIcon[location.type]+'"></i></span><span class="marker-label-content">'+location.priceTxt+'</span></a>',
                     labelAnchor: labelOrigin,
-                    labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : ""), // your desired CSS class
+                    labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : "") + (location.isProject ? " marker-label-project" : ""), // your desired CSS class
                     labelInBackground: true,
                 });
             });
@@ -958,24 +986,17 @@ var typeIcon = {
                 //$thismap.oms.addMarker(oneMarker);
                 oneMarker.id = a[i].id;
                 oneMarker.addListener('click', function() {
+                    console.log('clicked marker~')
                     $thismap.showInfoWindow(this.id);
                     $thismap.input.product.value = this.id;
                     productControlerObj.ChangeUrlForNewContext();
                 });
-                /*oneMarker.addListener('mouseover', function() {
-                    if (this.id != $thismap.currentPID) {
-                        //this.setIcon(nodeMarker[a[i].type].hover)
-                        //this.labelClass = 'marker-label marker-label-active';
-                        //this.label.setStyles();
-                    }
+                oneMarker.addListener('mouseover', function() {
+                    $thismap.mouseHover(i, false);
                 });
                 oneMarker.addListener('mouseout', function() {
-                    if (this.id != $thismap.currentPID) {
-                        //this.setIcon(nodeMarker[a[i].type].default)
-                        //this.labelClass = 'marker-label';
-                        //this.label.setStyles();
-                    }
-                })*/
+                    $thismap.mouseOut(i);
+                });
             });
             //console.log($thismap.oms);
 
@@ -992,27 +1013,6 @@ var typeIcon = {
             if (this.currentPID) {
                 this.showInfoWindow(this.currentPID, true);
             }
-
-            google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                $('#map .gm-style > div:first-child > div:nth-child(4) > img').remove();
-
-                $('.marker-label').each(function () {
-                    var mID = $(this).children('a').attr('attr-marker-id');
-                    var mkey = $thismap.findMarkerKey(mID);
-                    var mv = $thismap.markers[mkey];
-                    $(this).mouseenter(function () {
-                        //$thismap.mouseHover($(this).children('a').attr('attr-marker-id'), false);
-                        if (mID != $thismap.currentPID) {
-                            $thismap.showInfoTipWindow(mv, $('.map-result-one[attr-id="'+mID+'"]').html());
-                        }
-                    }).mouseleave(function () {
-                        //$thismap.mouseOut($(this).children('a').attr('attr-marker-id'));
-                        if (mID != $thismap.currentPID) {
-                            $thismap.infoTipWindow.close();
-                        }
-                    });
-                })
-            })
 
             /*$thismap.markerCluster = new MarkerClusterer($thismap.map, $thismap.markers, {
                 imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
@@ -1225,24 +1225,19 @@ var typeIcon = {
 
         this.mouseHover = function (k, setCenter = true) {
             if (this.markers) {
-                /*var currentMarkerKey = null;
-                if ($thismap.currentPID) {
-                    currentMarkerKey = this.findMarkerKey($thismap.currentPID);
-                }*/
                 $.each(this.markers, function (i, v) {
                     if (i == k) {
                         //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
-                        //v.labelClass = 'marker-label marker-label-active';
-                        //v.label.setStyles();
-                        $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        //$thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        var txt = ($thismap.data[k].isProject ? 'Dự án' : typeRealEstate[$thismap.data[k].type]);
+                        //$thismap.infoWindow.close();
+                        $thismap.showInfoTipWindow(v,txt);
+                        v.labelClass = 'marker-label marker-label-active'+($thismap.data[k].isProject ? ' marker-label-project' : '');
+                        v.label.setStyles();
                         if (setCenter) $thismap.map.setCenter(v.position);
                         /*
                         if ($thismap.currentPID == i) $thismap.infoWindow.close();
                         if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
-                    } else if (i != $thismap.currentMarkerKey) {
-                        //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].default);
-                        //v.labelClass = 'marker-label';
-                        //v.label.setStyles();
                     }
                 })
             }
@@ -1251,20 +1246,23 @@ var typeIcon = {
             this.infoTipWindow.close();
             if (this.markers) {
                 //$thismap.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
-                //$thismap.markers[k].labelClass = 'marker-label';
-                //$thismap.markers[k].label.setStyles();
+                if (!$thismap.currentPID || $thismap.currentMarkerKey != k) {
+                    $thismap.markers[k].labelClass = 'marker-label'+($thismap.data[k].isProject ? ' marker-label-project' : '');
+                    $thismap.markers[k].label.setStyles();
+                }
 
-                if ($thismap.currentPID) {
+                if ($thismap.currentPID && $thismap.currentMarkerKey) {
                     //$thismap.currentMarkerKey = this.findMarkerKey($thismap.currentPID);
-                    $thismap.map.setCenter(this.markers[$thismap.currentMarkerKey].position);
+                    $thismap.map.setCenter($thismap.markers[$thismap.currentMarkerKey].position);
                     if ($thismap.currentMarkerKey == k) {
                         //$thismap.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
-                        //$thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label marker-label-active';
-                        //$thismap.markers[$thismap.currentMarkerKey].label.setStyles();
+                        $thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label marker-label-active'+($thismap.data[$thismap.currentMarkerKey].isProject ? ' marker-label-project' : '');
+                        $thismap.markers[$thismap.currentMarkerKey].label.setStyles();
 
-                        if (!this.isShowUtil) {
-                            this.infoWindow.close();
-                            this.infoWindow.open(this.map, this.markers[$thismap.currentMarkerKey]);
+                        if (!$thismap.isShowUtil) {
+                            if (!$thismap.infoWindow) {
+                                $thismap.infoWindow.open($thismap.map, $thismap.markers[$thismap.currentMarkerKey]);
+                            }
                         }
                     }
                 }
@@ -1277,6 +1275,7 @@ var typeIcon = {
             var count = 0;
             $.each($thismap.data, function (i, v) {
                 if (v.latitude == lat && v.longitude == lng) {
+                    if (v.isProject) v.price = v.pricefrom;
                     if (v.price < 1) { // trăm triệu
                         v.priceTxt = v.price*100+'tr';
                     } else v.priceTxt = v.price+' tỷ';
@@ -1324,24 +1323,22 @@ var typeIcon = {
                 this.input.isShowUtil.value = 0;
                 productControlerObj.ChangeUrlForNewContext();
             }*/
-            var data = null;
+            var data = this.currentProduct;
             var key = null;
 
             var runSet = false;
             if (!isInit && d != this.currentPID) runSet = true;
 
-            if (d == undefined || d == null) {
-                d = this.currentPID;
-            } else if (d != this.currentPID && this.currentPID != null) {
+            if (d != this.currentPID) {
                 this.currentPID = d;
-                this.deactiveMarker();
-            } else if (d == this.currentPID) {}
-            this.input.product.value = this.currentPID;
-
-            if (this.markers != undefined) {
-                this.currentMarkerKey = key = this.findMarkerKey(d);
+                this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
+                this.currentProduct = null;
                 data = this.findDataInfo(key);
+                this.isProject = this.currentProduct.isProject;
             }
+
+            this.deactiveMarker();
+            this.input.product.value = this.currentPID;
 
             if (this.infoTipWindow) this.infoTipWindow.close();
             if (this.infoWindow) this.infoWindow.close();
@@ -1357,27 +1354,49 @@ var typeIcon = {
                         productControlerObj.ChangeUrlForNewContext();
                     }
                 }
-                //h.setIcon(nodeMarker[$thismap.data[key].type].select);
-
-                //h.setZIndex(300);
-                /*this.currentPID = data.id;
-                this.currentMarkerKey = this.findMarkerKey(this.currentPID);
-
-                this.activeMarker(this.currentMarkerKey);*/
 
                 this.activeMarker(this.currentMarkerKey);
 
                 //if (isInit) {
                     if (this.isDetails) {
-                        productControlerObj.ShowDetails(this.currentPID);
+                        productControlerObj.ShowDetails(this.currentPID, this.isProject);
                     } else if (this.isShowUtil) {
                         productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
                     }
                 //}
 
-                if (this.pricefrom && this.pricefrom > 0) this.showInfoWindowProject(h, key, data, isInit);
-                else this.showInfoWindowNode(h, key, data, isInit);
+                console.log(data);
+
+                if (this.isProject) this.contentInfoWindowProject(h, key, data, isInit);
+                else this.contentInfoWindowNode(h, key, data, isInit);
                 //this.showInfoWindowNode(h, key, data, isInit);
+
+                $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
+                $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '", '+data.isProject+')');
+
+                if (isMobile) {
+                    $('.map-item-info-board').show().addClass('mobile');
+                    $('.map-item-info-board-close').show().click(function () {
+                        $('.map-item-info-board').hide();
+                        $thismap.closeInfoWindowCallBack(h);
+                    })
+                } else {
+                    $('.map-item-info-board-close').hide();
+                    //console.log(isInit);
+                    //if (!isInit || !$thismap.isShowUtil) {
+                    if (!$thismap.isShowUtil) {
+                        $thismap.infoWindow.setOptions({
+                            position: h.position,
+                            maxWidth: 280,
+                            content: $('.map-item-info-board').html()
+                        });
+                        $thismap.infoWindow.open($thismap.map, h);
+                    }
+
+                    google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
+                        if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
+                    });
+                }
 
                 this.showOverlapNodes(data.latitude, data.longitude);
 
@@ -1401,14 +1420,20 @@ var typeIcon = {
             $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
         }
 
-        this.showInfoWindowProject = function (h, key, data, isInit = false) {
+        this.contentInfoWindowProject = function (h, key, data, isInit = false) {
+            $('.map-item-info-title').html(data.title).show();
+            $('.map-item-info-price span').html(data.priceTxt);
+            $('.map-item-info-type').html(typeRealEstate[data.type]);
+            $('.map-item-info-address').html(data.address);
+            //$('.map-item-info-des').html(data.details);
+            $('.map-item-info-thumb').attr('src', data.avatar);
+            $('.map-item-info-more > div:not(:first-child)').hide();
         }
 
-        this.showInfoWindowNode = function (h, key, data, isInit = false) {
-            console.log(data);
-
-            $('.map-item-info-title').html(data.title);
-            $('.map-item-info-price span').html(data.price);
+        this.contentInfoWindowNode = function (h, key, data, isInit = false) {
+            $('.map-item-info-title').html(data.title).hide();
+            $('.map-item-info-more > div').show();
+            $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
             $('.map-item-info-contact_phone').html(data.dienthoai);
             $('.map-item-info-contact_name').html(data.tenlienhe);
@@ -1417,33 +1442,6 @@ var typeIcon = {
             $('.map-item-info-thumb').attr('src', data.avatar);
             $('.map-item-info-bed').html(data.sophongngu);
             $('.map-item-info-huong').html(data.huong);
-            $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
-            //$('.map-item-gotoview').attr('href', MAIN_URL+'/map/'+data.id);
-            $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("' + data.id + '")');
-
-            if (isMobile) {
-                $('.map-item-info-board').show().addClass('mobile');
-                $('.map-item-info-board-close').show().click(function () {
-                    $('.map-item-info-board').hide();
-                    $thismap.closeInfoWindowCallBack(h);
-                })
-            } else {
-                $('.map-item-info-board-close').hide();
-                //console.log(isInit);
-                //if (!isInit || !$thismap.isShowUtil) {
-                if (!$thismap.isShowUtil) {
-                    $thismap.infoWindow.setOptions({
-                        position: h.position,
-                        maxWidth: 280,
-                        content: $('.map-item-info-board').html()
-                    });
-                    $thismap.infoWindow.open($thismap.map, h);
-                }
-
-                google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
-                    if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
-                });
-            }
         };
 
         return this
@@ -1572,6 +1570,7 @@ ProductSearchControler = function(h) {
     this.formSearch = $('#map-search-form');
     this.postData = null;
     this.mapResults = $('#map_results');
+    this.mapResultsProject = $('#map_results_project');
 
     this.ProductMap = $('#map').ProductMap('begindraw', 'delshape', 'fullscreen', 'exitfullscreen', mapContext);
 
@@ -1868,99 +1867,190 @@ function remove_popup_info () {
     $('body').removeClass('fixed');
 }
 
-ProductSearchControler.prototype.ShowDetails = function (id) {
+ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) {
     var i = this;
     if (!i.ProductMap.isDetails) {
         i.ProductMap.input.details.value = 1;
         i.ProductMap.isDetails = true;
         i.ChangeUrlForNewContext();
     }
-    $.post(API_URL+'/user/chitietnode/', {id: id}, function (place) {
-        console.log(place);
-        //$.getScript('//maps.googleapis.com/maps/api/js?v=3&key=AIzaSyByWSwMWPPl1SNLeQkKGd25V-YXSVZvt78&libraries=drawing,geometry,places');
-        //var rand = randStr();
-        /*var adr = [];
-        if (place.hem) adr.push(place.hem);
-        if (place.ngach) adr.push(place.ngach);
-        if (place.ngo) adr.push(place.ngo);
-        if (place.duong) adr.push(place.duong);
-        if (place.huyen) adr.push(place.huyen);
-        if (place.diachi) adr.push(place.diachi);
-        place.address = adr.join(', ');*/
-
-        if (place.price < 1) place.priceTxt = place.price*100+' triệu';
-        else place.priceTxt = place.price+' tỷ';
-        $('.v-place-pricenum').html(place.priceTxt);
-        $('.v-place-address span').html(place.address);
-        $('.v-place-area span').html(place.area);
-        $('.v-place-direction span').html(place.huong);
-        $('.v-place-room span').html(place.sophongngu);
-        $('.v-place-type span').html(typeRealEstate[place.type]);
-        $('.v-place-details').html(place.details);
-        $('.v-place-title').html(place.title);
-        $('.v-place-ten').html(place.tenlienhe);
-        $('.v-place-phone').html(place.dienthoai);
-        $('.v-place-email').html(place.email);
-
-        $('.v-place-thumbs').html('');
-        if (place.thumbs) {
-            $.each(place.thumbs, function (ti, tv) {
-                $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
-            });
-            $('.v-place-thumb:first').addClass('active');
-            $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
-        }
-
-        if (place.panorama_image) {
-            $('.panorama').html('<img src="'+place.panorama_image+'">').panorama_viewer({
-                animationTime: 300
-            });
-
-            var interval = null;
-            var check = function() {
-                if ($('.panorama .pv-inner').length) {
-                    clearInterval(interval);
-                    if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
-                }
-            };
-            interval = setInterval(check, 1200);
-        }
-
-        popup_info(i, place.latitude, place.longitude);
-
-        //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
-        //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
-        //i.ProductMap.sv.getPanorama({location: latlng, radius: 50}, i.ProductMap.processSVData);
-
-        //setWidth();
-        $('.popup-content [role="close"]').show();
-
-        $('.v-place-related-list').html('');
-        $.post(API_URL+'/search/nodenangcao/', {nodeid: id}, function (similar) {
-            console.log(similar);
-            for (si = 0; si < 4; si++) {
-                sv = similar[si];
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-            }
+    if (!isProject) {
+        i.ShowDetailsNode(id);
+    } else {
+        i.ShowDetailsProject(id);
+    }
+}
+ProductSearchControler.prototype.ShowDetailsNode = function (id) {
+    var i = this;
+    if (!i.ProductMap.currentProduct) {
+        $.post(API_URL+'/user/chitietnode/', {id: id}, function (place) {
+            i.ProductMap.currentProduct = place;
+            i.setNodeDetails();
         })
-        $('.v-place-mode').click(function () {
-            vid = $(this).attr('id');
-            $('.v-place-board').hide();
-            $('.v-place-'+vid).show();
-            $('.v-place-mode').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('.v-place-thumb').click(function () {
-            img = $(this).attr('src');
-            $('.v-place-bg').css('background-image', 'url('+img+')');
-            $('.v-place-thumb').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('.popup-content [role="close"]').click(function () {
-            i.closePopup();
-        })
-    });
+    } else {
+        i.setNodeDetails();
+    }
 };
+ProductSearchControler.prototype.setNodeDetails = function () {
+    var place = i.ProductMap.currentProduct
+    console.log(place);
+    if (place.isProject) place.price = place.pricefrom;
+    if (place.price < 1) place.priceTxt = place.price*100+' triệu';
+    else place.priceTxt = place.price+' tỷ';
+    $('.v-place-pricenum').html(place.priceTxt);
+    $('.v-place-address span').html(place.address);
+    $('.v-place-area span').html(place.area);
+    $('.v-place-direction span').html(place.huong);
+    $('.v-place-room span').html(place.sophongngu);
+    $('.v-place-type span').html(typeRealEstate[place.type]);
+    $('.v-place-details').html(place.details);
+    $('.v-place-title').html(place.title);
+    $('.v-place-ten').html(place.tenlienhe);
+    $('.v-place-phone').html(place.dienthoai);
+    $('.v-place-email').html(place.email);
+
+    $('.v-place-thumbs').html('');
+    if (place.thumbs) {
+        $.each(place.thumbs, function (ti, tv) {
+            $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
+        });
+        $('.v-place-thumb:first').addClass('active');
+        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
+    }
+
+    if (place.panorama_image) {
+        $('.panorama').html('<img src="'+place.panorama_image+'">').panorama_viewer({
+            animationTime: 300
+        });
+
+        var interval = null;
+        var check = function() {
+            if ($('.panorama .pv-inner').length) {
+                clearInterval(interval);
+                if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
+            }
+        };
+        interval = setInterval(check, 1200);
+    }
+
+    popup_info(i, place.latitude, place.longitude);
+
+    //var latlng = new google.maps.LatLng(place.latitude, place.longitude);
+    //i.ProductMap.panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'));
+    //i.ProductMap.sv.getPanorama({location: latlng, radius: 50}, i.ProductMap.processSVData);
+
+    //setWidth();
+    $('.popup-content [role="close"]').show();
+
+    $('.v-place-related-list').html('');
+    $.post(API_URL+'/search/nodenangcao/', {nodeid: id}, function (similar) {
+        console.log(similar);
+        for (si = 0; si < 4; si++) {
+            sv = similar[si];
+            $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+        }
+    })
+    $('.v-place-mode').click(function () {
+        vid = $(this).attr('id');
+        $('.v-place-board').hide();
+        $('.v-place-'+vid).show();
+        $('.v-place-mode').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.v-place-thumb').click(function () {
+        img = $(this).attr('src');
+        $('.v-place-bg').css('background-image', 'url('+img+')');
+        $('.v-place-thumb').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.popup-content [role="close"]').click(function () {
+        i.closePopup();
+    })
+}
+
+ProductSearchControler.prototype.ShowDetailsProject = function (id) {
+    var i = this;
+    if (!i.ProductMap.currentProduct) {
+        $.post(API_URL+'/user/chitietduan/', {id: id}, function (place) {
+            i.ProductMap.currentProduct = place;
+            i.setProjectDetails();
+        })
+    } else {
+        i.setProjectDetails();
+    }
+};
+ProductSearchControler.prototype.setProjectDetails = function () {
+    var place = i.ProductMap.currentProduct
+    console.log(place);
+    if (place.isProject) place.price = place.pricefrom;
+    if (place.price < 1) place.priceTxt = place.price*100+' triệu';
+    else place.priceTxt = place.price+' tỷ';
+    $('.v-place-pricenum').html(place.priceTxt);
+    $('.v-place-address span').html(place.address);
+    $('.v-place-area span').html(place.area);
+    $('.v-place-direction span').html(place.huong);
+    $('.v-place-room span').html(place.sophongngu);
+    $('.v-place-type span').html(typeRealEstate[place.type]);
+    $('.v-place-details').html(place.details);
+    $('.v-place-title').html(place.title);
+    $('.v-place-ten').html(place.tenlienhe);
+    $('.v-place-phone').html(place.dienthoai);
+    $('.v-place-email').html(place.email);
+
+    $('.v-place-thumbs').html('');
+    if (place.thumbs) {
+        $.each(place.thumbs, function (ti, tv) {
+            $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
+        });
+        $('.v-place-thumb:first').addClass('active');
+        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
+    }
+
+    if (place.panorama_image) {
+        $('.panorama').html('<img src="'+place.panorama_image+'">').panorama_viewer({
+            animationTime: 300
+        });
+
+        var interval = null;
+        var check = function() {
+            if ($('.panorama .pv-inner').length) {
+                clearInterval(interval);
+                if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
+            }
+        };
+        interval = setInterval(check, 1200);
+    }
+
+    popup_info(i, place.latitude, place.longitude);
+
+    //setWidth();
+    $('.popup-content [role="close"]').show();
+
+    $('.v-place-related-list').html('');
+    $.post(API_URL+'/search/duannangcao/', {nodeid: id}, function (similar) {
+        console.log(similar);
+        for (si = 0; si < 4; si++) {
+            sv = similar[si];
+            $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+        }
+    })
+    $('.v-place-mode').click(function () {
+        vid = $(this).attr('id');
+        $('.v-place-board').hide();
+        $('.v-place-'+vid).show();
+        $('.v-place-mode').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.v-place-thumb').click(function () {
+        img = $(this).attr('src');
+        $('.v-place-bg').css('background-image', 'url('+img+')');
+        $('.v-place-thumb').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.popup-content [role="close"]').click(function () {
+        i.closePopup();
+    })
+}
 
 ProductSearchControler.prototype._SearchAction = function(g) {
     var f = this;
@@ -1975,19 +2065,37 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         vk = v.split('=')[0];
         vl = v.split('=')[1];
         d[vk] = vl;
-    })
+    });
     /*var lat = parseFloat(d.lat);
     var lng = parseFloat(d.lng);
     var radius = parseFloat(d.location_radius);*/
 
-    if (this.ProductMap.isDrawing) {
+    /*if (this.ProductMap.isDrawing) {
         for (var key in g) d[key] = g[key];
         //d = Object.assign({}, e, g);
-    }
+    }*/
+    //if (g.length) {
+        for (var key in g) d[key] = g[key];
+    //}
+    delete d.lstPoint;
+    delete d.points;
+    delete d.center;
+    delete d.cpid;
+    delete d.zoom;
+    delete d.isPageLoad;
+    delete d.isSearchForm;
+    delete d.m;
+
     d.searchtype = f.ProductMap.searchtype;
 
-    if (!f.ProductMap.listLatlgn && (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) ) {
+    console.log(g);
+    //console.log(f.ProductMap.listLatlgn+'~~~~');
+
+    if ( (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) ) {
         //f.ProductMap.boundsChangeCallBack();
+        if (!f.ProductMap.bounds) {
+            f.ProductMap.bounds = f.ProductMap.map.getBounds();
+        }
         d.minLat = f.ProductMap.bounds.f.b;
         d.minLng = f.ProductMap.bounds.b.b;
         d.maxLat = f.ProductMap.bounds.f.f;
@@ -1995,6 +2103,12 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     }
 
     if (!d.room) d.room = "CN";
+
+    d.pricefrom = d.pricefrom_giatri;
+    if (d.pricefrom_donvi == 'm') {
+        d.pricefrom = d.pricefrom_giatri/1000;
+    }
+    if (!d.pricefrom) d.pricefrom = "CN";
 
     this.searchVar = d;
 
@@ -2022,11 +2136,10 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             console.log(data);
             // show on map
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
+            console.log(f.ProductMap.data);
             //f.showList(data);
             if (isMobile) {
-                $('.map-search-tabs').slideUp(100, function () {
-                    $('#mapSide').removeClass('open');
-                });
+                closeFilterBoard();
             }
         },
         error: function(a, b, c) {
@@ -2041,21 +2154,43 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     });*/
 };
 
+function toggleFilterBoard (s) {
+    if (s == 'close') {
+        $('.map-filter-board').slideUp(100, function () {
+            $(this).removeClass('open');
+            if (isMobile) {
+                $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
+            }
+        })
+    } else {
+        $('.map-filter-board').slideDown(100, function () {
+            $(this).addClass('open');
+            if (isMobile) {
+                $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
+                $('.map-list-tabs').slideUp(100, function () {
+                    $(this).closest('#mapSide').removeClass('open');
+                });
+            }
+        })
+    }
+}
 
 ProductSearchControler.prototype.getProjectNodes = function () {
 
 }
 
 ProductSearchControler.prototype.callBackFindBound = function () {
-    var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
-    console.log(this.ProductMap.bounds);
-    this._SearchAction(g)
+    //var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
+    //console.log(this.ProductMap.bounds);
+    this._SearchAction()
 }
 
 ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) {
     this.lstPoint = this.ProductMap.input.points.value;
     if (this.lstPoint != null && this.lstPoint.length > 0) {
-        var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
+        //var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
+        var g = {};
+        //console.log(g);
         /*
         g.ptype = $('.product-form > .tab > .active').attr('cateid');
         g.cate = this.hdbProductType.getValue();
@@ -2070,9 +2205,9 @@ ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) 
         g.isSearchForm = false;
         g.isPageLoad = false;
         g.minLat = b;
-        g.minlong = c;
+        g.minLng = c;
         g.maxLat = d;
-        g.maxlong = e;
+        g.maxLng = e;
         g.m = "shape";
         if (f != undefined) {
             g.cpid = f.cpid;
@@ -2097,8 +2232,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&street=" + ($input.street.value != undefined ? $input.street.value : '');
     a += "&room=" + ($input.room.value != undefined ? $input.room.value : '');
     a += "&direction=" + ($input.direction.value != undefined ? $input.direction.value : '');
-    //a += "&project=" + ($input.project.value != undefined ? $input.project.value : '');
-    a += "&project=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? this.ProductMap.isProject : 0);
+    a += "&isProject=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null ? (this.ProductMap.isProject ? 1 : 0) : 0);
     //a += "&points=" + ( (this.ProductMap.isDrawing || $input.district.value) ? ($input.points.value != undefined ? $input.points.value : '') : '');
     a += "&place_search="+$input.place_search.value;
     a += "&points=" + (!$input.place_search && $input.points.value != undefined ? $input.points.value : '');
@@ -2118,7 +2252,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
 var oldWidth = $(window).width();
 var oldHeight = $(window).height();
 
-function render (isResizeSmaller = false, searchVisible = false) {
+function render (isResizeSmaller = false, listVisible = false) {
     var w = $(window).width();
     var h = $(window).height();
 
@@ -2137,25 +2271,14 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //setWidth(w);
     //}
 
-    $('ul.map_search_select>li>a').click(function (e) {
-        var type = $(this).parent('li').attr('attr-type');
-        $('#map-search-form .form-group[attr-type]').hide();
-        $('#map-search-form .form-group[attr-type="'+type+'"]').show();
-        $('#map-search-form input#searchtype').val(type == 'node' ? 1 : type == 'project' ? 2 : 0);
-        //productControlerObj.ChangeUrlForNewContext();
-    });
-
-    var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
-    $('.map-search-tabs .tab-pane').css('height', sidePaneHeight+'px!important');
-
-    if (searchVisible) { // show search
+    if (listVisible) { // show list
         $('.map-tabs-toggle').html('<i class="fa fa-angle-double-up"></i>');
-        $('.map-search-tabs').slideDown(100, function () {
+        $('.map-list-tabs').slideDown(100, function () {
             $(this).closest('#mapSide').addClass('open');
         });
     } else {
         $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
-        $('.map-search-tabs').slideUp(100, function () {
+        $('.map-list-tabs').slideUp(100, function () {
             $(this).closest('#mapSide').removeClass('open');
         });
     }
@@ -2167,11 +2290,26 @@ function render (isResizeSmaller = false, searchVisible = false) {
         $('nav').removeClass('navbar-fixed-top');
         $('.v-place-related').removeClass('popup-section section-light');
 
-        $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-50)
+        $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-170)
     } else {
         $('body').removeClass('mobile');
     }
-
+    if (!isMobile) {
+        /*console.log('width:'+$('.li-input').width()+'px!important;'+
+        'left:'+$('.li-input').offset().left+'px!important');
+        /*$('#map_search').attr('style',
+            'width:'+$('.li-input').width()+'px!important;'+
+            'left:'+$('.li-input').offset().left+'px!important'
+        );*/
+        if ($('#map_search').find('style').length) {
+            $('#map_search').find('style').remove();
+        }
+        $('#map_search').append('<style>#map_search{width:'+$('.li-input').width()+'px!important;left:'+$('.li-input').offset().left+'px!important}</style>');
+    } else {
+        var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height();
+        $('.map-list-tabs, .map-filter-board').attr('style', $(this).attr('style')+';height:'+sidePaneHeight+'px!important');
+        $('#map-search-form').css('height', sidePaneHeight-42);
+    }
 }
 
 function setWidth(w) {
@@ -2250,15 +2388,32 @@ $(window).ready(function() {
 
     if (!isMobile) $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
-    render(false, (isMobile ? false : true));
+
+    $('ul.map_search_select>li>a').click(function (e) {
+        var type = $(this).parent('li').attr('attr-type');
+        $('#map-search-form .form-group[attr-type]').hide();
+        $('#map-search-form .form-group[attr-type="'+type+'"]').show();
+        $('#map-search-form input#searchtype').val(type == 'node' ? 1 : type == 'project' ? 2 : 0);
+        //productControlerObj.ChangeUrlForNewContext();
+    });
 
     if (isMobile) {
         //$('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
-        $('#mapSide .li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="open-filter">Filter</div></li>');
+        $('#mapSide .map-tabs-toggle').before('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="toggle-filter">Filter</div></li>');
     } else {
         //$('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
-        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="open-filter">Filter</div></li>');
+        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="toggle-filter">Filter</div></li>');
     }
+
+    $('.toggle-filter').click(function () {
+        if ($('.map-filter-board').is(':visible')) {
+            toggleFilterBoard('close');
+        } else {
+            toggleFilterBoard('open');
+        }
+    });
+
+    render(false, (isMobile ? false : true));
 
     productControlerObj = new ProductSearchControler({
         context: mapContext
@@ -2267,8 +2422,8 @@ $(window).ready(function() {
     $(window).on('resize', function () {
         var b = false;
         if (oldWidth > $(window).width() || oldHeight > $(window).height()) b = true;
-        var searchVisible = $('.map-search-tabs').is(':visible')
-        render(b, searchVisible);
+        var listVisible = $('.map-list-tabs').is(':visible')
+        render(b, listVisible);
         productControlerObj.ProductMap.resize();
     });
     $('.toggle-search-advanced').click(function () {
@@ -2281,12 +2436,18 @@ $(window).ready(function() {
     $('.map-tabs-toggle').click(function () {
         var currentlyHide = true;
         var $this = $(this);
-        var searchVisible = !$('.map-search-tabs').is(':visible');
-        render(false, searchVisible);
+        var listVisible = !$('.map-list-tabs').is(':visible');
+        render(false, listVisible);
+        if (isMobile) {
+            toggleFilterBoard('close')
+        }
     });
     $('#mapSide .nav-tabs>li>a').click(function () {
         var $div = $(this).closest('.nav-tabs-custom');
-        render(false, true)
+        render(false, true);
+        if (isMobile) {
+            toggleFilterBoard('close')
+        }
     });
 
 })

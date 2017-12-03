@@ -19,17 +19,22 @@
         </div>
     </div>
 
-    <div class="map-side nav-tabs-custom no-padding" id="map-side-search">
+    <div class="map-side nav-tabs-custom no-padding open" id="map-side-search">
         <ul class="nav nav-tabs">
-            <li class="li-list active"><a href="#map_results" data-toggle="tab">BĐS</a></li>
-            <li class="li-list-project"><a href="#map_results_project" data-toggle="tab">Dự án</a></li>
+            <li class="li-list"><a href="#map_results" data-toggle="tab">List</a></li>
+            <li class="li-filter active"><a href="#map_search" data-toggle="tab">Filter</a></li>
             <div class="map-tabs-toggle"><i class="fa fa-angle-double-down"></i></div>
         </ul>
-        <div class="tab-content map-list-tabs hide">
-            <div class="tab-pane active" id="map_results">
-                <div class="empty_results">Không có kết quả.</div>
+        <div class="tab-content map-search-tabs">
+            <div class="tab-pane active" id="map_search">
+                <ul class="nav nav-tabs map_search_select">
+                    <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
+                    <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
+                </ul>
+
+                <?php include 'form.search.php' ?>
             </div>
-            <div class="tab-pane hide" id="map_results_project">
+            <div class="tab-pane hide" id="map_results">
                 <div class="empty_results">Không có kết quả.</div>
             </div>
         </div>
@@ -37,16 +42,6 @@
 </div>
 
 <div id="map"></div>
-
-
-<div class="map-filter-board" id="map_search">
-    <ul class="nav nav-tabs map_search_select">
-        <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
-        <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
-    </ul>
-
-    <?php include 'form.search.php' ?>
-</div>
 
 
 <div class="btn-map-update-result hidden">
@@ -142,12 +137,12 @@
         <h4 class="map-item-info-title iw-title">Place title</h4>
         <div class="iw-subTitle"><i class="fa fa-map-marker"></i> <span class="map-item-info-address"></span></div>
         <div class="map-item-info-more">
-            <div title="Loại bất động sản"><i class="fa fa-building"></i> Loại: <span class="map-item-info-type"></span></div>
+                <div title="Loại bất động sản"><i class="fa fa-building"></i> Loại: <span class="map-item-info-type"></span></div>
 
-            <div title="Số phòng ngủ"><i class="fa fa-bed"></i> Số phòng ngủ: <span class="map-item-info-bed"></span></div>
-            <div title="Hướng"><i class="fa fa-map-signs"></i> Hướng: <span class="map-item-info-huong"></span></div>
+                <div title="Số phòng ngủ"><i class="fa fa-bed"></i> Số phòng ngủ: <span class="map-item-info-bed"></span></div>
+                <div title="Hướng"><i class="fa fa-map-signs"></i> Hướng: <span class="map-item-info-huong"></span></div>
 
-            <div title="Liên hệ"><i class="fa fa-phone"></i> Liên hệ: <span class="map-item-info-contact_phone"></span> (<span class="map-item-info-contact_name"></span>)</div>
+                <div title="Liên hệ"><i class="fa fa-phone"></i> Liên hệ: <span class="map-item-info-contact_phone"></span> (<span class="map-item-info-contact_name"></span>)</div>
         </div>
 
         <div class="hidden no-padding-left">
