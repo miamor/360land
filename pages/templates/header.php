@@ -51,7 +51,6 @@ $config->addJS('dist', 'main.js'); ?>
 		</div>
 
 		<form class="nav-search">
-			<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>
 		</form>
 	</nav>
 

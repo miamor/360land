@@ -1,3 +1,5 @@
+<form id="place_search_form" method="post" enctype="multipart/form-data"></form>
+
 <form id="map-search-form">
     <div id="map-input" class="hidden">
         <input type="text" id="isShowUtil" name="isShowUtil" value="0"/>
@@ -14,10 +16,13 @@
 
     <div class="form-group p_type" attr-type="node">
         <div class="col-lg-6 no-padding">
-            <label><input type="checkbox" name="type_action" class="minimal" value="1" checked> Mua</label>
+            <label><input type="radio" name="type_action" class="minimal" value="2" checked> Mua</label>
         </div>
         <div class="col-lg-6 no-padding">
-            <label><input type="checkbox" name="type_action" class="minimal" value="2" checked> Thuê</label>
+            <label><input type="radio" name="type_action" class="minimal" value="1"> Thuê</label>
+        </div>
+        <div class="col-lg-6 no-padding">
+            <label><input type="radio" checked name="type_action" class="minimal" value="0"> Tất cả</label>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -134,6 +139,16 @@
                 <option value="9">300 - 500 m2</option>
                 <option value="10">>= 500 m2</option>
             </select>
+    </div>
+
+    <div class="form-group hide" attr-type="project">
+        <input id="pricefrom_giatri" type="number" min="0" class="form-control" placeholder="Giá từ"/>
+        <select id="pricefrom_donvi" class="form-control">
+            <option value="m">triệu đồng</option>
+            <option value="b">tỷ đồng</option>
+            <option value="mp">triệu đồng/m2</option>
+        </select>
+        <input name="pricefrom" id="pricefrom" type="hidden"/>
     </div>
 
     <div class="form-group" attr-type="node">

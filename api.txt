@@ -1,0 +1,179 @@
+/user/search (POST)
+Search
+{
+	"type_search": 1,
+	"type_action": 1,
+	
+	"type": "CN",
+	"city": "HN",
+	"district": "CN",
+	"ward": "CN",
+	"street": "CN",
+	"direction": "CN",
+	"room": "CN",
+	"price": "-1",
+	"area": "CN",
+	
+	"input": "",
+	"pricefrom": "1",
+	
+	"minLat": 21,
+	"maxLat": 22,
+	"minLng": 105,
+	"maxLng": 106
+}
+
+{"filter":0,"sort":0,"v":1512058328853,"isShowUtil":"0","searchtype":"1","product":"","zoom":"9","center":"21.20047967762299%3A105.89806518554687","points":"","details":"","type_action":1,"type":"CN","project_name":"","city":"CN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN","minLat":20.279007308960228,"minLng":104.93264160156252,"maxLat":21.783793515602856,"maxLng":106.76735839843752,"type_search":1}
+
+{"filter":0,"sort":0,"v":1512058328853,"isShowUtil":"0","searchtype":"1","product":"","zoom":"9","center":"21.20047967762299%3A105.89806518554687","points":"","details":"","type_action":"2","type":"CN","project_name":"","city":"CN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN","minLat":20.279007308960228,"minLng":104.93264160156252,"maxLat":21.783793515602856,"maxLng":106.76735839843752,"type_search":"1"}
+
+{"type_action":1,"type":"CN","city":"HN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN",
+"minLat":20.656621616272986,"minLng":105.39132080078127,"maxLat":21.40902854019662,"maxLng":106.30867919921877,"type_search":1}
+
+
+/search/nodewithlatlng
+{
+	(float)
+	lat
+	lng
+}
+
+/search/searchservicebound (POST)
+utility
+{
+	(float)
+	minLat
+	maxLat
+	minLng
+	maxLng
+}
+
+/search/duanbasic (POST)
+{
+	input
+}
+
+(chi tiet du an)
+/search/duannangcao (POST)
+{
+	duan: (string) (duanid),
+	pricefrom: (string)
+}
+
+/search/nodenangcao
+
+(chi tiet node)
+/search/chitietnode
+{
+	id: (string)
+}
+
+(chi tiet duan)
+/search/chitietduan
+{
+	id: (string)
+}
+return:
+/manager/realestatenode/ (POST)
+{
+	title:
+	
+	price: (float) (don vi: ty)
+	area: (float)
+	
+	tinh:
+	huyen:
+	xa:
+	duong:
+	details_address: (text string)
+	
+	address: (gop)
+	
+	huong: 
+	sophongngu:
+	details:
+	
+	latitude:
+	longitude:
+	
+	(neu co userid thi request de lay du lieu)
+	tenlienhe:
+	diachi:
+	dienthoai:
+	email:
+	userid:
+	
+	timefrom:
+	
+	typenode: (true: ban | false:mua)
+	
+	duanid: (string) ""
+	tenduan: (string)
+	
+	type: (loai bat dong san)
+	
+	(can ban)
+	panorama_image:
+	thumbs: (string) (img1.png|img2.png)
+	timeto:
+}
+
+
+
+--------------------------------- Them node -----------------------------------------
+
+/manager/realestatenode/ (POST)
+{
+	title:
+	
+	price: (float) (don vi: ty)
+	area: (float)
+	
+	tinh:
+	huyen:
+	xa:
+	duong:
+	details_address: (text string)
+	
+	huong: 
+	sophongngu:
+	details:
+	
+	latitude:
+	longitude:
+	
+	(neu co userid thi request de lay du lieu)
+	tenlienhe:
+	diachi:
+	dienthoai:
+	email:
+	
+	timefrom:
+	
+	typenode: (true: ban | false:mua)
+	
+	duanid: (string) ""
+	tenduan: (string)
+	
+	type: (loai bat dong san)
+	
+	(can ban)
+	panorama_image:
+	thumbs: (string) (img1.png|img2.png)
+	timeto:
+}
+header: token
+
+
+
+/login/user
+{
+	username:
+	password:
+	
+}
+return token (string) (save in localstorage)
+
+
+/manager_user/info (get)
+header: 
