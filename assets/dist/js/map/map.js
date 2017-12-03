@@ -2254,10 +2254,10 @@ $(window).ready(function() {
 
     if (isMobile) {
         //$('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
-        $('#mapSide .li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="open-filter">Filter</div></li>');
+        $('#mapSide .li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> </li>');
     } else {
         //$('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
-        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> <div class="open-filter">Filter</div></li>');
+        $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
     }
 
     productControlerObj = new ProductSearchControler({
