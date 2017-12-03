@@ -142,12 +142,12 @@
         <h4 class="map-item-info-title iw-title">Place title</h4>
         <div class="iw-subTitle"><i class="fa fa-map-marker"></i> <span class="map-item-info-address"></span></div>
         <div class="map-item-info-more">
-                <div title="Loại bất động sản"><i class="fa fa-building"></i> Loại: <span class="map-item-info-type"></span></div>
+            <div title="Loại bất động sản"><i class="fa fa-building"></i> Loại: <span class="map-item-info-type"></span></div>
 
-                <div title="Số phòng ngủ"><i class="fa fa-bed"></i> Số phòng ngủ: <span class="map-item-info-bed"></span></div>
-                <div title="Hướng"><i class="fa fa-map-signs"></i> Hướng: <span class="map-item-info-huong"></span></div>
+            <div title="Số phòng ngủ"><i class="fa fa-bed"></i> Số phòng ngủ: <span class="map-item-info-bed"></span></div>
+            <div title="Hướng"><i class="fa fa-map-signs"></i> Hướng: <span class="map-item-info-huong"></span></div>
 
-                <div title="Liên hệ"><i class="fa fa-phone"></i> Liên hệ: <span class="map-item-info-contact_phone"></span> (<span class="map-item-info-contact_name"></span>)</div>
+            <div title="Liên hệ"><i class="fa fa-phone"></i> Liên hệ: <span class="map-item-info-contact_phone"></span> (<span class="map-item-info-contact_name"></span>)</div>
         </div>
 
         <div class="hidden no-padding-left">
