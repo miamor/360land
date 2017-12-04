@@ -760,6 +760,12 @@ body.mobile .nav-icon{display:none}
 
 .label{padding:.2em .6em}
 
+
+/* Login, register */
+#register{margin-top:30px}
+.social-login{padding-top:45px}
+
+
 /* User */
 .v-user-top{padding:10px 0 15px;border-bottom:1px solid #eee}
 body:not(.mobile) .v-user-top{padding:20px 0}

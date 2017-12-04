@@ -13,6 +13,9 @@ function getUserInfo () {
         },
         success: function (response) {
             localStorage.setItem('user_info', JSON.stringify(response));
+        },
+        error: function (a, b, c) {
+            console.log(a);
         }
     })
 }
@@ -136,8 +139,11 @@ jQuery(document).ready(function ($) {
     flatApp();
 
     if (localStorage.getItem('token')) {
-        if (!localStorage.getItem('user_info')) getUserInfo();
+        if (!localStorage.getItem('user_info') || !__userInfo) {
+            getUserInfo();
+        }
         __userInfo = JSON.parse(localStorage.getItem('user_info'));
+        console.log(__userInfo);
         $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
     } else {
         $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');

@@ -1,5 +1,5 @@
 <?php
-    $pageTitle = 'Login';
+    $pageTitle = 'Đăng nhập';
     include 'templates/header.php';
 
     $config->addJS('dist', $page.'/login.js');
