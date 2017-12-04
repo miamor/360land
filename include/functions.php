@@ -15,6 +15,9 @@ define('PLUGINS', ASSETS.'/plugins');
 define('GG_API_KEY', 'AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc');
 define('GG_CX_ID', '014962602028620469778:yf4br-mf6mk');
 
+define('FB_APP_ID', '148978169071502');
+define('FB_APP_SECRET', '37b92fcf110012e6210fe432f8fd1439');
+
 $__page = str_replace($__pattern.'/', '', $_SERVER['REQUEST_URI']);
 
 header("Access-Control-Allow-Origin: *");

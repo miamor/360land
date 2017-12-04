@@ -27,7 +27,6 @@ $config->addJS('dist', 'main.js'); ?>
 
 </head>
 <body>
-
     <nav class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
 		<div class="nav-icon"><i class="fa fa-reorder"></i></div>
 		<ul class="nav navbar-nav">

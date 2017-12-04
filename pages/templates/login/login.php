@@ -1,5 +1,5 @@
 <div class="col-lg-1"></div>
-<form id="login" class="col-lg-10">
+<form id="login" class="col-lg-7">
     <div class="form-group">
         <div class="col-lg-3 control-label">Tên đăng nhập: </div>
         <div class="col-lg-9">
@@ -20,5 +20,10 @@
         <input type="submit" class="btn" value="Đăng nhập"/>
     </div>
 </form>
+<div class="col-lg-3">
+    <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+</div>
 <div class="col-lg-1"></div>
 <div class="clearfix"></div>
+
+<script>var FB_APP_ID = '<?php echo FB_APP_ID ?>'</script>
