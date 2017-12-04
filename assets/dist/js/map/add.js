@@ -102,14 +102,14 @@ $(function () {
     })
 
     $('.place-add').submit(function () {
-        $.ajax({
+        /*$.ajax({
             url: '',
             type: 'post',
             data: $(this).serialize(),
             success: function (response) {
 
             }
-        })
+        })*/
         return false
     })
 })

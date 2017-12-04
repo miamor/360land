@@ -5,7 +5,7 @@ html, body{
     font-family: 'Source Sans Pro', sans-serif
 }
 #mapSide .nav-tabs-custom, #iw-container,#controlArea,#controlUtility,#mapSide,#map_search{font-family:'Source Sans Pro', sans-serif}
-.container{padding-bottom:20px}
+.container{padding:20px}
 a,a:hover,a:active{text-decoration: none}
 .navbar{
     margin:0!important
@@ -897,8 +897,8 @@ body:not(.mobile) .map-filter-board.open{max-height:80%}
 body.mobile .map-filter-board.open{display:block;top:39px!important}
 .map-filter-board.open:before{content:'';z-index:999;position:absolute;right:40px;top:-5px;width:10px;height:10px;border:1px solid #eee;transform:rotate(45deg);border-width:1px 0 0 1px;background:#f7f7f7}
 .map-filter-board:not(.open){display:none}
-#map-search-form{overflow:auto}
-body:not(.mobile) #map-search-form{max-height:430px;margin-bottom:10px}
+#map-search-form{overflow:auto;margin-bottom:10px}
+body:not(.mobile) #map-search-form{max-height:430px}
 
 #pricefrom_giatri{width:59%!important;margin-right:1%!important}
 #pricefrom_donvi{width:39%!important}

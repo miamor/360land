@@ -1334,7 +1334,7 @@ var typeIcon = {
                 this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
                 this.currentProduct = null;
                 data = this.findDataInfo(key);
-                this.isProject = this.currentProduct.isProject;
+                this.isProject = data.isProject;
             }
 
             this.deactiveMarker();
@@ -1612,7 +1612,13 @@ ProductSearchControler = function(h) {
         i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
         i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
         i.ProductMap.searchtype = ($('.map_search_select li.active').attr('attr-type') == 'node' ? 1 : 2);
-        i._SearchAction();
+        var d = {};
+        $.each(e, function (i, v) {
+            vk = v.split('=')[0];
+            vl = v.split('=')[1];
+            d[vk] = vl;
+        });
+        i._SearchAction(d);
         i.ChangeUrlForNewContext();
         return false
     });
@@ -2056,9 +2062,9 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     var f = this;
     e = f.formSearch.serialize().split('&');
     var d = {};
-    d.filter = 0;
+    /*d.filter = 0;
     d.sort = 0;
-    d.v = new Date().getTime();
+    d.v = new Date().getTime();*/
 
     //d = JSON.parse(JSON.stringify(this.formSearch.serializeArray()), true);
     /*var lat = parseFloat(d.lat);
@@ -2071,18 +2077,12 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     }*/
 
     d.city = d.district = d.ward = d.street = d.room = d.direction = d.pricefrom = d.area = "CN";
-    d.input = "";
     d.price = "-1";
     d.type_search = d.type_action = "0";
 
-    if (g.length) {
+    if (g && g.length) {
         for (var key in g) d[key] = g[key];
     } else {
-        $.each(e, function (i, v) {
-            vk = v.split('=')[0];
-            vl = v.split('=')[1];
-            d[vk] = vl;
-        });
     }
     delete d.lstPoint;
     delete d.points;
@@ -2092,8 +2092,10 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     delete d.isPageLoad;
     delete d.isSearchForm;
     delete d.m;
+    //delete d.searchtype;
 
-    d.searchtype = f.ProductMap.searchtype;
+    //d.searchtype = f.ProductMap.searchtype;
+    d.input = (d.project_name && d.project_name != undefined ? d.project_name : "");
 
     console.log(g);
     //console.log(f.ProductMap.listLatlgn+'~~~~');
@@ -2128,7 +2130,6 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     }*/
     //d.type_search = parseInt(f.ProductMap.searchtype);
     //d.type_action = parseInt(d.type_action);
-    d.input = d.project_name;
     d.type_search = f.ProductMap.searchtype.toString();
 
     console.log(d);
@@ -2305,7 +2306,11 @@ function render (isResizeSmaller = false, searchVisible = false) {
         $('nav').removeClass('navbar-fixed-top');
         $('.v-place-related').removeClass('popup-section section-light');
 
-        var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height()-32;
+        var sidePaneHeight = h-$('.map-side ul.nav').height()-$('nav.navbar').height()-40;
+        if (!$('.map-search-tabs').is(':visible')) {
+            sidePaneHeight -= 20;
+            console.log('sidePaneHeight -= 20;');
+        }
         $('#map-search-form,.map-results-tabs').attr('style', 'height:'+sidePaneHeight+'px!important');
 
         $('#place_search').width($('#mapSide ul').width()-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-60)

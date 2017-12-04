@@ -118,7 +118,7 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="form-grroup">
+    <div class="form-group">
         <div class="col-md-4 no-padding control-label">Hướng</div>
         <div class="col-md-8 no-padding">
             <select id="direction" name="direction" class="form-control">
@@ -135,9 +135,17 @@
     </div>
     <div class="form-group">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá * </div>
-        <div class="col-md-3 no-padding">
-            <input type="text" placeholder="Giá *" class="form-control" name="price"/>
+        <div class="col-md-5 no-padding">
+            <input type="text" placeholder="Giá *" class="form-control" name="price_giatri" id="price_giatri"/>
         </div>
+        <div class="col-md-3 no-padding-right">
+            <select id="price_donvi" name="price_donvi" class="form-control">
+                <option value="m">triệu đồng</option>
+                <option value="b">tỷ đồng</option>
+                <option value="mp">triệu đồng/m2</option>
+            </select>
+        </div>
+        <input type="hidden" name="price"/>
         <div class="clearfix"></div>
     </div>
 
