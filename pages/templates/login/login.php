@@ -19,7 +19,7 @@
         </div>
 
         <div class="add-form-submit form-one-button center">
-            <input type="reset" class="btn btn-default" value="Nhập lại"/>
+            <a class="forgetpassword" href="?mode=forgetpassword">Quên mật khẩu</a>
             <input type="submit" class="btn" value="Đăng nhập"/>
         </div>
     </form>
@@ -67,6 +67,25 @@
             <div class="col-lg-3 control-label">Công ty</div>
             <div class="col-lg-9">
                 <input class="form-control" type="text" name="company"/>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3 control-label">Giới tính</div>
+            <div class="col-lg-9">
+                <div class="col-lg-6 no-padding">
+                    <label><input type="radio" name="sex" class="minimal" value="true" checked> Nam</label>
+                </div>
+                <div class="col-lg-6 no-padding">
+                    <label><input type="radio" name="sex" class="minimal" value="false"> Nữ</label>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3 control-label">Ngày sinh</div>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" id="datepicker" name="birthday" placeholder="dd/mm/yyyy"/>
             </div>
             <div class="clearfix"></div>
         </div>

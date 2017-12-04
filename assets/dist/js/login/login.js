@@ -25,25 +25,29 @@ function loginForm () {
 
 function registerForm () {
     $('#register').submit(function () {
-        $.ajax({
-            url: API_URL+'/user/create/',
-            type: 'post',
-            data: $(this).serialize(),
-            success: function (response) {
-                if (("token" in response) == false) {
-                    console.log(response);
-                } else {
-                    __token = response.token;
-                    localStorage.setItem("token" , __token);
-                    localStorage.setItem("login_time" , Date.now());
-                    console.log(__token);
-                    window.location.href = MAIN_URL;
+        if (!$('[name="username"]').val() || !$('[name="password"]').val() || !$('[name="name"]').val() || !$('[name="email"]').val() || !$('[name="phone"]').val()) {
+            console.log('Missing parameters');
+        } else {
+            $.ajax({
+                url: API_URL+'/user/create/',
+                type: 'post',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (("token" in response) == false) {
+                        console.log(response);
+                    } else {
+                        __token = response.token;
+                        localStorage.setItem("token" , __token);
+                        localStorage.setItem("login_time" , Date.now());
+                        console.log(__token);
+                        window.location.href = MAIN_URL;
+                    }
+                },
+                error: function (a, b, c) {
+                    console.log(a)
                 }
-            },
-            error: function (a, b, c) {
-                console.log(a)
-            }
-        });
+            });
+        }
         return false
     })
 }
@@ -124,6 +128,9 @@ function testAPI() {
 
 
 $(document).ready(function () {
+    $("#datepicker").datepicker({
+        dateFormat: "dd/mm/yy"
+    });
     if (localStorage.getItem('token')) { // already logged in
         window.location.href = MAIN_URL;
     } else {
