@@ -27,7 +27,7 @@
         </ul>
         <div class="tab-content map-search-tabs">
             <div class="tab-pane active" id="map_search">
-                <ul class="nav nav-tabs map_search_select">
+                <ul class="nav nav-tabs map_search_select map-nav-select">
                     <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
                     <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
                 </ul>
@@ -35,7 +35,18 @@
                 <?php include 'form.search.php' ?>
             </div>
             <div class="tab-pane hide" id="map_results">
-                <div class="empty_results">Không có kết quả.</div>
+                <ul class="nav nav-tabs map_results_select map-nav-select">
+                    <li class="active"><a href="#map_results_node" data-toggle="tab">Bất động sản</a></li>
+                    <li><a href="#map_results_project" data-toggle="tab">Dự án</a></li>
+                </ul>
+                <div class="tab-content map-results-tabs">
+                    <div class="tab-pane active" id="map_results_node">
+                        <div class="empty_results">Không có bất động sản nào.</div>
+                    </div>
+                    <div class="tab-pane hide" id="map_results_project">
+                        <div class="empty_results">Không có dự án nào.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
