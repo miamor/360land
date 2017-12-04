@@ -46,8 +46,6 @@ $config->addJS('dist', 'main.js'); ?>
 		</ul>
 
 		<div class="nav-user">
-			<img class="nav-user-avt" src="https://thumbs.trulia-cdn.com/pictures/thumbs_5/zillowstatic/IS2b9tl546el6w1000000000.jpg"/>
-			<h4 class="nav-user-name">Tu Nguyen</h4>
 		</div>
 
 		<form class="nav-search">

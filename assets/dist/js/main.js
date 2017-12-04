@@ -2,6 +2,20 @@
 
 var isMobile = ($(window).width() <= 500 ? true : false);
 var API_URL = '//45.119.82.40:8000';
+var __token = __userInfo = null;
+
+function getUserInfo () {
+    $.ajax({
+        url: API_URL+'/manager_user/info/',
+        type: 'get',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function (response) {
+            localStorage.setItem('user_info', JSON.stringify(response));
+        }
+    })
+}
 
 function randStr() {
   var text = "";
@@ -120,6 +134,15 @@ String.prototype.getQueryHash = function (name, defaultVal) {
 
 jQuery(document).ready(function ($) {
     flatApp();
+
+    if (localStorage.getItem('token')) {
+        if (!localStorage.getItem('user_info')) getUserInfo();
+        __userInfo = JSON.parse(localStorage.getItem('user_info'));
+        $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+    } else {
+        $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
+    }
+
     if (isMobile) $('body').addClass('mobile');
     //else $('.container').height($(window).height());
     if (!isMobile && $(window).width() < 1000) {
