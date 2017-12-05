@@ -37,7 +37,7 @@ function registerForm () {
             console.log('Missing parameters');
         } else {
             // validateCaptcha
-            var challengeEle = document.getElementById("recaptcha_challenge_field"),
+            /*var challengeEle = document.getElementById("recaptcha_challenge_field"),
             responseEle = document.getElementById("recaptcha_response_field"),
             result,
             reqStr = "";
@@ -65,8 +65,10 @@ function registerForm () {
                 console.log("reCAPTCHA No Result");
             }
             console.log("reCAPTCHA needs to be filled in");
+            */
+            submitRegister();
+            return false
         }
-        return false
     })
 }
 
@@ -174,6 +176,7 @@ $(document).ready(function () {
         window.location.href = MAIN_URL;
     } else {
         loginForm();
+        $('head').append('<script src="https://www.google.com/recaptcha/api.js"></script>');
         registerForm()
     }
 })

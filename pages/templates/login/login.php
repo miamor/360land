@@ -95,6 +95,8 @@
             <input name="recaptcha_response_field" id="recaptcha_response_field" type="hidden" value="">
         </div>
 
+        <div class="g-recaptcha" data-sitekey="6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ"></div>
+
         <div class="add-form-submit form-one-button center">
             <input type="reset" class="btn btn-default" value="Nhập lại"/>
             <input type="submit" class="btn" value="Đăng ký"/>
@@ -112,4 +114,3 @@
 <div class="clearfix"></div>
 
 <script>var FB_APP_ID = '<?php echo FB_APP_ID ?>'</script>
-<script src='https://www.google.com/recaptcha/api.js'></script>
