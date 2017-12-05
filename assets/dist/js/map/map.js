@@ -1014,6 +1014,9 @@ var typeIcon = {
                 this.showInfoWindow(this.currentPID, true);
             }
 
+            console.log('hide loading-layout');
+            $('.loading-layout').hide();
+
             /*$thismap.markerCluster = new MarkerClusterer($thismap.map, $thismap.markers, {
                 imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
                 maxZoom: 13
@@ -2151,6 +2154,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             }
         },
         error: function(a, b, c) {
+            $('.loading-layout').hide();
             console.log(a)
         }
     });
