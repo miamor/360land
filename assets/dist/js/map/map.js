@@ -2079,7 +2079,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         //d = Object.assign({}, e, g);
     }*/
 
-    d.city = d.district = d.ward = d.street = d.room = d.direction = d.pricefrom = d.area = "CN";
+    d.city = d.district = d.ward = d.street = d.room = d.direction = d.pricefrom = d.area = d.type = "CN";
     d.price = "-1";
     d.type_search = d.type_action = "0";
 
