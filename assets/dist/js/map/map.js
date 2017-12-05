@@ -325,7 +325,7 @@ var typeIcon = {
                 mapTypeControl: false,
                 zoomControl: true,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_CENTER
+                    position: google.maps.ControlPosition.RIGHT_CENTER
                 },
                 fullscreenControl: false,
                 fullscreenControlOptions: {
@@ -379,7 +379,7 @@ var typeIcon = {
             this.map.mapTypes.set('styled_map', styledMap);
             this.map.setMapTypeId('styled_map');
 
-            this.map.controls[google.maps.ControlPosition.LEFT_CENTER].push(document.getElementById('controlArea'));
+            this.map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('controlArea'));
             this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
             this.map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('mapInfoBoard'));

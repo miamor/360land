@@ -10,7 +10,7 @@ function loginForm () {
                 } else {
                     __token = response.token;
                     localStorage.setItem("token" , __token);
-                    localStorage.setItem("login_time" , Date.now());
+                    localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                     console.log(__token);
                     window.location.href = MAIN_URL;
                 }
@@ -84,7 +84,7 @@ function submitRegister () {
             } else {
                 __token = response.token;
                 localStorage.setItem("token" , __token);
-                localStorage.setItem("login_time" , Date.now());
+                localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                 console.log(__token);
                 window.location.href = MAIN_URL;
             }

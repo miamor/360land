@@ -135,6 +135,37 @@ String.prototype.getQueryHash = function (name, defaultVal) {
     return results == null ? (defaultVal == undefined ? "" : defaultVal) : decodeURIComponent(results[1].replace(/\+/g, " "));
 };
 
+var intervalId = null;
+var varCounter = 0;
+var checkSession = function(){
+    if (varCounter <= 10) {
+        varCounter++;
+        /* your code goes here */
+    } else {
+        clearInterval(session_interval);
+    }
+};
+
+
+function checkSession() {
+    var currentSec = Math.floor(Date.now()/1000);
+    var loginSec = parseInt(localStorage.getItem('login_time'));
+    var s = currentSec - loginSec;
+    if (s > 30*60) { // > 30 min
+        // logout
+        logout()
+    }
+}
+
+function logout () {
+    clearInterval(checkSession_Interval);
+    localStorage.removeItem('login_time');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_info');
+    __userInfo = __token = null;
+    console.log('Logged out!')
+}
+
 jQuery(document).ready(function ($) {
     flatApp();
 
@@ -145,6 +176,11 @@ jQuery(document).ready(function ($) {
         __userInfo = JSON.parse(localStorage.getItem('user_info'));
         console.log(__userInfo);
         $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+
+        // destroy session every 30 minutes
+        var checkSession_Interval = setInterval(function() {
+            checkSession()
+        }, 1000);
     } else {
         $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
     }

@@ -90,12 +90,17 @@
             <div class="clearfix"></div>
         </div>
 
-        <div id="recaptcha_div">
-            <input type="hidden" name="recaptcha_challenge_field" id="recaptcha_challenge_field" value="">
-            <input name="recaptcha_response_field" id="recaptcha_response_field" type="hidden" value="">
+        <div class="form-group" style="margin-top:15px">
+            <div class="col-lg-3 control-label"></div>
+            <!--<div id="recaptcha_div">
+                <input type="hidden" name="recaptcha_challenge_field" id="recaptcha_challenge_field" value="">
+                <input name="recaptcha_response_field" id="recaptcha_response_field" type="hidden" value="">
+            </div>-->
+            <div class="col-lg-9">
+                <div class="g-recaptcha" data-sitekey="6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ"></div>
+            </div>
+            <div class="clearfix"></div>
         </div>
-
-        <div class="g-recaptcha" data-sitekey="6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ"></div>
 
         <div class="add-form-submit form-one-button center">
             <input type="reset" class="btn btn-default" value="Nhập lại"/>
