@@ -23,35 +23,74 @@ function loginForm () {
     })
 }
 
+function showRecaptcha(element) {
+	Recaptcha.create("6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ", element, {
+		theme: "white",
+		callback: Recaptcha.focus_response_field
+    });
+}
+
 function registerForm () {
+    showRecaptcha('recaptcha_div');
     $('#register').submit(function () {
         if (!$('[name="username"]').val() || !$('[name="password"]').val() || !$('[name="name"]').val() || !$('[name="email"]').val() || !$('[name="phone"]').val()) {
             console.log('Missing parameters');
         } else {
-            $.ajax({
-                url: API_URL+'/user/create/',
-                type: 'post',
-                data: $(this).serialize(),
-                success: function (response) {
-                    if (("token" in response) == false) {
-                        console.log(response);
+            // validateCaptcha
+            var challengeEle = document.getElementById("recaptcha_challenge_field"),
+            responseEle = document.getElementById("recaptcha_response_field"),
+            result,
+            reqStr = "";
+
+            if (challengeEle.value != "" && responseEle.value != "") {
+                //console.log("====== captcha =======");
+                //console.log("challengeEle: " + challengeEle.value);
+                console.log("responseEle: " + responseEle.value);
+                //console.log("==============================");
+                reqStr += "randBust="+(new Date()).getTime();
+                reqStr += "&challengeVal="+challengeEle.value+"&responseVal="+responseEle.value;
+
+                result = liveballScriptlet(1,"rct=json",reqStr);
+
+                var resultObj = JSON.parse(result);
+                if (resultObj.result != null) {
+                    if (resultObj.result == "true") {
+                        console.log("reCAPTCHA Passed");
+                        submitRegister();
                     } else {
-                        __token = response.token;
-                        localStorage.setItem("token" , __token);
-                        localStorage.setItem("login_time" , Date.now());
-                        console.log(__token);
-                        window.location.href = MAIN_URL;
+                        console.log("reCAPTCHA Failed");
                     }
-                },
-                error: function (a, b, c) {
-                    console.log(a)
+                    return false;
                 }
-            });
+                console.log("reCAPTCHA No Result");
+            }
+            console.log("reCAPTCHA needs to be filled in");
         }
         return false
     })
 }
 
+function submitRegister () {
+    $.ajax({
+        url: API_URL+'/user/create/',
+        type: 'post',
+        data: $(this).serialize(),
+        success: function (response) {
+            if (("token" in response) == false) {
+                console.log(response);
+            } else {
+                __token = response.token;
+                localStorage.setItem("token" , __token);
+                localStorage.setItem("login_time" , Date.now());
+                console.log(__token);
+                window.location.href = MAIN_URL;
+            }
+        },
+        error: function (a, b, c) {
+            console.log(a)
+        }
+    });
+}
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
