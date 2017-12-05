@@ -34,8 +34,13 @@ function showRecaptcha(element) {
 function registerForm () {
     //showRecaptcha('recaptcha_div');
     $('#register').submit(function () {
-        if (!$('[name="username"]').val() || !$('[name="password"]').val() || !$('[name="name"]').val() || !$('[name="email"]').val() || !$('[name="phone"]').val()) {
+        if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$('[name="phone"]').val()) {
             console.log('Missing parameters');
+            console.log($('[name="username"]').val() + '~'
+                + $('[name="password"]').val() + '~'
+                + $('[name="name"]').val() + '~'
+                + $('[name="email"]').val() + '~'
+                + $('[name="phone"]').val());
         } else {
             // validateCaptcha
             /*var challengeEle = document.getElementById("recaptcha_challenge_field"),
