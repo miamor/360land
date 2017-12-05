@@ -23,15 +23,16 @@ function loginForm () {
     })
 }
 
+/*
 function showRecaptcha(element) {
 	Recaptcha.create("6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ", element, {
 		theme: "white",
 		callback: Recaptcha.focus_response_field
     });
-}
+}*/
 
 function registerForm () {
-    showRecaptcha('recaptcha_div');
+    //showRecaptcha('recaptcha_div');
     $('#register').submit(function () {
         if (!$('[name="username"]').val() || !$('[name="password"]').val() || !$('[name="name"]').val() || !$('[name="email"]').val() || !$('[name="phone"]').val()) {
             console.log('Missing parameters');
@@ -67,8 +68,8 @@ function registerForm () {
             console.log("reCAPTCHA needs to be filled in");
             */
             submitRegister();
-            return false
         }
+        return false
     })
 }
 
