@@ -1990,6 +1990,7 @@ ProductSearchControler.prototype.ShowDetailsProject = function (id) {
     }
 };
 ProductSearchControler.prototype.setProjectDetails = function () {
+    var i = this;
     var place = i.ProductMap.currentProduct
     console.log(place);
     if (place.isProject) place.price = place.pricefrom;
@@ -2088,7 +2089,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         for (var key in g) d[key] = g[key];
     } else {
     }
-    
+
     delete d.lstPoint;
     delete d.points;
     delete d.center;
