@@ -623,7 +623,7 @@ var typeIcon = {
                     $thismap.map.setCenter(place.geometry.location);
                     //$thismap.map.setZoom(zoom_moderate);
                 }
-                $thismap.currentPosMarker.setPosition(place.geometry.location);
+                //$thismap.currentPosMarker.setPosition(place.geometry.location);
                 var lv = place.address_components.length;
                 var s_city = s_district = s_ward = null;
 
