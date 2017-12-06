@@ -5,7 +5,7 @@ var minZoomAllowSearch = 10;
 var minZoom = 5;
 var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
 var options = {city:'',district:'',ward:'',street:''};
-//var c_city = c_district = null;
+var c_city = c_district = null;
 var city = district = ward = street = project = null;
 var labelOrigin = new google.maps.Point(20,20);
 
@@ -14,7 +14,7 @@ var zoom_moderate = 11;
 var zoom_utilityView = 16;
 var cityList = [];
 
-var iconMarker = {
+/*var iconMarker = {
     default: {
         url: MAIN_URL+'/assets/img/marker.svg',
     },
@@ -27,18 +27,27 @@ var iconMarker = {
     group: {
         url: MAIN_URL+'/assets/img/marker-plus.svg',
     }
-};
+};*/
 
 var typeRealEstate = {
-    typereal1: 'Chung cư',
-    typereal2: 'Nhà riêng',
-    typereal3: 'Biệt thự, liền kề',
-    typereal4: 'Nhà mặt phố',
-    typereal5: 'Đất nền dự án',
-    typereal6: 'Đất bán',
-    typereal7: 'Trang trại, khu nghỉ dưỡng',
-    typereal8: 'Nhà kho, nhà xưởng',
-    typereal9: 'Bất động sản khác',
+    typereal1: '[Bán] Chung cư',
+    typereal2: '[Bán] Nhà riêng',
+    typereal3: '[Bán] Biệt thự, liền kề',
+    typereal4: '[Bán] Nhà mặt phố',
+    typereal5: '[Bán] Đất nền dự án',
+    typereal6: '[Bán] Đất',
+    typereal7: '[Bán] Trang trại, khu nghỉ dưỡng',
+    typereal8: '[Bán] Nhà kho, nhà xưởng',
+    typereal10: '[Bán] Bất động sản khác',
+
+    typereal11: '[Thuê] Chung cư',
+    typereal12: '[Thuê] Nhà riêng',
+    typereal13: '[Thuê] Nhà mặt phố',
+    typereal14: '[Thuê] Phòng trọ, nhà trọ',
+    typereal15: '[Thuê] Văn phòng',
+    typereal16: '[Thuê] Cửa hàng, ki ốt',
+    typereal17: '[Thuê] Trang trại, khu nghỉ dưỡng',
+    typereal18: '[Thuê] Bất động sản khác',
 
     /*apartment: 'Chung cư',
     house: 'Nhà riêng',
@@ -60,7 +69,16 @@ var typeIcon = {
     typereal6: 'land',
     typereal7: 'resort',
     typereal8: 'warehouse',
-    typereal9: 'other',
+    typereal10: 'other',
+
+    typereal11: 'apartment',
+    typereal12: 'house',
+    typereal13: 'housestreet',
+    typereal14: 'house',
+    typereal15: 'office',
+    typereal16: 'house',
+    typereal17: 'warehouse',
+    typereal18: 'other',
 };
 
 (function($){
@@ -243,10 +261,11 @@ var typeIcon = {
         this.initialize = function() {
             // set input value based on the window hash
             if (s.type) this.input.type.value = s.ptype;
-            if (s.city) this.input.city.value = s.city;
-            if (s.district) this.input.district.value = s.district;
-            if (s.ward) this.input.ward.value = s.ward;
+            if (s.city) this.input.city.value = c_city = s.city;
+            if (s.district) this.input.district.value = c_district = s.district;
+            if (s.ward) this.input.ward.value = c_ward = s.ward;
             if (s.street) this.input.street.value = s.street;
+
             if (s.room) this.input.room.value = s.room;
             if (s.direction) this.input.direction.value = s.direction;
             if (s.price) this.input.price.value = s.price;
@@ -341,22 +360,43 @@ var typeIcon = {
 
             if ($thismap.currentPID) {
                 // get data of this node to get latitude and longitude to set center, to get bounds, to get other nodes around it.
-                $.ajax({
-                    //url: MAIN_URL+'/api/node_one.php',
-                    url: API_URL+'/user/chitietnode/',
-                    type: 'post',
-                    data: {id: $thismap.currentPID},
-                    success: function (data) {
-                        $thismap.isProject = data.isProject = (data.pricefrom > 0 ? true : false);
-                        $thismap.currentProduct = data;
-                        console.log($thismap.currentProduct);
-                        //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
-                    },
-                    error: function (a, b, c) {
-                        console.log(a);
-                    }
-                })
-            } else {
+                console.log($thismap.currentPID);
+                if ($thismap.isProject) {
+                    $.ajax({
+                        //url: MAIN_URL+'/api/node_one.php',
+                        url: API_URL+'/user/chitietduan/',
+                        type: 'post',
+                        data: {id: $thismap.currentPID},
+                        success: function (data) {
+                            data.isProject = true;
+                            $thismap.currentProduct = data;
+                            //console.log($thismap.currentProduct);
+                            productControlerObj.setProjectDetails();
+                            //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
+                        },
+                        error: function (a, b, c) {
+                            console.log(a);
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        //url: MAIN_URL+'/api/node_one.php',
+                        url: API_URL+'/user/chitietnode/',
+                        type: 'post',
+                        data: {id: $thismap.currentPID},
+                        success: function (data) {
+                            data.isProject = false;
+                            $thismap.currentProduct = data;
+                            //console.log($thismap.currentProduct);
+                            productControlerObj.setNodeDetails();
+                            //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
+                        },
+                        error: function (a, b, c) {
+                            console.log(a);
+                        }
+                    })
+                }
+            } else if (!$('#place_search').val() && !c_city) {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
                         var pos = {
@@ -432,7 +472,7 @@ var typeIcon = {
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                if (s.place_search) {
+                if (s.place_search || c_city) {
                     //console.log('place_search');
                     $thismap.enableSetCenter = false;
                     var place = $thismap.geocodeaddress();
@@ -1332,7 +1372,10 @@ var typeIcon = {
             var runSet = false;
             if (!isInit && d != this.currentPID) runSet = true;
 
-            if (d != this.currentPID) {
+            if (d == this.currentPID) {
+                key = this.findMarkerKey(this.currentPID);
+            }
+            if (d != this.currentPID || !data) {
                 this.currentPID = d;
                 this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
                 this.currentProduct = null;
@@ -1737,7 +1780,8 @@ ProductSearchControler.prototype.showCitySearch = function () {
     */
 }
 
-ProductSearchControler.prototype.changeCityCallback = function (c_city) {
+ProductSearchControler.prototype.changeCityCallback = function (ct) {
+    c_city = ct;
     var f = this.formSearch;
     for (var i = 0; i < cityList.length; i++) {
         if (cityList[i].code == c_city) {
@@ -1762,14 +1806,17 @@ ProductSearchControler.prototype.changeCityCallback = function (c_city) {
     f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     if (district != null && district) {
         for (var i = 0; i < district.length; i++) {
-            options.district += "<option value='" + district[i].id + "'>" + district[i].name + "</option>";
+            var selected = '';
+            if (c_district == district[i].id) selected = 'selected';
+            options.district += "<option "+selected+" value='" + district[i].id + "'>" + district[i].name + "</option>";
             street = district[i].street;
         }
     }
     f.find('#district').append(options.district);
 }
 
-ProductSearchControler.prototype.changeDistrictCallback = function (c_district) {
+ProductSearchControler.prototype.changeDistrictCallback = function (dt) {
+    c_district = dt;
     var f = this.formSearch;
     ward = {};
     street = {};
@@ -1792,13 +1839,16 @@ ProductSearchControler.prototype.changeDistrictCallback = function (c_district) 
     f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>');
     if (ward != null && ward) {
         for (var j = 0; j < ward.length; j++) {
-            options.ward += "<option value='" + ward[j].id + "'>" + ward[j].name + "</option>";
+            var selected = '';
+            if (c_ward == ward[i].id) selected = 'selected';
+            options.ward += "<option "+selected+" value='" + ward[j].id + "'>" + ward[j].name + "</option>";
         }
     }
     f.find('#ward').append(options.ward);
 }
 
-ProductSearchControler.prototype.changeWardCallback = function (c_ward) {
+ProductSearchControler.prototype.changeWardCallback = function (wd) {
+    c_ward = wd;
     var f = this.formSearch;
     options.street = '';
     f.find('#street').html('<option value="CN">--Chọn Đường/Phố--</option>'+options.street);
@@ -1813,6 +1863,16 @@ ProductSearchControler.prototype.changeWardCallback = function (c_ward) {
 ProductSearchControler.prototype.catchInputChange = function () {
     var i = this;
     var f = i.formSearch;
+    if (f.find('#city').val() != "CN") {
+        i.changeCityCallback(f.find('#city').val());
+    }
+    if (f.find('#district').val() != "CN") {
+        i.changeDistrictCallback(f.find('#district').val());
+    }
+    if (f.find('#ward').val() != "CN") {
+        i.changeWardCallback(f.find('#ward').val());
+    }
+
     f.find('#city').on('change', function () {
         i.changeCityCallback($(this).val());
     });
@@ -1893,7 +1953,7 @@ ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) 
 ProductSearchControler.prototype.ShowDetailsNode = function (id) {
     var i = this;
     if (!i.ProductMap.currentProduct) {
-        $.post(API_URL+'/user/chitietnode/', {id: id}, function (place) {
+        $.post(API_URL+'/user/chitietnode/', {id: i.ProductMap.currentPID}, function (place) {
             i.ProductMap.currentProduct = place;
             i.setNodeDetails();
         })
@@ -1902,11 +1962,13 @@ ProductSearchControler.prototype.ShowDetailsNode = function (id) {
     }
 };
 ProductSearchControler.prototype.setNodeDetails = function () {
+    var i = this;
     var place = i.ProductMap.currentProduct
     console.log(place);
     if (place.isProject) place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
+    $('.v-place-tiendo, .introduan').hide();
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
     $('.v-place-area span').html(place.area);
@@ -1953,7 +2015,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     $('.popup-content [role="close"]').show();
 
     $('.v-place-related-list').html('');
-    $.post(API_URL+'/search/nodenangcao/', {nodeid: id}, function (similar) {
+    $.post(API_URL+'/search/nodenangcao/', {nodeid: i.ProductMap.currentPID}, function (similar) {
         console.log(similar);
         for (si = 0; si < 4; si++) {
             sv = similar[si];
@@ -1981,7 +2043,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
 ProductSearchControler.prototype.ShowDetailsProject = function (id) {
     var i = this;
     if (!i.ProductMap.currentProduct) {
-        $.post(API_URL+'/user/chitietduan/', {id: id}, function (place) {
+        $.post(API_URL+'/user/chitietduan/', {id: i.ProductMap.currentPID}, function (place) {
             i.ProductMap.currentProduct = place;
             i.setProjectDetails();
         })
@@ -1993,20 +2055,17 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     var i = this;
     var place = i.ProductMap.currentProduct
     console.log(place);
-    if (place.isProject) place.price = place.pricefrom;
+    place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
     $('.v-place-pricenum').html(place.priceTxt);
-    $('.v-place-address span').html(place.address);
-    $('.v-place-area span').html(place.area);
-    $('.v-place-direction span').html(place.huong);
-    $('.v-place-room span').html(place.sophongngu);
+    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').hide();
     $('.v-place-type span').html(typeRealEstate[place.type]);
-    $('.v-place-details').html(place.details);
+    $('.v-place-tiendo span').html(place.tiendo);
+    $('.v-place-details').html(place.infoduan);
     $('.v-place-title').html(place.title);
-    $('.v-place-ten').html(place.tenlienhe);
-    $('.v-place-phone').html(place.dienthoai);
-    $('.v-place-email').html(place.email);
+    $('.v-place-ten,.v-place-phone,.v-place-email').hide();
+    $('.v-place-intro').html(place.intro);
 
     $('.v-place-thumbs').html('');
     if (place.thumbs) {
@@ -2038,7 +2097,7 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     $('.popup-content [role="close"]').show();
 
     $('.v-place-related-list').html('');
-    $.post(API_URL+'/search/duannangcao/', {nodeid: id}, function (similar) {
+    $.post(API_URL+'/search/duannangcao/', {duanid: i.ProductMap.currentPID}, function (similar) {
         console.log(similar);
         for (si = 0; si < 4; si++) {
             sv = similar[si];
@@ -2085,26 +2144,14 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     d.price = "-1";
     d.type_search = d.type_action = "0";
 
-    if (g && g.length) {
+    d.type_search = f.ProductMap.searchtype.toString();
+
+    console.log(g);
+
+    if (g != null && g != undefined) {
         for (var key in g) d[key] = g[key];
     } else {
     }
-
-    delete d.lstPoint;
-    delete d.points;
-    delete d.center;
-    delete d.cpid;
-    delete d.zoom;
-    delete d.isPageLoad;
-    delete d.isSearchForm;
-    delete d.m;
-    //delete d.searchtype;
-
-    //d.searchtype = f.ProductMap.searchtype;
-    d.input = (d.project_name && d.project_name != undefined ? d.project_name : "");
-
-    console.log(g);
-    //console.log(f.ProductMap.listLatlgn+'~~~~');
 
     if (!f.ProductMap.isDrawing && (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) ) {
         //f.ProductMap.boundsChangeCallBack();
@@ -2117,6 +2164,8 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         d.maxLng = f.ProductMap.bounds.b.f;
     }
 
+    d.input = (d.project_name && d.project_name != undefined ? d.project_name : "");
+
     if (!d.room) d.room = "CN";
 
     d.pricefrom = d.pricefrom_giatri;
@@ -2125,18 +2174,17 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     }
     if (!d.pricefrom) d.pricefrom = "CN";
 
+    delete d.lstPoint;
+    delete d.points;
+    delete d.center;
+    delete d.cpid;
+    delete d.zoom;
+    delete d.isPageLoad;
+    delete d.isSearchForm;
+    delete d.m;
+    //delete d.searchtype;
+
     this.searchVar = d;
-
-    //var type = (f.ProductMap.searchtype == 2 ? 'project' : f.ProductMap.searchtype == 2 ? 'node' : '');
-
-    /*if (f.ProductMap.searchtype == 2) { // project
-        d.type_search = 2;
-    } else { // node
-        d.type_search = 1;
-    }*/
-    //d.type_search = parseInt(f.ProductMap.searchtype);
-    //d.type_action = parseInt(d.type_action);
-    d.type_search = f.ProductMap.searchtype.toString();
 
     console.log(d);
     console.log(JSON.stringify(d));
@@ -2372,7 +2420,7 @@ $(window).ready(function() {
             street: markContext.getQueryHash('street'),
             room: markContext.getQueryHash('room'),
             direction: markContext.getQueryHash('direction'),
-            isProject: markContext.getQueryHash('project'),
+            isProject: markContext.getQueryHash('isProject'),
             place_search: markContext.getQueryHash('place_search'),
             lstPoint: markContext.getQueryHash('points'),
             zoom: markContext.getQueryHash('zoom', zoom_moderate),

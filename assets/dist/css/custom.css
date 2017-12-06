@@ -592,7 +592,7 @@ select#city_first:focus{background:#fff!important}
 .v-place-mode:hover{color:#e94c3d}
 body:not(.mobile) .v-place-related{margin:20px 0 20px;height:235px;padding:2px 10px 5px!important}
 body:not(.mobile) .v-place-related h4{border-bottom:2px solid #0bc39b;float:left;padding-bottom:5px;margin-left:.5%}
-.v-place-related-list{clear:both;position:relative}
+.v-place-related-list{clear:both;position:relative;padding:10px 0 0!important}
 .v-place-related-one{position:relative;display:inline-block;width:24%;margin:0 .5%;height:170px}
 body.mobile .v-place-related{padding:0 20px!important;height:235px!important;border-bottom:0}
 body.mobile .v-place-related-one{height:100px}
@@ -955,7 +955,7 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 25%,75%{-moz-transform:perspective(193px) rotateX(0deg);opacity:1}
 90%,100%{-moz-transform:perspective(193px) rotateY(180deg);opacity:0}
 }
-.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999}
+.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;padding-top:20%}
 
 
 .no-padding{padding:0}

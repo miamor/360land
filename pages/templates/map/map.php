@@ -212,13 +212,28 @@
             <div class="v-place-price"><i class="fa fa-dollar"></i> <span class="v-place-pricenum"></span></div>
             <div class="v-place-address"><i class="fa fa-map-marker"></i> <span></span></div>
         </div></div>
-        <div class="v-box v-place-more"><h4>Thông tin</h4><ul class="v-box-content open">
-            <li class="v-place-more-one v-place-area">Diện tích: <span></span></li>
-            <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
-            <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
-            <li class="v-place-more-one v-place-type">Loại: <span></span></li>
-        </ul></div>
+
+        <div class="v-box v-place-more">
+            <h4>Thông tin</h4>
+            <ul class="v-box-content open">
+                <li class="v-place-more-one v-place-area">Diện tích: <span></span></li>
+                <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
+                <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
+                <li class="v-place-more-one v-place-type">Loại: <span></span></li>
+                <li class="v-place-more-one v-place-tiendo">Tiến độ: <span></span></li>
+            </ul>
+        </div>
+
+        <div class="v-box introduan">
+            <h4>Intro </h4>
+            <div class="v-box-content open">
+                <div class="v-place-intro"></div>
+                <a href="#" class="v-place-details-more">Xem thêm</a>
+            </div>
+        </div>
+
         <div class="v-box"><h4>Chi tiết </h4><div class="v-box-content open"><div class="v-place-details"></div><a href="#" class="v-place-details-more">Xem thêm</a></div></div>
+
         <!--//<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
         //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
         //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Dẫn đường</a></div>-->
