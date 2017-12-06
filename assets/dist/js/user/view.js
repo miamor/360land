@@ -1,4 +1,20 @@
+var urlAr = (window.location.href.replace('/', ' ').trim()).split('/');
+var uID = urlAr[urlAr.length - 1];
+console.log(uID);
+
 $(document).ready(function () {
+    // get user info by uID
+    $.ajax({
+        url: API_URL+'/',
+        type: 'get',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (a, b, c) {
+            console.log(a)
+        }
+    })
+
     // chart
     var donut = new Morris.Donut({
         element: 'sales-chart',

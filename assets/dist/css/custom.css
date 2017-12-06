@@ -22,7 +22,7 @@ ul, .v-place-more{list-style:none;padding:0;margin:0}
 nav.navbar{background-color:#0bc39b;box-shadow:2px 2px 2px rgba(0,0,0,.2);color:#fff;z-index:997}
 nav.navbar a{color:#fff!important}
 nav.navbar ul.navbar-nav > li > a:hover, nav.navbar ul.navbar-nav > li > a:focus, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.04)!important}
-.txt-with-line{position:relative;width:100%;margin:10px 0 11px}.txt-with-line:before{content:'';position:absolute;left:0;width:100%;height:2px;border-top:1px dashed #dfdfdf;top:10px}.txt-with-line .txt{position:relative;text-align:center;z-index:3;color:#999;display:inline-block;background:#fff;padding:1px 10px}
+.txt-with-line{position:relative;width:100%;margin:20px 0 21px}.txt-with-line:before{content:'';position:absolute;left:0;width:100%;height:2px;border-top:1px dashed #dfdfdf;top:10px}.txt-with-line .txt{position:relative;text-align:center;z-index:3;color:#999;display:inline-block;background:#fff;padding:1px 10px}
 .txt-with-line.center{text-align:center}
 .separator.divider{position:relative;width:100%;height:1px;background:#e3e3e3;margin:10px!important}
 /*
@@ -370,7 +370,7 @@ label.utility-type .uti-total{font-weight: 500}
 #cbbRadius{width:70px;position: absolute;bottom:0!important;left:0;height:100%!important;border:0!important;background:#f5f5f5!important;cursor:pointer;border-right:1px solid #eee!important;border-radius:0!important}
 body:not(.mobile) #cbbRadius{line-height:54px!important}
 #uti_selected{position: absolute;top:0;bottom:0;left:80px;right:50px;overflow:hidden;line-height:54px;text-overflow:ellipsis}
-#controlArea{position:relative;*margin-top:-80px!important}
+#controlArea{position:relative;margin-top:20px!important}
 body:not(.mobile) #controlArea{top:10px!important;*right:10px!important}
 .gm-style-mtc{top:0px!important}
 .gm-style-cc{display: none!important}
@@ -421,7 +421,7 @@ a[href*="https://maps.google.com"]{display:none!important}
     box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12);
 }
 button[title*="Toggle"]{margin-top:-100px!important}
-.gm-bundled-control{margin-right: 20px!important}
+.gm-bundled-control{margin:85px 20px 0 0!important}
 .gm-bundled-control>.gmnoprint>div{width:38px!important;height:76px!important}
 .gm-bundled-control>.gmnoprint>div>button{width:38px!important;height:38px!important}
 .gm-bundled-control>.gmnoprint>div>button>div{left:11px!important;top:11px!important}
@@ -729,8 +729,8 @@ body.mobile .v-place-info{padding-top:6px}
 
 
 #map_select{position:relative;width:100%;height:500px;margin-top:8px}
-#map_adr{position: absolute;z-index:5;width:90%;margin:15px 5% 0!important}
-#map_adr + #infowindow-content{display:none}
+#details_address:not(.d_adr_search){position: absolute;z-index:5;width:90%;margin:15px 5% 0!important}
+#details_address + #infowindow-content{display:none}
 
 h4.with-border{float: left;border-bottom:2px solid #0bc39b;padding-bottom:5px;color:#0bc39b}
 h4.with-border+*{clear:both}
@@ -764,8 +764,9 @@ body.mobile .nav-icon{display:none}
 
 
 /* Login, register */
-#register{margin-top:30px}
-.social-login{padding-top:45px}
+body:not(.mobile) #login, body:not(.mobile) #register{margin-top:10px}
+.social-login{padding:45px 15px;overflow:hidden}
+.forgetpassword{display:inline-block;margin:7px 0 0 0;font-size:15px}
 
 
 /* User */
@@ -829,7 +830,7 @@ body.mobile .ratings-list-div{padding:0!important;margin-top:5px}
 body.mobile .v-user-body>div{padding:0!important}
 
 body.mobile .v-user-avt{float:none;width:100%;height:180px;margin:0 auto 10px}
-body:not(.mobile) .page-title{display:none}
+body:not(.mobile) .page-title:not(.show){display:none}
 
 body.mobile{overflow:hidden}
 body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto;margin-top:39px;padding-top:10px}
@@ -844,6 +845,7 @@ body.mobile .page-title>.fa{font-size:17px;margin:-3px 1px 0 0}
     .select-city, .select-district{z-index:6;display:inline-block!important;padding:0!important}
     .select-city{width:48%;margin-right:1%}
     .select-district{width:49%}
+    #login .form-one-button > .col-sm-6{float:none!important;margin:5px 0!important;text-align:center!important}
 }
 /* mobile */
 body.mobile nav{position:fixed;bottom:0!important;left:0;right:0;height:49px!important;background:#f7f7f7!important;box-shadow:3px 4px 4px 5px rgba(0,0,0,.07);border-top:1px solid #eee}

@@ -325,7 +325,7 @@ var typeIcon = {
                 mapTypeControl: false,
                 zoomControl: true,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.RIGHT_CENTER
+                    position: google.maps.ControlPosition.RIGHT_TOP
                 },
                 fullscreenControl: false,
                 fullscreenControlOptions: {
@@ -392,7 +392,7 @@ var typeIcon = {
 
             var input = document.getElementById('place_search');
             var options = {
-                //types: ['(cities)'],
+                types: ['(cities)'],
                 componentRestrictions: {country: 'vn'}
             };
             $thismap.autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -1616,6 +1616,7 @@ ProductSearchControler = function(h) {
         i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
         i.ProductMap.searchtype = ($('.map_search_select li.active').attr('attr-type') == 'node' ? 1 : 2);
         var d = {};
+        e = $(this).serialize().split('&');
         $.each(e, function (i, v) {
             vk = v.split('=')[0];
             vl = v.split('=')[1];
@@ -2063,7 +2064,7 @@ ProductSearchControler.prototype.setProjectDetails = function () {
 
 ProductSearchControler.prototype._SearchAction = function(g) {
     var f = this;
-    e = f.formSearch.serialize().split('&');
+    //e = f.formSearch.serialize().split('&');
     var d = {};
     /*d.filter = 0;
     d.sort = 0;
@@ -2087,6 +2088,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         for (var key in g) d[key] = g[key];
     } else {
     }
+    
     delete d.lstPoint;
     delete d.points;
     delete d.center;
@@ -2213,16 +2215,16 @@ ProductSearchControler.prototype.callBackDrawEvent = function(a, b, c, d, e, f) 
         g.startdate = '';
         g.enddate = '';
         */
-        g.lstPoint = this.lstPoint;
-        g.isSearchForm = false;
-        g.isPageLoad = false;
+        //g.lstPoint = this.lstPoint;
+        //g.isSearchForm = false;
+        //g.isPageLoad = false;
         g.minLat = b;
         g.minLng = c;
         g.maxLat = d;
         g.maxLng = e;
-        g.m = "shape";
+        //g.m = "shape";
         if (f != undefined) {
-            g.cpid = f.cpid;
+            //g.cpid = f.cpid;
             g.zoom = f.zoom;
             g.center = f.center
         } else {

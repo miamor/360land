@@ -31,75 +31,6 @@ function showRecaptcha(element) {
     });
 }*/
 
-function registerForm () {
-    //showRecaptcha('recaptcha_div');
-    $('#register').submit(function () {
-        if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$('[name="phone"]').val()) {
-            console.log('Missing parameters');
-            console.log($('[name="username"]').val() + '~'
-                + $('[name="password"]').val() + '~'
-                + $('[name="name"]').val() + '~'
-                + $('[name="email"]').val() + '~'
-                + $('[name="phone"]').val());
-        } else {
-            // validateCaptcha
-            /*var challengeEle = document.getElementById("recaptcha_challenge_field"),
-            responseEle = document.getElementById("recaptcha_response_field"),
-            result,
-            reqStr = "";
-
-            if (challengeEle.value != "" && responseEle.value != "") {
-                //console.log("====== captcha =======");
-                //console.log("challengeEle: " + challengeEle.value);
-                console.log("responseEle: " + responseEle.value);
-                //console.log("==============================");
-                reqStr += "randBust="+(new Date()).getTime();
-                reqStr += "&challengeVal="+challengeEle.value+"&responseVal="+responseEle.value;
-
-                result = liveballScriptlet(1,"rct=json",reqStr);
-
-                var resultObj = JSON.parse(result);
-                if (resultObj.result != null) {
-                    if (resultObj.result == "true") {
-                        console.log("reCAPTCHA Passed");
-                        submitRegister();
-                    } else {
-                        console.log("reCAPTCHA Failed");
-                    }
-                    return false;
-                }
-                console.log("reCAPTCHA No Result");
-            }
-            console.log("reCAPTCHA needs to be filled in");
-            */
-            submitRegister();
-        }
-        return false
-    })
-}
-
-function submitRegister () {
-    $.ajax({
-        url: API_URL+'/user/create/',
-        type: 'post',
-        data: $(this).serialize(),
-        success: function (response) {
-            if (("token" in response) == false) {
-                console.log(response);
-            } else {
-                __token = response.token;
-                localStorage.setItem("token" , __token);
-                localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
-                console.log(__token);
-                window.location.href = MAIN_URL;
-            }
-        },
-        error: function (a, b, c) {
-            console.log(a)
-        }
-    });
-}
-
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
   console.log('statusChangeCallback');
@@ -175,14 +106,9 @@ function testAPI() {
 
 
 $(document).ready(function () {
-    $("#datepicker").datepicker({
-        dateFormat: "dd/mm/yy"
-    });
     if (localStorage.getItem('token')) { // already logged in
         window.location.href = MAIN_URL;
     } else {
         loginForm();
-        $('head').append('<script src="https://www.google.com/recaptcha/api.js"></script>');
-        registerForm()
     }
 })

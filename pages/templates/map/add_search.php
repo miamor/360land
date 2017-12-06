@@ -1,7 +1,7 @@
 <div class="col-md-1"></div>
 
 <form class="place-add col-md-10">
-    <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
+    <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Tìm bất động sản</h4>
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-label">Tiêu đề </div>
         <div class="col-md-8 no-padding">
@@ -98,14 +98,8 @@
             </div>
             <div class="clearfix"></div>
 
-            <input type="text" class="form-control" style="margin-top:6px" id="details_address" name="details_address"/>
+            <input type="text" class="form-control d_adr_search" style="margin-top:6px" id="details_address" name="details_address" placeholder="Địa chỉ chi tiết hơn"/>
 
-            <div id="infowindow-content">
-                <img src="" width="16" height="16" id="place-icon">
-                <span id="place-name" class="title"></span><br>
-                <span id="place-address"></span>
-            </div>
-            <div id="map_select"></div>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -114,21 +108,21 @@
     	<span class="txt generate-new-button">Thông tin thêm <span class="fa fa-caret-down"></span></span>
     </div>
 
-    <div class="form-group" attr-required="1">
+    <div class="form-group">
         <div class="col-md-4 no-padding control-label">Diện tích </div>
         <div class="col-md-8 no-padding">
             <input type="number" min="1" placeholder="Diện tích" class="form-control" name="area" id="area"/>
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="form-group" attr-required="1">
+    <div class="form-group">
         <div class="col-md-4 no-padding control-label">Số phòng ngủ </div>
         <div class="col-md-8 no-padding">
             <input type="number" min="1" placeholder="Số phòng ngủ" class="form-control" name="sophongngu" id="sophongngu"/>
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="form-group" attr-required="1">
+    <div class="form-group">
         <div class="col-md-4 no-padding control-label">Hướng</div>
         <div class="col-md-8 no-padding">
             <select id="direction" name="direction" class="form-control">
@@ -143,7 +137,7 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="form-group form-price" attr-required="1">
+    <div class="form-group form-price">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
         <div class="col-md-5 no-padding">
             <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
@@ -159,7 +153,7 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="form-group" attr-required="1">
+    <div class="form-group">
         <div class="col-md-4 no-padding control-label">Thông tin chi tiết </div>
         <div class="col-md-8 no-padding">
             <textarea class="form-control" name="r_content" placeholder="Thông tin chi tiết"></textarea>
@@ -207,7 +201,7 @@
 
     </div>
 
-    <input type="hidden" name="typenode" value="true"/>
+    <input type="hidden" name="typenode" value="false"/>
     <input type="hidden" name="latitude" id="latitude"/>
     <input type="hidden" name="longitude" id="longitude"/>
 

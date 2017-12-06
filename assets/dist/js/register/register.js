@@ -1,29 +1,75 @@
-function loginForm () {
-    $('#login').submit(function () {
-        $.ajax({
-            url: API_URL+'/login/user/',
-            type: 'post',
-            data: $(this).serialize(),
-            success: function (response) {
-                if (("token" in response) == false) {
-                    console.log(response);
-                } else {
-                    __token = response.token;
-                    localStorage.setItem("token" , __token);
-                    localStorage.setItem("login_time" , Date.now());
-                    console.log(__token);
-                    window.location.href = MAIN_URL;
+/*
+function showRecaptcha(element) {
+	Recaptcha.create("6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ", element, {
+		theme: "white",
+		callback: Recaptcha.focus_response_field
+    });
+}*/
+
+function registerForm () {
+    //showRecaptcha('recaptcha_div');
+    $('#register').submit(function () {
+        if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$(this).find('[name="phone"]').val()) {
+            console.log('Missing parameters');
+        } else {
+            // validateCaptcha
+            /*var challengeEle = document.getElementById("recaptcha_challenge_field"),
+            responseEle = document.getElementById("recaptcha_response_field"),
+            result,
+            reqStr = "";
+
+            if (challengeEle.value != "" && responseEle.value != "") {
+                //console.log("====== captcha =======");
+                //console.log("challengeEle: " + challengeEle.value);
+                console.log("responseEle: " + responseEle.value);
+                //console.log("==============================");
+                reqStr += "randBust="+(new Date()).getTime();
+                reqStr += "&challengeVal="+challengeEle.value+"&responseVal="+responseEle.value;
+
+                result = liveballScriptlet(1,"rct=json",reqStr);
+
+                var resultObj = JSON.parse(result);
+                if (resultObj.result != null) {
+                    if (resultObj.result == "true") {
+                        console.log("reCAPTCHA Passed");
+                        submitRegister();
+                    } else {
+                        console.log("reCAPTCHA Failed");
+                    }
+                    return false;
                 }
-            },
-            error: function (a, b, c) {
-                console.log(a)
+                console.log("reCAPTCHA No Result");
             }
-        });
+            console.log("reCAPTCHA needs to be filled in");
+            */
+            //submitRegister();
+            console.log($(this).serialize());
+            $.ajax({
+                url: API_URL+'/user/create/',
+                type: 'post',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (("token" in response) == false) {
+                        console.log(response);
+                    } else {
+                        __token = response.token;
+                        localStorage.setItem("token" , __token);
+                        localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
+                        console.log(__token);
+                        window.location.href = MAIN_URL;
+                    }
+                },
+                error: function (a, b, c) {
+                    console.log(a)
+                }
+            });
+        }
         return false
     })
 }
 
-
+function submitRegister () {
+}
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
@@ -100,9 +146,13 @@ function testAPI() {
 
 
 $(document).ready(function () {
+    $("#datepicker").datepicker({
+        dateFormat: "dd/mm/yy"
+    });
     if (localStorage.getItem('token')) { // already logged in
         window.location.href = MAIN_URL;
     } else {
-        loginForm()
+        $('head').append('<script src="https://www.google.com/recaptcha/api.js"></script>');
+        registerForm()
     }
 })

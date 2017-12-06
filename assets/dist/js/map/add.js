@@ -1,63 +1,6 @@
 var placeLatLng = {lat: 18.02, lng: 105.86};
 
-function initMap() {
-    var map = new google.maps.Map(document.getElementById('map_select'), {
-        zoom: 5,
-        mapTypeControl: false,
-        center: placeLatLng
-    });
-    var infowindow = new google.maps.InfoWindow();
-    var infowindowContent = document.getElementById('infowindow-content');
-    infowindow.setContent(infowindowContent);
-
-    var marker = new google.maps.Marker();
-    marker.setMap(map);
-    marker.setVisible(false);
-
-    var input = document.getElementById('map_adr');
-    var options = {
-        types: ['(cities)'],
-        componentRestrictions: {country: 'vn'}
-    };
-    var autocomplete = new google.maps.places.Autocomplete(input, options);
-    autocomplete.bindTo('bounds', map);
-
-    autocomplete.addListener('place_changed', function() {
-      infowindow.close();
-      marker.setVisible(false);
-      var place = autocomplete.getPlace();
-      if (!place.geometry) {
-        // User entered the name of a Place that was not suggested and
-        // pressed the Enter key, or the Place Details request failed.
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
-      }
-
-      // If the place has a geometry, then present it on a map.
-      if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
-      } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);  // Why 17? Because it looks good.
-      }
-      marker.setPosition(place.geometry.location);
-      marker.setVisible(true);
-
-      var address = '';
-      if (place.address_components) {
-        address = [
-          (place.address_components[0] && place.address_components[0].short_name || ''),
-          (place.address_components[1] && place.address_components[1].short_name || ''),
-          (place.address_components[2] && place.address_components[2].short_name || '')
-        ].join(' ');
-      }
-
-      infowindowContent.children['place-icon'].src = place.icon;
-      infowindowContent.children['place-name'].textContent = place.name;
-      infowindowContent.children['place-address'].textContent = address;
-      infowindow.open(map, marker);
-    });
-}
+var newNode = (window.location.href.indexOf('type=search') > -1 ? false : true);
 
 var options = {district: ''};
 var c_city = district = null;
@@ -99,17 +42,57 @@ $(function () {
     $('#city').change(function () {
         c_city = $(this).val();
         changeCityCallback();
-    })
+    });
 
+    $('[attr-required="1"]').each(function () {
+        $(this).find('.control-label,.control-labels').append('<span class="required-mark text-danger bold">*</span>')
+    });
+
+    if (__userInfo) {
+        $('.user-info-input').hide();
+        $('#tenlienhe').val(__userInfo.name);
+        $('#dienthoai').val(__userInfo.phone);
+        $('#email').val(__userInfo.email);
+    }
+
+    var ok = true;
     $('.place-add').submit(function () {
-        /*$.ajax({
-            url: '',
-            type: 'post',
-            data: $(this).serialize(),
-            success: function (response) {
-
+        $('[attr-required="1"]').not('.form-adr,.form-price').each(function () {
+            var val = $(this).find('input,select,textarea').val();
+            if (!val || val == "CN") {
+                console.log('Missing parameters');
+                ok = false;
+                return false;
             }
-        })*/
+        });
+        if (ok) {
+            if ( !$('#city').val() || !$('#district').val() || !$('#price_donvi').val() ) {
+                console.log('Missing parameters (2)');
+                ok = false;
+                return false;
+            }
+            if (!$('#details_address').val() && newNode) {
+                console.log('Missing parameters (details_address)');
+                ok = false;
+                return false;
+            }
+        }
+        if (ok) {
+            console.log('ajax post');
+            var postData = $(this).serialize();
+            console.log(postData);
+            $.ajax({
+                url: API_URL+'/manager/realestatenode/',
+                type: 'post',
+                data: postData,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (a, b, c) {
+                    console.log(a);
+                }
+            })
+        }
         return false
     })
 })
