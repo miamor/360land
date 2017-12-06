@@ -472,11 +472,7 @@ var typeIcon = {
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                if (s.place_search) {
-                    //console.log('place_search');
-                    $thismap.enableSetCenter = false;
-                    var place = $thismap.geocodeaddress(s.place_search);
-                } else if ($thismap.listLatlgn != null) {
+                if ($thismap.listLatlgn != null) {
                     $thismap.enableSetCenter = false;
                         path: $thismap.listLatlgn,
                         $thismap.polyline = new google.maps.Polygon({
@@ -490,7 +486,13 @@ var typeIcon = {
                     $thismap.findPoint($thismap.polyline);
                     $thismap.catchChangePolyline();
                 } else if (c_city) {
+                    s.place_search = null;
+                    $thismap.input.place_search.value = '';
                     $thismap.setCenterByAddress();
+                } else if (s.place_search) {
+                    //console.log('place_search');
+                    $thismap.enableSetCenter = false;
+                    var place = $thismap.geocodeaddress(s.place_search);
                 } else {
                     $thismap.enableSetCenter = true;
                     $thismap.boundsChangeCallBack();
