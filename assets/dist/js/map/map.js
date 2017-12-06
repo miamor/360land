@@ -5,7 +5,7 @@ var minZoomAllowSearch = 10;
 var minZoom = 5;
 var defaultCenter = '20.9947910308838:105.86784362793003'; // hanoi
 var options = {city:'',district:'',ward:'',street:''};
-var c_city = c_district = null;
+var c_city = c_district = c_ward = null;
 var city = district = ward = street = project = null;
 var labelOrigin = new google.maps.Point(20,20);
 
@@ -472,10 +472,10 @@ var typeIcon = {
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                if (s.place_search || c_city) {
+                if (s.place_search) {
                     //console.log('place_search');
                     $thismap.enableSetCenter = false;
-                    var place = $thismap.geocodeaddress();
+                    var place = $thismap.geocodeaddress(s.place_search);
                 } else if ($thismap.listLatlgn != null) {
                     $thismap.enableSetCenter = false;
                         path: $thismap.listLatlgn,
@@ -489,6 +489,8 @@ var typeIcon = {
                     $thismap.polyline.setMap($thismap.map);
                     $thismap.findPoint($thismap.polyline);
                     $thismap.catchChangePolyline();
+                } else if (c_city) {
+                    $thismap.setCenterByAddress();
                 } else {
                     $thismap.enableSetCenter = true;
                     $thismap.boundsChangeCallBack();
@@ -501,12 +503,44 @@ var typeIcon = {
             return loaded;
         };
 
-        this.geocodeaddress = function () {
-            var address = this.input.place_search.value;
+        this.geocodeaddress = function (address) {
+            //var address = this.input.place_search.value;
             $thismap.geocoder.geocode({'address': address}, function(results, status) {
                 if (status === 'OK') {
                     //$thismap.map.setCenter(results[0].geometry.location);
                     $thismap.searchByLocation(results[0]);
+                    return results[0]
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        this.setCenterByAddress = function (address) {
+            //var address = this.input.place_search.value;
+            if (!address) {
+                var adrAr = []
+                if (c_ward != null && c_ward != undefined && c_ward != "CN") {
+                    adrAr.push($('#ward option:selected').text())
+                }
+                if (c_district != null && c_district != undefined && c_district != "CN") {
+                    adrAr.push($("#district option:selected").text())
+                }
+                if (c_city != null && c_city != undefined && c_city != "CN") {
+                    adrAr.push($('#city option:selected').text())
+                }
+                adrAr.push('Vietnam');
+                address = adrAr.join(', ');
+            }
+            console.log(address);
+            $thismap.geocoder.geocode({'address': address}, function(results, status) {
+                if (status === 'OK') {
+                    $thismap.map.setCenter(results[0].geometry.location);
+                    $thismap.drawBoundary(
+                            $('#city option:selected').text(),
+                            $("#district option:selected").text(),
+                            $('#ward option:selected').text()
+                        );
                     return results[0]
                 } else {
                     return false;
@@ -525,7 +559,8 @@ var typeIcon = {
 
         this.drawBoundary = function (c, d, w) {
             d = locdau(d);
-            if (c == 'Hanoi') c = 'HN';
+            c = locdau(c);
+            if (c == 'Hà Nọi') c = 'Ha Noi';
 
             var pData = {
                 distric: d,
@@ -536,7 +571,7 @@ var typeIcon = {
             formData.append('distric', d);
             formData.append('province', c);
             $thismap.input.district.value = d;*/
-            $thismap.input.city.value = c;
+            //$thismap.input.city.value = c;
             $.ajax({
                 url: API_URL+'/user/distric/',
                 type: 'post',
@@ -566,6 +601,8 @@ var typeIcon = {
                         $thismap.deleteShapeButton.show();
                         $thismap.findPoint($thismap.polyline);
                         productControlerObj.ChangeUrlForNewContext();
+                    } else { // find by bounds
+                        $thismap.boundsChangeCallBack();
                     }
                 },
                 error: function(a, b, c) {
@@ -584,11 +621,14 @@ var typeIcon = {
                     $thismap.map.fitBounds(place.geometry.viewport);
                 } else {
                     $thismap.map.setCenter(place.geometry.location);
-                    $thismap.map.setZoom(zoom_moderate);
+                    //$thismap.map.setZoom(zoom_moderate);
                 }
                 $thismap.currentPosMarker.setPosition(place.geometry.location);
                 var lv = place.address_components.length;
                 var s_city = s_district = s_ward = null;
+
+                console.log(place.address_components);
+
                 s_city = place.address_components[lv-2].long_name;
                 if (place.address_components[lv-3]) s_district = place.address_components[lv-3].long_name;
                 if (place.address_components[lv-4]) s_ward = place.address_components[lv-4].long_name;
@@ -1658,14 +1698,8 @@ ProductSearchControler = function(h) {
         i.ProductMap.currentPID = i.ProductMap.input.product.value = "";
         i.ProductMap.currentMarkerKey = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
         i.ProductMap.searchtype = ($('.map_search_select li.active').attr('attr-type') == 'node' ? 1 : 2);
-        var d = {};
-        e = $(this).serialize().split('&');
-        $.each(e, function (i, v) {
-            vk = v.split('=')[0];
-            vl = v.split('=')[1];
-            d[vk] = vl;
-        });
-        i._SearchAction(d);
+        i.ProductMap.setCenterByAddress();
+        i._SearchAction(1);
         i.ChangeUrlForNewContext();
         return false
     });
@@ -1783,6 +1817,7 @@ ProductSearchControler.prototype.showCitySearch = function () {
 ProductSearchControler.prototype.changeCityCallback = function (ct) {
     c_city = ct;
     var f = this.formSearch;
+    district = {};
     for (var i = 0; i < cityList.length; i++) {
         if (cityList[i].code == c_city) {
             district = cityList[i].district;
@@ -2150,8 +2185,15 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     if (g != null && g != undefined) {
         for (var key in g) d[key] = g[key];
-    } else {
+    } else if (g == 1) {
+        e = f.formSearch.serialize().split('&');
+        $.each(e, function (i, v) {
+            vk = v.split('=')[0];
+            vl = v.split('=')[1];
+            d[vk] = vl;
+        });
     }
+
 
     if (!f.ProductMap.isDrawing && (!d.minLat || !d.minLng || !d.maxLat || !d.maxLng) ) {
         //f.ProductMap.boundsChangeCallBack();
