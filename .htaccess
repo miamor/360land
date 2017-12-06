@@ -52,6 +52,6 @@ RewriteBase /360land/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 
-RewriteRule ^((?!(login|register|logout|map|user))[^/].+)$ index.php?page=$1
+RewriteRule ^((?!(login|register|logout|map|user|mod))[^/].+)$ index.php?page=$1
 
-RewriteRule ^((login|register|logout|map|user).*) index.php?page=$1
+RewriteRule ^((login|register|logout|map|user|mod).*) index.php?page=$1
