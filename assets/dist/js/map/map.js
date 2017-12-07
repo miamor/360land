@@ -173,6 +173,9 @@ var typeIcon = {
         this.utilArea = null;
         this.isProject = 0;
         if (s.isProject) this.isProject = s.isProject;
+        if (this.isProject == 1) {
+            $('.map_search_select > [attr-type="project"] > a[href="#map_search_project"]').click();
+        }
 
         this.zoom = null;
 

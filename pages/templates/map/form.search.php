@@ -15,13 +15,13 @@
     </div>
 
     <div class="form-group p_type" attr-type="node">
-        <div class="col-lg-6 no-padding">
-            <label><input type="radio" name="type_action" class="minimal" value="2" checked> Mua</label>
+        <div class="col-lg-4 no-padding">
+            <label><input type="radio" name="type_action" class="minimal" value="2"> Mua</label>
         </div>
-        <div class="col-lg-6 no-padding">
+        <div class="col-lg-4 no-padding">
             <label><input type="radio" name="type_action" class="minimal" value="1"> Thuê</label>
         </div>
-        <div class="col-lg-6 no-padding">
+        <div class="col-lg-4 no-padding">
             <label><input type="radio" checked name="type_action" class="minimal" value="0"> Tất cả</label>
         </div>
         <div class="clearfix"></div>
