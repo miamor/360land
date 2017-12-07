@@ -437,7 +437,7 @@ var typeIcon = {
 
             var input = document.getElementById('place_search');
             var options = {
-                types: ['(cities)'],
+                //types: ['(cities)'],
                 componentRestrictions: {country: 'vn'}
             };
             $thismap.autocomplete = new google.maps.places.Autocomplete(input, options);
