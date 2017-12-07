@@ -224,7 +224,7 @@ select,.select.form-control{padding-right:20px;-webkit-appearance:none;-moz-appe
 .btn-primary:hover,.btn-primary:active,.btn-primary.hover{background-color:#089978;border-color:#068f70}
 .btn-primary:disabled,.btn-primary.disabled{border-color:rgba(8, 153, 120, 0.35)}
 .btn-success{background-color:#0bc39b;border-color:#07b690}
-.btn-success:hover,.btn-success:active,.btn-success.hover{background-color:#07b690;border-color:#07a280}
+.btn-success:hover,.btn-success:active,.btn-success:focus,.btn-success.hover{background-color:#07b690;border-color:#07a280}
 .btn-info{background-color:#00c0ef;border-color:#00acd6}
 .btn-info:hover,.btn-info:active,.btn-info.hover{background-color:#00acd6}
 .btn-danger{background-color:#dd4b39;border-color:#d73925}
