@@ -36,16 +36,24 @@ $config->addJS('dist', 'main.js'); ?>
 		<div class="nav-icon"><i class="fa fa-reorder"></i></div>
 		<ul class="nav navbar-nav">
 			<li class="nav-item active">
-				<a class="nav-link" href="#"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="#"><i class="fa fa-home"></i> Trang chủ <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#"><i class="fa fa-search"></i> Search</a>
+				<a class="nav-link" href="#"><i class="fa fa-search"></i> Tìm kiếm</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Saved</a>
+				<a class="nav-link" href="#"><i class="fa fa-bookmark"></i> Đã lưu</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link disabled" href="#"><i class="fa fa-plus"></i> </a>
+			<li class="nav-item add-node-link dropdown">
+				<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+					<i class="fa fa-plus"></i> Đăng tin
+				</a>
+				<ul class="dropdown-menu with-triangle pull-right">
+					<li class="nodesell"><a href="<?php echo MAIN_URL ?>/map?mode=add&type=node"><i class="fa fa-plus"></i> Cần bán/thuê</a></li>
+					<li class="nodesearch"><a href="<?php echo MAIN_URL ?>/map?mode=add&type=node"><i class="fa fa-plus"></i> Cần mua/thuê</a></li>
+				</ul>
+			</li>
+			<li class="nav-item nav-user-mobile">
 			</li>
 		</ul>
 

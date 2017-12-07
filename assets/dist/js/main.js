@@ -265,7 +265,18 @@ jQuery(document).ready(function ($) {
         return false
     })
 
-    if (isMobile) $('body').addClass('mobile');
+    if (isMobile) {
+        $('body').addClass('mobile');
+        //$('.add-node-link').addClass('dropup');
+        if (__token) {
+            $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/user/'+__userInfo.username+'">'+$('.nav-user .dropdown > a').html()+'</a>');
+        } else {
+            $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/login" class="loginlink"><i class="fa fa-ellipsis-h"></i></a>');
+        }
+    } else {
+        //$('.add-node-link').removeClass('dropup');
+        $('.nav-user-mobile').html('').hide();
+    }
     //else $('.container').height($(window).height());
     if (!isMobile && $(window).width() < 1000) {
         $('.nav-icon').show().click(function () {
