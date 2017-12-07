@@ -648,7 +648,8 @@ body.mobile .v-place-info{padding-top:6px}
 .gw-tip-bg>div:nth-child(1), .gw-tip-bg>div:nth-child(3){display: none!important}
 
 .gw-style-parent{margin:-15px 0 0 4px!important}
-.gw-style-parent, .gw-style-parent .gw-style-bg>div:nth-child(2), .gw-style-parent .gw-style-bg>div:nth-child(4){width:320px!important;max-width:320px!important}
+.gw-style-parent, .gw-style-parent .gw-style-bg>div:nth-child(2){width:333px!important;max-width:333px!important}
+.gw-style-parent .gw-style-bg>div:nth-child(4){width:330px!important;max-width:330px!important}
 .gw-style-parent .gm-style-iw{width:300px!important;max-width:300px!important}
 .gw-style-parent .gm-style-iw>div{width:300px!important;max-width:300px!important}
 .gw-style-bg>div:nth-child(1), .gw-style-bg>div:nth-child(3){display: block!important}
@@ -957,6 +958,8 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 }
 .loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;padding-top:15%}
 
+.v-place-v-direction{z-index:-1}
+.active .v-place-v-direction{z-index:100}
 
 .no-padding{padding:0}
 .no-padding-top{padding-top:0}

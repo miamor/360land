@@ -173,11 +173,6 @@ var typeIcon = {
         this.utilArea = null;
         this.isProject = 0;
         if (s.isProject) this.isProject = s.isProject;
-        if (this.isProject == 1) {
-            $('.map_search_select > [attr-type="project"] > a[href="#map_search_project"]').click();
-        } else {
-            $('.map_search_select > [attr-type="node"] > a[href="#map_search_node"]').click();
-        }
 
         this.zoom = null;
 
@@ -288,6 +283,14 @@ var typeIcon = {
                 //this.input.searchtype.value = 1;
             }*/
             if (s.searchtype != undefined) this.searchtype = s.searchtype;
+
+            if (s.searchtype == 2) {
+                $('.map_search_select > [attr-type="project"] > a[href="#map_search_project"]').click();
+            } else {
+                $('.map_search_select > [attr-type="node"] > a[href="#map_search_node"]').click();
+            }
+
+
             //console.log(s);
             this.input.zoom.value = s.zoom;
             this.input.center.value = s.center;
@@ -1066,7 +1069,7 @@ var typeIcon = {
 
             //$.each($thismap.markers, function (i, oneMarker) {
             for (i = 0; i < $thismap.markers.length; i++) {
-                oneMarker = $thismap.markers[i];
+                var oneMarker = $thismap.markers[i];
                 if (oneMarker && oneMarker != undefined) {
                     //console.log(oneMarker);
                     //key = $thismap.findMarkerKey(oneMarker.id);
@@ -1103,7 +1106,8 @@ var typeIcon = {
                 //console.log(location.id+' ~ '+$thismap.findMarker(location.id));
 
                 if (!$thismap.findMarker(location.id)) {
-                    oneMarker = new MarkerWithLabel({
+                    var oneMarker = new MarkerWithLabel({
+                        map: $thismap.map,
                         position: new google.maps.LatLng(location.latitude, location.longitude),
                         //icon: nodeMarker[location.type].default,
                         icon: nodeMarker.empty,
@@ -1113,13 +1117,12 @@ var typeIcon = {
                         labelInBackground: true,
                     });
                     oneMarker.id = location.id;
-                    oneMarker.setMap($thismap.map);
+                    //oneMarker.setMap($thismap.map);
                     $thismap.markers.push(oneMarker);
 
+                    markerkey = $thismap.findMarkerKey(oneMarker.id);
+                    a[i] = oldData[markerkey];
                 }
-
-                markerkey = $thismap.findMarkerKey(oneMarker.id);
-                a[i] = oldData[markerkey];
 
                 //markeyKey = $thismap.findMarkerKey(location.id);
             });
@@ -1141,12 +1144,13 @@ var typeIcon = {
             });*/
 
             $thismap.data = a;
+            console.log($thismap.data);
 
             $.each($thismap.markers, function (i, oneMarker) {
                 //oneMarker.setMap($thismap.map);
                 //$thismap.oms.addMarker(oneMarker);
                 //console.log(oneMarker.id);
-
+                oneMarker.isProject = a[i].isProject;
                 oneMarker.addListener('click', function() {
                     console.log('clicked marker~')
                     $thismap.showInfoWindow(this.id);
@@ -1818,9 +1822,9 @@ ProductSearchControler.prototype.genPopup = function () {
             clearInterval(interval_map);
             if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
             if (!$('#v-direction').is('.active')) {
-                setTimeout(function () {
+                /*setTimeout(function () {
                     $('.v-place-v-direction').hide();
-                }, 500)
+                }, 500)*/
             }
         }
     };
@@ -2046,6 +2050,7 @@ function popup_info (f, lat, lng) {
             setWidth($(window).width());
         }
 
+        console.log($('.v-place-imgs').height());
         $('#map_direction').width($('.v-place-imgs').width()).height($('.v-place-imgs').height());
         google.maps.event.trigger(f.map, 'resize');
         f.map.setCenter(new google.maps.LatLng(lat, lng));
@@ -2128,6 +2133,8 @@ ProductSearchControler.prototype.setNodeDetails = function () {
             }
         };
         interval = setInterval(check, 1200);
+    } else {
+        $('.v-place-v-360').hide();
     }
 
     popup_info(i, place.latitude, place.longitude);
@@ -2274,6 +2281,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
     d.type_search = d.type_action = "0";
 
     d.type_search = f.ProductMap.searchtype.toString();
+    //d.type_search = (f.ProductMap.isProject == 1 ? 2 : f.ProductMap.isProject == 0 ? 1 : 0);
 
     console.log(g);
 
@@ -2475,6 +2483,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         $('#map-search-form .form-group[attr-type]').hide();
         $('#map-search-form .form-group[attr-type="'+type+'"]').show();
         $('#map-search-form input#searchtype').val(type == 'node' ? 1 : type == 'project' ? 2 : 0);
+        //productControlerObj.ProductMap.isProject = (type == 'node' ? 0 : type == 'project' ? 1);
         //productControlerObj.ChangeUrlForNewContext();
     });
 
