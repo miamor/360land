@@ -13,12 +13,52 @@
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-labels">Loại </div>
         <div class="col-md-8 no-padding">
-            <label class="col-sm-3"><input name="type" type="radio" checked value="2"> Bán</label>
-            <label class="col-sm-3" style="margin-top:5px!important"><input name="type" type="radio" value="1"> Cho thuê</label>
+            <label class="col-sm-3"><input name="type_action" type="radio" checked value="2"> Bán</label>
+            <label class="col-sm-3" style="margin-top:5px!important"><input name="type_action" type="radio" value="1"> Cho thuê</label>
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
     </div>
+
+    <div class="form-group form-type" attr-required="1">
+        <div class="col-md-4 no-padding control-labels">Loại bất động sản</div>
+        <div class="col-md-8 no-padding">
+            <select id="type2" name="type2" class="form-control type_bds" attr-typeaction="2">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal1">Chung cư</option>
+                <optgroup label="Nhà bán">
+                    <option value="typereal2">Nhà riêng</option>
+                    <option value="typereal3">Nhà mặt phố</option>
+                    <option value="typereal4">Biệt thự, liền kề</option>
+                </optgroup>
+                <optgroup label="Đất bán">
+                    <option value="typereal5">Đất nền dự án</option>
+                    <option value="typereal6">Bán đất</option>
+                </optgroup>
+                <option value="typereal7">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal8">Nhà kho, nhà xưởng</option>
+                <option value="typereal10">Khác</option>
+            </select>
+
+            <select id="type1" name="type1" class="form-control type_bds hide" attr-typeaction="1">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal11">Chung cư</option>
+                <optgroup label="Nhà thuê">
+                    <option value="typereal12">Nhà riêng</option>
+                    <option value="typereal13">Nhà mặt phố</option>
+                    <option value="typereal14">Phòng trọ, nhà trọ</option>
+                </optgroup>
+                <option value="typereal16">Cửa hàng, ki ốt</option>
+                <option value="typereal15">Văn phòng</option>
+                <option value="typereal17">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal18">Khác</option>
+            </select>
+
+            <input type="hidden" name="type" id="type"/>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
 
     <div class="form-group form-adr" attr-required="1">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ </div>
@@ -139,24 +179,30 @@
     </div>
     <div class="form-group form-price">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
-        <div class="col-md-5 no-padding">
-            <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
-        </div>
-        <div class="col-md-3 no-padding-right">
-            <select id="price_donvi" name="price_donvi" class="form-control">
-                <option value="m">triệu đồng</option>
-                <option value="b">tỷ đồng</option>
-                <option value="mp">triệu đồng/m2</option>
+        <div class="col-md-8 no-padding">
+            <select name="price" id="price" class="form-control">
+                <option value="-1">Chọn giá tiền</option>
+                <option value="CN">Thoả thuận</option>
+                <option value="1">&lt; 500 triệu</option>
+                <option value="2">500 - 800 triệu</option>
+                <option value="3">800 triệu - 1 tỷ</option>
+                <option value="4">1 - 2 tỷ</option>
+                <option value="5">2 - 3 tỷ</option>
+                <option value="6">3 - 5 tỷ</option>
+                <option value="7">5 - 7 tỷ</option>
+                <option value="8">7 - 10 tỷ</option>
+                <option value="9">10 - 20 tỷ</option>
+                <option value="10">20 - 30 tỷ</option>
+                <option value="11">&gt; 30 tỷ</option>
             </select>
         </div>
-        <input type="hidden" name="price"/>
         <div class="clearfix"></div>
     </div>
 
     <div class="form-group">
         <div class="col-md-4 no-padding control-label">Thông tin chi tiết </div>
         <div class="col-md-8 no-padding">
-            <textarea class="form-control" name="r_content" placeholder="Thông tin chi tiết"></textarea>
+            <textarea class="form-control" name="details" placeholder="Thông tin chi tiết"></textarea>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -202,8 +248,10 @@
     </div>
 
     <input type="hidden" name="typenode" value="false"/>
-    <input type="hidden" name="latitude" id="latitude"/>
-    <input type="hidden" name="longitude" id="longitude"/>
+    <input type="hidden" name="latitude" id="latitude" value="0"/>
+    <input type="hidden" name="longitude" id="longitude" value="0"/>
+    <input type="hidden" name="timeto" id="timeto"/>
+    <input type="hidden" name="rank" id="rank" value="0"/>
 
     <div class="add-form-submit center">
         <input value="Làm lại" class="btn btn-default" type="reset">

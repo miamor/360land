@@ -1,3 +1,5 @@
+var placeLatLng = {lat: 18.02, lng: 105.86};
+
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map_select'), {
         zoom: 5,

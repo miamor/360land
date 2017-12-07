@@ -6,8 +6,10 @@ if ($mode) {
     if ($type) $mode = $mode.'_'.$type;
 
     for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
+
     $config->addJS('dist', $page.'/add.js');
     if ($type == 'node') {
+        $config->addJS('dist', $page.'/add_initmap.js');
         $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');
     }
 

@@ -1822,9 +1822,9 @@ ProductSearchControler.prototype.genPopup = function () {
             clearInterval(interval_map);
             if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
             if (!$('#v-direction').is('.active')) {
-                /*setTimeout(function () {
+                setTimeout(function () {
                     $('.v-place-v-direction').hide();
-                }, 500)*/
+                }, 800)
             }
         }
     };
@@ -2542,7 +2542,7 @@ var markContext = "";
 var mapContext = {};
 var productControlerObj = null;
 
-$(window).ready(function() {
+$(document).ready(function () {
     if (typeof cityListOther1 != 'undefined')
         cityList = $.merge(cityList, cityListOther1);
     if (typeof cityListOTher2 != 'undefined')

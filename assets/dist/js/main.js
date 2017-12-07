@@ -13,6 +13,9 @@ function getUserInfo () {
         },
         success: function (response) {
             localStorage.setItem('user_info', JSON.stringify(response));
+            __userInfo = JSON.parse(localStorage.getItem('user_info'));
+            console.log(__userInfo);
+            $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
         },
         error: function (a, b, c) {
             console.log(a);
@@ -137,30 +140,19 @@ String.prototype.getQueryHash = function (name, defaultVal) {
     return results == null ? (defaultVal == undefined ? "" : defaultVal) : decodeURIComponent(results[1].replace(/\+/g, " "));
 };
 
-var intervalId = null;
-var varCounter = 0;
-var checkSession = function(){
-    if (varCounter <= 10) {
-        varCounter++;
-        /* your code goes here */
-    } else {
-        clearInterval(checkSession_Interval);
-    }
-};
-var checkSession_Interval = setInterval(function() {
-    checkSession()
-}, 1000);
-
-
-function checkSession() {
+var checkSession_Interval = null;
+var checkSession = function() {
     var currentSec = Math.floor(Date.now()/1000);
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
+    //console.log(s);
     if (s > 30*60) { // > 30 min
         // logout
         logout()
     }
 }
+checkSession_Interval = setInterval(checkSession, 1200);
+
 
 function logout () {
     clearInterval(checkSession_Interval);
@@ -168,20 +160,22 @@ function logout () {
     localStorage.removeItem('token');
     localStorage.removeItem('user_info');
     __userInfo = __token = null;
-    console.log('Logged out!')
+    console.log('Logged out!');
+    location.reload();
 }
 
 jQuery(document).ready(function ($) {
     flatApp();
 
     if (localStorage.getItem('token')) {
-        if (!localStorage.getItem('user_info') || !__userInfo) {
+        __token = localStorage.getItem('token');
+        if (!localStorage.getItem('user_info')) {
             getUserInfo();
+        } else {
+            __userInfo = JSON.parse(localStorage.getItem('user_info'));
+            console.log(__userInfo);
+            $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
         }
-        __userInfo = JSON.parse(localStorage.getItem('user_info'));
-        console.log(__userInfo);
-        $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-
         // destroy session every 30 minutes
     } else {
         $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');

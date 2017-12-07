@@ -1,5 +1,3 @@
-var placeLatLng = {lat: 18.02, lng: 105.86};
-
 var newNode = (window.location.href.indexOf('type=search') > -1 ? false : true);
 
 var options = {district: ''};
@@ -33,7 +31,7 @@ function changeCityCallback () {
     f.find('#district').html('<option value="-1">--Chọn Quận/Huyện--</option>'+options.district);
 }
 
-$(function () {
+$(document).ready(function () {
     if (typeof cityListOther1 != 'undefined') cityList = $.merge(cityList, cityListOther1);
     if (typeof cityListOTher2 != 'undefined') cityList = $.merge(cityList, cityListOther2);
     if (typeof cityListOTher3 != 'undefined') cityList = $.merge(cityList, cityListOther3);
@@ -55,9 +53,30 @@ $(function () {
         $('#email').val(__userInfo.email);
     }
 
-    var ok = true;
+    if (newNode) {
+        $('.rank-one-select').click(function () {
+            var r = $(this).attr('attr-rank');
+            $('.rank-one-select').removeClass('active');
+            $(this).addClass('active');
+            $('#rank').val(r);
+        });
+        $("#timeto").datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate: new Date()
+        });
+    }
+
+    $('[name="type_action"]').change(function () {
+        var a = $(this).val();
+        $('.type_bds').hide();
+        $('.type_bds#type'+a).show();
+        $('#type').val('');
+        $('#type'+a).val('CN');
+    })
+
     $('.place-add').submit(function () {
-        $('[attr-required="1"]').not('.form-adr,.form-price').each(function () {
+        var ok = true;
+        $('[attr-required="1"]').not('.form-adr,.form-price,.form-type').each(function () {
             var val = $(this).find('input,select,textarea').val();
             if (!val || val == "CN") {
                 console.log('Missing parameters');
@@ -66,7 +85,7 @@ $(function () {
             }
         });
         if (ok) {
-            if ( !$('#city').val() || !$('#district').val() || !$('#price_donvi').val() ) {
+            if ( !$('#city').val() || !$('#district').val() ) {
                 console.log('Missing parameters (2)');
                 ok = false;
                 return false;
@@ -77,14 +96,67 @@ $(function () {
                 return false;
             }
         }
+
+        var a = $('[name="type_action"]').val();
+        $('#type').val($('#type'+a).val());
+        if (newNode) {
+            if (!$('#rank').val()) {
+                ok = false;
+                console.log('Missing parameters (rank)');
+            }
+            if (!$('#type').val() || $('#type').val() == 'CN') {
+                ok = false;
+                console.log('Missing parameters (type)');
+            }
+            if (!$('#price_giatri').val()) {
+                ok = false;
+                console.log('Missing parameters (price_giatri)');
+            }
+        }
+
+
+        var postData = {};
+        e = $(this).serialize().split('&');
+        $.each(e, function (i, v) {
+            vk = v.split('=')[0];
+            vl = v.split('=')[1];
+            postData[vk] = vl;
+        });
+        postData.email = postData.email.replace('%40', '@');
+
+        if (newNode) {
+            postData.price = postData.price_giatri;
+            if (postData.price_donvi == 'm') {
+                postData.price = postData.price_giatri/1000;
+            }
+        }
+
+        postData.rank = parseInt(postData.rank);
+        if (!postData.area) postData.area = 0;
+        postData.area = parseInt(postData.area);
+        if (!postData.sophongngu) postData.sophongngu = 0;
+        postData.sophongngu = parseInt(postData.sophongngu);
+
+        postData.latitude = parseFloat(postData.latitude);
+        postData.longitude = parseFloat(postData.longitude);
+        postData.timefrom = new Date().toISOString().replace(/T.*/,'');
+        if (!newNode) {
+            postData.timeto = postData.timefrom;
+        }
+        console.log(postData);
+        console.log(JSON.stringify(postData));
+
         if (ok) {
             console.log('ajax post');
-            var postData = $(this).serialize();
-            console.log(postData);
+            //var postData = $(this).serialize();
             $.ajax({
-                url: API_URL+'/manager/realestatenode/',
+                url: API_URL+'/manager_user/nodes/',
                 type: 'post',
                 data: postData,
+                datatype: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', __token);
+                },
                 success: function (response) {
                     console.log(response);
                 },
@@ -92,6 +164,8 @@ $(function () {
                     console.log(a);
                 }
             })
+        } else {
+            console.log('not ok~');
         }
         return false
     })

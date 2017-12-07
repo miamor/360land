@@ -18,7 +18,8 @@ $config->addJS('dist', 'main.js'); ?>
 	<link rel="stylesheet" href="<?php echo MAIN_URL ?>/assets/bootstrap/css/bootstrap.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">
+<!--<link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">-->
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
 

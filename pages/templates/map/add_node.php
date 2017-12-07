@@ -13,9 +13,48 @@
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-labels">Loại </div>
         <div class="col-md-8 no-padding">
-            <label class="col-sm-3"><input name="type" type="radio" checked value="2"> Bán</label>
-            <label class="col-sm-3" style="margin-top:5px!important"><input name="type" type="radio" value="1"> Cho thuê</label>
+            <label class="col-sm-3"><input name="type_action" type="radio" checked value="2"> Bán</label>
+            <label class="col-sm-3" style="margin-top:5px!important"><input name="type_action" type="radio" value="1"> Cho thuê</label>
             <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group form-type" attr-required="1">
+        <div class="col-md-4 no-padding control-labels">Loại bất động sản</div>
+        <div class="col-md-8 no-padding">
+            <select id="type2" name="type2" class="form-control type_bds" attr-typeaction="2">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal1">Chung cư</option>
+                <optgroup label="Nhà bán">
+                    <option value="typereal2">Nhà riêng</option>
+                    <option value="typereal3">Nhà mặt phố</option>
+                    <option value="typereal4">Biệt thự, liền kề</option>
+                </optgroup>
+                <optgroup label="Đất bán">
+                    <option value="typereal5">Đất nền dự án</option>
+                    <option value="typereal6">Bán đất</option>
+                </optgroup>
+                <option value="typereal7">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal8">Nhà kho, nhà xưởng</option>
+                <option value="typereal10">Khác</option>
+            </select>
+
+            <select id="type1" name="type1" class="form-control type_bds hide" attr-typeaction="1">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal11">Chung cư</option>
+                <optgroup label="Nhà thuê">
+                    <option value="typereal12">Nhà riêng</option>
+                    <option value="typereal13">Nhà mặt phố</option>
+                    <option value="typereal14">Phòng trọ, nhà trọ</option>
+                </optgroup>
+                <option value="typereal16">Cửa hàng, ki ốt</option>
+                <option value="typereal15">Văn phòng</option>
+                <option value="typereal17">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal18">Khác</option>
+            </select>
+
+            <input type="hidden" name="type" id="type"/>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -145,10 +184,8 @@
     </div>
     <div class="form-group form-price" attr-required="1">
         <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
-        <div class="col-md-5 no-padding">
+        <div class="col-md-8 no-padding">
             <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
-        </div>
-        <div class="col-md-3 no-padding-right">
             <select id="price_donvi" name="price_donvi" class="form-control">
                 <option value="m">triệu đồng</option>
                 <option value="b">tỷ đồng</option>
@@ -162,8 +199,38 @@
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-label">Thông tin chi tiết </div>
         <div class="col-md-8 no-padding">
-            <textarea class="form-control" name="r_content" placeholder="Thông tin chi tiết"></textarea>
+            <textarea class="form-control" name="details" placeholder="Thông tin chi tiết"></textarea>
         </div>
+        <div class="clearfix"></div>
+    </div>
+
+
+    <div class="form-group" attr-required="1">
+        <div class="col-md-4 no-padding control-label">Hạn</div>
+        <div class="col-md-8 no-padding">
+            <input class="form-control" type="text" id="timeto" name="timeto" placeholder="dd/mm/yyyy"/>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group rank-select">
+        <div class="col-md-4 no-padding control-label">Chọn gói </div>
+        <div class="col-md-8 no-padding">
+            <div class="rank-one-select" attr-rank="1">
+                <div class="rank-one-des">Blah blah </div>
+                <div class="rank-one-title">Rank 1</div>
+            </div>
+            <div class="rank-one-select" attr-rank="2">
+                <div class="rank-one-des">Bleh bleh</div>
+                <div class="rank-one-title">Rank 2</div>
+            </div>
+            <div class="rank-one-select" attr-rank="3">
+                <div class="rank-one-des">Bloh bloh</div>
+                <div class="rank-one-title">Rank 3</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <input type="hidden" name="rank" id="rank"/>
         <div class="clearfix"></div>
     </div>
 
