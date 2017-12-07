@@ -1,35 +1,41 @@
 function loginForm () {
+    console.log('loginForm loaded');
     $('#login').submit(function () {
-        $.ajax({
-            url: API_URL+'/login/user/',
-            type: 'post',
-            data: $(this).serialize(),
-            success: function (response) {
-                if (("token" in response) == false) {
-                    console.log(response);
-                } else {
-                    __token = response.token;
-                    localStorage.setItem("token" , __token);
-                    localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
-                    console.log(__token);
-                    window.location.href = MAIN_URL;
-                }
-            },
-            error: function (a, b, c) {
-                console.log(a)
-            }
-        });
-        return false
+        submitLoginForm();
     })
 }
 
-/*
-function showRecaptcha(element) {
-	Recaptcha.create("6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ", element, {
-		theme: "white",
-		callback: Recaptcha.focus_response_field
+function submitLoginForm () {
+    $.ajax({
+        url: API_URL+'/login/user/',
+        type: 'post',
+        data: $('#login').serialize(),
+        success: function (response) {
+            if (("token" in response) == false) {
+                console.log(response);
+                mtip('', 'error', 'Lỗi', response.message);
+            } else {
+                __token = response.token;
+                localStorage.setItem("token" , __token);
+                localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
+                console.log(__token);
+                mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
+                if ($('.popup:not(".popup-map")').is(':visible')) {
+                    remove_popup();
+                } else {
+                    //window.location.href = MAIN_URL;
+                    location.reload();
+                }
+            }
+        },
+        error: function (a, b, c) {
+            console.log(a)
+            mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+        }
     });
-}*/
+    return false
+}
+
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {

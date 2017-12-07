@@ -1,7 +1,7 @@
 <div class="col-lg-1"></div>
 
 <div class="col-lg-7 no-padding">
-    <form id="login">
+    <form id="login" onsubmit="return submitLoginForm()">
         <h4 class="with-border page-title show">Đăng nhập</h4>
         <div class="form-group">
             <div class="col-lg-3 control-label">Tên đăng nhập </div>

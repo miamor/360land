@@ -15,7 +15,10 @@ function getUserInfo () {
             localStorage.setItem('user_info', JSON.stringify(response));
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
             console.log(__userInfo);
-            $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+            //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+            $('.nav-user #me_login_link').hide();
+            $('.nav-user #me_dropdown_info').show();
+            setUserInfoNav();
         },
         error: function (a, b, c) {
             console.log(a);
@@ -53,32 +56,32 @@ function locdau (str) {
 }
 
 function popup (html) {
-    $('.the-board').html(html);
+    $('.popup:not(".popup-map") .the-board').html(html);
 	//var topp = $(document).scrollTop() + 100;
     var topp = $('nav.navbar').height() + 20;
-	$('.popup-content').slideDown(400, function () {
+	$('.popup:not(".popup-map") .popup-content').slideDown(400, function () {
         //$('.popup-inner>div').height($('.popup-content').height());
         $('body').addClass('fixed');
-        $('.popup').show();
-		flatApp();
+        $('.popup:not(".popup-map")').show();
+		//flatApp();
 		$(this).css({
 			'overflow': 'visible'
 		});
-        if ($('.map-item-info-board').length) {
+        /*if ($('.map-item-info-board').length) {
             setWidth($(window).width());
         }
-        if (productControlerObj && $('.popup .v-place-v-direction').length) {
+        if (productControlerObj && $('.popup:not(".popup-map") .v-place-v-direction').length) {
             productControlerObj.ShowDirection(place.latitude, place.longitude);
-        }
+        }*/
 	}).css('top', topp);
-	$('.popup-content [role="close"]').click(function () {
+	$('.popup:not(".popup-map") .popup-content [role="close"]').click(function () {
 		remove_popup()
 	});
 }
 function remove_popup () {
-    $('.the-board').html('');
-	$('.popup-content').attr('style', '').slideUp(400, function () {
-		$('.popup').hide();
+    $('.popup:not(".popup-map") .the-board').html('');
+	$('.popup:not(".popup-map") .popup-content').attr('style', '').slideUp(400, function () {
+		$('.popup:not(".popup-map")').hide();
         $('body').removeClass('fixed');
 	})
 }
@@ -97,7 +100,7 @@ function flatApp () {
     if ($(':radio').length) $(':radio').radio();
 
     $('.v-box').each(function () {
-        if ($(this).children('h4').length) {
+        if ($(this).children('h4').length && !$(this).children('h4').children('.toggle-box-btn').length) {
             if ($(this).children('.v-box-content').is('.open')) {
                 $(this).children('h4').prepend('<i class="toggle-box-btn fa fa-chevron-up right"></i> ');
             } else {
@@ -147,21 +150,38 @@ var checkSession = function() {
     var s = currentSec - loginSec;
     //console.log(s);
     if (s > 30*60) { // > 30 min
+    //if (s >= 3) {
         // logout
-        logout()
+        logout(true)
     }
 }
 checkSession_Interval = setInterval(checkSession, 1200);
 
 
-function logout () {
+function logout (autoLoggedOut = false) {
     clearInterval(checkSession_Interval);
     localStorage.removeItem('login_time');
     localStorage.removeItem('token');
     localStorage.removeItem('user_info');
     __userInfo = __token = null;
     console.log('Logged out!');
-    location.reload();
+    $('.nav-user #me_login_link').show();
+    $('.nav-user #me_dropdown_info').hide();
+    if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
+    //location.reload();
+}
+
+
+function loadLoginPopup (autoLoggedOut = false) {
+    html = '<div class="popup-section section-light">';
+    html += '<div class="alerts alert-warning">Token đã hết hạn. Vui lòng <a href="'+MAIN_URL+'/login">đăng nhập</a> lại để tiếp tục.</div>';
+    html += '<div class="load_login_form"></div></div>';
+    popup(html);
+    $.get(MAIN_URL+'/login?temp=true', function (templates) {
+        $('.load_login_form').html(templates);
+        flatApp();
+        //loginForm();
+    });
 }
 
 
@@ -198,6 +218,16 @@ function stip(d) {
 }
 
 
+function setUserInfoNav () {
+    if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
+    $('.myID').attr('id', __userInfo.username);
+    $('.myName, #meinfo_name').text(__userInfo.name);
+    $('#meinfo_uname').text(__userInfo.username);
+    $('#meinfo_coins').text(__userInfo.coin);
+    $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
+}
+
+
 jQuery(document).ready(function ($) {
     flatApp();
 
@@ -208,12 +238,32 @@ jQuery(document).ready(function ($) {
         } else {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
             console.log(__userInfo);
-            $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+            //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+            $('.nav-user #me_login_link').hide();
+            $('.nav-user #me_dropdown_info').show();
+            setUserInfoNav();
         }
         // destroy session every 30 minutes
     } else {
-        $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
+        //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
+        $('.nav-user #me_login_link').show();
+        $('.nav-user #me_dropdown_info').hide();
+        if (!isMobile) {
+            $('#me_login_link').click(function () {
+                loadLoginPopup();
+                return false
+            })
+        }
     }
+
+    $('[href*="/logout"]').click(function () {
+        popup('<div class="popup-section section-light">Đang đăng xuất khỏi tài khoản <b>'+__userInfo.username+'</b>...</div>');
+        logout();
+        setTimeout(function () {
+            remove_popup();
+        }, 1000);
+        return false
+    })
 
     if (isMobile) $('body').addClass('mobile');
     //else $('.container').height($(window).height());

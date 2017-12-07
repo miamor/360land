@@ -1,6 +1,7 @@
 <?php //echo date("Y-m-d H:i:s");
 //$config->addJS('plugins', 'bootstrapValidator/bootstrapValidator.min.js');
 //$config->addJS('plugins', 'sceditor/minified/jquery.sceditor.bbcode.min.js');
+if (!$temp) {
 $config->addJS(-1, 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 $config->addJS('bootstrap', 'js/bootstrap.min.js');
 //$config->addJS('plugins', 'iCheck/icheck.js');
@@ -31,7 +32,7 @@ $config->addJS('dist', 'main.js'); ?>
 
 </head>
 <body>
-    <nav class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
+    <nav id="top_navbar" class="navbar navbar-toggleable-md navbar-static-top bg-inverse">
 		<div class="nav-icon"><i class="fa fa-reorder"></i></div>
 		<ul class="nav navbar-nav">
 			<li class="nav-item active">
@@ -41,14 +42,52 @@ $config->addJS('dist', 'main.js'); ?>
 				<a class="nav-link" href="#"><i class="fa fa-search"></i> Search</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link disabled" href="#"><i class="fa fa-heart"></i> Saved</a>
+				<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Saved</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link disabled" href="#"><i class="fa fa-bookmark"></i> Bleh</a>
+				<a class="nav-link disabled" href="#"><i class="fa fa-plus"></i> </a>
 			</li>
 		</ul>
 
 		<div class="nav-user">
+			<a class="hide" id="me_login_link" href="<?php echo MAIN_URL ?>/login">Đăng nhập</a>
+			<div class="dropdown hide" id="me_dropdown_info">
+				<a class="dropdown-toggle" data-toggle="dropdown">
+					<img src="<?php echo MAIN_URL ?>/data/avt.png" class="nav-user-avt img-circle myAvt"/>
+					<strong class="s-title myName"></strong>
+					<span class="hidden myID"></span>
+				</a>
+				<ul class="dropdown-menu with-triangle pull-right">
+					<li class="user-header">
+						<img src="<?php echo MAIN_URL ?>/data/avt.png" id="meinfo_avt" class="img-circle" alt="User Image">
+						<p><span id="meinfo_name"></span> - <small id="meinfo_uname">@tutu</small></p>
+					</li>
+					<!-- Menu Body -->
+					<li class="user-body u-sta sta-list">
+						<div class="sta-one u-coins">
+							<strong id="meinfo_coins"></strong>
+							coins
+						</div>
+						<div class="sta-one u-hh">
+							<strong id="meinfo_hh">12</strong>
+							hh
+						</div>
+						<div class="sta-one u-kk">
+							<strong id="meinfo_kk">5</strong>
+							kk
+						</div>
+					</li>
+					<!-- Menu Footer-->
+					<li class="user-footer">
+						<div class="pull-left">
+							<a class="btn btn-success btn-flat" id="meinfo_profile_link" href="#">Profile</a>
+						</div>
+						<div class="pull-right">
+							<a class="btn btn-danger btn-flat" href="<?php echo MAIN_URL ?>/logout">Logout</a>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		<form class="nav-search">
@@ -56,3 +95,4 @@ $config->addJS('dist', 'main.js'); ?>
 	</nav>
 
     <div class="container">
+<?php } ?>

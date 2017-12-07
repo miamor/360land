@@ -149,7 +149,9 @@ $(document).ready(function () {
             postData.latitude = parseFloat(postData.latitude);
             postData.longitude = parseFloat(postData.longitude);
             postData.timefrom = new Date().toISOString().replace(/T.*/,'');
-            if (!newNode) {
+            if (newNode) {
+                postData.timeto = postData.timeto.replace('%2F', '-');
+            } else {
                 postData.timeto = postData.timefrom;
             }
             console.log(postData);
@@ -172,7 +174,7 @@ $(document).ready(function () {
                     },
                     error: function (a, b, c) {
                         console.log(a);
-                        mtip('', 'error', '', 'Lỗi đăng tin bài! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                        mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                     }
                 })
             } else {

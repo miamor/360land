@@ -1508,8 +1508,10 @@ var typeIcon = {
                 console.log(this.currentPID);
                 console.log(key);
                 data = this.findDataInfo(key);
-                this.isProject = data.isProject;
+                //this.isProject = data.isProject;
             }
+
+            this.isProject = data.isProject;
 
             this.deactiveMarker();
             this.input.product.value = this.currentPID;
@@ -1820,7 +1822,7 @@ ProductSearchControler.prototype.genPopup = function () {
     var check_map = function() {
         if ($('#map_direction>div').length) {
             clearInterval(interval_map);
-            if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
+            if (!i.ProductMap.isDetails) $('.popup-map,.popup-map .popup-content').hide();
             if (!$('#v-direction').is('.active')) {
                 setTimeout(function () {
                     $('.v-place-v-direction').hide();
@@ -1874,38 +1876,6 @@ ProductSearchControler.prototype.SearchProjectName = function () {
 
 ProductSearchControler.prototype.showCitySearch = function () {
     var i = this;
-    /*
-    cityOptions = $('select#city').html();
-    html = '<div class="popup-select-city popup-section section-light"><div class="callout callout-info">Blah blah~~~ Some messages here~</div><div class="select-city-board"><div class="col-lg-3 no-padding"><h4>Chọn thành phố</h4></div><div class="col-lg-9 no-padding-right"><select id="city_first">'+cityOptions+'</select></div><div class="clearfix"></div></div>  <div class="center"><a href="#" class="btn btn-danger select-city-done">Tìm kiếm</a></div> </div>';
-    if (isMobile) {
-        $('.popup-content').css({
-            left: '5%',
-            right: '5%',
-            'margin-top': '35%',
-            'padding-top': 0,
-            height: 220
-        });
-    }
-    else {
-        $('.popup-content').css({
-            left: '25%',
-            right: '25%',
-            height: 200
-        });
-    }
-    popup(html);
-    $('.popup-content [role="close"]').hide();
-    $('.select-city-done').click(function () {
-        var cityy = $('select#city_first').val();
-        if (cityy == 'HN') i.ProductMap.input.center.value = '21.0277644:105.83415979999995';
-        $('select#city').val(cityy);
-        i.changeCityCallback(cityy);
-        remove_popup();
-        i._SearchAction();
-        i.ChangeUrlForNewContext();
-        return false
-    })
-    */
 }
 
 ProductSearchControler.prototype.changeCityCallback = function (ct) {
@@ -2040,9 +2010,9 @@ ProductSearchControler.prototype.ShowDirection = function (lat, lng) {
 
 function popup_info (f, lat, lng) {
     var topp = $('nav.navbar').height() + 20;
-	$('.popup-content').slideDown(400, function () {
+	$('.popup-map .popup-content').slideDown(400, function () {
         $('body').addClass('fixed');
-        $('.popup').show();
+        $('.popup-map').show();
 		$(this).css({
 			'overflow': 'visible'
 		});
@@ -2057,13 +2027,13 @@ function popup_info (f, lat, lng) {
         f.ShowDirection(lat, lng);
 
 	}).css('top', topp);
-	$('.popup-content [role="close"]').click(function () {
+	$('.popup-map .popup-content [role="close"]').click(function () {
 		remove_popup_info()
 	});
 }
 
 function remove_popup_info () {
-    $('.popup-content, .popup').attr('style', '').hide();
+    $('.popup-map .popup-content, .popup-map').attr('style', '').hide();
     $('body').removeClass('fixed');
 }
 
@@ -2082,6 +2052,7 @@ ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) 
 }
 ProductSearchControler.prototype.ShowDetailsNode = function (id) {
     var i = this;
+    i.ProductMap.isProject = false;
     if (!i.ProductMap.currentProduct) {
         $.post(API_URL+'/user/chitietnode/', {id: i.ProductMap.currentPID}, function (place) {
             i.ProductMap.currentProduct = place;
@@ -2093,7 +2064,7 @@ ProductSearchControler.prototype.ShowDetailsNode = function (id) {
 };
 ProductSearchControler.prototype.setNodeDetails = function () {
     var i = this;
-    var place = i.ProductMap.currentProduct
+    var place = i.ProductMap.currentProduct;
     console.log(place);
     if (place.isProject) place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
@@ -2144,7 +2115,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     //i.ProductMap.sv.getPanorama({location: latlng, radius: 50}, i.ProductMap.processSVData);
 
     //setWidth();
-    $('.popup-content [role="close"]').show();
+    $('.popup-map .popup-content [role="close"]').show();
 
     $('.v-place-related-list').html('');
     $.post(API_URL+'/search/nodenangcao/', {nodeid: i.ProductMap.currentPID}, function (similar) {
@@ -2169,13 +2140,14 @@ ProductSearchControler.prototype.setNodeDetails = function () {
         $('.v-place-thumb').removeClass('active');
         $(this).addClass('active');
     });
-    $('.popup-content [role="close"]').click(function () {
+    $('.popup-map .popup-content [role="close"]').click(function () {
         i.closePopup();
     })
 }
 
 ProductSearchControler.prototype.ShowDetailsProject = function (id) {
     var i = this;
+    i.ProductMap.isProject = true;
     if (!i.ProductMap.currentProduct) {
         $.post(API_URL+'/user/chitietduan/', {id: i.ProductMap.currentPID}, function (place) {
             i.ProductMap.currentProduct = place;

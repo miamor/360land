@@ -170,7 +170,7 @@
 
 <div id="overlapNodes"></div>
 
-<div class="popup popup-dark "><div class="popup-inner"><div>
+<div class="popup popup-dark popup-map"><div class="popup-inner"><div>
 	<div class="popup-content " style="background:#fff">
 		<a class="popup-btn" role="close"></a>
 		<div class="the-board">
