@@ -955,7 +955,7 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 25%,75%{-moz-transform:perspective(193px) rotateX(0deg);opacity:1}
 90%,100%{-moz-transform:perspective(193px) rotateY(180deg);opacity:0}
 }
-.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;padding-top:20%}
+.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;padding-top:15%}
 
 
 .no-padding{padding:0}

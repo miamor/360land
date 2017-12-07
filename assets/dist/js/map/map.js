@@ -472,7 +472,10 @@ var typeIcon = {
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                if ($thismap.listLatlgn != null) {
+                if ($thismap.currentPID) {
+                    $thismap.enableSetCenter = true;
+                    $thismap.boundsChangeCallBack();
+                } else if ($thismap.listLatlgn != null) {
                     $thismap.enableSetCenter = false;
                         path: $thismap.listLatlgn,
                         $thismap.polyline = new google.maps.Polygon({
@@ -1414,13 +1417,15 @@ var typeIcon = {
             var runSet = false;
             if (!isInit && d != this.currentPID) runSet = true;
 
-            if (d == this.currentPID) {
+            if (d == this.currentPID && data) {
                 key = this.findMarkerKey(this.currentPID);
             }
             if (d != this.currentPID || !data) {
                 this.currentPID = d;
                 this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
                 this.currentProduct = null;
+                console.log(this.currentPID);
+                console.log(key);
                 data = this.findDataInfo(key);
                 this.isProject = data.isProject;
             }
@@ -1439,11 +1444,13 @@ var typeIcon = {
                     }
                     else {
                         this.input.zoom.value = this.map.getZoom();
-                        productControlerObj.ChangeUrlForNewContext();
                     }
                 }
 
                 this.activeMarker(this.currentMarkerKey);
+
+                //console.log(this.isProject);
+                productControlerObj.ChangeUrlForNewContext();
 
                 //if (isInit) {
                     if (this.isDetails) {
@@ -1453,7 +1460,7 @@ var typeIcon = {
                     }
                 //}
 
-                console.log(data);
+                //console.log(data);
 
                 if (this.isProject) this.contentInfoWindowProject(h, key, data, isInit);
                 else this.contentInfoWindowNode(h, key, data, isInit);
@@ -1733,7 +1740,9 @@ ProductSearchControler.prototype.genPopup = function () {
         if ($('#map_direction>div').length) {
             clearInterval(interval_map);
             if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
-            if (!$('#v-direction').is('.active')) $('.v-place-v-direction').hide();
+            if (!$('#v-direction').is('.active')) {
+                //$('.v-place-v-direction').hide();
+            }
         }
     };
     interval_map = setInterval(check_map, 1200);
@@ -2056,7 +2065,9 @@ ProductSearchControler.prototype.setNodeDetails = function () {
         console.log(similar);
         for (si = 0; si < 4; si++) {
             sv = similar[si];
-            $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+            if (sv) {
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+            }
         }
     })
     $('.v-place-mode').click(function () {
@@ -2126,6 +2137,8 @@ ProductSearchControler.prototype.setProjectDetails = function () {
             }
         };
         interval = setInterval(check, 1200);
+    } else {
+        $('.v-place-v-360').hide()
     }
 
     popup_info(i, place.latitude, place.longitude);
