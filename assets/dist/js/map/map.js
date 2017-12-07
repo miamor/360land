@@ -475,7 +475,7 @@ var typeIcon = {
 
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                if ($thismap.currentPID) {
+                if ($thismap.isDetails) {
                     $thismap.enableSetCenter = true;
                     $thismap.boundsChangeCallBack();
                 } else if ($thismap.listLatlgn != null) {
@@ -810,9 +810,14 @@ var typeIcon = {
 
             this.input.points.value = '';
             this.input.place_search.value = '';
+            this.input.city.value = 'CN';
+            this.input.district.value = 'CN';
+            this.input.ward.value = 'CN';
+            this.input.street.value = 'CN';
 
             $thismap.isDrawing = false;
             this.isMapIdle = false;
+
             this.callBackClearPointEvent(true);
         };
         this.endDraw = function(a) {
@@ -1744,7 +1749,9 @@ ProductSearchControler.prototype.genPopup = function () {
             clearInterval(interval_map);
             if (!i.ProductMap.isDetails) $('.popup,.popup-content').hide();
             if (!$('#v-direction').is('.active')) {
-                //$('.v-place-v-direction').hide();
+                setTimeout(function () {
+                    $('.v-place-v-direction').hide();
+                }, 500)
             }
         }
     };
