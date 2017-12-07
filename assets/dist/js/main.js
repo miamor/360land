@@ -164,6 +164,40 @@ function logout () {
     location.reload();
 }
 
+
+function mtip(a, c, title, content) {
+	$(".alert").length && $(".alert").remove();
+	if (a && a.length) {
+		if (a == 'alert') {
+			$('body').append('<div class="the-board-fixed"></div><div class="alert-fixed alert-' + c + '"><a class="close" onclick="htip(\'just-add\')" data-dismiss="alert">\u00d7</a><strong>' + title + " </strong>" + content + "</div>");
+		} else $(a).prepend('<div class="alert alert-' + c + ' just-add"><a class="close" onclick="htip(\'just-add\')" data-dismiss="alert">\u00d7</a><strong>' + title + " </strong>" + content + "</div>");
+	} else $('body').append('<div class="alert alert-' + c + ' just-add"><a class="close" onclick="htip(\'just-add\')" data-dismiss="alert">\u00d7</a><strong>' + title + " </strong>" + content + "</div>");
+	wi = $('.just-add').width()/2;
+	$('.just-add').css("left", "calc(50% - "+wi+"px)").animate({
+		bottom: "+=50"
+	}, 200);
+	stip('just-add')
+}
+function htip(a) {
+	var l = $('.' + a).attr('class');
+	if (l.indexOf('alerts') > -1) {
+		$("." + a).slideUp(function () {
+			$("." + a).remove().prev('.the-board-fixed').remove()
+		})
+	} else {
+		$(".alert").animate({
+			bottom: "-=150"
+		}, 500, function () {
+			$(".alert").remove().prev('.the-board-fixed').remove()
+		})
+	}
+}
+function stip(d) {
+	$("." + d).fadeIn(1E3);
+	setTimeout("htip('" + d + "')", 5E3)
+}
+
+
 jQuery(document).ready(function ($) {
     flatApp();
 
