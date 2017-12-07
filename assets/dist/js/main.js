@@ -225,6 +225,10 @@ function setUserInfoNav () {
     $('#meinfo_uname').text(__userInfo.username);
     $('#meinfo_coins').text(__userInfo.coin);
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
+
+    if (isMobile) {
+        $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/user/'+__userInfo.username+'">'+$('.nav-user .dropdown > a').html()+'</a>');
+    }
 }
 
 
@@ -253,6 +257,8 @@ jQuery(document).ready(function ($) {
                 loadLoginPopup();
                 return false
             })
+        } else {
+            $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/login" class="loginlink"><i class="fa fa-ellipsis-h"></i></a>');
         }
     }
 
@@ -268,11 +274,6 @@ jQuery(document).ready(function ($) {
     if (isMobile) {
         $('body').addClass('mobile');
         //$('.add-node-link').addClass('dropup');
-        if (__token) {
-            $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/user/'+__userInfo.username+'">'+$('.nav-user .dropdown > a').html()+'</a>');
-        } else {
-            $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/login" class="loginlink"><i class="fa fa-ellipsis-h"></i></a>');
-        }
     } else {
         //$('.add-node-link').removeClass('dropup');
         $('.nav-user-mobile').html('').hide();
