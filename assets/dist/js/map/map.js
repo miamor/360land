@@ -175,6 +175,8 @@ var typeIcon = {
         if (s.isProject) this.isProject = s.isProject;
         if (this.isProject == 1) {
             $('.map_search_select > [attr-type="project"] > a[href="#map_search_project"]').click();
+        } else {
+            $('.map_search_select > [attr-type="node"] > a[href="#map_search_node"]').click();
         }
 
         this.zoom = null;
@@ -374,8 +376,8 @@ var typeIcon = {
                             data.isProject = true;
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
+                            $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
                             productControlerObj.setProjectDetails();
-                            //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
                         },
                         error: function (a, b, c) {
                             console.log(a);
@@ -391,15 +393,15 @@ var typeIcon = {
                             data.isProject = false;
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
+                            $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
                             productControlerObj.setNodeDetails();
-                            //$thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
                         },
                         error: function (a, b, c) {
                             console.log(a);
                         }
                     })
                 }
-            } else if (!$('#place_search').val() && !c_city) {
+            } else if (!$('#place_search').val() && (!c_city || c_city == 'CN') ) {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
                         var pos = {
@@ -491,7 +493,7 @@ var typeIcon = {
                     $thismap.polyline.setMap($thismap.map);
                     $thismap.findPoint($thismap.polyline);
                     $thismap.catchChangePolyline();
-                } else if (c_city) {
+                } else if (c_city && c_city != 'CN') {
                     s.place_search = null;
                     $thismap.input.place_search.value = '';
                     $thismap.setCenterByAddress();
@@ -543,13 +545,17 @@ var typeIcon = {
             console.log(address);
             $thismap.geocoder.geocode({'address': address}, function(results, status) {
                 if (status === 'OK') {
-                    $thismap.map.setCenter(results[0].geometry.location);
-                    $thismap.drawBoundary(
+                    if (c_city && c_city != 'CN') {
+                        $thismap.map.setCenter(results[0].geometry.location);
+                        $thismap.drawBoundary(
                             $('#city option:selected').text(),
                             $("#district option:selected").text(),
                             $('#ward option:selected').text()
                         );
-                    return results[0]
+                        return results[0]
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
@@ -557,9 +563,9 @@ var typeIcon = {
         }
 
         this.findPointByBounds = function () {
-            this.clearPoint();
             if (this.callBackFindBound) {
                 this.callBackFindBound()
+                //this.clearPoint();
             }
         }
 
@@ -727,8 +733,8 @@ var typeIcon = {
             b.data.beginDrawButton.hide();
             b.data.deleteShapeButton.show();
             //b.data.ClearUtilitiesAroundPoint();
-            b.data.clearPoint();
             b.data.callBackClearPointEvent();
+            //b.data.clearPoint();
             if (b.data.polyline != undefined) b.data.polyline.setMap(undefined);
             b.data.mapPoly = new google.maps.Polyline({
                 strokeColor: '#585858',
@@ -806,7 +812,6 @@ var typeIcon = {
                 this.polyline.setMap(undefined);
                 this.polyline = null
             }
-            this.clearPoint();
 
             this.input.points.value = '';
             this.input.place_search.value = '';
@@ -819,6 +824,8 @@ var typeIcon = {
             this.isMapIdle = false;
 
             this.callBackClearPointEvent(true);
+
+            //this.clearPoint();
         };
         this.endDraw = function(a) {
             $thismap.isDrawing = true;
@@ -906,7 +913,7 @@ var typeIcon = {
         this.markers = new Array();
         this.callBackDrawEvent = function() {};
         this.findPoint = function(a, b) {
-            this.clearPoint();
+            //this.clearPoint();
             var c = a.getPath().getArray();
             var d = 0,
                 minLat = 100000,
@@ -949,15 +956,13 @@ var typeIcon = {
 
             this.ClearUtilitiesAroundPoint();
 
-            if (this.markers != undefined) {
+            /*if (this.markers != undefined) {
                 for (var t = 0; t < this.markers.length; t++) {
-                    /*if (!isInit && this.data[t].id == this.currentPID) {
-                        this.closeInfoWindowCallBack(this.markers[t]);
-                    }*/
                     this.markers[t].setMap(null);
                 }
                 this.markers = []
-            }
+            }*/
+            console.log('cleared!');
             if (this.markerCluster != null) {
                 this.markerCluster.clearMarkers()
             }
@@ -1051,13 +1056,74 @@ var typeIcon = {
         };
 
         this.showPoint = function(a, b) {
+            console.log('showPoint');
             this.clearPoint();
 
-            $thismap.markers = a.map(function(location, i) {
-                /*return new google.maps.Marker({
-                    position: new google.maps.LatLng(location.latitude, location.longitude),
-                    icon: iconMarker.default
-                });*/
+            var oldData = a;
+
+            // loop through old markers
+            var markers = $thismap.markers;
+
+            //$.each($thismap.markers, function (i, oneMarker) {
+            for (i = 0; i < $thismap.markers.length; i++) {
+                oneMarker = $thismap.markers[i];
+                if (oneMarker && oneMarker != undefined) {
+                    //console.log(oneMarker);
+                    //key = $thismap.findMarkerKey(oneMarker.id);
+                    //console.log(oneMarker.id+' ~ '+key);
+
+                    var inData = false;
+                    // check if this oneMarker.id is in the new data
+                    for (m = 0; m < oldData.length; m++) {
+                        if (oldData[m].id == oneMarker.id) {
+                            // if there is
+                            a[i] = oldData[m];
+                            //console.log(oneMarker.id+'~~ keep '+i);
+                            inData = true;
+                            break;
+                        }
+                    }
+
+                    if (!inData) {
+                        oneMarker.setMap(null);
+                        //console.log(oneMarker.id+'~~ remove '+i);
+                        $thismap.markers.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+
+            $.each(oldData, function (i, location) {
+                location.typeTxt = typeRealEstate[location.type];
+                if (location.isProject) location.price = location.pricefrom;
+                if (location.price < 1) { // trăm triệu
+                    location.priceTxt = location.price*100+'tr';
+                } else location.priceTxt = location.price+' tỷ';
+
+                //console.log(location.id+' ~ '+$thismap.findMarker(location.id));
+
+                if (!$thismap.findMarker(location.id)) {
+                    oneMarker = new MarkerWithLabel({
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        //icon: nodeMarker[location.type].default,
+                        icon: nodeMarker.empty,
+                        labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')" attr-marker-id="'+location.id+'"><span class="marker-type type-'+typeIcon[location.type]+'"><i class="icon-'+typeIcon[location.type]+'"></i></span><span class="marker-label-content">'+location.priceTxt+'</span></a>',
+                        labelAnchor: labelOrigin,
+                        labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : "") + (location.isProject ? " marker-label-project" : ""), // your desired CSS class
+                        labelInBackground: true,
+                    });
+                    oneMarker.id = location.id;
+                    oneMarker.setMap($thismap.map);
+                    $thismap.markers.push(oneMarker);
+
+                }
+
+                markerkey = $thismap.findMarkerKey(oneMarker.id);
+                a[i] = oldData[markerkey];
+
+                //markeyKey = $thismap.findMarkerKey(location.id);
+            });
+            /*$thismap.markers = a.map(function(location, i) {
                 location.typeTxt = typeRealEstate[location.type];
                 if (location.isProject) location.price = location.pricefrom;
                 if (location.price < 1) { // trăm triệu
@@ -1072,12 +1138,15 @@ var typeIcon = {
                     labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : "") + (location.isProject ? " marker-label-project" : ""), // your desired CSS class
                     labelInBackground: true,
                 });
-            });
+            });*/
+
+            $thismap.data = a;
 
             $.each($thismap.markers, function (i, oneMarker) {
-                oneMarker.setMap($thismap.map);
+                //oneMarker.setMap($thismap.map);
                 //$thismap.oms.addMarker(oneMarker);
-                oneMarker.id = a[i].id;
+                //console.log(oneMarker.id);
+
                 oneMarker.addListener('click', function() {
                     console.log('clicked marker~')
                     $thismap.showInfoWindow(this.id);
@@ -1125,7 +1194,7 @@ var typeIcon = {
         this.findMarkerKey = function(a) {
             if (this.data != undefined && this.data.length > 0) {
                 for (var i = 0; i < this.data.length; i++) {
-                    if (this.data[i].id == a) {
+                    if (this.data[i] && this.data[i].id == a) {
                         return i
                     }
                 }
@@ -1855,7 +1924,7 @@ ProductSearchControler.prototype.changeCityCallback = function (ct) {
             break;
         }
     }
-    console.log(district);
+    //console.log(district);
     options.district = '';
     f.find('#district').html('<option value="CN">--Chọn Quận/Huyện--</option>');
     f.find('#ward').html('<option value="CN">--Chọn Phường/Xã--</option>');
