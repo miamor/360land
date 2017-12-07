@@ -144,9 +144,12 @@ var checkSession = function(){
         varCounter++;
         /* your code goes here */
     } else {
-        clearInterval(session_interval);
+        clearInterval(checkSession_Interval);
     }
 };
+var checkSession_Interval = setInterval(function() {
+    checkSession()
+}, 1000);
 
 
 function checkSession() {
@@ -180,9 +183,6 @@ jQuery(document).ready(function ($) {
         $('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
 
         // destroy session every 30 minutes
-        var checkSession_Interval = setInterval(function() {
-            checkSession()
-        }, 1000);
     } else {
         $('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
     }

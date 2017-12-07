@@ -574,7 +574,7 @@ var typeIcon = {
         this.drawBoundary = function (c, d, w) {
             d = locdau(d);
             c = locdau(c);
-            if (c == 'Hà Nọi') c = 'Ha Noi';
+            if (c == 'Hà Nọi' || c == 'Hanoi') c = 'Ha Noi';
 
             var pData = {
                 distric: d,
