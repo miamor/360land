@@ -1430,7 +1430,7 @@ var typeIcon = {
             this.infoTipWindow.close();
             if (this.markers) {
                 //$thismap.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
-                if (!$thismap.currentPID || $thismap.currentMarkerKey != k) {
+                if (k && (!$thismap.currentPID || $thismap.currentMarkerKey != k) ) {
                     $thismap.markers[k].labelClass = 'marker-label'+($thismap.data[k].isProject ? ' marker-label-project' : $thismap.data[k].sellLabel);
                     $thismap.markers[k].label.setStyles();
                 }

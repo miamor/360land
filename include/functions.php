@@ -5,7 +5,7 @@ error_reporting(E_ERROR | E_PARSE);
 $__pattern = '/360land';
 
 define('MAIN_PATH', './');
-define('MAIN_URL', '//45.119.82.40'.$__pattern);
+define('MAIN_URL', '//localhost'.$__pattern);
 define('ASSETS', MAIN_URL.'/assets');
 define('CSS', ASSETS.'/dist/css');
 define('JS', ASSETS.'/dist/js');
