@@ -33,7 +33,7 @@ function changeCityCallback () {
 
 $(document).ready(function () {
     if (!__token) {
-        $(".place-add").html('<div class="alerts alert-warning">Bạn phải <a href="'+MAIN_URL+'/login">đăng nhập</a> để đăng tin bài.</div>');
+        $(".add-form-content").html('<div class="alerts alert-warning">Bạn phải <a href="'+MAIN_URL+'/login">đăng nhập</a> để đăng tin bài.</div>');
     } else {
         if (typeof cityListOther1 != 'undefined') cityList = $.merge(cityList, cityListOther1);
         if (typeof cityListOTher2 != 'undefined') cityList = $.merge(cityList, cityListOther2);

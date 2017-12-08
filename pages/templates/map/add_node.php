@@ -2,6 +2,7 @@
 
 <form class="place-add col-md-10">
     <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
+    <div class="add-form-content">
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-label">Tiêu đề </div>
         <div class="col-md-8 no-padding">
@@ -281,6 +282,7 @@
     <div class="add-form-submit center">
         <input value="Làm lại" class="btn btn-default" type="reset">
         <input value="Gửi" class="btn btn-primary" type="submit">
+    </div>
     </div>
 </form>
 

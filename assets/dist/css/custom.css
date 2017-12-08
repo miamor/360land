@@ -376,6 +376,7 @@ body:not(.mobile) #mapSide.open .nav-tabs-custom > .nav-tabs > li.active > a{pad
 
 #mapSide .map-side-result{top:30px}
 
+.cancel-filter{margin-right:5px}
 .map-side .tab-content{position: relative}
 form#map-search-form{padding:10px}
 #map-search-form,.map-results-tabs{overflow-y:auto}
@@ -399,10 +400,10 @@ a[href*="https://maps.google.com"]{display:none!important}
     box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12);
 }
 button[title*="Toggle"]{margin-top:-100px!important}
-.gm-bundled-control{margin:85px 20px 0 0!important}
-.gm-bundled-control>.gmnoprint>div{width:38px!important;height:76px!important}
-.gm-bundled-control>.gmnoprint>div>button{width:38px!important;height:38px!important}
-.gm-bundled-control>.gmnoprint>div>button>div{left:11px!important;top:11px!important}
+#map .gm-bundled-control{margin:85px 20px 0 0!important}
+#map .gm-bundled-control>.gmnoprint>div{width:38px!important;height:76px!important}
+#map .gm-bundled-control>.gmnoprint>div>button{width:38px!important;height:38px!important}
+#map .gm-bundled-control>.gmnoprint>div>button>div{left:11px!important;top:11px!important}
 button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 #controlArea > div:hover{
     color:#000
@@ -434,7 +435,11 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 
 .marker-label-project .marker-type, .marker-label-project .marker-label-content{background:#f1594b}
 .marker-label-project>a:hover .marker-type, .marker-label-project>a:hover .marker-label-content, .marker-label-project>a:hover .marker-label-content:after,
-.marker-label-project.marker-label-active>a .marker-type, .marker-label-project.marker-label-active>a .marker-label-content, .marker-label-project.marker-label-active>a .marker-label-content:after{background:#fe7265}
+.marker-label-project.marker-label-active>a .marker-type, .marker-label-project.marker-label-active>a .marker-label-content, .marker-label-project.marker-label-active>a .marker-label-content:after{background:#ff776a}
+
+.marker-label.rent .marker-type, .marker-label.rent .marker-label-content{background:#379ada}
+.marker-label.rent>a:hover .marker-type, .marker-label.rent>a:hover .marker-label-content, .marker-label.rent>a:hover .marker-label-content:after,
+.marker-label.rent.marker-label-active>a .marker-type, .marker-label.rent.marker-label-active>a .marker-label-content, .marker-label.rent.marker-label-active>a .marker-label-content:after{background:#61b5eb}
 
 #map .gm-style > div:first-child > div:nth-child(4) > div:first-child, #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4){*z-index:999!important}
 
@@ -517,7 +522,7 @@ body:not(.mobile) .map-result-one-price{font-size:17px;line-height:21px}
 .map-item-info-contact_phone, .map-item-info-contact_name{color:#e84c3d}
 
 /* Popup */
-.popup{position:fixed;top:0;bottom:0;left:0;right:0;z-index:99999}
+.popup{position:fixed;top:0;bottom:0;left:0;right:0;z-index:99990}
 .popup:before{content:'';position:fixed;top:0;bottom:0;left:0;right:0;z-index:998}
 .popup-inner{position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto}
 .popup-dark:before{background:rgba(0,0,0,.7)}
@@ -548,7 +553,7 @@ select#city_first:focus{background:#fff!important}
 .v-place-view{*height:90%}
 .v-place-imgs,.v-place-board{height:100%;background:#ddd}
 .v-place-thumbs{position:absolute;bottom:0;left:0;right:0;height:92px;text-align:center;background:rgba(0,0,0,.6)}
-.v-place-thumb{display:inline;width:80px;height:80px;margin:6px 3px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
+.v-place-thumb{display:inline;width:80px;height:80px;margin:6px 0px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
 .v-place-thumb:hover,.v-place-thumb.active{background:#fff;border-color:#eee}
 .v-place-avt{float:left;width:50px;height:50px}
 .v-place-bg{position:absolute;width:100%;height:100%;background-size:100% 100%}
@@ -727,8 +732,9 @@ nav>ul.nav>li{position:relative;float:left}
 }
 nav > ul.nav>li>a{position:relative;display:block;height:100%}
 @media only screen and (max-width:992px) and (min-width:501px){
+    .v-place-imgs{height:400px}
     .nav-icon{font-size:28px;line-height:50px;margin-left:15px;cursor:pointer;float:left}
-    ul.navbar-nav{width:300px;display:none;position:absolute;top:55px;left:10px;background:#fff!important;padding:6px;box-shadow:0 2px 2px rgba(0,0,0,.1);transition:.2s}
+    ul.navbar-nav{width:300px;display:none;position:absolute;top:55px;left:10px;background:#fff!important;padding:6px;box-shadow:0 2px 2px rgba(0,0,0,.1);border:1px solid #e9e9e9;transition:.2s}
     ul.navbar-nav.open{display:block;transition:.2s;border-radius:3px}
     ul.navbar-nav.open::before{content:'';position:absolute;top:-7px;left:12px;width:12px;height:12px;background:#fff;border:1px solid rgba(0,0,0,.15);transform:rotate(45deg);border-width:1px 0 0 1px}
     ul.navbar-nav>li{float:none!important;width:100%}
@@ -736,6 +742,7 @@ nav > ul.nav>li>a{position:relative;display:block;height:100%}
     ul.navbar-nav.open>li:first-child>a{border-radius:3px 3px 0 0}
     ul.navbar-nav.open>li:last-child>a{border-radius:0 0 3px 3px}
     nav.navbar > li > a:hover, nav.navbar ul.navbar-nav > li.active > a{background:#0bc39b!important;color:#fff!important}
+    .add-node-link .dropdown-menu{position:absolute!important;top:-10px!important;left:290px!important;background:#fff;*border:1px solid #e9e9e9;border-radius:3px!important;*box-shadow:0 -2px 3px -2px rgba(0,0,0,.1)!important}
 }
 body.mobile .nav-icon{display:none}
 
@@ -778,10 +785,11 @@ body.mobile .nav-user{overflow:hidden}
 .nav-user-name{line-height:17px}
 .nav-user>a, .nav-user>#me_dropdown_info>a{font-size:15px;line-height:40px;display:inline-block;cursor:pointer}
 
-.dropdown-menu{position:absolute;margin-top:10px!important;border-color:#e9e9e9;box-shadow:0 2px 3px rgba(0,0,0,.04)}
+.dropdown-menu{position:absolute;margin-top:10px!important;border:1px solid #e9e9e9;box-shadow:0 2px 3px rgba(0,0,0,.04)}
 .left-bottom .dropdown-menu{position:absolute!important;margin-top:-200px!important;margin-left:10px!important}
 .dropdown-menu > li > a{color:#606060!important}
 .dropdown-menu > li > a:not(.btn):hover{background:#0bc39b!important;color:#fff!important;cursor:pointer}
+.navbar-nav .open .dropdown-menu .dropdown-header, .navbar-nav .open .dropdown-menu > li > a{padding:5px 12px}
 
 
 /* User dropdown */
@@ -811,8 +819,8 @@ body.mobile .nav-user{overflow:hidden}
 
 .img-circle{border-radius:100%}
 
-.nav-search{position:relative;float:right;width:350px;margin-right:30px}
-body:not(.mobile) #place_search{height:45px;line-height:45px;padding:2px 10px 0 35px;width:100%}
+.nav-search{position:relative;float:right;width:300px;margin-right:30px}
+body:not(.mobile) #place_search{height:45px;line-height:45px;padding:2px 10px 0 35px}
 body:not(.mobile) .li-input:before{font-size:22px;font-weight:300;top:13px}
 .li-input{list-style:none}
 @media(max-width:560px){
@@ -885,9 +893,13 @@ body.mobile .v-place-related-one{width:49%}
 body.mobile .v-place-switch-buttons{top:30px}
 body.mobile .v-place-imgs, body.mobile .v-place-board{height:260px}
 body.mobile .v-place-thumbs{height:62px}
-body.mobile .v-place-thumb{display:inline;width:50px;height:50px;margin:6px 3px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
+body.mobile .v-place-thumb{display:inline;width:50px;height:50px;margin:6px 0px;border:1px solid transparent;padding:2px;background:transparent;cursor:pointer}
 
-#map_direction{position:relative;width:400px;height:400px}
+/*#map_direction{position:relative;width:400px;height:400px}
+*/#map_direction{position:absolute;top:0!important;left:0!important;right:0!important;bottom:0!important}
+/*.travel-mode{position:absolute;z-index:99999;top:10px;left:10px;width:100px!important}
+*/#travelMode{width:100px!important;top:10px!important;left:46px!important;box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12)}
+body.mobile #travelMode{top:10px!important}
 
 body.mobile #uti_selected, body.mobile .utility-close,body.mobile #cbbRadius{line-height:40px!important}
 body.mobile #controlUtility{height:40px}
@@ -903,7 +915,7 @@ body.mobile #mapSide .nav-tabs-custom>ul.nav>li>a{padding:9px 10px 10px!importan
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{padding:13px 10px 11px!important;border:0!important;font-size:14px}
 #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-left:0!important;margin-right:5px!important}
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-right:5px!important}
-#place_search{display:block;background:transparent;border:0;height:33px;color:#fff;padding:0 15px 1px 28px;pafont-size:14px;transition:.2s}
+#place_search{display:block;background:transparent;border:0;height:33px;color:#fff!important;padding:0 15px 1px 28px;width:100%;font-size:14px;transition:.2s}
 body.mobile #place_search{padding-top:5px;line-height:29px}
 .pac-container{margin-top:7px!important;z-index:999}
 .pac-container.pac-logo::after{display:none!important}
@@ -943,7 +955,6 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 
 body.mobile .add-node-link{position:relative}
 body.mobile .add-node-link .dropdown-menu{margin-top:-145px!important;margin-right:-20px!important;background:#fff;border:1px solid #e9e9e9;border-radius:3px!important;box-shadow:0 -2px 3px -2px rgba(0,0,0,.1)!important}
-body.mobile .add-node-link .dropdown-menu > li > a{padding:5px 10px}
 .nav-user-mobile{text-align:center!important}
 .nav-user-mobile .nav-user-avt{float:none!important;margin:-2px auto 0}
 body.mobile nav ul.nav>li>a.loginlink{line-height:40px!important;display:block!important}
@@ -986,7 +997,7 @@ body.mobile nav ul.nav > li > a.loginlink .fa{font-size:30px!important;display:b
 25%,75%{-moz-transform:perspective(193px) rotateX(0deg);opacity:1}
 90%,100%{-moz-transform:perspective(193px) rotateY(180deg);opacity:0}
 }
-.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;padding-top:13%}
+.loading-layout{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999!important;padding-top:13%}
 
 .v-place-v-direction{z-index:-1}
 .active .v-place-v-direction{z-index:100}

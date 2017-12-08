@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-group" attr-type="node">
-        <select id="type" name="type" class="form-control">
+        <!--<select id="type" name="type" class="form-control">
             <option value="CN">Chọn loại bất động sản</option>
             <option value="apartment">Chung cư</option>
             <optgroup label="Nhà bán">
@@ -43,7 +43,41 @@
             <option value="resort">Trang trại, khu nghỉ dưỡng</option>
             <option value="office">Văn phòng</option>
             <option value="other">Khác</option>
-        </select>
+        </select>-->
+        <div class="form-group form-type" attr-type="node">
+            <select id="type2" name="type2" class="form-control type_bds hide" attr-typeaction="2">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal1">Chung cư</option>
+                <optgroup label="Nhà bán">
+                    <option value="typereal2">Nhà riêng</option>
+                    <option value="typereal3">Nhà mặt phố</option>
+                    <option value="typereal4">Biệt thự, liền kề</option>
+                </optgroup>
+                <optgroup label="Đất bán">
+                    <option value="typereal5">Đất nền dự án</option>
+                    <option value="typereal6">Bán đất</option>
+                </optgroup>
+                <option value="typereal7">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal8">Nhà kho, nhà xưởng</option>
+                <option value="typereal10">Khác</option>
+            </select>
+
+            <select id="type1" name="type1" class="form-control type_bds hide" attr-typeaction="1">
+                <option value="CN">Chọn loại bất động sản</option>
+                <option value="typereal11">Chung cư</option>
+                <optgroup label="Nhà thuê">
+                    <option value="typereal12">Nhà riêng</option>
+                    <option value="typereal13">Nhà mặt phố</option>
+                    <option value="typereal14">Phòng trọ, nhà trọ</option>
+                </optgroup>
+                <option value="typereal16">Cửa hàng, ki ốt</option>
+                <option value="typereal15">Văn phòng</option>
+                <option value="typereal17">Trang trại, khu nghỉ dưỡng</option>
+                <option value="typereal18">Khác</option>
+            </select>
+
+            <input type="hidden" name="type" id="type"/>
+        </div>
     </div>
 
     <div class="form-group p_name hide" attr-type="project">
@@ -203,6 +237,7 @@
     </div>
 
     <div class="add-form-submit form-one-button center">
-        <input type="submit" class="btn-sm" value="Lọc"/>
+        <a href="#" class="cancel-filter hide"><i class="fa fa-times"></i> Bỏ lọc</a>
+        <button type="submit" class="btn btn-success btn-filter"><i class="fa fa-filter"></i> Lọc</button>
     </div>
 </form>

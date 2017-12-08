@@ -188,13 +188,34 @@
         </div>
         <div class="v-place-board v-place-v-direction">
               <div id="map_direction"></div>
+
+              <input type="hidden" id="start"/>
+              <input type="hidden" id="end"/>
+              <div class="travel-mode left">
+              	<select id="travelMode" class="form-control">
+              		<option value="DRIVING" selected>DRIVING</option>
+              		<option value="BICYCLING">BICYCLING</option>
+              		<option value="WALKING">WALKING</option>
+              	</select>
+              </div>
+
+              <div class="hidden">
+              	<a href="#" class="bigger-map left" title="Mở rộng"><i class="fa fa-arrows-alt"></i></a>
+              	<div class="box-search-one-route hide right">
+              		<span class="box-search-one-distance"></span>
+              			 |
+              		<span class="box-search-one-time"></span>
+              	</div>
+              </div>
+
+              <div id="warnings-panel"></div>
         </div>
         <div class="v-place-board v-place-v-streetview hide">
             <div id="pano"></div>
         </div>
         <div class="v-place-board v-place-v-video hide">
         </div>
-        <div class="v-place-switch-buttons">
+        <div class="v-place-switch-buttons hide">
             <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>
             <div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>
             <div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>

@@ -1,5 +1,4 @@
 function loginForm () {
-    console.log('loginForm loaded');
     $('#login').submit(function () {
         submitLoginForm();
     })
@@ -20,11 +19,11 @@ function submitLoginForm () {
                 localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                 console.log(__token);
                 mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
-                if ($('.popup:not(".popup-map")').is(':visible')) {
+                if ($('.popup:not(".popup-map") .load_login_form').length) {
                     remove_popup();
                 } else {
                     //window.location.href = MAIN_URL;
-                    location.reload();
+                    window.history.back();
                 }
             }
         },
@@ -113,7 +112,8 @@ function testAPI() {
 
 $(document).ready(function () {
     if (localStorage.getItem('token')) { // already logged in
-        window.location.href = MAIN_URL;
+        //window.location.href = MAIN_URL;
+        window.history.back();
     } else {
         loginForm();
     }

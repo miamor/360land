@@ -174,7 +174,8 @@ function logout (autoLoggedOut = false) {
 
 function loadLoginPopup (autoLoggedOut = false) {
     html = '<div class="popup-section section-light">';
-    html += '<div class="alerts alert-warning">Token đã hết hạn. Vui lòng <a href="'+MAIN_URL+'/login">đăng nhập</a> lại để tiếp tục.</div>';
+    if (autoLoggedOut) html += '<div class="alerts alert-warning">Token đã hết hạn. Vui lòng <a href="'+MAIN_URL+'/login">đăng nhập</a> lại để tiếp tục.</div>';
+    else html += '<div class="alerts alert-info">Xin chào! Chưa có tài khoản? <a href="'+MAIN_URL+'/register">Đăng ký ngay</a>.</div>';
     html += '<div class="load_login_form"></div></div>';
     popup(html);
     $.get(MAIN_URL+'/login?temp=true', function (templates) {
@@ -232,6 +233,25 @@ function setUserInfoNav () {
 }
 
 
+function render_nav () {
+    if (!isMobile && $(window).width() < 1000) {
+        $('.nav-icon').show().click(function () {
+            if ($('ul.navbar-nav').is('.open')) {
+                $('ul.navbar-nav').slideDown(400, function () {
+                    $(this).removeClass('open')
+                })
+            } else {
+                $('ul.navbar-nav').slideUp(400, function () {
+                    $(this).addClass('open')
+                })
+            }
+        })
+    } else {
+        $('.nav-icon').hide();
+    }
+}
+
+
 jQuery(document).ready(function ($) {
     flatApp();
 
@@ -279,19 +299,9 @@ jQuery(document).ready(function ($) {
         $('.nav-user-mobile').html('').hide();
     }
     //else $('.container').height($(window).height());
-    if (!isMobile && $(window).width() < 1000) {
-        $('.nav-icon').show().click(function () {
-            if ($('ul.navbar-nav').is('.open')) {
-                $('ul.navbar-nav').slideDown(400, function () {
-                    $(this).removeClass('open')
-                })
-            } else {
-                $('ul.navbar-nav').slideUp(400, function () {
-                    $(this).addClass('open')
-                })
-            }
-        })
-    } else {
-        $('.nav-icon').hide();
-    }
+
+    render_nav();
+    $(window).on('resize', function () {
+        render_nav();
+    });
 })
