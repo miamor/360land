@@ -28,7 +28,7 @@
         <div class="tab-content map-search-tabs">
             <div class="tab-pane active" id="map_search">
                 <ul class="nav nav-tabs map_search_select map-nav-select">
-                    <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Rao bán/cho thuê</a></li>
+                    <li class="active" attr-type="node"><a href="#map_search_node" data-toggle="tab">Bất động sản</a></li>
                     <li attr-type="project"><a href="#map_search_project" data-toggle="tab">Dự án</a></li>
                 </ul>
 
@@ -36,7 +36,7 @@
             </div>
             <div class="tab-pane hide" id="map_results">
                 <ul class="nav nav-tabs map_results_select map-nav-select">
-                    <li class="active"><a href="#map_results_node" data-toggle="tab">Rao bán/cho thuê</a></li>
+                    <li class="active"><a href="#map_results_node" data-toggle="tab">Bất động sản</a></li>
                     <li><a href="#map_results_project" data-toggle="tab">Dự án</a></li>
                 </ul>
                 <div class="tab-content map-results-tabs">
@@ -170,14 +170,14 @@
 
 <div id="overlapNodes"></div>
 
-<div class="popup-map">
-	<div class="popup-content" style="background:#fff">
+<div class="popup popup-dark popup-map"><div class="popup-inner"><div>
+	<div class="popup-content " style="background:#fff">
 		<a class="popup-btn" role="close"></a>
 		<div class="the-board">
-            <h4 class="page-title show v-place-title"><div></div></h4>
 
 <div class="v-place-view">
-    <div class="v-place-imgs no-padding">
+    <h4 class="page-title v-place-title"></h4>
+    <div class="col-lg-8 v-place-imgs no-padding">
         <div class="v-place-board v-place-v-thumbs">
             <div class="v-place-bg"></div>
             <div class="v-place-thumbs">
@@ -186,16 +186,44 @@
         <div class="v-place-board v-place-v-360">
               <div class="panorama"></div>
         </div>
+        <div class="v-place-board v-place-v-direction">
+              <div id="map_direction"></div>
+
+              <input type="hidden" id="start"/>
+              <input type="hidden" id="end"/>
+              <div class="travel-mode left">
+              	<select id="travelMode" class="form-control">
+              		<option value="DRIVING" selected>DRIVING</option>
+              		<option value="BICYCLING">BICYCLING</option>
+              		<option value="WALKING">WALKING</option>
+              	</select>
+              </div>
+
+              <div class="hidden">
+              	<a href="#" class="bigger-map left" title="Mở rộng"><i class="fa fa-arrows-alt"></i></a>
+              	<div class="box-search-one-route hide right">
+              		<span class="box-search-one-distance"></span>
+              			 |
+              		<span class="box-search-one-time"></span>
+              	</div>
+              </div>
+
+              <div id="warnings-panel"></div>
+        </div>
         <div class="v-place-board v-place-v-streetview hide">
             <div id="pano"></div>
         </div>
         <div class="v-place-board v-place-v-video hide">
         </div>
-        <div class="v-place-switch-buttons">
-            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i> Ảnh</div><div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i> 360</div><div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i> Video</div><div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i> Streetview</div><div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i> Chỉ đường</div><div class="v-place-mode" id="v-util" title="Tiện ích xung quanh"><i class="fa fa-share-alt"></i> Tiện ích</div>
+        <div class="v-place-switch-buttons hide">
+            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div>
+            <div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div>
+            <div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>
+            <div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i></div>
+            <div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div>
         </div>
     </div>
-    <div class="popup-section section-light v-place-info">
+    <div class="col-lg-4 popup-section section-light v-place-info">
         <!--<img class="v-place-avt left" src="'+place.avatar+'"/>
         <h4 class="v-place-title"></h4>
         <div class="v-place-type"></div>
@@ -209,7 +237,7 @@
         <div class="v-box v-place-more">
             <h4>Thông tin</h4>
             <ul class="v-box-content open">
-                <li class="v-place-more-one v-place-area">Diện tích: <span></span>m2</li>
+                <li class="v-place-more-one v-place-area">Diện tích: <span></span></li>
                 <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
                 <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
                 <li class="v-place-more-one v-place-type">Loại: <span></span></li>
@@ -219,12 +247,13 @@
 
         <div class="v-box introduan">
             <h4>Intro </h4>
-            <div class="v-box-content">
+            <div class="v-box-content open">
                 <div class="v-place-intro"></div>
+                <a href="#" class="v-place-details-more">Xem thêm</a>
             </div>
         </div>
 
-        <div class="v-box"><h4>Chi tiết </h4><div class="v-box-content"><div class="v-place-details"></div></div></div>
+        <div class="v-box"><h4>Chi tiết </h4><div class="v-box-content open"><div class="v-place-details"></div><a href="#" class="v-place-details-more">Xem thêm</a></div></div>
 
         <!--//<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
         //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
@@ -255,43 +284,14 @@
 
         </div>
     </div>
-</div>
+</div></div></div>
 
 
-<div class="v-place-v-direction hide">
-    <div class="close-direction-board">
-        <i class="fa fa-times"></i>
+<div class="loading-layout">
+    <div class="cssload-thecube">
+    	<div class="cssload-cube cssload-c1"></div>
+    	<div class="cssload-cube cssload-c2"></div>
+    	<div class="cssload-cube cssload-c4"></div>
+    	<div class="cssload-cube cssload-c3"></div>
     </div>
-    <!--<select id="travelMode" class="form-control">
-          <option value="DRIVING" selected>DRIVING</option>
-          <option value="BICYCLING">BICYCLING</option>
-          <option value="WALKING">WALKING</option>
-    </select> -->
-    <div class="travelMode_select">
-        <div class="travelMode_one active" id="DRIVING"><i class="icon icon-driving"></i></div><div class="travelMode_one" id="WALKING"><i class="icon icon-walking"></i></div>
-    </div>
-    <input type="hidden" id="travelMode" value="DRIVING">
-
-    <form class="start_end_points">
-        <div class="trip-from">
-            <input data-tap-disabled="true" autocomplete="disabled" id="start" type="text" name="start" class="form-control" placeholder="Điểm đi *"/>
-        </div>
-        <div class="trip-to">
-            <input data-tap-disabled="true" disabled autocomplete="disabled" id="end_fake" class="form-control" type="text" name="end_fake" placeholder="Điểm đến *"/>
-            <input id="end" type="hidden" name="end"/>
-        </div>
-    </form>
-
-    <div class="hidden">
-      <a href="#" class="bigger-map left" title="Mở rộng"><i class="fa fa-arrows-alt"></i></a>
-      <div class="box-search-one-route hide right">
-          <span class="box-search-one-distance"></span>
-               |
-          <span class="box-search-one-time"></span>
-      </div>
-    </div>
-
-    <div class="hidden" id="warnings-panel"></div>
-
-    <div id="directions-guide"></div>
 </div>

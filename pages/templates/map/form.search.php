@@ -81,8 +81,9 @@
     </div>
 
     <div class="form-group p_name hide" attr-type="project">
-        <input type="text" name="project_name" id="project_name" class="form-control" placeholder="Input project name"/>
+        <input type="text" name="tenduan" id="tenduan" class="form-control" placeholder="Input project name"/>
         <div class="ville-dropdown hide"></div>
+        <input type="hidden" name="duanid" id="duanid" class="typereal11 typereal1 form-control"/>
     </div>
 
     <div class="form-group">

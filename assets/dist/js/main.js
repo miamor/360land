@@ -1,5 +1,44 @@
 !function(e){var t=function(e,t){this.init(e,t)};t.prototype={constructor:t,init:function(t,n){var r=this.$element=e(t);this.options=e.extend({},e.fn.radio.defaults,n);r.before(this.options.template);this.setState()},setState:function(){var e=this.$element,t=e.closest(".radio");e.prop("disabled")&&t.addClass("disabled");e.prop("checked")&&t.addClass("checked")},toggle:function(){var t="disabled",n="checked",r=this.$element,i=r.prop(n),s=r.closest(".radio"),o=r.closest("form").length?r.closest("form"):r.closest("body"),u=o.find(':radio[name="'+r.attr("name")+'"]'),a=e.Event("toggle");u.not(r).each(function(){var r=e(this),i=e(this).closest(".radio");if(r.prop(t)==false){i.removeClass(n)&&r.removeAttr(n).trigger("change")}});if(r.prop(t)==false){if(i==false)s.addClass(n)&&r.prop(n,true);r.trigger(a);if(i!==r.prop(n)){r.trigger("change")}}},setCheck:function(t){var n="checked",r=this.$element,i=r.closest(".radio"),s=t=="check"?true:false,o=r.prop(n),u=r.closest("form").length?r.closest("form"):r.closest("body"),a=u.find(':radio[name="'+r["attr"]("name")+'"]'),f=e.Event(t);a.not(r).each(function(){var t=e(this),r=e(this).closest(".radio");r.removeClass(n)&&t.removeAttr(n)});i[s?"addClass":"removeClass"](n)&&s?r.prop(n,n):r.removeAttr(n);r.trigger(f);if(o!==r.prop(n)){r.trigger("change")}}};var n=e.fn.radio;e.fn.radio=function(n){return this.each(function(){var r=e(this),i=r.data("radio"),s=e.extend({},e.fn.radio.defaults,r.data(),typeof n=="object"&&n);if(!i)r.data("radio",i=new t(this,s));if(n=="toggle")i.toggle();if(n=="check"||n=="uncheck")i.setCheck(n);else if(n)i.setState()})};e.fn.radio.defaults={template:'<span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>'};e.fn.radio.noConflict=function(){e.fn.radio=n;return this};e(document).on("click.radio.data-api","[data-toggle^=radio], .radio",function(t){var n=e(t.target);t&&t.preventDefault()&&t.stopPropagation();if(!n.hasClass("radio"))n=n.closest(".radio");n.find(":radio").radio("toggle")});e(function(){e('[data-toggle="radio"]').each(function(){var t=e(this);t.radio()})})}(window.jQuery);!function(e){var t=function(e,t){this.init(e,t)};t.prototype={constructor:t,init:function(t,n){var r=this.$element=e(t);this.options=e.extend({},e.fn.checkbox.defaults,n);r.before(this.options.template);this.setState()},setState:function(){var e=this.$element,t=e.closest(".checkbox");e.prop("disabled")&&t.addClass("disabled");e.prop("checked")&&t.addClass("checked")},toggle:function(){var t="checked",n=this.$element,r=n.closest(".checkbox"),i=n.prop(t),s=e.Event("toggle");if(n.prop("disabled")==false){r.toggleClass(t)&&i?n.removeAttr(t):n.prop(t,t);n.trigger(s).trigger("change")}},setCheck:function(t){var n="disabled",r="checked",i=this.$element,s=i.closest(".checkbox"),o=t=="check"?true:false,u=e.Event(t);s[o?"addClass":"removeClass"](r)&&o?i.prop(r,r):i.removeAttr(r);i.trigger(u).trigger("change")}};var n=e.fn.checkbox;e.fn.checkbox=function(n){return this.each(function(){var r=e(this),i=r.data("checkbox"),s=e.extend({},e.fn.checkbox.defaults,r.data(),typeof n=="object"&&n);if(!i)r.data("checkbox",i=new t(this,s));if(n=="toggle")i.toggle();if(n=="check"||n=="uncheck")i.setCheck(n);else if(n)i.setState()})};e.fn.checkbox.defaults={template:'<span class="icons"><span class="first-icon fui-checkbox-unchecked"></span><span class="second-icon fui-checkbox-checked"></span></span>'};e.fn.checkbox.noConflict=function(){e.fn.checkbox=n;return this};e(document).on("click.checkbox.data-api","[data-toggle^=checkbox], .checkbox",function(t){var n=e(t.target);if(t.target.tagName!="A"){t&&t.preventDefault()&&t.stopPropagation();if(!n.hasClass("checkbox"))n=n.closest(".checkbox");n.find(":checkbox").checkbox("toggle")}});e(function(){e('[data-toggle="checkbox"]').each(function(){var t=e(this);t.checkbox()})})}(window.jQuery);
 
+(function($){
+	$.fn.extend({
+		donetyping: function (callback,timeout) {
+			//timeout = timeout || 1e3; // 1 second default timeout
+			timeout = timeout || 100
+			var timeoutReference,
+				doneTyping = function(el) {
+					if (!timeoutReference) return;
+					timeoutReference = null;
+					callback.call(el);
+				};
+			return this.each (function (i,el) {
+				var $el = $(el);
+				// Chrome Fix (Use keyup over keypress to detect backspace)
+				// thank you @palerdot
+				$el.is(':input') && $el.on('keyup keypress',function(e) {
+					// This catches the backspace button in chrome, but also prevents
+					// the event from triggering too premptively. Without this line,
+					// using tab/shift+tab will make the focused element fire the callback.
+					if (e.type=='keyup' && e.keyCode!=8) return;
+
+					// Check if timeout has been set. If it has, "reset" the clock and
+					// start over again.
+					if (timeoutReference) clearTimeout(timeoutReference);
+					timeoutReference = setTimeout(function() {
+						// if we made it here, our timeout has elapsed. Fire the
+						// callback
+						doneTyping(el);
+					}, timeout);
+				}).on('blur',function() {
+					// If we can, fire the event since we're leaving the field
+					doneTyping(el);
+				});
+			})
+		}
+	});
+})(jQuery);
+
+
 var isMobile = ($(window).width() <= 500 ? true : false);
 var API_URL = '//45.119.82.40:8000';
 var __token = __userInfo = null;
@@ -149,7 +188,7 @@ var checkSession = function() {
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
     //console.log(s);
-    if (s > 30*60) { // > 30 min
+    if (s > 130*60) { // > 30 min
     //if (s >= 3) {
         // logout
         logout(true)
@@ -222,7 +261,7 @@ function stip(d) {
 function setUserInfoNav () {
     if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
     $('.myID').attr('id', __userInfo.username);
-    $('.myName, #meinfo_name').text(__userInfo.name);
+    $('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse()[0]);
     $('#meinfo_uname').text(__userInfo.username);
     $('#meinfo_coins').text(__userInfo.coin);
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);

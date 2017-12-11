@@ -81,6 +81,44 @@ var typeIcon = {
     typereal18: 'other',
 };
 
+(function($){
+	$.fn.extend({
+		donetyping: function (callback,timeout) {
+			//timeout = timeout || 1e3; // 1 second default timeout
+			timeout = timeout || 100
+			var timeoutReference,
+				doneTyping = function(el) {
+					if (!timeoutReference) return;
+					timeoutReference = null;
+					callback.call(el);
+				};
+			return this.each (function (i,el) {
+				var $el = $(el);
+				// Chrome Fix (Use keyup over keypress to detect backspace)
+				// thank you @palerdot
+				$el.is(':input') && $el.on('keyup keypress',function(e) {
+					// This catches the backspace button in chrome, but also prevents
+					// the event from triggering too premptively. Without this line,
+					// using tab/shift+tab will make the focused element fire the callback.
+					if (e.type=='keyup' && e.keyCode!=8) return;
+
+					// Check if timeout has been set. If it has, "reset" the clock and
+					// start over again.
+					if (timeoutReference) clearTimeout(timeoutReference);
+					timeoutReference = setTimeout(function() {
+						// if we made it here, our timeout has elapsed. Fire the
+						// callback
+						doneTyping(el);
+					}, timeout);
+				}).on('blur',function() {
+					// If we can, fire the event since we're leaving the field
+					doneTyping(el);
+				});
+			})
+		}
+	});
+})(jQuery);
+
 (function($) {
     ProductMap = function(o, p, q, r, s) {
         var v = $(this).attr('id');
@@ -135,10 +173,8 @@ var typeIcon = {
         this.utilArea = null;
         this.isProject = 0;
         if (s.isProject) this.isProject = s.isProject;
-        console.log('s.isProject = '+s.isProject);
 
         this.zoom = null;
-        this.isTrigger = false;
 
         this.currentProduct = null;
 
@@ -172,8 +208,6 @@ var typeIcon = {
         this.input.isShowUtil = document.getElementById('isShowUtil');
         this.input.details = document.getElementById('details');
         this.input.place_search = document.getElementById('place_search');
-
-        this.isDirection = false;
 
         this.bounds = null;
         this.place_search = null;
@@ -325,7 +359,6 @@ var typeIcon = {
                         data: {id: $thismap.currentPID},
                         success: function (data) {
                             data.isProject = true;
-                            data.title = data.name;
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
                             $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
@@ -418,27 +451,7 @@ var typeIcon = {
                     event.preventDefault();
                 }
             });
-
-            var input_start = document.getElementById('start');
-            $thismap.autocomplete_start = new google.maps.places.Autocomplete(input_start, options);
-            $thismap.autocomplete_start.bindTo('bounds', $thismap.map);
-            google.maps.event.addDomListener(input_start, 'keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-            var input_end = document.getElementById('end');
-            $thismap.autocomplete_end = new google.maps.places.Autocomplete(input_end, options);
-            $thismap.autocomplete_end.bindTo('bounds', $thismap.map);
-            google.maps.event.addDomListener(input_end, 'keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-
-
             $thismap.autocomplete.addListener('place_changed', function() {
-                $thismap.isDirection = false;
                 var place = $thismap.autocomplete.getPlace();
                 $thismap.searchByLocation(place);
                 toggleFilterBoard('close');
@@ -452,22 +465,16 @@ var typeIcon = {
                         });*/
 
             google.maps.event.addListener($thismap.map, 'dragend', function() {
-                if (!$thismap.isDirection) {
-                    $thismap.isTrigger = true;
-                    $thismap.enableSetCenter = false;
-                    $thismap.boundsChangeCallBack();
-                    //$thismap.enableSetCenter = true;
-                }
+                $thismap.enableSetCenter = false;
+                $thismap.boundsChangeCallBack();
+                //$thismap.enableSetCenter = true;
             });
             google.maps.event.addListener($thismap.map, 'zoom_changed', function() {
-                if (!$thismap.isDirection) {
-                    $thismap.isTrigger = true;
-                    $thismap.enableSetCenter = false;
-                    var oldzoom = $thismap.zoom;
-                    $thismap.zoom = $thismap.map.getZoom();
-                    if (!oldzoom || oldzoom > $thismap.zoom) $thismap.boundsChangeCallBack();
-                    productControlerObj.ChangeUrlForNewContext();
-                }
+                $thismap.enableSetCenter = false;
+                var oldzoom = $thismap.zoom;
+                $thismap.zoom = $thismap.map.getZoom();
+                if (!oldzoom || oldzoom > $thismap.zoom) $thismap.boundsChangeCallBack();
+                productControlerObj.ChangeUrlForNewContext();
             });
 
             var locationData = null;
@@ -475,42 +482,32 @@ var typeIcon = {
             var loaded = false;
             google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
                 if ($thismap.isDetails) {
-                    if (!$thismap.isDirection) {
-                        $thismap.enableSetCenter = true;
-                        $thismap.boundsChangeCallBack();
-                    }
+                    $thismap.enableSetCenter = true;
+                    $thismap.boundsChangeCallBack();
                 } else if ($thismap.listLatlgn != null) {
-                    if (!$thismap.isDirection) {
-                        $thismap.enableSetCenter = false;
+                    $thismap.enableSetCenter = false;
+                        path: $thismap.listLatlgn,
                         $thismap.polyline = new google.maps.Polygon({
-                            path: $thismap.listLatlgn,
-                            strokeColor: '#00a65a',
-                            strokeWeight: 2,
-                            editable: (s.place_search ? false : true),
-                            fillColor: "#5de0a4",
-                            fillOpacity: 0.25
-                        });
-                        $thismap.polyline.setMap($thismap.map);
-                        $thismap.findPoint($thismap.polyline);
-                        $thismap.catchChangePolyline();
-                    }
+                        strokeColor: '#00a65a',
+                        strokeWeight: 2,
+                        editable: (s.place_search ? false : true),
+                        fillColor: "#5de0a4",
+                        fillOpacity: 0.25
+                    });
+                    $thismap.polyline.setMap($thismap.map);
+                    $thismap.findPoint($thismap.polyline);
+                    $thismap.catchChangePolyline();
                 } else if (c_city && c_city != 'CN') {
-                    if (!$thismap.isDirection) {
-                        s.place_search = null;
-                        $thismap.input.place_search.value = '';
-                        $thismap.setCenterByAddress();
-                    }
+                    s.place_search = null;
+                    $thismap.input.place_search.value = '';
+                    $thismap.setCenterByAddress();
                 } else if (s.place_search) {
-                    if (!$thismap.isDirection) {
-                        //console.log('place_search');
-                        $thismap.enableSetCenter = false;
-                        var place = $thismap.geocodeaddress(s.place_search);
-                    }
+                    //console.log('place_search');
+                    $thismap.enableSetCenter = false;
+                    var place = $thismap.geocodeaddress(s.place_search);
                 } else {
-                    if (!$thismap.isDirection) {
-                        $thismap.enableSetCenter = true;
-                        $thismap.boundsChangeCallBack();
-                    }
+                    $thismap.enableSetCenter = true;
+                    $thismap.boundsChangeCallBack();
                 }
                 loaded = true;
             });
@@ -741,10 +738,8 @@ var typeIcon = {
             b.data.beginDrawButton.hide();
             b.data.deleteShapeButton.show();
             //b.data.ClearUtilitiesAroundPoint();
-            if (isMobile) $('.map-item-info-board-close').click();
-            else productControlerObj.closePopup();
-            b.data.clearPoints();
             b.data.callBackClearPointEvent();
+            //b.data.clearPoint();
             if (b.data.polyline != undefined) b.data.polyline.setMap(undefined);
             b.data.mapPoly = new google.maps.Polyline({
                 strokeColor: '#585858',
@@ -972,7 +967,7 @@ var typeIcon = {
                 }
                 this.markers = []
             }*/
-            //console.log('cleared!');
+            console.log('cleared!');
             if (this.markerCluster != null) {
                 this.markerCluster.clearMarkers()
             }
@@ -981,28 +976,13 @@ var typeIcon = {
             }
             //if (!isInit) this.currentPID = null;
         };
-
-        this.clearPoints = function(isInit = false) {
-            if (this.infoWindow) this.infoWindow.close();
-            $('.map-item-info-board').hide();
-
-            this.ClearUtilitiesAroundPoint();
-
-            if (this.markers != undefined) {
-                for (var t = 0; t < this.markers.length; t++) {
-                    this.markers[t].setMap(null);
-                }
-                this.markers = []
-            }
-        };
-
         this.callBackClearPointEvent = function() {};
 
         this.showMap = function(a, b) {
             this.data = [];
             //if (!this.isDrawing) this.map.setZoom(zoom_moderate);
             for (var i = 0; i < a.node.length; i++) {
-                if (a.node[i] && this.isInPolyline(a.node[i].latitude, a.node[i].longitude)) {
+                if (this.isInPolyline(a.node[i].latitude, a.node[i].longitude)) {
                     if (a.node[i].avatar == null || a.node[i].avatar == '') a.node[i].avatar = MAIN_URL+'/assets/img/noimage.png';
                     a.node[i].isProject = false;
 
@@ -1010,31 +990,21 @@ var typeIcon = {
                     if (a.node[i].typeid < 11) a.node[i].sellLabel = ' sell';
                     else a.node[i].sellLabel = ' rent';
 
-                    a.node[i].exCls = a.node[i].sellLabel +
-                    (a.node[i].typeid > 6 ? ' big' : '');
-
                     this.data.push(a.node[i])
                 }
             }
             for (var i = 0; i < a.project.length; i++) {
-                if (a.project[i] && this.isInPolyline(a.project[i].latitude, a.project[i].longitude)) {
+                if (this.isInPolyline(a.project[i].latitude, a.project[i].longitude)) {
                     if (a.project[i].avatar == null || a.project[i].avatar == '') a.project[i].avatar = MAIN_URL+'/assets/img/noimage.png';
 
                     a.project[i].typeid = null;
                     a.project[i].sellLabel = '';
 
-                    a.project[i].exCls = " project" +
-                    (a.project[i].typeid > 6 ? ' big' : '');
-
                     a.project[i].title = a.project[i].name;
                     a.project[i].isProject = true;
-
                     this.data.push(a.project[i])
                 }
             }
-
-            //this.mergeData(this.data, b);
-
             this.showPoint(this.data, b);
             this.showList(this.data);
             return this.data
@@ -1100,112 +1070,111 @@ var typeIcon = {
         };
 
         this.showPoint = function(a, b) {
-            console.log('showPoint called');
-            //console.log(a);
+            console.log('showPoint');
             this.clearPoint();
 
-            var newData = a;
+            var oldData = a;
 
-            for (var j = 0; j < $thismap.markers.length; j++) {
-                var found = false;
-                // check if this marker id is in data
-                var oneMarker = $thismap.markers[j];
-                for (var k = 0; k < a.length; k++) {
-                    if (oneMarker.id == a[k].id) {
-                        // if found
-                        found = true;
+            // loop through old markers
+            var markers = $thismap.markers;
+
+            //$.each($thismap.markers, function (i, oneMarker) {
+            for (i = 0; i < $thismap.markers.length; i++) {
+                var oneMarker = $thismap.markers[i];
+                if (oneMarker && oneMarker != undefined) {
+                    //console.log(oneMarker);
+                    //key = $thismap.findMarkerKey(oneMarker.id);
+                    //console.log(oneMarker.id+' ~ '+key);
+
+                    var inData = false;
+                    // check if this oneMarker.id is in the new data
+                    for (m = 0; m < oldData.length; m++) {
+                        if (oldData[m].id == oneMarker.id) {
+                            // if there is
+                            a[i] = oldData[m];
+                            //console.log(oneMarker.id+'~~ keep '+i);
+                            inData = true;
+                            break;
+                        }
+                    }
+
+                    if (!inData) {
+                        oneMarker.setMap(null);
+                        //console.log(oneMarker.id+'~~ remove '+i);
+                        $thismap.markers.splice(i, 1);
+                        i--;
                     }
                 }
-                if (!found) {
-                    // if not in data array, then remove it from markers list and unset from map
-                    oneMarker.setVisible(false);
-                    //$thismap.markers[j] = null;
-                }
             }
 
-            for (var i = 0; i < a.length; i++) {
-                var place = a[i];
-                place.typeTxt = typeRealEstate[place.type];
-                if (place.isProject) place.price = place.pricefrom;
-                if (place.price < 1) { // trăm triệu
-                    place.priceTxt = place.price*100+'tr';
-                } else place.priceTxt = place.price+' tỷ';
+            $.each(oldData, function (i, location) {
+                location.typeTxt = typeRealEstate[location.type];
+                if (location.isProject) location.price = location.pricefrom;
+                if (location.price < 1) { // trăm triệu
+                    location.priceTxt = location.price*100+'tr';
+                } else location.priceTxt = location.price+' tỷ';
 
-                //console.log(place.id+' ~ '+$thismap.findMarker(place.id));
+                //console.log(location.id+' ~ '+$thismap.findMarker(location.id));
 
-                //console.log(place.id+' ~~ '+$thismap.findMarkerKey(place.id));
-                var markerkey = $thismap.findMarkerKey(place.id);
-                if (markerkey == null) {
+                if (!$thismap.findMarker(location.id)) {
                     var oneMarker = new MarkerWithLabel({
                         map: $thismap.map,
-                        position: new google.maps.LatLng(place.latitude, place.longitude),
-                        //icon: nodeMarker[place.type].default,
+                        position: new google.maps.LatLng(location.latitude, location.longitude),
+                        //icon: nodeMarker[location.type].default,
                         icon: nodeMarker.empty,
-                        labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+place.id+'\')" attr-marker-id="'+place.id+'"><span class="marker-type type-'+typeIcon[place.type]+'"><i class="icoo-'+typeIcon[place.type]+'"></i></span><span class="marker-label-content">'+place.priceTxt+'</span></a>',
+                        labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')" attr-marker-id="'+location.id+'"><span class="marker-type type-'+typeIcon[location.type]+'"><i class="icon-'+typeIcon[location.type]+'"></i></span><span class="marker-label-content">'+location.priceTxt+'</span></a>',
                         labelAnchor: labelOrigin,
-                        labelClass: "marker-label"+($thismap.currentPID == place.id ? " active" : "") + place.exCls, // your desired CSS class
+                        labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : "") + (location.isProject ? " marker-label-project" : location.sellLabel), // your desired CSS class
                         labelInBackground: true,
                     });
-                    oneMarker.id = place.id;
+                    oneMarker.id = location.id;
                     //oneMarker.setMap($thismap.map);
                     $thismap.markers.push(oneMarker);
-                    var k = $thismap.markers.length-1;
 
-                    oneMarker.isProject = place.isProject;
-                    oneMarker.addListener('click', function() {
-                        $thismap.showInfoWindow(this.id);
-                        $thismap.input.product.value = this.id;
-                        productControlerObj.ChangeUrlForNewContext();
-                    });
-                    oneMarker.addListener('mouseover', function() {
-                        $thismap.mouseHover(k, false);
-                    });
-                    oneMarker.addListener('mouseout', function() {
-                        $thismap.mouseOut(k);
-                    });
-
-                } else {
-                    $thismap.markers[markerkey].setVisible(true);
+                    markerkey = $thismap.findMarkerKey(oneMarker.id);
+                    a[i] = oldData[markerkey];
                 }
-            }
 
+                //markeyKey = $thismap.findMarkerKey(location.id);
+            });
             /*$thismap.markers = a.map(function(location, i) {
-                place.typeTxt = typeRealEstate[place.type];
-                if (place.isProject) place.price = place.pricefrom;
-                if (place.price < 1) { // trăm triệu
-                    place.priceTxt = place.price*100+'tr';
-                } else place.priceTxt = place.price+' tỷ';
+                location.typeTxt = typeRealEstate[location.type];
+                if (location.isProject) location.price = location.pricefrom;
+                if (location.price < 1) { // trăm triệu
+                    location.priceTxt = location.price*100+'tr';
+                } else location.priceTxt = location.price+' tỷ';
                 return new MarkerWithLabel({
-                    position: new google.maps.LatLng(place.latitude, place.longitude),
-                    //icon: nodeMarker[place.type].default,
+                    position: new google.maps.LatLng(location.latitude, location.longitude),
+                    //icon: nodeMarker[location.type].default,
                     icon: nodeMarker.empty,
-                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+place.id+'\')" attr-marker-id="'+place.id+'"><span class="marker-type type-'+typeIcon[place.type]+'"><i class="icoo-'+typeIcon[place.type]+'"></i></span><span class="marker-label-content">'+place.priceTxt+'</span></a>',
+                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+location.id+'\')" attr-marker-id="'+location.id+'"><span class="marker-type type-'+typeIcon[location.type]+'"><i class="icon-'+typeIcon[location.type]+'"></i></span><span class="marker-label-content">'+location.priceTxt+'</span></a>',
                     labelAnchor: labelOrigin,
-                    labelClass: "marker-label"+($thismap.currentPID == place.id ? " active" : "") + (place.isProject ? " marker-label-project" : ""), // your desired CSS class
+                    labelClass: "marker-label"+($thismap.currentPID == location.id ? " marker-label-active" : "") + (location.isProject ? " marker-label-project" : ""), // your desired CSS class
                     labelInBackground: true,
                 });
             });*/
 
-            /*$.each($thismap.markers, function (i, oneMarker) {
+            $thismap.data = a;
+            console.log($thismap.data);
+
+            $.each($thismap.markers, function (i, oneMarker) {
                 //oneMarker.setMap($thismap.map);
                 //$thismap.oms.addMarker(oneMarker);
                 //console.log(oneMarker.id);
-                theData = $thismap.findDataInfo(oneMarker.id);
-                if (theData) {
-                    oneMarker.isProject = theData.isProject;
-                    oneMarker.addListener('click', function() {
-                        $thismap.showInfoWindow(this.id);
-                        $thismap.input.product.value = this.id;
-                        productControlerObj.ChangeUrlForNewContext();
-                    });
-                    oneMarker.addListener('mouseover', function() {
-                        $thismap.mouseHover(i, false);
-                    });
-                    oneMarker.addListener('mouseout', function() {
-                        $thismap.mouseOut(i);
-                    });
-                }
-            });*/
+                oneMarker.isProject = a[i].isProject;
+                oneMarker.addListener('click', function() {
+                    console.log('clicked marker~')
+                    $thismap.showInfoWindow(this.id);
+                    $thismap.input.product.value = this.id;
+                    productControlerObj.ChangeUrlForNewContext();
+                });
+                oneMarker.addListener('mouseover', function() {
+                    $thismap.mouseHover(i, false);
+                });
+                oneMarker.addListener('mouseout', function() {
+                    $thismap.mouseOut(i);
+                });
+            });
             //console.log($thismap.oms);
 
             if (b !== undefined && b) {
@@ -1219,7 +1188,7 @@ var typeIcon = {
             }
 
             if (this.currentPID) {
-                this.showInfoWindow(this.currentPID, false, true);
+                this.showInfoWindow(this.currentPID, true);
             }
 
             //console.log('hide loading-layout');
@@ -1236,32 +1205,25 @@ var typeIcon = {
 
         };
 
-        this.findDataInfo = function(a) {
+        this.findDataInfo = function(i) {
+            if (this.data != undefined && this.data.length > 0) {
+                return this.data[i]
+            }
+        };
+        this.findMarkerKey = function(a) {
             if (this.data != undefined && this.data.length > 0) {
                 for (var i = 0; i < this.data.length; i++) {
                     if (this.data[i] && this.data[i].id == a) {
-                        console.log(this.data[i]);
-                        return this.data[i];
+                        return i
                     }
                 }
             }
-            return null;
-        };
-        this.findMarkerKey = function(a) {
-            if (this.markers != undefined && this.markers.length > 0) {
-                for (var i = 0; i < this.markers.length; i++) {
-                    if (this.markers[i] && this.markers[i].id == a) {
-                        return i;
-                    }
-                }
-            }
-            return null;
         };
         this.findMarker = function(a) {
             if (this.markers != undefined) {
                 for (var i = 0; i < this.markers.length; i++) {
                     if (this.markers[i].id == a) {
-                        return this.markers[i];
+                        return this.markers[i]
                     }
                 }
             }
@@ -1278,7 +1240,7 @@ var typeIcon = {
             if (h == undefined || h == null) return;
             var key = this.findMarkerKey(this.currentPID);
             //h.setIcon(nodeMarker[$thismap.data[key].type].select);
-            //h.labelClass = 'marker-label active';
+            //h.labelClass = 'marker-label marker-label-active';
             //h.label.setStyles();
             this.activeMarker(key);
 
@@ -1373,14 +1335,10 @@ var typeIcon = {
             if (this.infoUtiWindow != null) this.infoUtiWindow.setMap(null);
 
             if (!$thismap.infoWindow) $thismap.closeInfoWindowCallBack(a);
-            if (isMobile && $('.map-item-info-board').is(':hidden')) $thismap.closeInfoWindowCallBack(a);
-            if (!isMobile && $('.popup-map').is(':hidden')) $thismap.closeInfoWindowCallBack(a);
 
             if (a == undefined || a == true) {
                 this.ClearUtilitiesAroundCallback()
             }
-
-            $('#controlUtility').hide();
         };
         this.getTotalUtility = function(a, b) {
             var c = 0;
@@ -1450,51 +1408,46 @@ var typeIcon = {
         }
 
         this.mouseHover = function (k, setCenter = true) {
-            console.log(this.markers);
-            console.log(k);
-            var v = this.markers[k];
-            if (v) {
-                nodeID = v.id;
-                theData = $thismap.findDataInfo(nodeID);
-                //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
-                //$thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
-                var txt = (theData.isProject ? 'Dự án' : typeRealEstate[theData.type]);
-                //$thismap.infoWindow.close();
-                $thismap.showInfoTipWindow(v,txt);
-                v.labelClass = 'marker-label active'+theData.exCls;
-                v.label.setStyles();
-                //if (setCenter) $thismap.map.setCenter(v.position);
-                /*
-                if ($thismap.currentPID == i) $thismap.infoWindow.close();
-                if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
+            if (this.markers) {
+                $.each(this.markers, function (i, v) {
+                    if (i == k) {
+                        //v.setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].hover);
+                        //$thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+i+'"]').html());
+                        var txt = ($thismap.data[k].isProject ? 'Dự án' : typeRealEstate[$thismap.data[k].type]);
+                        //$thismap.infoWindow.close();
+                        $thismap.showInfoTipWindow(v,txt);
+                        v.labelClass = 'marker-label marker-label-active'+($thismap.data[k].isProject ? ' marker-label-project' : $thismap.data[k].sellLabel);
+                        v.label.setStyles();
+                        if (setCenter) $thismap.map.setCenter(v.position);
+                        /*
+                        if ($thismap.currentPID == i) $thismap.infoWindow.close();
+                        if ($thismap.currentPID == i) $thismap.infoWindow.open($thismap.map, v); */
+                    }
+                })
             }
         }
         this.mouseOut = function (k) {
             this.infoTipWindow.close();
             if (this.markers) {
-                nodeID = $thismap.markers[k].id;
-                theData = $thismap.findDataInfo(nodeID);
-
-                //$thismap.markers[k].setIcon(nodeMarker[theData.type].default);
+                //$thismap.markers[k].setIcon(nodeMarker[$thismap.data[k].type].default);
                 if (k && (!$thismap.currentPID || $thismap.currentMarkerKey != k) ) {
-                    //console.log(theData);
-                    $thismap.markers[k].labelClass = 'marker-label'+theData.exCls;
+                    $thismap.markers[k].labelClass = 'marker-label'+($thismap.data[k].isProject ? ' marker-label-project' : $thismap.data[k].sellLabel);
                     $thismap.markers[k].label.setStyles();
                 }
 
                 if ($thismap.currentPID && $thismap.currentMarkerKey) {
                     //$thismap.currentMarkerKey = this.findMarkerKey($thismap.currentPID);
-                    //$thismap.map.setCenter($thismap.markers[$thismap.currentMarkerKey].position);
+                    $thismap.map.setCenter($thismap.markers[$thismap.currentMarkerKey].position);
                     if ($thismap.currentMarkerKey == k) {
                         //$thismap.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
-                        $thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label active'+$thismap.data[$thismap.currentMarkerKey].exCls;
+                        $thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label marker-label-active'+($thismap.data[$thismap.currentMarkerKey].isProject ? ' marker-label-project' : $thismap.data[$thismap.currentMarkerKey].sellLabel);
                         $thismap.markers[$thismap.currentMarkerKey].label.setStyles();
 
-                        /*if (!$thismap.isShowUtil) {
+                        if (!$thismap.isShowUtil) {
                             if (!$thismap.infoWindow) {
                                 $thismap.infoWindow.open($thismap.map, $thismap.markers[$thismap.currentMarkerKey]);
                             }
-                        }*/
+                        }
                     }
                 }
             }
@@ -1547,7 +1500,7 @@ var typeIcon = {
             }
         }
 
-        this.showInfoWindow = function(d, setCenter = true, isInit = false) {
+        this.showInfoWindow = function(d, isInit = false) {
             /*if (!isInit) {
                 this.ClearUtilitiesAroundPoint();
                 this.isShowUtil = false;
@@ -1564,29 +1517,16 @@ var typeIcon = {
                 key = this.findMarkerKey(this.currentPID);
             }
             if (d != this.currentPID || !data) {
-                if (this.currentPID != null && this.currentPID != undefined) {
-                    var oldMarker = this.findMarker(this.currentPID);
-                    var oldData = this.findDataInfo(this.currentPID);
-                    if (oldData && oldMarker) {
-                        oldMarker.labelClass = 'marker-label'+oldData.exCls;
-                        oldMarker.label.setStyles();
-                    }
-                }
-
                 this.currentPID = d;
-                key = this.findMarkerKey(this.currentPID);
+                this.currentMarkerKey = key = this.findMarkerKey(this.currentPID);
                 this.currentProduct = null;
-                //console.log(this.currentPID+' ~~ '+key);
-                data = this.findDataInfo(this.currentPID);
+                console.log(this.currentPID);
+                console.log(key);
+                data = this.findDataInfo(key);
                 //this.isProject = data.isProject;
             }
 
-            //console.log(data);
-
-            this.currentMarkerKey = key;
-            data.isProject = (data.pricefrom > 0 ? 1 : 0);
             this.isProject = data.isProject;
-            //console.log('this.isProject: '+this.isProject);
 
             this.deactiveMarker();
             this.input.product.value = this.currentPID;
@@ -1610,32 +1550,27 @@ var typeIcon = {
                 //console.log(this.isProject);
                 productControlerObj.ChangeUrlForNewContext();
 
-                if (setCenter) $thismap.map.setCenter(h.position);
-
                 //if (isInit) {
-                    /*if (this.isDetails && !isInit) {
+                    if (this.isDetails && !isInit) {
                         productControlerObj.ShowDetails(this.currentPID, this.isProject);
-                    } else */
-                    if (this.isShowUtil) {
+                    } else if (this.isShowUtil) {
                         productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
                     }
                 //}
 
                 //console.log(data);
 
-                //if (this.isProject) this.contentInfoWindowProject(h, key, data, isInit);
-                //else this.contentInfoWindowNode(h, key, data, isInit);
+                if (this.isProject) this.contentInfoWindowProject(h, key, data, isInit);
+                else this.contentInfoWindowNode(h, key, data, isInit);
                 //this.showInfoWindowNode(h, key, data, isInit);
 
-
                 $('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
-                /*$('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("'+data.id+'", '+(data.isProject ? 1 : 0)+')');
+                $('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("'+data.id+'", '+(data.isProject ? 1 : 0)+')');
                 if (data.isProject) {
                     $('.map-item-info-title').wrapInner('<a href="javascript:productControlerObj.ShowDetails("'+data.id+'",1)"></a>')
                 } else {
                     $('.map-item-info-address').wrapInner('<a href="javascript:productControlerObj.ShowDetails("'+data.id+'",0)"></a>')
-                }*/
-                $('.map-item-gotoview').hide()
+                }
 
                 if (isMobile) {
                     $('.map-item-info-board').show().addClass('mobile');
@@ -1647,7 +1582,7 @@ var typeIcon = {
                     $('.map-item-info-board-close').hide();
                     //console.log(isInit);
                     //if (!isInit || !$thismap.isShowUtil) {
-                    /*if (!$thismap.isShowUtil) {
+                    if (!$thismap.isShowUtil) {
                         $thismap.infoWindow.setOptions({
                             position: h.position,
                             maxWidth: 280,
@@ -1658,17 +1593,13 @@ var typeIcon = {
 
                     google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
                         if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
-                    });*/
-
-                    $thismap.isDetails = 1;
-
-                    productControlerObj.ShowDetails(this.currentPID, this.isProject);
+                    });
                 }
 
                 this.showOverlapNodes(data.latitude, data.longitude);
 
                 /*google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
-                    h.labelClass = 'marker-label active';
+                    h.labelClass = 'marker-label marker-label-active';
                     h.label.setStyles();
                 })*/
 
@@ -1679,12 +1610,12 @@ var typeIcon = {
         }
 
         this.activeMarker = function (key) {
-            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
-            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('active');
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('marker-label-active');
         }
 
         this.deactiveMarker = function (key) {
-            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
+            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('marker-label-active');
         }
 
         this.contentInfoWindowProject = function (h, key, data, isInit = false) {
@@ -1777,44 +1708,37 @@ var typeIcon = {
             var j = parseFloat(this.Lon);
             //this.Map.map.setCenter(new google.maps.LatLng(i, j));
 
-            var k = {};
-            k.radius = f;
-            k.types = g;
-            k.lat = this.Lat;
-            k.lon = this.Lon;
-            k.m = 'pddetail';
-            k.v = new Date().getTime();
-            k.latadd = 0.009*k.radius/1000;
+                var k = {};
+                k.radius = f;
+                k.types = g;
+                k.lat = this.Lat;
+                k.lon = this.Lon;
+                k.m = 'pddetail';
+                k.v = new Date().getTime();
 
-            var postData = {
-                minLat: k.lat - k.latadd,
-                maxLat: k.lat + k.latadd,
-                minLng: k.lon - (k.latadd / Math.cos(k.lat*Math.PI/180)),
-                maxLng: k.lon + (k.latadd / Math.cos(k.lat*Math.PI/180))
-            };
-            $.ajax({
-                //url: API_URL+'/user/servicenodes/',
-                url: API_URL+'/search/searchservicebound/',
-                type: 'post',
-                data: postData,
-                success: function(a, b, c) {
-                    //console.log(a);
-                    // when get all data, then filter here (not recommended)
-                    var data = [];
-                    for (key = 0; key < a.length; key++) {
-                        var vl = a[key];
-                        if (l.indexOf(vl.typeid) !== -1) {
-                            data.push(vl);
+                $.ajax({
+                    //url: API_URL+'/user/servicenodes/',
+                    url: MAIN_URL+'/api/node_service.php',
+                    data: k,
+                    //dataType: 'json',
+                    type: 'get',
+                    success: function(a, b, c) {
+                        //console.log(a);
+                        // when get all data, then filter here (not recommended)
+                        var data = [];
+                        for (key = 0; key < a.length; key++) {
+                            var vl = a[key];
+                            if (l.indexOf(vl.typeid) !== -1) {
+                                data.push(vl);
+                            }
                         }
-                    }
-                    $utilthis.Map.ShowUtilitiesAroundPoint($utilthis.Lat, $utilthis.Lon, f, data, h)
-                },
-                error: function(a, b, c) {
-                    console.log(JSON.stringify(postData));
-                    console.log(a)
-                },
-                complete: function() {}
-            })
+                        $utilthis.Map.ShowUtilitiesAroundPoint($utilthis.Lat, $utilthis.Lon, f, data, h)
+                    },
+                    error: function(a, b, c) {
+                        console.log(a+' ~ '+b+' ~ '+c)
+                    },
+                    complete: function() {}
+                })
 
         };
         this.Map.ClearUtilitiesAroundCallback = function() {
@@ -1875,10 +1799,6 @@ ProductSearchControler = function(h) {
         $('.utility-body').toggle();
     })
 
-    $('.close-direction-board').click(function () {
-        i.closeDirectionBoard(true)
-    })
-
     this.SearchProjectName();
 
     var context = h.context;
@@ -1914,17 +1834,11 @@ ProductSearchControler = function(h) {
     this.catchInputChange();
 };
 
-
-ProductSearchControler.prototype.closeDirectionBoard = function (search = false) {
-    $('.v-place-v-direction').hide();
-    if (search) this._SearchAction(-2);
-}
-
 ProductSearchControler.prototype.genPopup = function () {
     var i = f = this;
     var currentProduct = i.ProductMap.currentProduct;
 
-    /*var k = {
+    var k = {
         overviewMapControl: false,
         panControl: false,
         rotateControl: false,
@@ -1947,18 +1861,14 @@ ProductSearchControler.prototype.genPopup = function () {
     i.map.mapTypes.set('styled_map', styledMap);
     i.map.setMapTypeId('styled_map');
 
-    i.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('travelMode'));*/
+    i.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('travelMode'));
 
-    i.map = i.ProductMap.map;
+    console.log('genPopup called');
 
-    //console.log('genPopup called');
-
-    i.productLatLng = new google.maps.LatLng(currentProduct.latitude, currentProduct.longitude);
-
-    /*
-    f.infoWindow = new google.maps.InfoWindow();
+	f.infoWindow = new google.maps.InfoWindow();
 	//var service = new google.maps.places.PlacesService(map);
 
+    i.productLatLng = new google.maps.LatLng(currentProduct.latitude, currentProduct.longitude);
     var marker = new google.maps.Marker({
         map: i.map,
         position: i.productLatLng
@@ -1967,9 +1877,30 @@ ProductSearchControler.prototype.genPopup = function () {
     google.maps.event.addListener(marker, 'click', function() {
         f.infoWindow.setContent('<div><strong>' + currentProduct.address + '</div>');
         f.infoWindow.open(i.map, this);
-    });*/
+    });
 
-    /*$('.v-place-details-more, .v-place-details').click(function () {
+	i.getDirection();
+
+
+    var interval_map = null;
+    var check_map = function() {
+        if ($('#map_direction>div').length) {
+            clearInterval(interval_map);
+            if (!i.ProductMap.isDetails) $('.popup-map,.popup-map .popup-content').hide();
+            if (!$('#v-direction').is('.active')) {
+                setTimeout(function () {
+                    $('.v-place-v-direction').hide();
+                }, 800)
+            }
+
+            if ($('.panorama .pv-inner').length) {
+                $('.v-place-switch-buttons').show();
+            }
+        }
+    };
+    interval_map = setInterval(check_map, 1200);
+
+    $('.v-place-details-more, .v-place-details').click(function () {
         if ($('.v-place-details').is('.all')) {
             $('.v-place-details-more').html('Xem thêm');
             $('.v-place-details').removeClass('all');
@@ -1979,7 +1910,7 @@ ProductSearchControler.prototype.genPopup = function () {
             $('.v-place-details').addClass('all');
         }
         return false
-    })*/
+    })
 }
 
 ProductSearchControler.prototype.getDirection = function () {
@@ -1990,21 +1921,9 @@ ProductSearchControler.prototype.getDirection = function () {
 
     f.map.setZoom(15);
 
-    f.marker = new google.maps.Marker({
-        map: map
-    });
-    // Instantiate an info window to hold step text.
-    f.stepDisplay = new google.maps.InfoWindow;
-
     $('#end').val(f.productLatLng);
-    $('#end_fake').val(f.ProductMap.currentProduct.title+' - '+f.ProductMap.currentProduct.address);
-	f.directionsService = new google.maps.DirectionsService;
+	var directionsService = new google.maps.DirectionsService;
 	var geocoder = new google.maps.Geocoder();
-
-    $('#directions-guide').height($('.v-place-v-direction').height()-$('.travelMode_select').height()-30-$('.start_end_points').height()-30);
-    f.directionsDisplay = new google.maps.DirectionsRenderer({map: map});
-    f.directionsDisplay.setPanel(document.getElementById('directions-guide'));
-
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var pos = {
@@ -2012,26 +1931,28 @@ ProductSearchControler.prototype.getDirection = function () {
 				lng: position.coords.longitude
 			};
 			map.setCenter(pos);
-			f.marker.setPosition(pos);
+			var marker = new google.maps.Marker({
+				position: pos,
+				map: map
+			});
 
 			geocoder.geocode({
 				'location': pos
 			}, function (results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					if (results[0]) {
-						$('#start').val(results[0].formatted_address);
+						$('#start').val(results[0].geometry.location);
+
+            			// Create a renderer for directions and bind it to the map.
+            			var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
+            			// Instantiate an info window to hold step text.
+            			var stepDisplay = new google.maps.InfoWindow;
 
             			var onChangeHandler = function () {
-            				f.calculateAndDisplayRoute(markerArray, map);
+            				f.calculateAndDisplayRoute(directionsDisplay, directionsService, markerArray, stepDisplay, map);
             			};
-            			//document.getElementById('travelMode').addEventListener('change', onChangeHandler);
-                        $('.travelMode_select>div').click(function () {
-                            $('#travelMode').val($(this).attr('id'));
-                            $('.travelMode_one').removeClass('active');
-                            $(this).addClass('active');
-                            onChangeHandler();
-                        })
-						f.calculateAndDisplayRoute(markerArray, map);
+            			document.getElementById('travelMode').addEventListener('change', onChangeHandler);
+						f.calculateAndDisplayRoute(directionsDisplay, directionsService, markerArray, stepDisplay, map);
 					} else {
 						alert('No results found');
 					}
@@ -2049,7 +1970,7 @@ ProductSearchControler.prototype.getDirection = function () {
 	}
 }
 
-ProductSearchControler.prototype.calculateAndDisplayRoute = function (markerArray, map) {
+ProductSearchControler.prototype.calculateAndDisplayRoute = function (directionsDisplay, directionsService, markerArray, stepDisplay, map) {
     var f = this;
 	// First, remove any existing markers from the map.
 	for (var i = 0; i < markerArray.length; i++) {
@@ -2058,9 +1979,9 @@ ProductSearchControler.prototype.calculateAndDisplayRoute = function (markerArra
 
 	// Retrieve the start and end locations and create a DirectionsRequest using
 	// {travelMode} directions.
-    //console.log(document.getElementById('start').value);
-    //console.log(document.getElementById('end').value);
-	f.directionsService.route({
+    console.log(document.getElementById('start').value);
+    console.log(document.getElementById('end').value);
+	directionsService.route({
 		origin: document.getElementById('start').value.replace(/^\((.+)\)$/,"$1"),
 		destination: document.getElementById('end').value.replace(/^\((.+)\)$/,"$1"),
 		travelMode: document.getElementById('travelMode').value // DRIVING | BICYCLING | TRANSIT | WALKING
@@ -2069,41 +1990,41 @@ ProductSearchControler.prototype.calculateAndDisplayRoute = function (markerArra
 		// markers for each step.
 		if (status === 'OK') {
 			document.getElementById('warnings-panel').innerHTML = '<b>' + response.routes[0].warnings + '</b>';
-			f.directionsDisplay.setDirections(response);
-			f.showSteps(response, markerArray, map);
+			directionsDisplay.setDirections(response);
+			f.showSteps(response, markerArray, stepDisplay, map);
 			var distance = response.routes[0].legs[0].distance.text;
 			var time = response.routes[0].legs[0].duration.text;
 			$('.box-search-one-distance').text(distance);
 			$('.box-search-one-time').text(time);
 			$('.box-search-one-route').show();
-            //f.map.setZoom(15);
+            f.map.setZoom(15);
 		} else {
 			console.log('Directions request failed due to ' + status);
 		}
 	});
 }
 
-ProductSearchControler.prototype.showSteps = function (directionResult, markerArray, map) {
+ProductSearchControler.prototype.showSteps = function (directionResult, markerArray, stepDisplay, map) {
     var f = this;
 	// For each step, place a marker, and add the text to the marker's infowindow.
 	// Also attach the marker to an array so we can keep track of it and remove it
 	// when calculating new routes.
 	var myRoute = directionResult.routes[0].legs[0];
 	for (var i = 0; i < myRoute.steps.length; i++) {
-		f.marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+		var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
 		//marker.setMap(f.map);
 		//marker.setPosition(myRoute.steps[i].start_location);
-		f.attachInstructionText(myRoute.steps[i].instructions, map);
+		f.attachInstructionText(stepDisplay, marker, myRoute.steps[i].instructions, map);
 	}
 }
 
-ProductSearchControler.prototype.attachInstructionText = function (text, map) {
+ProductSearchControler.prototype.attachInstructionText = function (stepDisplay, marker, text, map) {
     var f = this;
-	google.maps.event.addListener(f.marker, 'click', function() {
+	google.maps.event.addListener(marker, 'click', function() {
 		// Open an info window when the marker is clicked on, containing the text
 		// of the step.
-		f.stepDisplay.setContent(text);
-		f.stepDisplay.open(map, marker);
+		stepDisplay.setContent(text);
+		stepDisplay.open(map, marker);
 	});
 }
 
@@ -2119,41 +2040,31 @@ ProductSearchControler.prototype.handleLocationError = function (browserHasGeolo
 
 
 ProductSearchControler.prototype.SearchProjectName = function () {
-    $('#tenduan').keydown(function () {
+    $('#project_name').keydown(function () {
 		k = $(this).attr('name').split('town')[1];
-		$dr = $('#tenduan').next('.ville-dropdown');
+		$dr = $('#project_name').next('.ville-dropdown');
 		loading = '<div class="spinner loading-sending"><div></div><div></div><div></div></div>';
-		if (!$dr.length) $('#tenduan').after('<div class="ville-dropdown">'+loading+'</div>');
+		if (!$dr.length) $('#project_name').after('<div class="ville-dropdown">'+loading+'</div>');
 		else $dr.show().html(loading);
 	}).donetyping(function () {
-        $dr = $('#tenduan').next('.ville-dropdown');
 		val = $(this).val();
-        if (!val.length) {
-            $dr.hide().html('');
-        } else {
-    		$.ajax({
-    			url: API_URL+'/search/duanbasic/',
-    			type: 'post',
-    			data: {input: val},
-    			success: function (data) {
-                    $dr.show().html('');
-                    if (data.message && data.message.indexOf('No duan') > -1) {
-                        $dr.html('<div class="ville-empty">Không có kết quả cho <b>'+val+'</b></div>');
-                    } else {
-                        $.each(data, function (i, d) {
-            				var vO = '<div class="sthumb"><img src="'+d.thumb+'"/></div> <div class="stit"><b>'+d.name+'</b> <div class="sadr"><i class="fa fa-map-marker"></i> '+d.address+'</div></div><div class="clearfix"></div>';
-            				$dr.append('<div class="ville-one" id="v'+i+'">'+vO+'</div>');
-            				$('.ville-one#v'+i).click(function () {
-                                console.log(vO);
-                                $('#tenduan').val(d.name);
-                                $('#duanid').val(d.id);
-            					$dr.remove()
-            				})
-                        })
-                    }
-    			}
-    		})
-        }
+		$.ajax({
+			url: MAIN_URL+'/api/search_name.php?n='+val.length,
+			type: 'get',
+			data: 'city='+val,
+			success: function (data) {
+                $dr = $('#project_name').next('.ville-dropdown');
+                $dr.show().html('');
+                $.each(data, function (i, d) {
+    				var vO = '<div class="sthumb"><img src="'+d.thumb+'"/></div> <div class="stit"><b>'+d.title+'</b> <div class="sadr"><i class="fa fa-map-marker"></i> '+d.address+'</div></div><div class="clearfix"></div>';
+    				$dr.append('<div class="ville-one" id="v'+i+'">'+vO+'</div>');
+    				$('.ville-one#v'+i).click(function () {
+                        console.log(vO);
+    					$dr.remove()
+    				})
+                })
+			}
+		})
 	});
 }
 
@@ -2266,14 +2177,9 @@ ProductSearchControler.prototype.catchInputChange = function () {
     })
 }
 
-ProductSearchControler.prototype.closePopup = function (search = false) {
-    $('.popup-map').hide();
+ProductSearchControler.prototype.closePopup = function () {
     this.ProductMap.input.details.value = 0;
-    this.ProductMap.input.isShowUtil.value = 0;
     this.ProductMap.isDetails = false;
-    this.ProductMap.isShowUtil = false;
-    $thismap.closeInfoWindowCallBack(new google.maps.LatLng(this.ProductMap.currentProduct.latitude, this.ProductMap.currentProduct.longitude));
-    this.closeDirectionBoard(search);
     this.ChangeUrlForNewContext();
 }
 
@@ -2293,14 +2199,7 @@ ProductSearchControler.prototype.ShowMoreInfo = function (lat, lon) {
     this.utilityTool.SearchAction(lat, lon);
 };
 
-ProductSearchControler.prototype.ShowDirection = function () {
-    var i = this;
-
-    i.ProductMap.isDirection = true;
-    // clear all points
-    i.ProductMap.clearPoints();
-
-    i.getDirection();
+ProductSearchControler.prototype.ShowDirection = function (lat, lng) {
 }
 
 function popup_info (f, lat, lng) {
@@ -2315,6 +2214,7 @@ function popup_info (f, lat, lng) {
             setWidth($(window).width());
         }
 
+        console.log($('.v-place-imgs').height());
         //$('#map_direction').width($('.v-place-imgs').width()).height($('.v-place-imgs').height());
         //$('#map_direction').attr('style','width: '+$('.v-place-imgs').width()+'px!important; height: '+$('.v-place-imgs').height()+'px!important; position:absolute;top:0;left:0;right:0;bottom:0 ')
         /*google.maps.event.trigger(f.map, 'resize');
@@ -2322,9 +2222,9 @@ function popup_info (f, lat, lng) {
         f.ShowDirection(lat, lng);*/
 
 	}).css('top', topp);
-	/*$('.popup-map .popup-content [role="close"]').click(function () {
+	$('.popup-map .popup-content [role="close"]').click(function () {
 		remove_popup_info()
-	});*/
+	});
 }
 
 function remove_popup_info () {
@@ -2334,7 +2234,9 @@ function remove_popup_info () {
 
 
 ProductSearchControler.prototype.showDetailsCallback = function () {
-    this.genPopup();
+    if (!$('#map_direction>div').length) {
+        this.genPopup();
+    }
 };
 
 
@@ -2358,7 +2260,6 @@ ProductSearchControler.prototype.ShowDetailsNode = function (id) {
     i.ProductMap.isProject = false;
     if (!i.ProductMap.currentProduct) {
         $.post(API_URL+'/user/chitietnode/', {id: i.ProductMap.currentPID}, function (place) {
-            place.isProject = (place.pricefrom > 0 ? 1 : 0);
             i.ProductMap.currentProduct = place;
             i.setNodeDetails();
         })
@@ -2372,12 +2273,11 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     i.showDetailsCallback();
 
     var place = i.ProductMap.currentProduct;
-    //console.log(place);
+    console.log(place);
     if (place.isProject) place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
     $('.v-place-tiendo, .introduan').hide();
-    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').show();
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
     $('.v-place-area span').html(place.area);
@@ -2385,7 +2285,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     $('.v-place-room span').html(place.sophongngu);
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-details').html(place.details);
-    $('.v-place-title').attr('title', place.title).children('div').html(place.title);
+    $('.v-place-title').html(place.title);
     $('.v-place-ten').html(place.tenlienhe);
     $('.v-place-phone').html(place.dienthoai);
     $('.v-place-email').html(place.email);
@@ -2409,6 +2309,10 @@ ProductSearchControler.prototype.setNodeDetails = function () {
             if ($('.panorama .pv-inner').length) {
                 clearInterval(interval);
                 if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
+
+                if ($('#map_direction>div').length) {
+                    $('.v-place-switch-buttons').show();
+                }
             }
         };
         interval = setInterval(check, 1200);
@@ -2427,35 +2331,20 @@ ProductSearchControler.prototype.setNodeDetails = function () {
 
     $('.v-place-related-list').html('');
     $.post(API_URL+'/search/nodenangcao/', {nodeid: i.ProductMap.currentPID}, function (similar) {
-        //console.log(similar);
+        console.log(similar);
         for (si = 0; si < 4; si++) {
             sv = similar[si];
             if (sv) {
-                //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
             }
         }
-    });
-
-    i.setDetailsAll(place);
-}
-
-ProductSearchControler.prototype.setDetailsAll = function (place) {
-    var i = this;
+    })
     $('.v-place-mode').click(function () {
         vid = $(this).attr('id');
-        if (vid != 'v-direction' && vid != 'v-util') {
-            $('.v-place-board').hide();
-        }
+        $('.v-place-board').hide();
         $('.v-place-'+vid).show();
         $('.v-place-mode').removeClass('active');
         $(this).addClass('active');
-        if (vid == 'v-direction') {
-            i.ShowDirection();
-        }
-        if (vid == 'v-util') {
-            i.ShowMoreInfo(place.latitude, place.longitude);
-        }
     });
     $('.v-place-thumb').click(function () {
         img = $(this).attr('src');
@@ -2464,7 +2353,7 @@ ProductSearchControler.prototype.setDetailsAll = function (place) {
         $(this).addClass('active');
     });
     $('.popup-map .popup-content [role="close"]').click(function () {
-        i.closePopup(true);
+        i.closePopup();
     })
 }
 
@@ -2473,8 +2362,6 @@ ProductSearchControler.prototype.ShowDetailsProject = function (id) {
     i.ProductMap.isProject = true;
     if (!i.ProductMap.currentProduct) {
         $.post(API_URL+'/user/chitietduan/', {id: i.ProductMap.currentPID}, function (place) {
-            place.title = place.name;
-            place.isProject = (place.pricefrom > 0 ? 1 : 0);
             i.ProductMap.currentProduct = place;
             i.setProjectDetails();
         })
@@ -2488,7 +2375,7 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     i.showDetailsCallback();
 
     var place = i.ProductMap.currentProduct
-    //console.log(place);
+    console.log(place);
     place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
@@ -2497,7 +2384,7 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-tiendo span').html(place.tiendo);
     $('.v-place-details').html(place.infoduan);
-    $('.v-place-title').attr('title', place.title).children('div').html(place.title);
+    $('.v-place-title').html(place.title);
     $('.v-place-ten,.v-place-phone,.v-place-email').hide();
     $('.v-place-intro').html(place.intro);
 
@@ -2520,6 +2407,10 @@ ProductSearchControler.prototype.setProjectDetails = function () {
             if ($('.panorama .pv-inner').length) {
                 clearInterval(interval);
                 if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
+
+                if ($('#map_direction>div').length) {
+                    $('.v-place-switch-buttons').show();
+                }
             }
         };
         interval = setInterval(check, 1200);
@@ -2534,22 +2425,32 @@ ProductSearchControler.prototype.setProjectDetails = function () {
 
     $('.v-place-related-list').html('');
     $.post(API_URL+'/search/duannangcao/', {duanid: i.ProductMap.currentPID}, function (similar) {
-        //console.log(similar);
+        console.log(similar);
         for (si = 0; si < 4; si++) {
             sv = similar[si];
-            if (sv) {
-                //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-            }
+            $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
         }
     })
-
-    i.setDetailsAll(place);
+    $('.v-place-mode').click(function () {
+        vid = $(this).attr('id');
+        $('.v-place-board').hide();
+        $('.v-place-'+vid).show();
+        $('.v-place-mode').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.v-place-thumb').click(function () {
+        img = $(this).attr('src');
+        $('.v-place-bg').css('background-image', 'url('+img+')');
+        $('.v-place-thumb').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.popup-content [role="close"]').click(function () {
+        i.closePopup();
+    })
 }
 
 ProductSearchControler.prototype._SearchAction = function(g) {
-    console.log('_SearchAction called');
-    //console.log(g);
+    console.log(g);
     var f = this;
     //e = f.formSearch.serialize().split('&');
     var d = {};
@@ -2566,32 +2467,6 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         for (var key in g) d[key] = g[key];
         //d = Object.assign({}, e, g);
     }*/
-
-    if (g == -2) { // use hash url
-        g = {
-            ptype: parseInt(markContext.getQueryHash('ptype', '38')),
-            catid: markContext.getQueryHash('cat'),
-            city: markContext.getQueryHash('city'),
-            district: markContext.getQueryHash('district'),
-            area: markContext.getQueryHash('area'),
-            price: markContext.getQueryHash('price'),
-            ward: markContext.getQueryHash('ward'),
-            street: markContext.getQueryHash('street'),
-            room: markContext.getQueryHash('room'),
-            direction: markContext.getQueryHash('direction'),
-            isProject: markContext.getQueryHash('isProject'),
-            place_search: markContext.getQueryHash('place_search'),
-            lstPoint: markContext.getQueryHash('points'),
-            zoom: markContext.getQueryHash('zoom', zoom_moderate),
-            center: markContext.getQueryHash('center'),
-            page: markContext.getQueryHash('page', '1'),
-            currentPID: markContext.getQueryHash('product'),
-            isShowUtil: markContext.getQueryHash('isShowUtil'),
-            utilArea: markContext.getQueryHash('utilArea'),
-            details: markContext.getQueryHash('details'),
-            searchtype: markContext.getQueryHash('searchtype', '0')
-        }
-    }
 
     d.city = d.district = d.ward = d.street = d.room = d.direction = d.pricefrom = d.area = d.type = "CN";
     d.price = "-1";
@@ -2628,7 +2503,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         d.maxLng = f.ProductMap.bounds.b.f;
     }
 
-    d.input = (d.tenduan && d.tenduan != undefined ? d.tenduan : "");
+    d.input = (d.project_name && d.project_name != undefined ? d.project_name : "");
 
     if (!d.room) d.room = "CN";
 
@@ -2660,22 +2535,10 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         data: d,
         success: function(data) {
             console.log(data);
-            console.log('isProject === '+f.ProductMap.isProject);
             // show on map
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
             //console.log(f.ProductMap.data);
             //f.showList(data);
-
-            if (!f.ProductMap.isTrigger) {
-                $('.li-list>a').click();
-            }
-            $thismap.isTrigger = false;
-
-            if (d.type_search == 2) {
-                $('a[href="#map_results_project"]').click()
-            } else {
-                $('a[href="#map_results_node"]').click()
-            }
 
             /*if (g == 1 ||
                     ($('#type').val() && $('#type').val() != 'CN') ||
@@ -2693,7 +2556,6 @@ ProductSearchControler.prototype._SearchAction = function(g) {
                 $('.btn-filter').html('<i class="fa fa-filter"></i> Lọc');
                 $('.cancel-filter').hide()
             }
-            console.log('isProject (new) === '+f.ProductMap.isProject);
             f.ChangeUrlForNewContext();
         },
         error: function(a, b, c) {
@@ -2738,7 +2600,6 @@ ProductSearchControler.prototype.getProjectNodes = function () {
 ProductSearchControler.prototype.callBackFindBound = function () {
     //var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
     //console.log(this.ProductMap.bounds);
-    console.log('callBackFindBound called');
     this._SearchAction()
 }
 
@@ -2789,7 +2650,7 @@ ProductSearchControler.prototype.ChangeUrlForNewContext = function(e) {
     a += "&street=" + ($input.street.value != undefined ? $input.street.value : '');
     a += "&room=" + ($input.room.value != undefined ? $input.room.value : '');
     a += "&direction=" + ($input.direction.value != undefined ? $input.direction.value : '');
-    a += "&isProject=" + (this.ProductMap.isProject ? 1 : 0);
+    a += "&isProject=" + (this.ProductMap.currentPID != undefined && this.ProductMap.currentPID != null && this.ProductMap.currentPID ? (this.ProductMap.isProject ? 1 : 0) : 0);
     //a += "&points=" + ( (this.ProductMap.isDrawing || $input.district.value) ? ($input.points.value != undefined ? $input.points.value : '') : '');
     a += "&place_search="+$input.place_search.value;
     a += "&points=" + (!$input.place_search && $input.points.value != undefined ? $input.points.value : '');
@@ -2873,6 +2734,21 @@ function render (isResizeSmaller = false, searchVisible = false) {
 }
 
 function setWidth(w) {
+    if (w <= 900) {
+        var vheight = $('.v-place-imgs').height();
+        if ($('.v-place-imgs').width() == $('.v-place-info').width()+40) {
+            $('.v-place-view').height($('.v-place-imgs').height() + $('.v-place-info').height() + 80);
+            /*console.log($('.v-place-imgs').width());
+            console.log($('.v-place-info').width());
+            console.log($('.v-place-imgs').height() + $('.v-place-info').height());
+            console.log('~~');*/
+            $('.v-place-imgs').height(vheight);
+            $('.v-place-info').css('height','auto');
+        }
+    } else {
+        $('.v-place-view').css('height', '90%');
+        $('.v-place-imgs,.v-place-info').css('height', '100%');
+    }
 }
 
 var markContext = "";
