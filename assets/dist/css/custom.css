@@ -1085,6 +1085,13 @@ body.mobile nav ul.nav > li > a.loginlink .fa{font-size:30px!important;display:b
 .start_end_points input{position:relative;height:36px;line-height:33px;border:0!important;}
 #directions-guide{position:relative;overflow:auto;padding:10px}
 
+
+/* Dashboard */
+.listings_type{float:left}
+.listings_delete, .listings_edit{float:left;margin:1px 0 0 15px}
+.listings_delete{margin-left:8px}
+.listings_delete a, .listings_edit a{font-size:19px}
+
 .no-padding{padding:0}
 .no-padding-top{padding-top:0}
 .no-padding-bottom{padding-bottom:0}

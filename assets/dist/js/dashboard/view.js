@@ -34,6 +34,12 @@ $(document).ready(function () {
                             <div class="line mts listings_type">\
                                 '+(v.type_action == 1 ? '<strong class="label label-success">Đang bán</strong>' : '<strong class="label label-info">Cho thuê</strong>')+'\
                             </div>\
+                            <div class="line mts listings_edit">\
+                                <a class="text-info" href="'+location.href.trim()+'/node/'+v.id+'" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>\
+                            </div>\
+                            <div class="line mts listings_delete">\
+                                <a class="text-danger" href="#" title="Xóa bài đăng"><i class="fa fa-trash"></i></a>\
+                            </div>\
                         </div>\
                         <div class="clearfix"></div>\
                     </div>';
