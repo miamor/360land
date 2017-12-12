@@ -5,7 +5,7 @@ html, body{
     font-family: 'Source Sans Pro', sans-serif
 }
 *{font-size: 15px;line-height:1.4}
-#mapSide .nav-tabs-custom, #iw-container,#controlArea,#controlUtility,#mapSide,#map_search{font-family:'Source Sans Pro', sans-serif}
+#mapSide .nav-tabs-custom, #iw-container,.controls-area,#controlUtility,#mapSide,#map_search{font-family:'Source Sans Pro', sans-serif}
 .container{padding:20px}
 a,a:hover,a:active{text-decoration: none}
 .navbar{
@@ -349,8 +349,9 @@ label.utility-type .uti-total{font-weight: 500}
 #cbbRadius{width:70px;position: absolute;bottom:0!important;left:0;height:100%!important;border:0!important;background:#f5f5f5!important;cursor:pointer;border-right:1px solid #eee!important;border-radius:0!important}
 body:not(.mobile) #cbbRadius{line-height:54px!important}
 #uti_selected{position: absolute;top:0;bottom:0;left:80px;right:50px;overflow:hidden;line-height:54px;text-overflow:ellipsis}
-#controlArea{position:relative;margin-top:20px!important}
+.controls-area{position:relative;margin-top:20px!important}
 body:not(.mobile) #controlArea{top:10px!important;*right:10px!important}
+body:not(.mobile) #socialArea{top:150px!important}
 .gm-style-mtc{top:0px!important}
 .gm-style-cc{display: none!important}
 
@@ -392,7 +393,7 @@ form#map-search-form{padding:10px}
 .map-nav-select>li:first-child>a{border-left:0!important}
 .map-nav-select>li:not(.active)>a:hover{background-color:#f2f2f2;padding-bottom:5px!important}
 a[href*="https://maps.google.com"]{display:none!important}
-#controlArea > div, button[title*="Toggle"]{
+.controls-area > div, .controls-area > a, button[title*="Toggle"]{
     position: relative;
     width:38px!important;height:38px!important;line-height:36px!important;text-align:center!important;
     margin:4px 10px 5px!important;
@@ -403,17 +404,18 @@ a[href*="https://maps.google.com"]{display:none!important}
     border-radius: 2px;
     box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12);
 }
+.controls-area > a{display:block;padding-top:2px!important;color:#4267b2}
 button[title*="Toggle"]{margin-top:-100px!important}
 #map .gm-bundled-control{margin:85px 20px 0 0!important}
 #map .gm-bundled-control>.gmnoprint>div{width:38px!important;height:76px!important}
 #map .gm-bundled-control>.gmnoprint>div>button{width:38px!important;height:38px!important}
 #map .gm-bundled-control>.gmnoprint>div>button>div{left:11px!important;top:11px!important}
 button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
-#controlArea > div:hover{
+.controls-area > div:hover{
     color:#000
 }
 .toggle-search-advanced{cursor: pointer;}
-#controlArea .delshape{display: none}
+.controls-area .delshape{display: none}
 .map-search-bottom{position: fixed;bottom:0;left: 0;width: 300px;background:#fff;height:40px;border-top: 1px solid #eee}
 .map-search-bottom>div{cursor: pointer;position: relative;padding: 10px 15px;text-align: center;float:left;width:50%}
 .map-search-bottom>div.active:before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:#0bc39b}
@@ -455,21 +457,22 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .marker-label{position:absolute;width:14px!important;height:14px!important;margin:-5px 0 0 -5px!important;border-radius:100%}
 .marker-label>a,.marker-type{position:absolute;display:block;top:0;left:0;right:0;bottom:0;border-radius:100%}
 .marker-type{position:relative;width:12px;height:12px;background:#0bc39b;border-radius:100%;border:1px solid #fff;box-shadow:1px 2px 1px rgba(0,0,0,.3)}
-.marker-label:not(.big) .marker-type>i, .marker-label-content{font-size:0!important;display:none!important}
+.marker-label:not(.big):not(.active) .marker-type>i, .marker-label-content{font-size:0!important;display:none!important}
 
 
-.marker-label.big{width:35px!important;height:38px!important;margin:-14px 0 0 -17px!important}
-.marker-label.big .marker-type{position:absolute;z-index:2;top:2px;left:4px;width:30px;height:30px;line-height:0.95!important;border-radius:100%;text-align:center;background:#0bc39b;color:#fff;border:2px solid #fff;box-shadow:-2px 0 2px 0 rgba(0,0,0,.6)}
-.marker-label.big .marker-type>i{display:block;font-size:12px;margin:6px 0 0 -1px!important}
-.marker-label.big>a:after{content:'';position:absolute;z-index:1;bottom:4px;left:14px;width:10px;height:10px;background:#fff;border:1px solid #fff;border-width:0 1px 1px 0;transform:rotate(45deg);box-shadow:0 2px 4px rgba(0,0,0,.55)}
-.marker-label.big .marker-type:before{content:'';position:absolute;bottom:-2px;height:1px;background:#fff;left:8px;right:8px}
-.marker-label.big .marker-type:after{content:'';position:absolute;bottom:-3px;height:1px;background:#fff;left:9px;right:9px}
-.marker-label.big>a:before{content:'';position:absolute;z-index:99999;bottom:4px;height:1px;left:16px;right:14px;background:#fff}
+.marker-label.big, .marker-label.active {width:35px!important;height:38px!important;margin:-14px 0 0 -17px!important}
+.marker-label.big .marker-type, .marker-label.active .marker-type {position:absolute;z-index:2;top:2px;left:4px;width:30px;height:30px;line-height:0.95!important;border-radius:100%;text-align:center;background:#0bc39b;color:#fff;border:2px solid #fff;box-shadow:-2px 0 2px 0 rgba(0,0,0,.6)}
+.marker-label.big .marker-type>i, .marker-label.active .marker-type>i {display:block;font-size:12px;margin:6px 0 0 -1px!important}
+.marker-label.big>a:after, .marker-label.active>a:after {content:'';position:absolute;z-index:1;bottom:4px;left:14px;width:10px;height:10px;background:#fff;border:1px solid #fff;border-width:0 1px 1px 0;transform:rotate(45deg);box-shadow:0 2px 4px rgba(0,0,0,.55)}
+.marker-label.big .marker-type:before, .marker-label.active .marker-type:before {content:'';position:absolute;bottom:-2px;height:1px;background:#fff;left:8px;right:8px}
+.marker-label.big .marker-type:after, .marker-label.active .marker-type:after {content:'';position:absolute;bottom:-3px;height:1px;background:#fff;left:9px;right:9px}
+.marker-label.big>a:before, .marker-label.active>a:before {content:'';position:absolute;z-index:99999;bottom:4px;height:1px;left:16px;right:14px;background:#fff}
 
 .marker-label.project .marker-type{background:#f1594b}
-.marker-label.active .marker-type{*background:#08a381;background:#0d6f59}
-.marker-label.project.active .marker-type{*background:#dd5043;background:#7c261e}
-
+.marker-label.active:not(.project) .marker-type{background:#12ad47!important}
+/*.marker-label.project.active .marker-type{*background:#dd5043;background:#7c261e}
+*/
+.marker-label.project.active .marker-type{background:#f79f29!important}
 
 #map .gm-style > div:first-child > div:nth-child(4) > div:first-child, #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4){*z-index:999!important}
 

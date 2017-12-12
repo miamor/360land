@@ -50,6 +50,13 @@
             </div>
         </div>
     </div>
+
+    <div class="controls-area" id="socialArea">
+        <a href="https://www.facebook.com" class="s-link facebook" title="Facebook">
+            <i class="fa fa-facebook"></i>
+        </a>
+    </div>
+
 </div>
 
 <div id="map"></div>

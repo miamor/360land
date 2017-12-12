@@ -408,7 +408,8 @@ var typeIcon = {
             this.map.mapTypes.set('styled_map', styledMap);
             this.map.setMapTypeId('styled_map');
 
-            this.map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('controlArea'));
+            this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('controlArea'));
+            this.map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(document.getElementById('socialArea'));
             this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('controlUtility'));
             this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById('mapSide'));
             this.map.controls[google.maps.ControlPosition.BOTTOM].push(document.getElementById('mapInfoBoard'));
@@ -1443,7 +1444,8 @@ var typeIcon = {
                 //h.setIcon(nodeMarker[$thismap.data[key].type].default);
                 //h.labelClass = 'marker-label';
                 //h.label.setStyles();
-                this.deactiveMarker(key);
+                var theData = $thismap.findDataInfo(key);
+                this.deactiveMarker(key, theData);
 
                 this.input.product.value = this.currentPID = '';
                 this.currentMarkerKey = null;
@@ -1484,8 +1486,9 @@ var typeIcon = {
                 //$thismap.infoWindow.close();
                 //$thismap.showInfoTipWindow(v,txt);
                 $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+k+'"]').html());
-                v.labelClass = 'marker-label active'+theData.exCls;
-                v.label.setStyles();
+                //v.labelClass = 'marker-label active'+theData.exCls;
+                //v.label.setStyles();
+                $thismap.activeMarker(k, theData);
                 //if (setCenter) $thismap.map.setCenter(v.position);
                 /*
                 if ($thismap.currentPID == i) $thismap.infoWindow.close();
@@ -1501,8 +1504,9 @@ var typeIcon = {
                 //$thismap.markers[k].setIcon(nodeMarker[theData.type].default);
                 if (k && (!$thismap.currentPID || $thismap.currentMarkerKey != k) ) {
                     //console.log(theData);
-                    $thismap.markers[k].labelClass = 'marker-label'+theData.exCls;
-                    $thismap.markers[k].label.setStyles();
+                    //$thismap.markers[k].labelClass = 'marker-label'+theData.exCls;
+                    //$thismap.markers[k].label.setStyles();
+                    $thismap.deactiveMarker(k, theData);
                 }
 
                 if ($thismap.currentPID && $thismap.currentMarkerKey) {
@@ -1583,18 +1587,22 @@ var typeIcon = {
             var runSet = false;
             if (!isInit && d != this.currentPID) runSet = true;
 
+            if (this.currentPID != null && this.currentPID != undefined && d != this.currentPID) {
+                var oldMarker = this.findMarker(this.currentPID);
+                var oldMarkerKey = this.findMarkerKey(this.currentPID);
+                var oldData = this.findDataInfo(this.currentPID);
+                if (oldData && oldMarkerKey != null && oldMarkerKey != undefined) {
+                    //oldMarker.labelClass = 'marker-label'+oldData.exCls;
+                    //oldMarker.label.setStyles();
+                    this.deactiveMarker(oldMarkerKey, oldData);
+                }
+            }
+
+
             if (d == this.currentPID && data) {
                 key = this.findMarkerKey(this.currentPID);
             }
             else if (d != this.currentPID || !data) {
-                if (this.currentPID != null && this.currentPID != undefined) {
-                    var oldMarker = this.findMarker(this.currentPID);
-                    var oldData = this.findDataInfo(this.currentPID);
-                    if (oldData && oldMarker) {
-                        oldMarker.labelClass = 'marker-label'+oldData.exCls;
-                        oldMarker.label.setStyles();
-                    }
-                }
 
                 this.currentPID = d;
                 key = this.findMarkerKey(this.currentPID);
@@ -1614,7 +1622,6 @@ var typeIcon = {
             this.isProject = data.isProject;
             //console.log('this.isProject: '+this.isProject);
 
-            this.deactiveMarker();
             this.input.product.value = this.currentPID;
 
             if (this.infoTipWindow) this.infoTipWindow.close();
@@ -1707,13 +1714,26 @@ var typeIcon = {
         this.activeMarker = function (key, data) {
             //$('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
             //$('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('active');
-            console.log(data);
-            this.markers[key].labelClass = 'marker-label active'+data.exCls;
-            this.markers[key].label.setStyles();
+            //console.log(data);
+            if (key != null && key != undefined) {
+                google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
+                    console.log("projection:"+$thismap.map.getProjection());
+                    this.markers[key].labelClass = 'marker-label active'+data.exCls;
+                    this.markers[key].label.setStyles();
+                });
+            }
         }
 
-        this.deactiveMarker = function (key) {
-            $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
+        this.deactiveMarker = function (key, data) {
+            if (key != null && key != undefined) {
+                //google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
+                    //console.log("projection:"+$thismap.map.getProjection());
+                    this.markers[key].labelClass = 'marker-label'+data.exCls.replace(' active', '');
+                    this.markers[key].label.setStyles();
+                //});
+            } else {
+                $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
+            }
         }
 
         this.contentInfoWindowProject = function (h, key, data, isInit = false) {
@@ -2440,7 +2460,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     if (place.isProject) place.price = place.pricefrom;
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
-    $('.v-place-tiendo, .introduan').hide();
+    $('.v-place-tiendo, .introduan, .v-place-tiendo').hide();
     $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').show();
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
@@ -2570,12 +2590,13 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     if (place.price < 1) place.priceTxt = place.price*100+' triệu';
     else place.priceTxt = place.price+' tỷ';
     $('.v-place-pricenum').html(place.priceTxt);
-    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').hide();
+    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room, v-place-ten,.v-place-phone,.v-place-email').hide();
+    $('.v-place-tiendo, .v-place-intro, .v-place-infoduan').show();
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-tiendo span').html(place.tiendo);
     $('.v-place-details').html(place.infoduan);
     $('.v-place-title').attr('title', place.title).children('div').html(place.title);
-    $('.v-place-ten,.v-place-phone,.v-place-email').hide();
+    //$('.v-place-ten,.v-place-phone,.v-place-email').hide();
     $('.v-place-intro').html(place.intro);
 
     $('.v-place-thumbs').html('');
