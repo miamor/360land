@@ -1,6 +1,6 @@
 <?php
 if ($n) {
-    $pageTitle = 'Place title';
+    $pageTitle = 'User info';
     include 'templates/header.php';
 
     //$config->addJS('plugins', 'DataTables/datatables.min.js');

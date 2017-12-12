@@ -1,4 +1,4 @@
-<h4 class="page-title">Tu Nguyen</h2>
+<h4 class="page-title">Tu Nguyen</h4>
 
 <div class="v-user-top">
     <img class="v-user-avt" src="http://e-cdn-images.deezer.com/images/artist/47b06798630c44fb2bc781e60e867702/200x200-000000-80-0-0.jpg"/>
