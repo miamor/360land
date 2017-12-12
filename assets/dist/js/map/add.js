@@ -11,50 +11,56 @@ var cityList = [];
     AddNode = function(o, p, q, r, s) {
         var v = $(this).attr('id');
         var $thismap = this;
-        this.map = null;
-        this.geocoder = new google.maps.Geocoder();
-        this.marker = new google.maps.Marker();
-        this.infowindow = new google.maps.InfoWindow();
-        this.infowindowContent = document.getElementById('infowindow-content');
+
+        console.log(newNode);
+        if (newNode) {
+            this.map = null;
+            this.geocoder = new google.maps.Geocoder();
+            this.marker = new google.maps.Marker();
+            this.infowindow = new google.maps.InfoWindow();
+            this.infowindowContent = document.getElementById('infowindow-content');
+        }
 
         this.initialize = function () {
-            this.map = new google.maps.Map(document.getElementById(v), {
-                zoom: 5,
-                mapTypeControl: false,
-                center: placeLatLng
-            });
+            if (newNode) {
+                this.map = new google.maps.Map(document.getElementById(v), {
+                    zoom: 5,
+                    mapTypeControl: false,
+                    center: placeLatLng
+                });
 
-            google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
-                $('.map_select').hide();
-            });
+                google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
+                    $('.map_select').hide();
+                });
 
-            $thismap.infowindow.setContent($thismap.infowindowContent);
+                $thismap.infowindow.setContent($thismap.infowindowContent);
 
-            $thismap.marker.setMap($thismap.map);
-            $thismap.marker.setVisible(false);
-
-            var input = document.getElementById('details_address');
-            var options = {
-                //types: ['(cities)'],
-                componentRestrictions: {country: 'vn'}
-            };
-            var autocomplete = new google.maps.places.Autocomplete(input, options);
-            autocomplete.bindTo('bounds', $thismap.map);
-
-            google.maps.event.addDomListener(input, 'keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-
-            autocomplete.addListener('place_changed', function() {
-                $thismap.infowindow.close();
+                $thismap.marker.setMap($thismap.map);
                 $thismap.marker.setVisible(false);
-                var place = autocomplete.getPlace();
 
-                $thismap.changeAdrCallback(place);
-            });
+                var input = document.getElementById('details_address');
+                var options = {
+                    //types: ['(cities)'],
+                    componentRestrictions: {country: 'vn'}
+                };
+                var autocomplete = new google.maps.places.Autocomplete(input, options);
+                autocomplete.bindTo('bounds', $thismap.map);
 
+                google.maps.event.addDomListener(input, 'keydown', function(event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                    }
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    $thismap.infowindow.close();
+                    $thismap.marker.setVisible(false);
+                    var place = autocomplete.getPlace();
+
+                    $thismap.changeAdrCallback(place);
+                });
+
+            }
 
             $('#city').change(function () {
                 c_city = $(this).val();
@@ -136,16 +142,18 @@ var cityList = [];
                 $('#type'+a).val('CN');
             });
 
-            $('#district').change(function () {
-                if (!$('#details_address').val().length) {
-                    // get lat and lng based on district
-                    var placeTxt = $('#district option:selected').text()+', '+$('#city option:selected').text()+', Vietnam';
-                    console.log(placeTxt);
-                    $thismap.infowindow.close();
-                    $thismap.marker.setVisible(false);
-                    var place = $thismap.geocodeaddress(placeTxt);
-                }
-            });
+            if (newNode) {
+                $('#district').change(function () {
+                    if (!$('#details_address').val().length) {
+                        // get lat and lng based on district
+                        var placeTxt = $('#district option:selected').text()+', '+$('#city option:selected').text()+', Vietnam';
+                        console.log(placeTxt);
+                        $thismap.infowindow.close();
+                        $thismap.marker.setVisible(false);
+                        var place = $thismap.geocodeaddress(placeTxt);
+                    }
+                });
+            }
 
             $('.place-add').submit(function () {
                 var ok = true;
