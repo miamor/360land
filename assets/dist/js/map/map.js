@@ -1946,6 +1946,7 @@ ProductSearchControler = function(h) {
 
 ProductSearchControler.prototype.closeDirectionBoard = function (search = false) {
     $('.v-place-v-direction').hide();
+    this.directionsDisplay.setMap(null);
     if (search) this._SearchAction(-2);
 }
 
@@ -2019,9 +2020,9 @@ ProductSearchControler.prototype.getDirection = function () {
 
     f.map.setZoom(15);
 
-    f.marker = new google.maps.Marker({
+    /*f.marker = new google.maps.Marker({
         map: map
-    });
+    });*/
     // Instantiate an info window to hold step text.
     f.stepDisplay = new google.maps.InfoWindow;
 
@@ -2037,7 +2038,7 @@ ProductSearchControler.prototype.getDirection = function () {
     var pos = f.ProductMap.myPos;
     if (pos) {
         map.setCenter(pos);
-        f.marker.setPosition(pos);
+        //f.marker.setPosition(pos);
 
         geocoder.geocode({
             'location': pos
@@ -2055,7 +2056,10 @@ ProductSearchControler.prototype.getDirection = function () {
                         $('.travelMode_one').removeClass('active');
                         $(this).addClass('active');
                         onChangeHandler();
-                    })
+                    });
+                    $('#start').change(function () {
+                        onChangeHandler();
+                    });
                     f.calculateAndDisplayRoute(markerArray, map);
                 } else {
                     alert('No results found');

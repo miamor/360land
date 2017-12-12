@@ -207,7 +207,7 @@ function logout (autoLoggedOut = false) {
     $('.nav-user #me_login_link').show();
     $('.nav-user #me_dropdown_info').hide();
     if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
-    //location.reload();
+    else location.reload();
 }
 
 

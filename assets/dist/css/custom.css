@@ -874,7 +874,7 @@ body.mobile .nav-user{overflow:hidden}
 
 .nav-search{position:relative;float:right;width:300px;margin-right:30px}
 body:not(.mobile) #place_search{height:45px;line-height:45px;padding:2px 10px 0 35px}
-body:not(.mobile) .li-input:before{font-size:22px;font-weight:300;top:13px}
+body:not(.mobile) .li-input:before{font-size:22px;font-weight:300;top:9px}
 .li-input{list-style:none}
 @media(max-width:560px){
     .nav-user{width:60px;font-size:0!important}
