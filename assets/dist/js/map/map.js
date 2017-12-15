@@ -135,7 +135,7 @@ var typeIcon = {
         this.utilArea = null;
         this.isProject = 0;
         if (s.isProject) this.isProject = s.isProject;
-        console.log('s.isProject = '+s.isProject);
+        //console.log('s.isProject = '+s.isProject);
 
         this.zoom = null;
         this.isTrigger = false;
@@ -1485,10 +1485,12 @@ var typeIcon = {
                 var txt = (theData.isProject ? 'Dự án' : typeRealEstate[theData.type]);
                 //$thismap.infoWindow.close();
                 //$thismap.showInfoTipWindow(v,txt);
-                $thismap.showInfoTipWindow(v, $('.map-result-one[attr-marker-id="'+k+'"]').html());
-                //v.labelClass = 'marker-label active'+theData.exCls;
-                //v.label.setStyles();
-                $thismap.activeMarker(k, theData);
+                $thismap.showInfoTipWindow(v, $('.map-result-one[attr-id="'+nodeID+'"]').html());
+                if (nodeID != $thismap.currentPID) {
+                    v.labelClass = 'marker-label hover'+theData.exCls;
+                    v.label.setStyles();
+                }
+                //$thismap.activeMarker(k, theData);
                 //if (setCenter) $thismap.map.setCenter(v.position);
                 /*
                 if ($thismap.currentPID == i) $thismap.infoWindow.close();
@@ -1638,7 +1640,14 @@ var typeIcon = {
                     }
                 }
 
-                this.activeMarker(this.currentMarkerKey, data);
+                console.log(this.currentMarkerKey);
+                if (isInit) {
+                    google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
+                        this.activeMarker(this.currentMarkerKey, data);
+                    })
+                } else {
+                    this.activeMarker(this.currentMarkerKey, data);
+                }
 
                 //console.log(this.isProject);
                 productControlerObj.ChangeUrlForNewContext();
@@ -1716,11 +1725,9 @@ var typeIcon = {
             //$('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('active');
             //console.log(data);
             if (key != null && key != undefined) {
-                google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
-                    console.log("projection:"+$thismap.map.getProjection());
-                    this.markers[key].labelClass = 'marker-label active'+data.exCls;
-                    this.markers[key].label.setStyles();
-                });
+                console.log("projection:"+$thismap.map.getProjection());
+                this.markers[key].labelClass = 'marker-label active'+data.exCls;
+                this.markers[key].label.setStyles();
             }
         }
 
@@ -2646,7 +2653,7 @@ ProductSearchControler.prototype.setProjectDetails = function () {
 }
 
 ProductSearchControler.prototype._SearchAction = function(g) {
-    console.log('_SearchAction called');
+    //console.log('_SearchAction called');
     //console.log(g);
     var f = this;
     //e = f.formSearch.serialize().split('&');
@@ -2758,7 +2765,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
         data: d,
         success: function(data) {
             console.log(data);
-            console.log('isProject === '+f.ProductMap.isProject);
+            //console.log('isProject === '+f.ProductMap.isProject);
             // show on map
             f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
             //console.log(f.ProductMap.data);
@@ -2791,7 +2798,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
                 $('.btn-filter').html('<i class="fa fa-filter"></i> Lọc');
                 $('.cancel-filter').hide()
             }
-            console.log('isProject (new) === '+f.ProductMap.isProject);
+            //console.log('isProject (new) === '+f.ProductMap.isProject);
             f.ChangeUrlForNewContext();
         },
         error: function(a, b, c) {
@@ -2836,7 +2843,7 @@ ProductSearchControler.prototype.getProjectNodes = function () {
 ProductSearchControler.prototype.callBackFindBound = function () {
     //var g = JSON.parse(JSON.stringify(this.formSearch.serializeArray()));
     //console.log(this.ProductMap.bounds);
-    console.log('callBackFindBound called');
+    //console.log('callBackFindBound called');
     this._SearchAction()
 }
 

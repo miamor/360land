@@ -252,7 +252,7 @@
             <input class="form-control" type="text" id="timeto" name="timeto" placeholder="dd/mm/yyyy"/>
         </div>
         <div class="clearfix"></div>
-    </div>
+    </div>-->
 
     <div class="form-group rank-select">
         <div class="col-md-4 no-padding control-label">Chọn gói </div>
@@ -273,8 +273,7 @@
         </div>
         <input type="hidden" name="rank" id="rank"/>
         <div class="clearfix"></div>
-    </div>-->
-
+    </div>
 
     <div class="user-info-input">
         <div class="txt-with-line center">

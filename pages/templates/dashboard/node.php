@@ -9,10 +9,10 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="stat">
-            <div class="col-lg-6 chart">
+            <div class="col-lg-6 chart" style="padding:0 25px 0 0!important">
                 <canvas id="areaChart" style="height:200px"></canvas>
             </div>
-            <div class="col-lg-6 chart">
+            <div class="col-lg-6 chart" style="padding:0 0 0 25px!important">
                 <canvas id="lineChart" style="height:200px"></canvas>
             </div>
             <div class="clearfix"></div>

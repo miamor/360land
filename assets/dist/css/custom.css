@@ -469,6 +469,10 @@ button[title*="Toggle"] img{left: -51px!important; top: -85px!important}
 .marker-label.big>a:before, .marker-label.active>a:before {content:'';position:absolute;z-index:99999;bottom:4px;height:1px;left:16px;right:14px;background:#fff}
 
 .marker-label.project .marker-type{background:#f1594b}
+
+.marker-label.hover:not(.project) .marker-type{background:#099f7f!important}
+.marker-label.project.hover .marker-type{background:#d23f31!important}
+
 .marker-label.active:not(.project) .marker-type{background:#12ad47!important}
 /*.marker-label.project.active .marker-type{*background:#dd5043;background:#7c261e}
 */
@@ -676,6 +680,7 @@ body.mobile .v-place-info{padding-top:6px}
 /* marker image (empty) */
 #map .gm-style > div:first-child > div:first-child > div:nth-child(4)>div> img{width:12px!important;height:12px!important}
 
+/* infowindow */
 #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4)>div> div:first-child>div:nth-child(1),
 #map .gm-style > div:first-child > div:nth-child(4) > div:nth-child(4)>div> div:first-child>div:nth-child(3) {width:10px!important;height:10px!important;margin-left:1px!important}
 
