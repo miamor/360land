@@ -1,7 +1,7 @@
-<div class="col-md-1"></div>
+<h2><i class="fa fa-map-marker"></i> Thêm địa điểm</h2>
+
 
 <form class="place-add col-md-10">
-    <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
     <div class="add-form-content">
     <div class="form-group" attr-required="1">
         <div class="col-md-4 no-padding control-label">Tiêu đề </div>
@@ -15,7 +15,7 @@
         <div class="col-md-4 no-padding control-labels">Loại </div>
         <div class="col-md-8 no-padding">
             <label class="col-sm-3"><input name="type_action" type="radio" checked value="2"> Bán</label>
-            <label class="col-sm-3" style="margin-top:5px!important"><input name="type_action" type="radio" value="1"> Cho thuê</label>
+            <label class="col-sm-3"><input name="type_action" type="radio" value="1"> Cho thuê</label>
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
@@ -139,7 +139,7 @@
             <div class="clearfix"></div>
 
             <div class="form-group map_select customshow typereal2 typereal3 typereal4 typereal5 typereal6 typereal7 typereal8 typereal10 typereal12 typereal13 typereal14 typereal15 typereal16 typereal17 typereal18" attr-required="1">
-                <input type="text" class="form-control" style="margin-top:6px" id="address" name="address" placeholder="Địa chỉ cụ thể (không bắt buộc)"/>
+                <input type="text" class="form-control" style="margin-top:6px" id="details_address" name="details_address" placeholder="Địa chỉ cụ thể (không bắt buộc)"/>
 
                 <div id="infowindow-content">
                     <img src="" width="16" height="16" id="place-icon">
@@ -252,28 +252,29 @@
             <input class="form-control" type="text" id="timeto" name="timeto" placeholder="dd/mm/yyyy"/>
         </div>
         <div class="clearfix"></div>
-    </div>-->
+    </div>
 
     <div class="form-group rank-select">
         <div class="col-md-4 no-padding control-label">Chọn gói </div>
         <div class="col-md-8 no-padding">
             <div class="rank-one-select" attr-rank="1">
                 <div class="rank-one-des">Blah blah </div>
-                <div class="rank-one-title">rank 1</div>
+                <div class="rank-one-title">Rank 1</div>
             </div>
             <div class="rank-one-select" attr-rank="2">
                 <div class="rank-one-des">Bleh bleh</div>
-                <div class="rank-one-title">rank 2</div>
+                <div class="rank-one-title">Rank 2</div>
             </div>
             <div class="rank-one-select" attr-rank="3">
                 <div class="rank-one-des">Bloh bloh</div>
-                <div class="rank-one-title">rank 3</div>
+                <div class="rank-one-title">Rank 3</div>
             </div>
             <div class="clearfix"></div>
         </div>
         <input type="hidden" name="rank" id="rank"/>
         <div class="clearfix"></div>
-    </div>
+    </div>-->
+
 
     <div class="user-info-input">
         <div class="txt-with-line center">
@@ -320,11 +321,7 @@
 
     <div class="add-form-submit center">
         <input value="Làm lại" class="btn btn-default" type="reset">
-        <input value="Gửi" class="btn btn-primary" type="submit">
+        <input value="Gửi" class="btn" type="submit">
     </div>
     </div>
 </form>
-
-<div class="col-md-1"></div>
-
-<div class="clearfix"></div>

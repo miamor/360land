@@ -31,7 +31,11 @@ function submitLoginForm () {
         },
         error: function (a, b, c) {
             console.log(a)
-            mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+            if (c == 'Unauthorized') {
+                mtip('', 'error', '', 'Could not verify!');
+            } else {
+                mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+            }
         }
     });
     return false

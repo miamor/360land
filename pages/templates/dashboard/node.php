@@ -5,6 +5,7 @@
     <ul class="nav nav-tabs">
         <li class="stat active"><a href="#stat" data-toggle="tab" aria-expanded="false">Thống kê</a></li>
         <li class="edit"><a href="#edit" data-toggle="tab" aria-expanded="true">Sửa thông tin</a></li>
+        <li class="addratings"><a href="#ratings" data-toggle="tab" aria-expanded="true">Đánh giá</a></li>
     </ul>
 
     <div class="tab-content">
@@ -24,6 +25,10 @@
 
         <div class="tab-pane hide" id="edit">
             <?php include 'node.edit.form.php' ?>
+        </div>
+
+        <div class="tab-pane hide" id="ratings">
+            <?php include 'node.ratings.list.php' ?>
         </div>
     </div>
 </div>

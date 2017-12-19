@@ -595,7 +595,7 @@ select#city_first:focus{background:#fff!important}
 .popup-map [role="close"]{position:absolute;z-index:999;top:30px;right:4px}
 .popup-btn[role="close"]:before{content:'\e626';font-family:'nhanha';font-size:20px;font-weight:400!important}
 .v-place-view{position:relative;width:100%;height:100%;overflow:auto}
-.v-place-imgs,.v-place-board{position:relative;height:310px;background:#ddd}
+.v-place-imgs,.v-place-board{position:relative;height:240px;background:#ddd}
 .v-place-board{height:240px}
 .v-place-thumbs{position:absolute;bottom:0;left:0;right:0;height:56px;text-align:center;background:rgba(0,0,0,.6)}
 .v-place-thumb{display:inline;width:50px;height:50px;margin:3px 0px;border:1px solid transparent;padding:1px;background:transparent;cursor:pointer}
@@ -615,17 +615,18 @@ body:not(.mobile) .v-place-imgs{margin-top:92px}
 .v-place-info .txt-with-line .txt{font-size:15px;padding-left:0;color:#777}
 .v-place-info .txt-with-line:before{border-top:2px dashed #dfdfdf}
 /*.v-place-info{height:100%;overflow: auto;z-index:10}
-/*.v-place-switch-buttons{position:absolute;top:40%;right:0;*z-index:99}
-.v-place-mode{background:#fff;padding:8px 7px 8px 9px; width:36px;height:36px;font-size:15px;*font-weight:300;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.3);cursor: pointer;}
-.v-place-mode:first-child{border-radius:4px 0 0 0}
-.v-place-mode:last-child{border-radius:0 0 0 4px}
-.v-place-mode.active{border-radius:4px 0 0 4px; padding:11px 8px 10px 13px;height:42px;width:42px; margin-left:-6px;font-size:18px;color:#e84c3d}
-.v-place-mode:hover{color:#e94c3d}
-*/
-.v-place-switch-buttons{position:relative;width:100%;background:#fff;height:70px;;border-bottom:1px solid #e5e4e2}
-.v-place-mode{display:inline-block;height:100%;width:16.667%;text-align:center;margin:0!important;color:#aaa}
-.v-place-mode>i{display:block;font-size:25px;line-height:25px;margin:10px 0 5px}
-.v-place-mode:hover{cursor:pointer;color:#444}
+*/.v-place-switch-buttons{position:absolute;top:10%;left:0;*z-index:99}
+.v-place-switch-buttons .v-place-mode{background:#fff;padding:4px 6px 8px 10px; width:36px;height:36px;font-size:15px;*font-weight:300;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.3);cursor: pointer;}
+.v-place-switch-buttons .v-place-mode:first-child{border-radius:0 4px 0 0}
+.v-place-switch-buttons .v-place-mode:last-child{border-radius:0 0 4px 0}
+.v-place-switch-buttons .v-place-mode.active{border-radius:0 4px 4px 0; padding:11px 15px 10px 8px;height:42px;width:42px; margin-right:-6px;font-size:18px;color:#e84c3d}
+.v-place-switch-buttons .v-place-mode:hover{color:#e94c3d}
+
+.v-place-switch-btns{position:relative;width:100%;background:#fff;height:70px;;border-bottom:1px solid #e5e4e2}
+.v-place-switch-btns .v-place-mode{display:inline-block;height:100%;width:50%;text-align:center;margin:0!important;color:#aaa}
+.v-place-switch-btns .v-place-mode>i{display:block;font-size:25px;line-height:25px;margin:10px 0 5px}
+.v-place-switch-btns .v-place-mode:hover{cursor:pointer;color:#444}
+
 body:not(.mobile) .v-place-related{border-bottom:0;border-top:1px solid #e5e4e2;margin:0 0 20px;*height:235px;padding:12px 10px 5px!important}
 body:not(.mobile) .v-place-related .toggle-box-btn{display:none}
 body:not(.mobile) .v-place-related h4{font-size:17px;border-bottom:2px solid #0bc39b;float:left;padding-bottom:5px;margin-left:.5%}

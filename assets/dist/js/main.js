@@ -43,6 +43,14 @@ var isMobile = ($(window).width() <= 500 ? true : false);
 var API_URL = '//45.119.82.40:8000';
 var __token = __userInfo = null;
 
+function objectifyForm(formArray) {//serialize data function
+  	var returnArray = {};
+  	for (var i = 0; i < formArray.length; i++){
+    	returnArray[formArray[i]['name']] = formArray[i]['value'];
+  	}
+  	return returnArray;
+}
+
 function getUserInfo () {
     $.ajax({
         url: API_URL+'/manager_user/info/',
@@ -328,7 +336,7 @@ jQuery(document).ready(function ($) {
             remove_popup();
         }, 1000);
         return false
-    })
+    });
 
     if (isMobile) {
         $('body').addClass('mobile');

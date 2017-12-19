@@ -2261,7 +2261,7 @@ ProductSearchControler.prototype.changeCityCallback = function (ct) {
             district = cityList[i].district;
             for (var u = 0; u < district.length; u++) {
                 district[u].order = district[u].id;
-                if (city == 'HN') {
+                if (c_city == 'HN') {
                     if (district[u].id == 718)
                         district[u].order = 15;
                     else if(district[u].id > 15)
@@ -2707,7 +2707,8 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     if (g != null && g != undefined) {
         if (g == 1) {
-            e = f.formSearch.serialize().split('&');
+            //e = f.formSearch.serialize().split('&');
+            e = objectifyForm(f.formSearch.serializeArray());
             $.each(e, function (i, v) {
                 vk = v.split('=')[0];
                 vl = v.split('=')[1];

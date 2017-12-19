@@ -199,8 +199,11 @@
         <div class="v-place-board v-place-v-video hide">
         </div>
         <div class="v-place-switch-buttons">
-            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i> Ảnh</div><div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i> 360</div><div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i> Video</div><div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i> Streetview</div><div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i> Chỉ đường</div><div class="v-place-mode" id="v-util" title="Tiện ích xung quanh"><i class="fa fa-share-alt"></i> Tiện ích</div>
+            <div class="v-place-mode active" id="v-thumbs" title="Xem ảnh thường"><i class="fa fa-picture-o"></i></div><div class="v-place-mode" id="v-360" title="Ảnh 360"><i class="fa fa-map"></i></div><div class="v-place-mode" id="v-video" title="Xem video"><i class="fa fa-play-circle"></i></div><div class="v-place-mode" id="v-streetview" title="Ảnh đường phố"><i class="fa fa-map-signs"></i></div>
         </div>
+    </div>
+    <div class="v-place-switch-btns">
+        <div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i> Chỉ đường</div><div class="v-place-mode" id="v-util" title="Tiện ích xung quanh"><i class="fa fa-share-alt"></i> Tiện ích</div>
     </div>
     <div class="popup-section section-light v-place-info">
         <!--<img class="v-place-avt left" src="'+place.avatar+'"/>

@@ -38,7 +38,7 @@ var cityList = [];
                 $thismap.marker.setMap($thismap.map);
                 $thismap.marker.setVisible(false);
 
-                var input = document.getElementById('details_address');
+                var input = document.getElementById('address');
                 var options = {
                     //types: ['(cities)'],
                     componentRestrictions: {country: 'vn'}
@@ -144,7 +144,7 @@ var cityList = [];
 
             if (newNode) {
                 $('#district').change(function () {
-                    if (!$('#details_address').val().length) {
+                    if (!$('#address').val().length) {
                         // get lat and lng based on district
                         var placeTxt = $('#district option:selected').text()+', '+$('#city option:selected').text()+', Vietnam';
                         console.log(placeTxt);
@@ -178,8 +178,8 @@ var cityList = [];
                         ok = false;
                         return false;
                     }
-                    if (!$('#details_address').val() && newNode) {
-                        console.log('Missing parameters (details_address)');
+                    if (!$('#address').val() && newNode) {
+                        console.log('Missing parameters (address)');
                         mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
                         ok = false;
                         return false;
@@ -207,14 +207,15 @@ var cityList = [];
                 }
 
 
-                var postData = {};
+                /*var postData = {};
                 e = $(this).serialize().split('&');
                 $.each(e, function (i, v) {
                     vk = v.split('=')[0];
                     vl = v.split('=')[1];
                     postData[vk] = vl;
                 });
-                postData.email = postData.email.replace('%40', '@');
+                postData.email = postData.email.replace('%40', '@');*/
+                var postData = objectifyForm($(this).serializeArray());
 
                 if (newNode) {
                     postData.price = postData.price_giatri;

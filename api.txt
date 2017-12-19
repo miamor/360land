@@ -1,179 +1,88 @@
-/user/search (POST)
-Search
+name
+address
+tinh
+huyen
+xa
+details_address
+intro
+type
+status
+pricefrom
+infoduan
+tiendo
+latitude
+longitude
+
+
 {
-	"type_search": 1,
-	"type_action": 1,
-	
-	"type": "CN",
-	"city": "HN",
-	"district": "CN",
-	"ward": "CN",
-	"street": "CN",
-	"direction": "CN",
-	"room": "CN",
-	"price": "-1",
-	"area": "CN",
-	
-	"input": "",
-	"pricefrom": "1",
-	
-	"minLat": 21,
-	"maxLat": 22,
-	"minLng": 105,
-	"maxLng": 106
+        "id": "duan1",
+        "name": "C7 Giảng Võ",
+        "address": "Đường Trần Huy Liệu, Phường Giảng Võ, Ba Đình, Hà Nội",
+        "tinh": "Hà Nội",
+        "huyen": "Ba Đình",
+        "xa": "Giảng Võ",
+        "details_address": null,
+        "intro": "Thông tin tổng quan dự án C7 Giảng Võ\nNhà C7 Giảng Võ là tòa nhà đầu tiên được xây lại với phương thức xã hội hóa nhà ở để thay thế cho những nhà tập thể cũ đã xuống cấp ở khu vực Giảng Võ. \nDự án nằm trong chuỗi hợp tác giữa Công ty CP Tư vấn Handic - Đầu tư và phát triển nhà Hà Nội với Công ty CP Đầu tư và Sản xuất Việt Hàn. Trong khi đó, Công ty TNHH Nhà nước một thành viên đầu tư xây lắp thương mại 36 thi công, Công ty cổ phần tư vấn xây dựng An Khánh chịu trách nhiệm tư vấn giám sát.\n \n- Tên dự án: Chung cư C7 Giảng Võ\n- Vị trí dự án: Đường Trần Huy Liệu, phường Giảng Võ, quận Ba Đình, TP.Hà Nội.\n- Chủ đầu tư: Công ty CP tư vấn, đầu tư và phát triển nhà Hà Nội - HANDIC\n- Đơn vị thi công: Công ty TNHH Nhà nước một thành viên đầu tư xây lắp thương mại 36\n- Đơn vị tư vấn: Công ty cổ phần tư vấn xây dựng An Khánh\n- Tổng mức đầu tư: 91 tỷ đồng\n- Diện tích khu đất: 1660,7 m2\n- Diện tích xây dựng: 653,9 m2\n- Quy mô: 17 tầng với 1 tầng hầm\n- Diện tích đất sân vườn và cây xanh: 1000m2\n- Tổng mức đầu tư 91 Tỷ đồng",
+        "status": true,
+        "pricefrom": 1.5,
+        "infoduan": "Tên dự án C7 Giảng Võ\nĐịa chỉĐường Trần Huy Liệu, Phường Giảng Võ, Ba Đình, Hà Nội\nTổng diện tích1.661 m²\nDiện tích xây dựng654 m²\nLoại hình phát triểnCăn hộ, Chung cư\nBàn giao nhàQuý I/2011\nQuy mô dự án17 tầng với 1 tầng hầm",
+        "tiendo": null,
+        "latitude": 21.027744,
+        "longitude": 105.822208,
+        "type": "loaiduan1"
 }
 
-{"filter":0,"sort":0,"v":1512058328853,"isShowUtil":"0","searchtype":"1","product":"","zoom":"9","center":"21.20047967762299%3A105.89806518554687","points":"","details":"","type_action":1,"type":"CN","project_name":"","city":"CN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN","minLat":20.279007308960228,"minLng":104.93264160156252,"maxLat":21.783793515602856,"maxLng":106.76735839843752,"type_search":1}
+* List nodes
+(GET) /manager_mod/nodes/
 
-{"filter":0,"sort":0,"v":1512058328853,"isShowUtil":"0","searchtype":"1","product":"","zoom":"9","center":"21.20047967762299%3A105.89806518554687","points":"","details":"","type_action":"2","type":"CN","project_name":"","city":"CN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN","minLat":20.279007308960228,"minLng":104.93264160156252,"maxLat":21.783793515602856,"maxLng":106.76735839843752,"type_search":"1"}
+*List projects 
+(GET) /manager_mod/duans/
 
-{"type_action":1,"type":"CN","city":"HN","district":"CN","area":"CN","price":"-1","ward":"CN","street":"CN","room":"CN","direction":"CN",
-"minLat":20.656621616272986,"minLng":105.39132080078127,"maxLat":21.40902854019662,"maxLng":106.30867919921877,"type_search":1}
+*View project
+(GET) 
+/manager_mod/duans/duan1
 
+* Add project
+(POST)
+/manager_mod/duans/
 
-/search/nodewithlatlng
-{
-	(float)
-	lat
-	lng
-}
-
-/search/searchservicebound (POST)
-utility
-{
-	(float)
-	minLat
-	maxLat
-	minLng
-	maxLng
-}
-
-/search/duanbasic (POST)
-{
-	input
-}
-
-(chi tiet du an)
-/search/duannangcao (POST)
-{
-	duan: (string) (duanid),
-	pricefrom: (string)
-}
-
-/search/nodenangcao
-
-(chi tiet node)
-/search/chitietnode
-{
-	id: (string)
-}
-
-(chi tiet duan)
-/search/chitietduan
-{
-	id: (string)
-}
-return:
-/manager/realestatenode/ (POST)
-{
-	title:
-	
-	price: (float) (don vi: ty)
-	area: (float)
-	
-	tinh:
-	huyen:
-	xa:
-	duong:
-	details_address: (text string)
-	
-	address: (gop)
-	
-	huong: 
-	sophongngu:
-	details:
-	
-	latitude:
-	longitude:
-	
-	(neu co userid thi request de lay du lieu)
-	tenlienhe:
-	diachi:
-	dienthoai:
-	email:
-	userid:
-	
-	timefrom:
-	
-	typenode: (true: ban | false:mua)
-	
-	duanid: (string) ""
-	tenduan: (string)
-	
-	type: (loai bat dong san)
-	
-	(can ban)
-	panorama_image:
-	thumbs: (string) (img1.png|img2.png)
-	timeto:
-}
+* Edit project
+PUT 
+/manager_mod/duans/duan1
 
 
-
---------------------------------- Them node -----------------------------------------
-
-/manager/realestatenode/ (POST)
-{
-	title:
-	
-	price: (float) (don vi: ty)
-	area: (float)
-	
-	tinh:
-	huyen:
-	xa:
-	duong:
-	details_address: (text string)
-	
-	huong: 
-	sophongngu:
-	details:
-	
-	latitude:
-	longitude:
-	
-	(neu co userid thi request de lay du lieu)
-	tenlienhe:
-	diachi:
-	dienthoai:
-	email:
-	
-	timefrom:
-	
-	typenode: (true: ban | false:mua)
-	
-	duanid: (string) ""
-	tenduan: (string)
-	
-	type: (loai bat dong san)
-	
-	(can ban)
-	panorama_image:
-	thumbs: (string) (img1.png|img2.png)
-	timeto:
-}
-header: token
+* List servicenodes
+(GET) /manager_mod/servicenodes/
 
 
+* List users
+(GET) /manager_mod/users/
 
-/login/user
-{
-	username:
-	password:
-	
-}
-return token (string) (save in localstorage)
+* Edit user
+(PUT) /manager_mod/users/userid
+
+* Lịch sử giao dịch
+(GET) 
+
+* Change coin
+(PUT) /manager_mod/users/userid
 
 
-/manager_user/info (get)
-header: 
+* List mods
+(GET) /manager_smod/mods/
+
+* Edit mod
+(PUT) /manager_smod/mods/modid
+
+
+* Gửi thông báo
+
+Đẩy noti của thay đổi (post)
+sendNoti: (bool) True/False
+contentNoti: (string)
+
+
+=========================
+
+
+* Lưu
