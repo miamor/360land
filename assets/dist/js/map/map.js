@@ -2560,6 +2560,8 @@ ProductSearchControler.prototype.setDetailsAll = function (place) {
 }
 
 function handle (place) {
+    console.log(place);
+    
     if (place.avatar == null || place.avatar == '') place.avatar = MAIN_URL+'/assets/img/noimage.png';
     place.isProject = (place.pricefrom > 0 ? true : false);
 
