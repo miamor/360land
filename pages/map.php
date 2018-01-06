@@ -11,6 +11,7 @@ if ($mode) {
         $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places');
         //$config->addJS('dist', $page.'/add_initmap.js');
     }
+    $config->addJS('dist', $page.'/form.js');
     $config->addJS('dist', $page.'/add.js');
 
     include 'templates/'.$page.'/'.$mode.'.php';
@@ -29,7 +30,8 @@ else if ($n) {
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';
-    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css">';
+    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css"><link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
+    $config->addJS('plugins', 'fancybox/jquery.fancybox.min.js');
     //echo '<link rel="stylesheet" href="'.PLUGINS.'/paver/css/paver.min.css" />';
 
     //echo '<link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.css"><link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.skinNice.css">';

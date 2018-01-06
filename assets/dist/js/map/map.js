@@ -342,7 +342,7 @@ var typeIcon = {
 
             if ($thismap.currentPID) {
                 // get data of this node to get latitude and longitude to set center, to get bounds, to get other nodes around it.
-                console.log($thismap.currentPID);
+                console.log($thismap.currentPID+' ~~~ '+$thismap.isProject);
                 if ($thismap.isProject && $thismap.isProject == 1) {
                     $.ajax({
                         //url: MAIN_URL+'/api/node_one.php',
@@ -350,6 +350,7 @@ var typeIcon = {
                         type: 'post',
                         data: {id: $thismap.currentPID},
                         success: function (data) {
+                            console.log(data);
                             data = handle(data);
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
@@ -361,6 +362,7 @@ var typeIcon = {
                         }
                     })
                 } else {
+                    console.log('$thismap.currentPID == '+$thismap.currentPID);
                     $.ajax({
                         //url: MAIN_URL+'/api/node_one.php',
                         url: API_URL+'/user/chitietnode/',
@@ -1139,6 +1141,7 @@ var typeIcon = {
 
             var i = 0;
             while (i < a.length) {
+                a[i].isProject = (a[i].name ? 1 : 0);
                 var place = a[i];
                 place.typeTxt = typeRealEstate[place.type];
                 if (place.isProject) place.price = place.pricefrom;
@@ -1444,7 +1447,7 @@ var typeIcon = {
                 //h.setIcon(nodeMarker[$thismap.data[key].type].default);
                 //h.labelClass = 'marker-label';
                 //h.label.setStyles();
-                var theData = $thismap.findDataInfo(key);
+                var theData = $thismap.findDataInfo(this.currentPID);
                 this.deactiveMarker(key, theData);
 
                 this.input.product.value = this.currentPID = '';
@@ -1620,9 +1623,10 @@ var typeIcon = {
             console.log(data);*/
 
             this.currentMarkerKey = key;
-            data.isProject = (data.pricefrom > 0 ? 1 : 0);
-            this.isProject = data.isProject;
-            //console.log('this.isProject: '+this.isProject);
+            data.isProject = (data.name ? 1 : 0);
+            $thismap.isProject = data.isProject;
+            console.log(data);
+            console.log('$thismap.isProject: '+$thismap.isProject);
 
             this.input.product.value = this.currentPID;
 
@@ -1640,7 +1644,7 @@ var typeIcon = {
                     }
                 }
 
-                console.log(this.currentMarkerKey);
+                console.log('this.currentMarkerKey = '+this.currentMarkerKey);
                 if (isInit) {
                     google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
                         this.activeMarker(this.currentMarkerKey, data);
@@ -1704,7 +1708,7 @@ var typeIcon = {
 
                     $thismap.isDetails = 1;
 
-                    productControlerObj.ShowDetails(this.currentPID, this.isProject);
+                    productControlerObj.ShowDetails(this.currentPID, $thismap.isProject);
                 }
 
                 this.showOverlapNodes(data.latitude, data.longitude);
@@ -1725,14 +1729,15 @@ var typeIcon = {
             //$('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div:nth('+key+')').addClass('active');
             //console.log(data);
             if (key != null && key != undefined) {
-                console.log("projection:"+$thismap.map.getProjection());
+                console.log("projection:");
+                console.log($thismap.map.getProjection());
                 this.markers[key].labelClass = 'marker-label active'+data.exCls;
                 this.markers[key].label.setStyles();
             }
         }
 
         this.deactiveMarker = function (key, data) {
-            if (key != null && key != undefined) {
+            if (key != null && key != undefined && data != null && data != undefined) {
                 //google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
                     //console.log("projection:"+$thismap.map.getProjection());
                     this.markers[key].labelClass = 'marker-label'+data.exCls.replace(' active', '');
@@ -1973,7 +1978,9 @@ ProductSearchControler = function(h) {
 
 ProductSearchControler.prototype.closeDirectionBoard = function (search = false) {
     $('.v-place-v-direction').hide();
-    this.directionsDisplay.setMap(null);
+    if (this.directionsDisplay) {
+        this.directionsDisplay.setMap(null);
+    }
     if (search) this._SearchAction(-2);
 }
 
@@ -2438,6 +2445,7 @@ ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) 
         i.ChangeUrlForNewContext();
     }
     if (!isProject) {
+        //console.log('call ShowDetailsNode');
         i.ShowDetailsNode(id);
     } else {
         i.ShowDetailsProject(id);
@@ -2460,6 +2468,10 @@ ProductSearchControler.prototype.ShowDetailsNode = function (id) {
 ProductSearchControler.prototype.setNodeDetails = function () {
     var i = this;
 
+    console.log('hide v-place-project');
+    $('.v-mode-project').hide();
+    $('.v-place-switch-btns .v-place-mode').css('width', '50%');
+
     i.showDetailsCallback();
 
     var place = i.ProductMap.currentProduct;
@@ -2481,14 +2493,42 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     $('.v-place-phone').html(place.dienthoai);
     $('.v-place-email').html(place.email);
 
+    $('.v-place-related-list').html('');
+    $.post(API_URL+'/search/nodenangcao/', {nodeid: i.ProductMap.currentPID}, function (similar) {
+        //console.log(similar);
+        for (si = 0; si < 4; si++) {
+            sv = similar[si];
+            if (sv) {
+                //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+            }
+        }
+    });
+
+    i.setDetailsAll(place);
+}
+
+ProductSearchControler.prototype.setDetailsAll = function (place) {
+    var i = this;
+
     $('.v-place-thumbs').html('');
     if (place.thumbs) {
+        tt = place.thumbs.length;
         $.each(place.thumbs, function (ti, tv) {
-            $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
+            if (ti > 1) {
+                $('.v-place-thumbs').append('<a href="'+tv+'" data-fancybox="gallery"><img class="v-place-thumb v-place-photos" src="'+tv+'"/>')
+            }
         });
         $('.v-place-thumb:first').addClass('active');
-        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
+        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')').attr({
+            'data-fancybox': 'gallery',
+            'href': place.thumbs[0]
+        });
+        $('.v-place-photos-count').attr('href', place.thumbs[1]);
+        $('.v-place-photos-count span').html(place.thumbs.length)
     }
+
+    //$('a.v-place-photos').colorbox({rel:'gal'});
 
     if (place.panorama_image) {
         $('.panorama').html('<img src="'+place.panorama_image+'">').panorama_viewer({
@@ -2516,23 +2556,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
     //setWidth();
     $('.popup-map .popup-content [role="close"]').show();
 
-    $('.v-place-related-list').html('');
-    $.post(API_URL+'/search/nodenangcao/', {nodeid: i.ProductMap.currentPID}, function (similar) {
-        //console.log(similar);
-        for (si = 0; si < 4; si++) {
-            sv = similar[si];
-            if (sv) {
-                //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-            }
-        }
-    });
 
-    i.setDetailsAll(place);
-}
-
-ProductSearchControler.prototype.setDetailsAll = function (place) {
-    var i = this;
     $('.v-place-mode').click(function () {
         vid = $(this).attr('id');
         if (vid != 'v-direction' && vid != 'v-util') {
@@ -2561,9 +2585,9 @@ ProductSearchControler.prototype.setDetailsAll = function (place) {
 
 function handle (place) {
     console.log(place);
-    
+
     if (place.avatar == null || place.avatar == '') place.avatar = MAIN_URL+'/assets/img/noimage.png';
-    place.isProject = (place.pricefrom > 0 ? true : false);
+    place.isProject = (place.name ? true : false);
 
     if (place.isProject) place.title = place.name;
 
@@ -2571,6 +2595,10 @@ function handle (place) {
 
     place.exCls = (place.isProject ? ' project' : '') +
     (place.typeid > 3 ? ' big' : '');
+
+    if (!place.thumbs) {
+        place.thumbs = [MAIN_URL+"/data/images/h1.jpg", MAIN_URL+"/data/images/h2.jpg", MAIN_URL+"/data/images/h3.jpg", MAIN_URL+"/data/images/h4.jpg", MAIN_URL+"/data/images/h5.jpg", MAIN_URL+"/data/images/h6.jpg", MAIN_URL+"/data/images/h7.jpg"]
+    }
 
     return place;
 }
@@ -2591,6 +2619,10 @@ ProductSearchControler.prototype.ShowDetailsProject = function (id) {
 ProductSearchControler.prototype.setProjectDetails = function () {
     var i = this;
 
+    console.log('v-mode-project show');
+    $('.v-mode-project').show();
+    $('.v-place-switch-btns .v-place-mode').css('width', '25%');
+
     i.showDetailsCallback();
 
     var place = i.ProductMap.currentProduct
@@ -2607,37 +2639,6 @@ ProductSearchControler.prototype.setProjectDetails = function () {
     $('.v-place-title').attr('title', place.title).children('div').html(place.title);
     //$('.v-place-ten,.v-place-phone,.v-place-email').hide();
     $('.v-place-intro').html(place.intro);
-
-    $('.v-place-thumbs').html('');
-    if (place.thumbs) {
-        $.each(place.thumbs, function (ti, tv) {
-            $('.v-place-thumbs').append('<img class="v-place-thumb" src="'+tv+'"/>')
-        });
-        $('.v-place-thumb:first').addClass('active');
-        $('.v-place-bg').css('background-image', 'url('+place.thumbs[0]+')');
-    }
-
-    if (place.panorama_image) {
-        $('.panorama').html('<img src="'+place.panorama_image+'">').panorama_viewer({
-            animationTime: 300
-        });
-
-        var interval = null;
-        var check = function() {
-            if ($('.panorama .pv-inner').length) {
-                clearInterval(interval);
-                if (!$('#v-360').is('.active')) $('.v-place-v-360').hide();
-            }
-        };
-        interval = setInterval(check, 1200);
-    } else {
-        $('.v-place-v-360').hide()
-    }
-
-    popup_info(i, place.latitude, place.longitude);
-
-    //setWidth();
-    $('.popup-content [role="close"]').show();
 
     $('.v-place-related-list').html('');
     $.post(API_URL+'/search/duannangcao/', {duanid: i.ProductMap.currentPID}, function (similar) {
@@ -2758,7 +2759,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
     this.searchVar = d;
 
-    console.log(d);
+    //console.log(d);
     console.log(JSON.stringify(d));
     $.ajax({
         url: API_URL+'/search/searchall/',

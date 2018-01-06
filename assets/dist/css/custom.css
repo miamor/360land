@@ -359,7 +359,9 @@ body:not(.mobile) #socialArea{top:150px!important}
 #mapSide{margin-top:30px!important;position:absolute;left:10px!important;z-index:999!important}
 body:not(.mobile) #mapSide{width:380px}
 body:not(.mobile) #mapSide .nav-tabs:not(.map-nav-select){height:42px}
-#mapSide .nav-tabs-custom ul.nav>li{margin-right:-2px;float:left}
+#mapSide .nav-tabs-custom ul.nav>li{margin-right:-2px}
+/*body:not(.mobile) #mapSide .nav-tabs-custom ul.nav>li{width:191px;text-align:center}
+*/body:not(.mobile) .map-tabs-toggle{display:none}
 #mapSide .nav-tabs-custom{position:absolute;z-index:100;top:0px;left:0;right:0;bottom:0;box-shadow:0 2px 3px rgba(0,0,0,.15);font-size: 15px}
 
 body:not(.mobile) #mapSide{bottom:20px!important}
@@ -381,6 +383,7 @@ body:not(.mobile) #mapSide.open .nav-tabs-custom > .nav-tabs > li.active > a{pad
 
 
 #mapSide .map-side-result{top:30px}
+
 
 .cancel-filter{margin-right:5px}
 .map-side .tab-content{position: relative}
@@ -597,7 +600,7 @@ select#city_first:focus{background:#fff!important}
 .v-place-view{position:relative;width:100%;height:100%;overflow:auto}
 .v-place-imgs,.v-place-board{position:relative;height:240px;background:#ddd}
 .v-place-board{height:240px}
-.v-place-thumbs{position:absolute;bottom:0;left:0;right:0;height:56px;text-align:center;background:rgba(0,0,0,.6)}
+.v-place-thumbs{display:none;position:absolute;bottom:0;left:0;right:0;height:56px;text-align:center;background:rgba(0,0,0,.6)}
 .v-place-thumb{display:inline;width:50px;height:50px;margin:3px 0px;border:1px solid transparent;padding:1px;background:transparent;cursor:pointer}
 .v-place-thumb:hover,.v-place-thumb.active{background:#fff;border-color:#eee}
 .v-place-avt{float:left;width:50px;height:50px}
@@ -605,6 +608,7 @@ select#city_first:focus{background:#fff!important}
 .v-place-title{position:relative;margin:0}
 body:not(.mobile) .v-place-title{position:absolute;top:0;left:0;right:0;font-size:18px;line-height:23px;padding:10px 15px;z-index:100;background:#0bc39b;color:#fff;height:92px}
 body:not(.mobile) .v-place-title>div{position:relative;width:90%;line-height:70px;font-size:26px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.v-place-photos-count{background:rgba(0,0,0,.6);border-radius:4px;padding:3px 6px 4px;position:absolute;z-index:8;right:10px;bottom:10px;color:#fff!important;cursor:pointer;display:block!important}
 
 body:not(.mobile) .v-place-imgs{margin-top:92px}
 .v-place-avt{border-radius:100%;margin-right:10px}
@@ -981,7 +985,8 @@ body.mobile .nav-tabs-custom > .nav-tabs{height:39px}
 body.mobile .nav-tabs-custom > .nav-tabs, body.mobile .nav-tabs-custom > .nav-tabs>li:not(.active)>a{background:#0bc39b!important;box-shadow:none!important}
 body.mobile #mapSide .nav-tabs-custom>ul.nav>li>a{padding:9px 10px 10px!important}
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{padding:13px 10px 11px!important;border:0!important;font-size:14px}
-#mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-left:0!important;margin-right:5px!important}
+#mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-left:0!important}
+body:not(.mobile) #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-right:0!important}
 body.mobile #mapSide.open .nav-tabs-custom>ul.nav>li.active>a{margin-right:5px!important}
 #place_search{display:block;background:transparent;border:0;height:33px;color:#fff!important;padding:0 15px 1px 28px;width:100%;font-size:14px;transition:.2s}
 body.mobile #place_search{padding-top:5px;line-height:29px}

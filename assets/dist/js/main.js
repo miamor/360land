@@ -247,17 +247,19 @@ function mtip(a, c, title, content) {
 	stip('just-add')
 }
 function htip(a) {
-	var l = $('.' + a).attr('class');
-	if (l.indexOf('alerts') > -1) {
-		$("." + a).slideUp(function () {
-			$("." + a).remove().prev('.the-board-fixed').remove()
-		})
-	} else {
-		$(".alert").animate({
-			bottom: "-=150"
-		}, 500, function () {
-			$(".alert").remove().prev('.the-board-fixed').remove()
-		})
+	if ($('.' + a).length) {
+		var l = $('.' + a).attr('class');
+		if (l.indexOf('alerts') > -1) {
+			$("." + a).slideUp(function () {
+				$("." + a).remove().prev('.the-board-fixed').remove()
+			})
+		} else {
+			$(".alert").animate({
+				bottom: "-=150"
+			}, 500, function () {
+				$(".alert").remove().prev('.the-board-fixed').remove()
+			})
+		}
 	}
 }
 function stip(d) {

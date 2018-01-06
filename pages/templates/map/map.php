@@ -186,9 +186,10 @@
 <div class="v-place-view">
     <div class="v-place-imgs no-padding">
         <div class="v-place-board v-place-v-thumbs">
-            <div class="v-place-bg"></div>
+            <a class="v-place-photos v-place-bg"></a>
             <div class="v-place-thumbs">
             </div>
+            <a class="v-place-photos v-place-photos-count" data-fancybox="gallery"><i class="fa fa-picture-o"></i> <span>0</span> photos</a>
         </div>
         <div class="v-place-board v-place-v-360">
               <div class="panorama"></div>
@@ -203,7 +204,7 @@
         </div>
     </div>
     <div class="v-place-switch-btns">
-        <div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i> Chỉ đường</div><div class="v-place-mode" id="v-util" title="Tiện ích xung quanh"><i class="fa fa-share-alt"></i> Tiện ích</div>
+        <div class="v-place-mode" id="v-direction" title="Dẫn đường"><i class="fa fa-car"></i> Chỉ đường</div><div class="v-place-mode" id="v-util" title="Tiện ích xung quanh"><i class="fa fa-cutlery"></i> Tiện ích</div><div class="v-place-mode v-mode-project" id="v-sales" title="Sales"><i class="fa fa-users"></i> Sales</div><div class="v-place-mode v-mode-project" id="v-tiendo" title="Tiến độ dự án"><i class="fa fa-spinner"></i> Tiến độ</div>
     </div>
     <div class="popup-section section-light v-place-info">
         <!--<img class="v-place-avt left" src="'+place.avatar+'"/>

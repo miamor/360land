@@ -10,8 +10,8 @@ function submitLoginForm () {
         type: 'post',
         data: $('#login').serialize(),
         success: function (response) {
+            console.log(response);
             if (("token" in response) == false) {
-                console.log(response);
                 mtip('', 'error', 'Lỗi', response.message);
             } else {
                 __token = response.token;
@@ -34,7 +34,8 @@ function submitLoginForm () {
             if (c == 'Unauthorized') {
                 mtip('', 'error', '', 'Could not verify!');
             } else {
-                mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                mtip('', 'error', '', 'Tên đăng nhập hoặc mật khẩu không đúng!');
+                //mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
             }
         }
     });
