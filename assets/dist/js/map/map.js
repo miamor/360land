@@ -2438,6 +2438,8 @@ ProductSearchControler.prototype.showDetailsCallback = function () {
 
 ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) {
     var i = this;
+    i.ProductMap.currentPID = id;
+    i.ProductMap.currentProduct = null;
 
     if (!i.ProductMap.isDetails) {
         i.ProductMap.input.details.value = 1;
@@ -2445,7 +2447,6 @@ ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) 
         i.ChangeUrlForNewContext();
     }
     if (!isProject) {
-        //console.log('call ShowDetailsNode');
         i.ShowDetailsNode(id);
     } else {
         i.ShowDetailsProject(id);
@@ -2453,6 +2454,7 @@ ProductSearchControler.prototype.ShowDetails = function (id, isProject = false) 
 }
 
 ProductSearchControler.prototype.ShowDetailsNode = function (id) {
+    console.log('ShowDetailsNode called');
     var i = this;
     i.ProductMap.isProject = false;
     if (!i.ProductMap.currentProduct) {
@@ -2500,7 +2502,7 @@ ProductSearchControler.prototype.setNodeDetails = function () {
             sv = similar[si];
             if (sv) {
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
             }
         }
     });
@@ -2647,7 +2649,8 @@ ProductSearchControler.prototype.setProjectDetails = function () {
             sv = similar[si];
             if (sv) {
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowDetails(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
+                sv.isProject = (sv.name != null && sv.name != undefined);
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+sv.id+'\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
             }
         }
     })
