@@ -336,7 +336,7 @@ body.mobile #map{bottom:50px!important;top:0!important}
     border-radius:6px
 }
 #controlUtility:not(.small){bottom:20px!important;right:20px!important;width:350px}
-#controlUtility.small{left:10px!important;right:10px!important;bottom:140px!important}
+#controlUtility.small{left:10px!important;right:10px!important;bottom:150px!important;font-size:14px}
 .utility-head{background:#fff;font-size: 14px;position:relative;width:100%;height:100%;box-shadow:0 3px 5px rgba(0,0,0,.2);border-radius:6px!important;cursor:pointer;overflow:hidden}
 .utility-close{position: absolute;bottom:0;right:0;cursor: pointer;font-size:22px;top:0;line-height:54px;padding:0 15px;border-left:1px solid #eee;background:#f5f5f5}
 .utility-close:hover{background:#f0f0f0}
@@ -973,13 +973,13 @@ body.mobile .v-place-thumb{display:inline;width:50px;height:50px;margin:6px 0px;
 */#travelMode{width:100px!important;top:10px!important;left:46px!important;box-shadow: 1px 1px 2px 1px rgba(0,0,0,.12)}
 body.mobile #travelMode{top:10px!important}
 
-body.mobile #uti_selected, body.mobile .utility-close,body.mobile #cbbRadius{line-height:40px!important;font-size:20px!important}
+body.mobile #uti_selected, body.mobile .utility-close,body.mobile #cbbRadius{line-height:40px!important;font-size:15px!important}
 body.mobile #controlUtility{height:40px}
 body.mobile .utility-close{line-height:37px!important}
 body.mobile #cbbRadius{height:40px!important}
 body.mobile .utility-body{max-height:180px;bottom:47px}
 
-body.mobile #mapSide{top:0!important;left:0!important;right:0!important;height:39px!important;margin-top:20px!important}
+body.mobile #mapSide{top:0!important;left:0!important;right:0!important;height:39px!important;margin-top:0!important}
 body.mobile #mapSide .nav-tabs-custom, body.mobile #mapSide .nav-tabs-custom > .nav-tabs{border-radius:0!important}
 body.mobile .nav-tabs-custom > .nav-tabs{height:39px}
 body.mobile .nav-tabs-custom > .nav-tabs, body.mobile .nav-tabs-custom > .nav-tabs>li:not(.active)>a{background:#0bc39b!important;box-shadow:none!important}

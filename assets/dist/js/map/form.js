@@ -11,61 +11,57 @@ var nodeID = splitURL[splitURL.length-1];
     FormGen = function(submitType, nodeType) {
         var v = $(this).attr('id');
         var $thismap = this;
-        this.map = null;
-        this.geocoder = new google.maps.Geocoder();
-        this.marker = new google.maps.Marker();
-        this.infowindow = new google.maps.InfoWindow();
-        this.infowindowContent = document.getElementById('infowindow-content');
+        if (newNode) {
+            this.map = null;
+            this.geocoder = new google.maps.Geocoder();
+            this.marker = new google.maps.Marker();
+            this.infowindow = new google.maps.InfoWindow();
+            this.infowindowContent = document.getElementById('infowindow-content');
+        }
 
         this.initialize = function () {
             if (submitType == 'edit') {
-                if (nodeType == 'project') {
-                    this.loadDataProject();
-                } else {
-                    this.loadDataNode()
-                }
+                this.loadDataNode()
             }
 
-            this.map = new google.maps.Map(document.getElementById('map_select'), {
-                zoom: 5,
-                mapTypeControl: false,
-                center: placeLatLng
-            });
+            if (newNode) {
+                this.map = new google.maps.Map(document.getElementById('map_select'), {
+                    zoom: 5,
+                    mapTypeControl: false,
+                    center: placeLatLng
+                });
 
-            if (nodeType != 'project') {
                 google.maps.event.addListenerOnce($thismap.map, 'idle', function () {
                     $('.map_select').hide();
                 });
-            } else {
-                $('#infowindow-content').hide()
-            }
 
-            $thismap.infowindow.setContent($thismap.infowindowContent);
+                $thismap.infowindow.setContent($thismap.infowindowContent);
 
-            $thismap.marker.setMap($thismap.map);
-            $thismap.marker.setVisible(false);
-
-            var input = document.getElementById('address');
-            var options = {
-                //types: ['(cities)'],
-                componentRestrictions: {country: 'vn'}
-            };
-            var autocomplete = new google.maps.places.Autocomplete(input, options);
-            autocomplete.bindTo('bounds', $thismap.map);
-
-            google.maps.event.addDomListener(input, 'keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-
-            autocomplete.addListener('place_changed', function() {
-                $thismap.infowindow.close();
+                $thismap.marker.setMap($thismap.map);
                 $thismap.marker.setVisible(false);
-                var place = autocomplete.getPlace();
 
-                $thismap.changeAdrCallback(place);
-            });
+                var input = document.getElementById('address');
+                var options = {
+                    //types: ['(cities)'],
+                    componentRestrictions: {country: 'vn'}
+                };
+                var autocomplete = new google.maps.places.Autocomplete(input, options);
+                autocomplete.bindTo('bounds', $thismap.map);
+
+                google.maps.event.addDomListener(input, 'keydown', function(event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                    }
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    $thismap.infowindow.close();
+                    $thismap.marker.setVisible(false);
+                    var place = autocomplete.getPlace();
+
+                    $thismap.changeAdrCallback(place);
+                });
+            }
 
 
             $('#city').change(function () {
@@ -84,7 +80,6 @@ var nodeID = splitURL[splitURL.length-1];
                 $('#email').val(__userInfo.email);
             }*/
 
-            if (nodeType != 'project') {
                 this.autocompleteProject();
 
                 $('.type_bds').change(function () {
@@ -99,7 +94,6 @@ var nodeID = splitURL[splitURL.length-1];
                     $('#type').val('');
                     $('#type'+a).val('CN');
                 });
-            }
 
             $('.rank-one-select').click(function () {
                 var r = $(this).attr('attr-rank');
@@ -113,9 +107,11 @@ var nodeID = splitURL[splitURL.length-1];
                     // get lat and lng based on district
                     var placeTxt = $('#district option:selected').text()+', '+$('#city option:selected').text()+', Vietnam';
                     console.log(placeTxt);
-                    $thismap.infowindow.close();
-                    $thismap.marker.setVisible(false);
-                    var place = $thismap.geocodeaddress(placeTxt);
+                    if (newNode) {
+                        $thismap.infowindow.close();
+                        $thismap.marker.setVisible(false);
+                        var place = $thismap.geocodeaddress(placeTxt);
+                    }
                 }
             });
 
@@ -163,11 +159,7 @@ var nodeID = splitURL[splitURL.length-1];
 
 
         this.submitForm = function () {
-            if (nodeType == 'project') {
-                $thismap.submitProject()
-            } else {
-                $thismap.submitNode()
-            }
+            $thismap.submitNode()
         }
 
 

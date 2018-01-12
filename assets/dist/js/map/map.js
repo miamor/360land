@@ -1681,15 +1681,24 @@ var typeIcon = {
                 } else {
                     $('.map-item-info-address').wrapInner('<a href="javascript:productControlerObj.ShowDetails("'+data.id+'",0)"></a>')
                 }*/
-                $('.map-item-gotoview').hide()
 
                 if (isMobile) {
                     $('.map-item-info-board').show().addClass('mobile');
+                    if ($thismap.isProject) $thismap.contentInfoWindowProject(data);
+                    else $thismap.contentInfoWindowNode(data);
+                    $('.map-item-gotoview').click(function () {
+                        $thismap.isDetails = 1;
+                        productControlerObj.ShowDetails($thismap.currentPID, $thismap.isProject);
+                    });
+                    $('.map-item-view-utilities').click(function () {
+                        productControlerObj.ShowMoreInfo(data.latitude, data.longitude);
+                    })
                     $('.map-item-info-board-close').show().click(function () {
                         $('.map-item-info-board').hide();
                         $thismap.closeInfoWindowCallBack(h);
-                    })
+                    });
                 } else {
+                    $('.map-item-gotoview').hide()
                     $('.map-item-info-board-close').hide();
                     //console.log(isInit);
                     //if (!isInit || !$thismap.isShowUtil) {
@@ -1705,11 +1714,10 @@ var typeIcon = {
                     google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
                         if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
                     });*/
-
                     $thismap.isDetails = 1;
-
-                    productControlerObj.ShowDetails(this.currentPID, $thismap.isProject);
+                    productControlerObj.ShowDetails($thismap.currentPID, $thismap.isProject);
                 }
+
 
                 this.showOverlapNodes(data.latitude, data.longitude);
 
@@ -1748,7 +1756,7 @@ var typeIcon = {
             }
         }
 
-        this.contentInfoWindowProject = function (h, key, data, isInit = false) {
+        this.contentInfoWindowProject = function (data) {
             $('.map-item-info-title').html(data.title).show();
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
@@ -1758,7 +1766,7 @@ var typeIcon = {
             $('.map-item-info-more > div:not(:first-child)').hide();
         }
 
-        this.contentInfoWindowNode = function (h, key, data, isInit = false) {
+        this.contentInfoWindowNode = function (data) {
             $('.map-item-info-title').html(data.title).hide();
             $('.map-item-info-more > div').show();
             $('.map-item-info-price span').html(data.priceTxt);
@@ -2778,15 +2786,17 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             //console.log(f.ProductMap.data);
             //f.showList(data);
 
-            if (!f.ProductMap.isTrigger) {
+            if (!f.ProductMap.isTrigger && !isMobile) {
                 $('.li-list>a').click();
             }
             $thismap.isTrigger = false;
 
-            if (d.type_search == 2) {
-                $('a[href="#map_results_project"]').click()
-            } else {
-                $('a[href="#map_results_node"]').click()
+            if (!isMobile) {
+                if (d.type_search == 2) {
+                    $('a[href="#map_results_project"]').click()
+                } else {
+                    $('a[href="#map_results_node"]').click()
+                }
             }
 
             /*if (g == 1 ||
@@ -2824,15 +2834,17 @@ ProductSearchControler.prototype._SearchAction = function(g) {
 
 function toggleFilterBoard (s) {
     if (s == 'close') {
-        $('.map-filter-board').slideUp(100, function () {
+        $('.map-search-tabs').slideUp(100, function () {
             $(this).removeClass('open');
+            $('#mapSide').removeClass('open');
             if (isMobile) {
                 $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
             }
         })
     } else {
-        $('.map-filter-board').slideDown(100, function () {
+        $('.map-search-tabs').slideDown(100, function () {
             $(this).addClass('open');
+            $('#mapSide').addClass('open');
             if (isMobile) {
                 $('.map-tabs-toggle').html('<i class="fa fa-angle-double-down"></i>');
                 $('.map-list-tabs').slideUp(100, function () {
@@ -2940,6 +2952,8 @@ function render (isResizeSmaller = false, searchVisible = false) {
         //setWidth(w);
     //}
 
+    console.log(searchVisible);
+
     $('ul.map_search_select>li>a').click(function (e) {
         var type = $(this).parent('li').attr('attr-type');
         $('#map-search-form .form-group[attr-type]').hide();
@@ -2962,8 +2976,6 @@ function render (isResizeSmaller = false, searchVisible = false) {
     }
 
     if (w <= 500) {
-        //$('#mapSide').width(w-20).css('right','10px!important');
-        isMobile = true;
         $('body').addClass('mobile');
         $('nav').removeClass('navbar-fixed-top');
         $('.v-place-related').removeClass('popup-section section-light');
@@ -2975,7 +2987,7 @@ function render (isResizeSmaller = false, searchVisible = false) {
         }
         $('#map-search-form,.map-results-tabs').attr('style', 'height:'+sidePaneHeight+'px!important');
 
-        var inputW = w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-60;
+        var inputW = w-$('.li-filter').width()-$('.li-list').width()-$('.map-tabs-toggle').width()-10;
         console.log(w+' ~ '+$('.li-filter').width()+' ~ '+$('.li-list').width()+' ~ '+$('.map-tabs-toggle').width()+' ~ '+inputW);
         $('.li-input').attr('style', 'width:'+inputW+'px!important');
     } else {
