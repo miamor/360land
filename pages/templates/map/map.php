@@ -146,8 +146,7 @@
         </div>
 
         <div class="btn-group map-item-info-buttons center">
-            <a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-share-alt"></i></a>
-            <a class="btn btn-default btn-sm map-item-gotoview center" title="Chi tiết"><i class="fa fa-feed"></i></a>
+            
         </div>
 
     </div>
@@ -175,13 +174,11 @@
 <!--<div id="pano" style="z-index:1000;width:100%;height:100%">
 </div>-->
 
-<div id="overlapNodes"></div>
-
 <div class="popup-map">
 	<div class="popup-content" style="background:#fff">
 		<a class="popup-btn" role="close"></a>
 		<div class="the-board">
-            <h4 class="page-title show v-place-title"><div></div></h4>
+            <h4 class="page-title show v-place-title"><i id="load_parent_proj" class="hide fa fa-chevron-left"></i><div></div></h4>
 
 <div class="v-place-view">
     <div class="v-place-imgs no-padding">
@@ -268,9 +265,27 @@
     </div>
 </div>
 
+<div id="overlapNodes"></div>
 
-<div class="v-place-v-direction hide">
-    <div class="close-direction-board">
+<div class="v-place-v-sales v-place-mode-board hide" attr-mode="sales">
+    <div class="close-sales-board close-mode-board">
+        <i class="fa fa-times"></i>
+    </div>
+    <h3>Sales</h3>
+    <div id="sales_list"></div>
+</div>
+
+<div class="v-place-v-tiendo v-place-mode-board hide" attr-mode="tiendo">
+    <div class="close-tiendo-board close-mode-board">
+        <i class="fa fa-times"></i>
+    </div>
+    <h3>Tiến độ</h3>
+    <div id="tiendo_list"></div>
+    <div id="tiendo_view"></div>
+</div>
+
+<div class="v-place-v-direction v-place-mode-board hide" attr-mode="direction">
+    <div class="close-direction-board close-mode-board">
         <i class="fa fa-times"></i>
     </div>
     <!--<select id="travelMode" class="form-control">
