@@ -999,8 +999,12 @@ var typeIcon = {
                     if (a.node[i].typeid < 11) a.node[i].sellLabel = ' sell';
                     else a.node[i].sellLabel = ' rent';
 
-                    a.node[i].exCls = a.node[i].sellLabel +
-                        (a.node[i].typeid > 6 ? ' big' : '');
+                    a.node[i].exCls = a.node[i].sellLabel;
+                        //(a.node[i].typeid > 6 ? ' big' : '');
+                        /*(( (a.node[i].uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                        (a.node[i].uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                        (a.node[i].uutien == 3 && $thismap.map.getZoom() >= 11) 
+                       ) ? ' big' : '');*/
 
                     this.data.push(a.node[i])
                 }
@@ -1012,8 +1016,12 @@ var typeIcon = {
                     a.project[i].typeid = null;
                     a.project[i].sellLabel = '';
 
-                    a.project[i].exCls = " project" +
-                        (a.project[i].typeid > 6 ? ' big' : '');
+                    a.project[i].exCls = " project";
+                        //(a.project[i].typeid > 6 ? ' big' : '');
+                        /*(( (a.project[i].uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                        (a.project[i].uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                        (a.project[i].uutien == 3 && $thismap.map.getZoom() >= 11) 
+                        ) ? ' big' : '');*/
 
                     a.project[i].title = a.project[i].name;
                     a.project[i].isProject = true;
@@ -1134,13 +1142,6 @@ var typeIcon = {
                     bigUuTien = true;
                 }
                 if (markerkey == null) {
-                    if ( (place.uutien == 1 && $thismap.map.getZoom() >= 15) || 
-                         (place.uutien == 2 && $thismap.map.getZoom() >= 13) || 
-                         (place.uutien == 3 && $thismap.map.getZoom() >= 11) 
-                       ) {
-                        bigUuTien = ' big';
-                    }
-
                     var oneMarker = new MarkerWithLabel({
                         map: $thismap.map,
                         position: new google.maps.LatLng(place.latitude, place.longitude),
@@ -1492,8 +1493,17 @@ var typeIcon = {
                 //$thismap.infoWindow.close();
                 //$thismap.showInfoTipWindow(v,txt);
                 $thismap.showInfoTipWindow(v, $('#mapSide .map-result-one[attr-id="' + nodeID + '"]').html());
+
+                var bigUuTien = false;
+                if ( (theData.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                     (theData.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                     (theData.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                   ) {
+                    bigUuTien = true;
+                }
+
                 if (nodeID != $thismap.currentPID) {
-                    v.labelClass = 'marker-label hover' + theData.exCls;
+                    v.labelClass = 'marker-label hover' + theData.exCls + (bigUuTien ? ' big' : '');
                     v.label.setStyles();
                 }
                 //$thismap.activeMarker(k, theData);
@@ -1522,7 +1532,16 @@ var typeIcon = {
                     //$thismap.map.setCenter($thismap.markers[$thismap.currentMarkerKey].position);
                     if ($thismap.currentMarkerKey == k) {
                         //$thismap.markers[$thismap.currentMarkerKey].setIcon(nodeMarker[$thismap.data[$thismap.currentMarkerKey].type].select);
-                        $thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label active' + theData.exCls;
+
+                        var bigUuTien = false;
+                        if ( (theData.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                            (theData.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                            (theData.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                        ) {
+                            bigUuTien = true;
+                        }
+
+                        $thismap.markers[$thismap.currentMarkerKey].labelClass = 'marker-label active' + theData.exCls + (bigUuTien ? ' big' : '');
                         $thismap.markers[$thismap.currentMarkerKey].label.setStyles();
 
                         /*if (!$thismap.isShowUtil) {
@@ -1855,7 +1874,16 @@ var typeIcon = {
             if (key != null && key != undefined && data != null && data != undefined) {
                 //google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
                 //console.log("projection:"+$thismap.map.getProjection());
-                this.markers[key].labelClass = 'marker-label' + data.exCls.replace(' active', '');
+
+                var bigUuTien = false;
+                if ( (data.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                    (data.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                    (data.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                ) {
+                    bigUuTien = true;
+                }
+
+                this.markers[key].labelClass = 'marker-label' + data.exCls.replace(' active', '') + (bigUuTien ? ' big' : '');
                 this.markers[key].label.setStyles();
                 if ($thismap.searchtype == 2 && !data.isProject) { // search project but node not project
                     this.markers[key].setVisible(false);
