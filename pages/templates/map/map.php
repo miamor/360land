@@ -210,6 +210,7 @@
         <div class="clearfix"></div>
         -->
         <div class="v-box"><div class="v-box-content">
+            <div id="save_project"></div>
             <div class="v-place-price"><i class="fa fa-dollar"></i> <span class="v-place-pricenum"></span></div>
             <div class="v-place-address"><i class="fa fa-map-marker"></i> <span></span></div>
         </div></div>

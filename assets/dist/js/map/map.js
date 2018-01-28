@@ -346,7 +346,7 @@ var typeIcon = {
 
             if ($thismap.currentPID) {
                 // get data of this node to get latitude and longitude to set center, to get bounds, to get other nodes around it.
-                console.log($thismap.currentPID + ' ~~~ ' + $thismap.isProject);
+                //console.log($thismap.currentPID + ' ~~~ ' + $thismap.isProject);
                 if ($thismap.isProject && $thismap.isProject == 1) {
                     $thismap.loadAndShowInfoWindow($thismap.currentPID, true);
                 } else {
@@ -1126,7 +1126,21 @@ var typeIcon = {
 
                 //console.log(place.id+' ~~ '+$thismap.findMarkerKey(place.id));
                 var markerkey = $thismap.findMarkerKey(place.id);
+                var bigUuTien = false;
+                if ( (place.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                     (place.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                     (place.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                   ) {
+                    bigUuTien = true;
+                }
                 if (markerkey == null) {
+                    if ( (place.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                         (place.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                         (place.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                       ) {
+                        bigUuTien = ' big';
+                    }
+
                     var oneMarker = new MarkerWithLabel({
                         map: $thismap.map,
                         position: new google.maps.LatLng(place.latitude, place.longitude),
@@ -1134,7 +1148,7 @@ var typeIcon = {
                         icon: nodeMarker.empty,
                         labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\'' + place.id + '\')" attr-marker-id="' + place.id + '"><span class="marker-type type-' + typeIcon[place.type] + '"><i class="icoo-' + typeIcon[place.type] + '"></i></span><span class="marker-label-content">' + place.priceTxt + '</span></a>',
                         labelAnchor: labelOrigin,
-                        labelClass: "marker-label" + ($thismap.currentPID == place.id ? " active" : "") + place.exCls, // your desired CSS class
+                        labelClass: "marker-label" + ($thismap.currentPID == place.id ? " active" : "") + place.exCls + (bigUuTien ? ' big' : ''), // your desired CSS class
                         labelInBackground: true,
                     });
                     oneMarker.id = place.id;
@@ -1159,7 +1173,16 @@ var typeIcon = {
                     });
 
                 } else {
-                    $thismap.markers[markerkey].setVisible(true);
+                    var v = $thismap.markers[markerkey];
+                    v.setVisible(true);
+
+                    if (bigUuTien) {
+                        v.labelClass = 'marker-label big' + a[i].exCls;
+                        v.label.setStyles();
+                    } else {
+                        v.labelClass = 'marker-label ' + a[i].exCls;
+                        v.label.setStyles();
+                    }
                 }
 
                 i++;
@@ -1213,6 +1236,8 @@ var typeIcon = {
                     this.map.fitBounds(g)
                 }
             }
+
+            console.log('this.currentPID in showPoint~ '+this.currentPID);
 
             if (this.currentPID) {
                 this.showInfoWindow(this.currentPID, false, true);
@@ -1416,12 +1441,17 @@ var typeIcon = {
             if (this.currentPID) {
                 //$('#overlapNodes').hide();
                 var key = this.findMarkerKey(this.currentPID);
-                //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
-                //h.setIcon(nodeMarker[$thismap.data[key].type].default);
-                //h.labelClass = 'marker-label';
-                //h.label.setStyles();
-                var theData = $thismap.findDataInfo(this.currentPID);
-                this.deactiveMarker(key, theData);
+                if (key != null) {
+                    //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
+                    //h.setIcon(nodeMarker[$thismap.data[key].type].default);
+                    //h.labelClass = 'marker-label';
+                    //h.label.setStyles();
+                    var theData = $thismap.findDataInfo(this.currentPID);
+                    this.deactiveMarker(key, theData);
+                } else {
+                    h = null;
+                    h.setMap(null);
+                }
 
                 this.input.product.value = this.currentPID = '';
                 this.currentMarkerKey = null;
@@ -1567,14 +1597,23 @@ var typeIcon = {
             }*/
         }
 
-        this.loadAndShowInfoWindow = function(id, isProject = false) {
-            var key = this.findMarkerKey(id);
+        this.loadAndShowInfoWindow = function(id, isProject = false, showMarker = false, backProject = false) {
+            /*var key = this.findMarkerKey(id);
             var data = this.findDataInfo(id);
             /*if (key != null && key != undefined && data != null && data != undefined) { // if found, then just show
                 console.log('Just show');
                 this.showInfoWindow(id);
             } else {*/
-                console.log('Load and Show');
+
+                var key = this.findMarkerKey(this.currentPID);
+                //console.log(this.currentPID+'~'+key+'~'+$thismap.data[key]);
+                //h.setIcon(nodeMarker[$thismap.data[key].type].default);
+                //h.labelClass = 'marker-label';
+                //h.label.setStyles();
+                var theData = $thismap.findDataInfo(this.currentPID);
+                this.deactiveMarker(key, theData);
+
+                console.log('Load and Show '+id);
                 $thismap.currentPID = id;
                 $thismap.isProject = isProject;
 
@@ -1585,12 +1624,21 @@ var typeIcon = {
                         type: 'post',
                         data: { id: $thismap.currentPID },
                         success: function(data) {
-                            //console.log(data);
+                            console.log(data);
                             data = handle(data);
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
                             $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
-                            if ($thismap.isDetails == 1) productControlerObj.setProjectDetails();
+
+                            
+                            if (showMarker) {
+                                $thismap.enableSetCenter = true;
+                                $thismap.boundsChangeCallBack();
+                            } else {
+                                if ($thismap.isDetails == 1) productControlerObj.setProjectDetails();
+                            }
+
+                            if (backProject) $('.v-place-v-sales').show();
                             //$thismap.currentPID = data.id;
                             //$thismap.showInfoWindow();
                         },
@@ -1609,7 +1657,15 @@ var typeIcon = {
                             $thismap.currentProduct = data;
                             //console.log($thismap.currentProduct);
                             $thismap.map.setCenter(new google.maps.LatLng(data.latitude, data.longitude));
-                            if ($thismap.isDetails == 1) productControlerObj.setNodeDetails();
+
+
+                            if (showMarker) {
+                                $thismap.enableSetCenter = true;
+                                $thismap.boundsChangeCallBack();
+                            } else {
+                                if ($thismap.isDetails == 1) productControlerObj.setNodeDetails();
+                            }
+
                             //$thismap.currentPID = data.id;
                             //$thismap.showInfoWindow();
                         },
@@ -1642,6 +1698,8 @@ var typeIcon = {
                     //oldMarker.labelClass = 'marker-label'+oldData.exCls;
                     //oldMarker.label.setStyles();
                     this.deactiveMarker(oldMarkerKey, oldData);
+                } else {
+
                 }
             }
 
@@ -1671,8 +1729,44 @@ var typeIcon = {
             if (this.infoTipWindow) this.infoTipWindow.close();
             if (this.infoWindow) this.infoWindow.close();
 
-            if (key != null && data) {
-                var h = this.markers[key];
+            if (data) {
+                var h = null;
+                if (key != null) {
+                    h = this.markers[key];
+                } else {
+                    h = new MarkerWithLabel({
+                        map: $thismap.map,
+                        position: new google.maps.LatLng(data.latitude, data.longitude),
+                        //icon: nodeMarker[data.type].default,
+                        icon: nodeMarker.empty,
+                        labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\'' + data.id + '\')" attr-marker-id="' + data.id + '"><span class="marker-type type-' + typeIcon[data.type] + '"><i class="icoo-' + typeIcon[data.type] + '"></i></span><span class="marker-label-content">' + data.priceTxt + '</span></a>',
+                        labelAnchor: labelOrigin,
+                        labelClass: "marker-label" + ($thismap.currentPID == data.id ? " active" : "") + data.exCls, // your desired CSS class
+                        labelInBackground: true,
+                    });
+                    h.id = data.id;
+                    h.isProject = data.isProject;
+
+                    h.setMap($thismap.map);
+
+                    $thismap.markers.push(h);
+                    $thismap.data.push(data);
+
+                    h.addListener('click', function() {
+                        $thismap.showInfoWindow(this.id);
+                        $thismap.input.product.value = this.id;
+                        productControlerObj.ChangeUrlForNewContext();
+                    });
+                    h.addListener('mouseover', function() {
+                        var key = $thismap.findMarkerKey(this.id);
+                        $thismap.mouseHover(key, false);
+                    });
+                    h.addListener('mouseout', function() {
+                        var key = $thismap.findMarkerKey(this.id);
+                        $thismap.mouseOut(key);
+                    });
+                }
+
                 if (runSet) {
                     if (!this.isShowUtil && this.map.getZoom() < zoom_markerView) {
                         this.map.setZoom(zoom_markerView);
@@ -1681,7 +1775,7 @@ var typeIcon = {
                     }
                 }
 
-                console.log('this.currentMarkerKey = ' + this.currentMarkerKey);
+                console.log('showInfoWindow~~~ this.currentMarkerKey = ' + this.currentMarkerKey);
                 if (isInit) {
                     google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
                         this.activeMarker(this.currentMarkerKey, data);
@@ -1703,21 +1797,6 @@ var typeIcon = {
                     productControlerObj.ShowMoreInfo(h.position.lat(), h.position.lng());
                 }
                 //}
-
-                //console.log(data);
-
-                //if (this.isProject) this.contentInfoWindowProject(h, key, data, isInit);
-                //else this.contentInfoWindowNode(h, key, data, isInit);
-                //this.showInfoWindowNode(h, key, data, isInit);
-
-
-                /*$('.map-item-view-utilities').attr('href', 'javascript:productControlerObj.ShowMoreInfo(' + data.latitude + ',' + data.longitude + ')');
-                /*$('.map-item-gotoview').attr('href', 'javascript:productControlerObj.ShowDetails("'+data.id+'", '+(data.isProject ? 1 : 0)+')');
-                if (data.isProject) {
-                    $('.map-item-info-title').wrapInner('<a href="javascript:productControlerObj.ShowDetails("'+data.id+'",1)"></a>')
-                } else {
-                    $('.map-item-info-address').wrapInner('<a href="javascript:productControlerObj.ShowDetails("'+data.id+'",0)"></a>')
-                }*/
 
                 if (isMobile) {
                     $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-share-alt"></i></a>\
@@ -1742,20 +1821,6 @@ var typeIcon = {
                     $('.map-item-gotoview').hide()
                     $('.map-item-info-board-close').hide();
 
-                    //console.log(isInit);
-                    //if (!isInit || !$thismap.isShowUtil) {
-                    /*if (!$thismap.isShowUtil) {
-                        $thismap.infoWindow.setOptions({
-                            position: h.position,
-                            maxWidth: 280,
-                            content: $('.map-item-info-board').html()
-                        });
-                        $thismap.infoWindow.open($thismap.map, h);
-                    }
-
-                    google.maps.event.addListener($thismap.infoWindow, 'closeclick', function () {
-                        if (!$thismap.isShowUtil) $thismap.closeInfoWindowCallBack(h);
-                    });*/
                     $thismap.isDetails = 1;
                     productControlerObj.ShowDetails($thismap.currentPID, $thismap.isProject);
                 }
@@ -1792,6 +1857,12 @@ var typeIcon = {
                 //console.log("projection:"+$thismap.map.getProjection());
                 this.markers[key].labelClass = 'marker-label' + data.exCls.replace(' active', '');
                 this.markers[key].label.setStyles();
+                if ($thismap.searchtype == 2 && !data.isProject) { // search project but node not project
+                    this.markers[key].setVisible(false);
+                }
+                if ($thismap.searchtype == 1 && data.isProject) { // search node but node is project
+                    this.markers[key].setVisible(false);
+                }
                 //});
             } else {
                 $('#map .gm-style > div:first-child > div:nth-child(4) > div:first-child').children('div').removeClass('active');
@@ -2042,7 +2113,7 @@ ProductSearchControler = function(h) {
             //i.ShowTiendo(); // already loaded
         }
         if (vid == 'v-util') {
-            i.ShowMoreInfo(place.latitude, place.longitude);
+            i.ShowMoreInfo();
         }
     });
     $('.v-place-thumb').click(function() {
@@ -2060,7 +2131,89 @@ ProductSearchControler = function(h) {
         i.loadParentProject(i.ProductMap.currentProduct.duanid);
     })
 
+    if (__token) {
+        i.checkSaveProject();
+    } else {
+        //$('.v-place-save').remove();
+    }
 };
+
+ProductSearchControler.prototype.checkSaveProject = function () {
+    var i = this;
+    $.ajax({
+        url: API_URL + '/manager_user/kiemtraduanquantam/',
+        type: 'post',
+        data: { duan: i.ProductMap.currentPID },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', __token);
+        },
+        success: function(data) {
+            console.log(data);
+            //$('.v-place-save').addClass('saved fa-heart').removeClass('fa-heart-o');
+
+            if (data == 'OK') i.saveProject();
+            else i.unsaveProject();
+        }, 
+        error: function (a, b, c) {
+            console.log(a);
+        }
+    });
+}
+
+ProductSearchControler.prototype.saveProject = function () {
+    $('#save_project').html('<a class="v-place-save fa fa-heart-o" href="#" title="Đánh dấu quan tâm"></a>');
+
+    $('.v-place-save').hover(function () {
+        $(this).removeClass('fa-heart-o').addClass('fa-heart');
+    }).mouseout(function () {
+        $(this).removeClass('fa-heart').addClass('fa-heart-o');
+    }).click(function () {
+        $.ajax({
+            url: API_URL + '/manager_user/duanquantams/',
+            type: 'post',
+            data: { duan: i.ProductMap.currentPID },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', __token);
+            },
+            success: function(data) {
+                console.log(data);
+                i.unsaveProject();
+            }, 
+            error: function (a, b, c) {
+                console.log(a);
+            }
+        });
+        return false
+    })
+}
+
+ProductSearchControler.prototype.unsaveProject = function () {
+    $('#save_project').html('<a class="v-place-save fa fa-heart saved" href="#" title="Bỏ quan tâm"></a>');
+
+    $('.v-place-save').hover(function () {
+        $(this).removeClass('fa-heart').addClass('fa-heart-o');
+    }).mouseout(function () {
+        $(this).removeClass('fa-heart-o').addClass('fa-heart');
+    }).click(function () {
+        $.ajax({
+            url: API_URL + '/manager_user/duanquantams/',
+            type: 'post',
+            data: { duan: i.ProductMap.currentPID },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', __token);
+            },
+            success: function(data) {
+                console.log(data);
+                i.saveProject();
+            }, 
+            error: function (a, b, c) {
+                console.log(a);
+            }
+        });
+        return false
+    })
+}
+
 
 ProductSearchControler.prototype.closeModeBoard = function (mode = 'all', search = false) {
     var i = this;
@@ -2480,6 +2633,10 @@ ProductSearchControler.prototype.ShowMoreInfoAndHidePopup = function(id, lat, lo
 }
 
 ProductSearchControler.prototype.ShowMoreInfo = function(lat, lon) {
+    if (!lat || !lon) {
+        lat = this.ProductMap.currentProduct.latitude;
+        lon = this.ProductMap.currentProduct.longitude;
+    }
     if (this.ProductMap.map.getZoom() < zoom_utilityView) {
         //this.ProductMap.map.setZoom(zoom_utilityView);
     }
@@ -2541,7 +2698,7 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
                 i.ProductMap.currentPID = val.id;*/
                 val.isProject = false;
                 $('.v-place-v-sales, .v-place-v-tiendo').hide()
-                i.ProductMap.loadAndShowInfoWindow(val.id, val.isProject);
+                i.ProductMap.loadAndShowInfoWindow(val.id, val.isProject, true);
                 productControlerObj.ChangeUrlForNewContext();
             })
         });
@@ -2659,7 +2816,8 @@ ProductSearchControler.prototype.ShowDetails = function(id, isProject = false) {
 ProductSearchControler.prototype.loadParentProject = function(id) {
     var i = this;
     if (!id) id = i.ProductMap.currentPID;
-    i.ProductMap.loadAndShowInfoWindow(id);
+    //i.ProductMap.isProject = true;
+    i.ProductMap.loadAndShowInfoWindow(id, true, true, true);
 }
 
 ProductSearchControler.prototype.ShowDetailsNode = function(id) {
@@ -2709,7 +2867,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
             sv = similar[si];
             if (sv) {
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\'' + sv.id + '\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.loadAndShowInfoWindow(\'' + sv.id + '\', false, true)" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
             }
         }
     });
@@ -2769,7 +2927,7 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 }
 
 function handle(place) {
-    //console.log(place);
+    console.log(place);
 
     if (place.avatar == null || place.avatar == '') place.avatar = MAIN_URL + '/assets/img/noimage.png';
     place.isProject = (place.name ? true : false);
@@ -2831,7 +2989,7 @@ ProductSearchControler.prototype.setProjectDetails = function() {
             if (sv) {
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
                 sv.isProject = (sv.name != null && sv.name != undefined);
-                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\'' + sv.id + '\')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
+                $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.loadAndShowInfoWindow(\'' + sv.id + '\', '+sv.isProject+', true)" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
             }
         }
     })

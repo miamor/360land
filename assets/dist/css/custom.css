@@ -623,6 +623,9 @@ body:not(.mobile) #load_parent_proj{font-size:25px;line-height: 70px}
 /*body.mobile #load_parent_proj{line-height:39px;font-size:13px!important}
 */.v-place-photos-count{background:rgba(0,0,0,.6);border-radius:4px;padding:3px 6px 4px;position:absolute;z-index:8;right:10px;bottom:10px;color:#fff!important;cursor:pointer;display:block!important}
 
+.v-place-save{float:right;font-size:25px;cursor:pointer;margin:2px 0 0;color:#aaa}
+.v-place-save.saved, .v-place-save.hover{color:#e94c3d}
+
 body:not(.mobile) .v-place-imgs{margin-top:92px}
 .v-place-avt{border-radius:100%;margin-right:10px}
 /*.v-place-type{font-size:12px;color:#aaa}
@@ -644,14 +647,14 @@ body:not(.mobile) .v-place-imgs{margin-top:92px}
 .v-place-switch-btns .v-place-mode>i{display:block;font-size:25px;line-height:25px;margin:10px 0 5px}
 .v-place-switch-btns .v-place-mode:hover{cursor:pointer;color:#444}
 
-body:not(.mobile) .v-place-related{border-bottom:0;border-top:1px solid #e5e4e2;margin:0 0 20px;*height:235px;padding:12px 10px 5px!important}
-body:not(.mobile) .v-place-related .toggle-box-btn{display:none}
+.v-place-related{border-bottom:0!important;border-top:1px solid #e5e4e2!important;margin:0 0 20px;*height:235px;padding:5px 20px 5px!important}
+/*body:not(.mobile) .v-place-related .toggle-box-btn{display:none}
 body:not(.mobile) .v-place-related h4{font-size:17px;border-bottom:2px solid #0bc39b;float:left;padding-bottom:5px;margin-left:.5%}
-.v-place-related-list{clear:both;position:relative;padding:20px 0 0!important}
+*/.v-place-related-list{clear:both;position:relative;padding:5px 0 0!important}
 .v-place-related-one{position:relative;display:inline-block;width:49%;margin:0 .5%;height:170px}
-body.mobile .v-place-related{padding:0 20px!important;height:235px!important;border-bottom:0}
-body.mobile .v-place-related-one{height:100px}
+/*body.mobile .v-place-related{padding:0 20px!important;height:235px!important;border-bottom:0}
 body.mobile .v-place-related-list{padding:5px 0!important}
+*/body.mobile .v-place-related-one{height:100px}
 .v-place-related-one-thumb{position:absolute;height:100%;width:100%}
 .v-place-related-one-title{position:absolute;bottom:0;left:0;right:0;padding:5px 8px 5px;background:rgba(0,0,0,.5);color:#fff;line-height:16px;*font-weight:600}
 .v-place-related-one-address{font-size:14px;*font-weight:300}
@@ -664,7 +667,7 @@ body.mobile .v-place-related-list{padding:5px 0!important}
 .v-place-more-btns:not(:hover)>div.contact-more{margin-bottom:1px}
 .v-place-more-btns>div:hover:not(.contact-more){background:#49dcc3}
 
-body.mobile .v-place-info{padding-top:6px}
+body.mobile .v-place-info{padding-top:6px;padding-bottom:0px}
 .v-box:not(:last-child){border-bottom:1px solid #eee}
 .v-place-more-one{display:inline-block;width:49%}
 .v-box>h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
@@ -971,7 +974,6 @@ body.mobile .popup-btn, body.mobile #load_parent_proj{z-index:999;top:7px;right:
 body.mobile #load_parent_proj{top:13px!important;left:10px!important}
 body.mobile .popup-btn:before, body.mobile #load_parent_proj:before{*color:#555;font-family: 'Flat-UI-Icons';content:'\e02d';right:auto;left:0;font-size:16px}
 body.mobile .popup-btn:after{display:none; content:'';position:fixed;top:0;left:0;right:0;height:30px;background:rgba(0,0,0,.1)}
-body.mobile .v-place-related{*height:425px;margin:-10px 0 0;padding:0 30px}
 body.mobile .v-place-related-one{width:49%}
 body.mobile .v-place-switch-buttons{top:30px}
 body.mobile .v-place-imgs, body.mobile .v-place-board{height:260px}
