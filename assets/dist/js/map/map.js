@@ -455,6 +455,9 @@ var typeIcon = {
                     var oldzoom = $thismap.zoom;
                     $thismap.zoom = $thismap.map.getZoom();
                     if (!oldzoom || oldzoom > $thismap.zoom) $thismap.boundsChangeCallBack();
+                    else {
+                        $thismap.changeMarkersSize()
+                    }
                     productControlerObj.ChangeUrlForNewContext();
                 }
             });
@@ -1189,45 +1192,6 @@ var typeIcon = {
                 i++;
             }
 
-            /*$thismap.markers = a.map(function(location, i) {
-                place.typeTxt = typeRealEstate[place.type];
-                if (place.isProject) place.price = place.pricefrom;
-                if (place.price < 1) { // trăm triệu
-                    place.priceTxt = place.price*100+'tr';
-                } else place.priceTxt = place.price+' tỷ';
-                return new MarkerWithLabel({
-                    position: new google.maps.LatLng(place.latitude, place.longitude),
-                    //icon: nodeMarker[place.type].default,
-                    icon: nodeMarker.empty,
-                    labelContent: '<a href="javascript:productControlerObj.ProductMap.showInfoWindow(\''+place.id+'\')" attr-marker-id="'+place.id+'"><span class="marker-type type-'+typeIcon[place.type]+'"><i class="icoo-'+typeIcon[place.type]+'"></i></span><span class="marker-label-content">'+place.priceTxt+'</span></a>',
-                    labelAnchor: labelOrigin,
-                    labelClass: "marker-label"+($thismap.currentPID == place.id ? " active" : "") + (place.isProject ? " marker-label-project" : ""), // your desired CSS class
-                    labelInBackground: true,
-                });
-            });*/
-
-            /*$.each($thismap.markers, function (i, oneMarker) {
-                //oneMarker.setMap($thismap.map);
-                //$thismap.oms.addMarker(oneMarker);
-                //console.log(oneMarker.id);
-                theData = $thismap.findDataInfo(oneMarker.id);
-                if (theData) {
-                    oneMarker.isProject = theData.isProject;
-                    oneMarker.addListener('click', function() {
-                        $thismap.showInfoWindow(this.id);
-                        $thismap.input.product.value = this.id;
-                        productControlerObj.ChangeUrlForNewContext();
-                    });
-                    oneMarker.addListener('mouseover', function() {
-                        $thismap.mouseHover(i, false);
-                    });
-                    oneMarker.addListener('mouseout', function() {
-                        $thismap.mouseOut(i);
-                    });
-                }
-            });*/
-            //console.log($thismap.oms);
-
             if (b !== undefined && b) {
                 if (this.polyline != undefined && this.polyline != null) {
                     var g = new google.maps.LatLngBounds();
@@ -1257,6 +1221,26 @@ var typeIcon = {
             });*/
 
         };
+
+        this.changeMarkersSize = function () {
+            $.each(this.markers, function (i, v) {
+                data = $thismap.findDataInfo(v.id);
+                var bigUuTien = false;
+                if ( (data.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                     (data.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                     (data.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                   ) {
+                    bigUuTien = true;
+                }
+                if (bigUuTien) {
+                    v.labelClass = 'marker-label big' + data.exCls;
+                    v.label.setStyles();
+                } else {
+                    v.labelClass = 'marker-label ' + data.exCls;
+                    v.label.setStyles();
+                }
+            })
+        }
 
         this.findDataInfo = function(a) {
             if (this.data != undefined && this.data.length > 0) {
