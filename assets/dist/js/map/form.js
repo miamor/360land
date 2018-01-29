@@ -132,7 +132,7 @@ var nodeID = splitURL[splitURL.length-1];
                     $dr.hide().html('');
                 } else {
                     $.ajax({
-            			url: API_URL_ALL+'/search/duanbasic/',
+            			url: API_URL+'/search/duanbasic/',
             			type: 'post',
             			data: {input: val},
             			success: function (data) {

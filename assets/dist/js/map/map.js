@@ -138,6 +138,8 @@ var typeIcon = {
         if (s.isProject) this.isProject = s.isProject;
         //console.log('s.isProject = '+s.isProject);
 
+        this.isInit = true;
+
         this.zoom = null;
         this.isTrigger = false;
 
@@ -1202,11 +1204,13 @@ var typeIcon = {
                 }
             }
 
-            console.log('this.currentPID in showPoint~ '+this.currentPID);
+            //console.log('this.currentPID in showPoint~ '+this.currentPID);
 
             if (this.currentPID) {
-                this.showInfoWindow(this.currentPID, false, true);
+                this.showInfoWindow(this.currentPID, false, $thismap.isInit);
             }
+
+            if ($thismap.isInit) $thismap.isInit = false;
 
             //console.log('hide loading-layout');
             $('.loading-layout').hide();
@@ -1732,6 +1736,8 @@ var typeIcon = {
             if (this.infoTipWindow) this.infoTipWindow.close();
             if (this.infoWindow) this.infoWindow.close();
 
+            if (__token) productControlerObj.checkSaveProject();
+
             if (data) {
                 var h = null;
                 if (key != null) {
@@ -1778,12 +1784,15 @@ var typeIcon = {
                     }
                 }
 
-                console.log('showInfoWindow~~~ this.currentMarkerKey = ' + this.currentMarkerKey);
+                //console.log('showInfoWindow~~~ this.currentMarkerKey = ' + this.currentMarkerKey);
+                //console.log('isInit~ '+isInit);
+                
                 if (isInit) {
                     google.maps.event.addListenerOnce($thismap.map, "projection_changed", function() {
                         this.activeMarker(this.currentMarkerKey, data);
                     })
                 } else {
+                    console.log('set activeMarker');
                     this.activeMarker(this.currentMarkerKey, data);
                 }
 
@@ -2143,11 +2152,11 @@ ProductSearchControler = function(h) {
         i.loadParentProject(i.ProductMap.currentProduct.duanid);
     })
 
-    if (__token) {
-        i.checkSaveProject();
+    /*if (__token) {
+        if (i.ProductMap.currentPID) i.checkSaveProject();
     } else {
         //$('.v-place-save').remove();
-    }
+    }*/
 };
 
 ProductSearchControler.prototype.checkSaveProject = function () {
@@ -2173,6 +2182,7 @@ ProductSearchControler.prototype.checkSaveProject = function () {
 }
 
 ProductSearchControler.prototype.saveProject = function () {
+    var i = this;
     $('#save_project').html('<a class="v-place-save fa fa-heart-o" href="#" title="Đánh dấu quan tâm"></a>');
 
     $('.v-place-save').hover(function () {
@@ -2200,6 +2210,7 @@ ProductSearchControler.prototype.saveProject = function () {
 }
 
 ProductSearchControler.prototype.unsaveProject = function () {
+    var i = this;
     $('#save_project').html('<a class="v-place-save fa fa-heart saved" href="#" title="Bỏ quan tâm"></a>');
 
     $('.v-place-save').hover(function () {
@@ -2208,8 +2219,8 @@ ProductSearchControler.prototype.unsaveProject = function () {
         $(this).removeClass('fa-heart-o').addClass('fa-heart');
     }).click(function () {
         $.ajax({
-            url: API_URL + '/manager_user/duanquantams/',
-            type: 'post',
+            url: API_URL + '/manager_user/boduanquantam/',
+            type: 'put',
             data: { duan: i.ProductMap.currentPID },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', __token);

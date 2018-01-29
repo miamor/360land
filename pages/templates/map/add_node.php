@@ -138,10 +138,10 @@
             </div>
             <div class="clearfix"></div>
 
-            <div class="form-group map_select customshow typereal2 typereal3 typereal4 typereal5 typereal6 typereal7 typereal8 typereal10 typereal12 typereal13 typereal14 typereal15 typereal16 typereal17 typereal18" attr-required="1">
+            <div class="form-group map_select customshow typereal2 typereal3 typereal5 typereal6 typereal7 typereal8 typereal10 typereal12 typereal13 typereal14 typereal15 typereal16 typereal17 typereal18" attr-required="1">
                 <input type="text" class="form-control" style="margin-top:6px" id="address" name="address" placeholder="Địa chỉ cụ thể (không bắt buộc)"/>
 
-                <div id="infowindow-content">
+                <div id="infowindow-content"  class="hide">
                     <img src="" width="16" height="16" id="place-icon">
                     <span id="place-name" class="title"></span><br>
                     <span id="place-address"></span>
