@@ -1,5 +1,23 @@
 <?php
-if ($mode) {
+if ($n) {
+    if ($mode == 'streetview') {
+        $config->addJS('dist', $page.'/map.streetview.js');
+        $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initialize');
+
+        include 'templates/'.$page.'/map.streetview.php';
+    } else {
+        $pageTitle = 'Place title';
+        include 'templates/header.php';
+
+        //$config->addJS('plugins', 'DataTables/datatables.min.js');
+        //$config->addJS('dist', 'ratings.min.js');
+        $config->addJS('dist', $page.'/view.js');
+        $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');
+
+        include 'templates/'.$page.'/view.php';
+    }
+}
+else if ($mode) {
     $pageTitle = 'Place mode '.$mode;
     include 'templates/header.php';
 
@@ -15,17 +33,6 @@ if ($mode) {
     $config->addJS('dist', $page.'/add.js');
 
     include 'templates/'.$page.'/'.$mode.'.php';
-}
-else if ($n) {
-    $pageTitle = 'Place title';
-    include 'templates/header.php';
-
-    //$config->addJS('plugins', 'DataTables/datatables.min.js');
-    //$config->addJS('dist', 'ratings.min.js');
-    $config->addJS('dist', $page.'/view.js');
-    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places&callback=initMap');
-
-    include 'templates/'.$page.'/view.php';
 }
 else {
     $pageTitle = 'Map';

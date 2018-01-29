@@ -2121,9 +2121,21 @@ ProductSearchControler = function(h) {
 
     $('.v-place-mode').click(function() {
         vid = $(this).attr('id');
+
+        if ($(this).parent().is('.v-place-switch-buttons')) {
+            $('.v-place-imgs .v-place-board').hide();
+            //window.open(MAIN_URL+'/map/'+i.ProductMap.currentPID+'?mode=streetview&temp=true', 'Street view')
+            $('.v-place-v-streetview').html('<iframe id="st_iframe" src="'+MAIN_URL+'/map/'+i.ProductMap.currentPID+'?mode=streetview&temp=true"></iframe>');
+            $('.v-place-v-streetview, #st_iframe').css({
+                width: $('.v-place-imgs').width(),
+                height: $('.v-place-imgs').height()
+            })
+        }
+
         $('.v-place-' + vid).show();
         $('.v-place-mode').removeClass('active');
         $(this).addClass('active');
+
         if (vid == 'v-direction') {
             i.ShowDirection();
         }
@@ -2260,6 +2272,8 @@ ProductSearchControler.prototype.genPopup = function() {
         i.loadTienDo(i.ProductMap.currentPID);
     }
 
+    i.map = i.ProductMap.map;
+
     /*var k = {
         overviewMapControl: false,
         panControl: false,
@@ -2284,8 +2298,6 @@ ProductSearchControler.prototype.genPopup = function() {
     i.map.setMapTypeId('styled_map');
 
     i.map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('travelMode'));*/
-
-    i.map = i.ProductMap.map;
 
     //console.log('genPopup called');
 
