@@ -360,6 +360,10 @@ body:not(.mobile) #socialArea{top:150px!important}
 
 #st_iframe{position:absolute;top:0;bottom:0;left:0;right:0;border:0!important}
 
+.adp-placemark td{padding:5px 6px!important}
+.adp-placemark tr td:nth-child(1){padding-right:0!important}
+.adp-legal{display:none!important}
+
 #mapSide{margin-top:30px!important;position:absolute;left:10px!important;z-index:999!important}
 body:not(.mobile) #mapSide{width:380px}
 body:not(.mobile) #mapSide .nav-tabs:not(.map-nav-select){height:42px}

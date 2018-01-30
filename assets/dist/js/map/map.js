@@ -418,15 +418,17 @@ var typeIcon = {
                     event.preventDefault();
                 }
             });
-            var input_end = document.getElementById('end');
+            $thismap.autocomplete_start.addListener('place_changed', function() {
+                productControlerObj.ShowDirection(false);
+            });
+            /*var input_end = document.getElementById('end');
             $thismap.autocomplete_end = new google.maps.places.Autocomplete(input_end, options);
             $thismap.autocomplete_end.bindTo('bounds', $thismap.map);
             google.maps.event.addDomListener(input_end, 'keydown', function(event) {
                 if (event.keyCode === 13) {
                     event.preventDefault();
                 }
-            });
-
+            });*/
 
             $thismap.autocomplete.addListener('place_changed', function() {
                 $thismap.isDirection = false;
@@ -2035,6 +2037,7 @@ var typeIcon = {
 
 ProductSearchControler = function(h) {
     var i = this;
+    this.markerArray = [];
     var j = {
         zoom: mapContext.zoom,
         center: mapContext.center,
@@ -2169,6 +2172,17 @@ ProductSearchControler = function(h) {
     } else {
         //$('.v-place-save').remove();
     }*/
+
+    $('.travelMode_select>div').click(function() {
+        $('#travelMode').val($(this).attr('id'));
+        $('.travelMode_one').removeClass('active');
+        $(this).addClass('active');
+        f.onChangeHandler();
+    });
+    $('#start').change(function() {
+        f.onChangeHandler();
+    });
+
 };
 
 ProductSearchControler.prototype.checkSaveProject = function () {
@@ -2330,13 +2344,13 @@ ProductSearchControler.prototype.genPopup = function() {
     })*/
 }
 
-ProductSearchControler.prototype.getDirection = function() {
+ProductSearchControler.prototype.onChangeHandler = function() {
+    this.calculateAndDisplayRoute();
+};
+
+ProductSearchControler.prototype.getDirectionReal = function() {
     var f = this;
     var map = f.map;
-    var markerArray = [];
-    // Instantiate a directions service.
-
-    f.map.setZoom(15);
 
     /*f.marker = new google.maps.Marker({
         map: map
@@ -2344,48 +2358,44 @@ ProductSearchControler.prototype.getDirection = function() {
     // Instantiate an info window to hold step text.
     f.stepDisplay = new google.maps.InfoWindow;
 
-    $('#end').val(f.productLatLng);
-    $('#end_fake').val(f.ProductMap.currentProduct.title + ' - ' + f.ProductMap.currentProduct.address);
     f.directionsService = new google.maps.DirectionsService;
     var geocoder = new google.maps.Geocoder();
 
     $('#directions-guide').height($('.v-place-v-direction').height() - $('.travelMode_select').height() - 30 - $('.start_end_points').height() - 30);
     f.directionsDisplay = new google.maps.DirectionsRenderer({ map: map });
     f.directionsDisplay.setPanel(document.getElementById('directions-guide'));
+    
+    console.log($('#start').val());
+    f.calculateAndDisplayRoute();
+}
 
-    var pos = f.ProductMap.myPos;
-    if (pos) {
-        map.setCenter(pos);
-        //f.marker.setPosition(pos);
+ProductSearchControler.prototype.getDirection = function(fromCurrentLocation = true) {
+    var f = this;
+    var map = f.map;
 
-        geocoder.geocode({
-            'location': pos
-        }, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                if (results[0]) {
-                    $('#start').val(results[0].formatted_address);
+    if (fromCurrentLocation) {
+        var pos = f.ProductMap.myPos;
+        if (pos) {
+            map.setCenter(pos);
+            //f.marker.setPosition(pos);
 
-                    var onChangeHandler = function() {
-                        f.calculateAndDisplayRoute(markerArray, map);
-                    };
-                    //document.getElementById('travelMode').addEventListener('change', onChangeHandler);
-                    $('.travelMode_select>div').click(function() {
-                        $('#travelMode').val($(this).attr('id'));
-                        $('.travelMode_one').removeClass('active');
-                        $(this).addClass('active');
-                        onChangeHandler();
-                    });
-                    $('#start').change(function() {
-                        onChangeHandler();
-                    });
-                    f.calculateAndDisplayRoute(markerArray, map);
+            geocoder.geocode({
+                'location': pos
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        $('#start').val(results[0].formatted_address);
+                        f.getDirectionReal();
+                    } else {
+                        alert('No results found');
+                    }
                 } else {
-                    alert('No results found');
+                    alert('Geocoder failed due to: ' + status);
                 }
-            } else {
-                alert('Geocoder failed due to: ' + status);
-            }
-        });
+            });
+        }
+    } else {
+        f.getDirectionReal();
     }
     /*if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -2431,11 +2441,11 @@ ProductSearchControler.prototype.getDirection = function() {
 	}*/
 }
 
-ProductSearchControler.prototype.calculateAndDisplayRoute = function(markerArray, map) {
+ProductSearchControler.prototype.calculateAndDisplayRoute = function() {
     var f = this;
     // First, remove any existing markers from the map.
-    for (var i = 0; i < markerArray.length; i++) {
-        markerArray[i].setMap(null);
+    for (var i = 0; i < f.markerArray.length; i++) {
+        f.markerArray[i].setMap(null);
     }
 
     // Retrieve the start and end locations and create a DirectionsRequest using
@@ -2452,7 +2462,7 @@ ProductSearchControler.prototype.calculateAndDisplayRoute = function(markerArray
         if (status === 'OK') {
             document.getElementById('warnings-panel').innerHTML = '<b>' + response.routes[0].warnings + '</b>';
             f.directionsDisplay.setDirections(response);
-            f.showSteps(response, markerArray, map);
+            f.showSteps(response);
             var distance = response.routes[0].legs[0].distance.text;
             var time = response.routes[0].legs[0].duration.text;
             $('.box-search-one-distance').text(distance);
@@ -2465,27 +2475,27 @@ ProductSearchControler.prototype.calculateAndDisplayRoute = function(markerArray
     });
 }
 
-ProductSearchControler.prototype.showSteps = function(directionResult, markerArray, map) {
+ProductSearchControler.prototype.showSteps = function(directionResult) {
     var f = this;
     // For each step, place a marker, and add the text to the marker's infowindow.
     // Also attach the marker to an array so we can keep track of it and remove it
     // when calculating new routes.
     var myRoute = directionResult.routes[0].legs[0];
     for (var i = 0; i < myRoute.steps.length; i++) {
-        f.marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+        f.marker = f.markerArray[i] = f.markerArray[i] || new google.maps.Marker;
         //marker.setMap(f.map);
         //marker.setPosition(myRoute.steps[i].start_location);
-        f.attachInstructionText(myRoute.steps[i].instructions, map);
+        f.attachInstructionText(myRoute.steps[i].instructions);
     }
 }
 
-ProductSearchControler.prototype.attachInstructionText = function(text, map) {
+ProductSearchControler.prototype.attachInstructionText = function(text) {
     var f = this;
     google.maps.event.addListener(f.marker, 'click', function() {
         // Open an info window when the marker is clicked on, containing the text
         // of the step.
         f.stepDisplay.setContent(text);
-        f.stepDisplay.open(map, marker);
+        f.stepDisplay.open(f.map, marker);
     });
 }
 
@@ -2496,7 +2506,7 @@ ProductSearchControler.prototype.handleLocationError = function(browserHasGeoloc
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.'
     );
-    f.infoWindow.open(map);
+    f.infoWindow.open(f.map);
 }
 
 
@@ -2680,14 +2690,18 @@ ProductSearchControler.prototype.ShowMoreInfo = function(lat, lon) {
     this.utilityTool.SearchAction(lat, lon);
 };
 
-ProductSearchControler.prototype.ShowDirection = function() {
+ProductSearchControler.prototype.ShowDirection = function(fromCurrentLocation = true) {
     var i = this;
+
+    i.map.setZoom(15);
+    $('#end').val(i.productLatLng);
+    $('#end_fake').val(i.ProductMap.currentProduct.title + ' - ' + i.ProductMap.currentProduct.address);
 
     i.ProductMap.isDirection = true;
     // clear all points
     i.ProductMap.clearPoints();
 
-    i.getDirection();
+    i.getDirection(fromCurrentLocation);
 }
 
 ProductSearchControler.prototype.loadSales = function(id = null) {
