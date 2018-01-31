@@ -18,6 +18,9 @@ $includeFile = $n.'.php';
 
 $config->addJS('dist', $page.'/view.js');
 
+if ($n == 'history') {
+    $config->addJS('plugins', 'DataTables/datatables.min.js');
+}
 if ($n == 'node' && $mode) {
         for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
 
@@ -28,7 +31,8 @@ if ($n == 'node' && $mode) {
         $config->addJS('dist', $page.'/add.js');
 
         $includeFile = $n.'.'.$mode.'.php';
-} else {
+} 
+else {
     $config->addJS('dist', $page.'/'.$n.'.js');
 }
 
@@ -41,7 +45,9 @@ if ($n == 'node' && $mode) {
         <div class="menu-one-box-body">
             <a class="menu-one-item hidden" href="<?php echo $config->nLink ?>?mode=stat">Stat</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/info">Sửa thông tin</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink.'/changepassword' ?>">Add new</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink.'/changepassword' ?>">Đổi mật khẩu</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink.'/addcoin' ?>">Nạp tiền</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink.'/history' ?>">Lịch sử giao dịch</a>
         </div>
     </div>
 
@@ -54,9 +60,11 @@ if ($n == 'node' && $mode) {
     </div>
 
     <div class="menu-one-box">
-        <h4 class="menu-one-box-header">Dự án quan tâm</h4>
+        <h4 class="menu-one-box-header">Khác</h4>
         <div class="menu-one-box-body">
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/subscribe">List all</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/subscribe">Dự án quan tâm</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/">Thông báo</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/feedback">Feedback</a>
         </div>
     </div>
 </div>

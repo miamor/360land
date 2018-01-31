@@ -1140,8 +1140,8 @@ body.mobile .close-mode-board{position:absolute;top:6px;right:12px;cursor:pointe
 
 
 /* Dashboard */
-.left-menu{background:#fafafa;border:1px solid #eee;padding:15px 15px!important}
-.left-menu h4{margin:0 0 5px;font-weight:600}
+.left-menu{background:#fafafa;border:1px solid #eee;padding:5px 15px 15px!important}
+.left-menu h4{margin:10px 0 5px;font-weight:600}
 .menu-one-item{display: block;padding:3px 10px 3px;position: relative;z-index:4;border-bottom:1px solid #eee;margin-bottom:-1px}
 .menu-one-item:hover,.menu-one-item.active{background:#84c754;color:#fff;border-color:#84c754;z-index:5}
 .menu-one-item:hover::before,.menu-one-item.active:before {content:"\f138";float:right;font-family:"FontAwesome";font-size:16px;margin-right:0;margin-top:0}
