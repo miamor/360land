@@ -40,7 +40,7 @@
 
 
 var isMobile = ($(window).width() <= 500 ? true : false);
-var API_URL = '//45.119.82.40:8000';
+var API_URL = '//mappy.com.vn:8000';
 var __token = __userInfo = null;
 
 function objectifyForm(formArray) {//serialize data function
@@ -196,13 +196,12 @@ var checkSession = function() {
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
     //console.log(s);
-    if (s > 130*60) { // > 30 min
-    //if (s >= 3) {
+    if (s > 2*60*60) { // > 2 hours
         // logout
         logout(true)
     }
 }
-checkSession_Interval = setInterval(checkSession, 1200);
+checkSession_Interval = setInterval(checkSession, 10000);
 
 
 function logout (autoLoggedOut = false) {
@@ -214,10 +213,19 @@ function logout (autoLoggedOut = false) {
     console.log('Logged out!');
     $('.nav-user #me_login_link').show();
     $('.nav-user #me_dropdown_info').hide();
-    if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
+    //if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
+    if (autoLoggedOut) refreshToken();
     else location.reload();
 }
 
+function refreshToken () {
+    $.post(API_URL+'/manager_user/refresh_token/', {}, function (response) {
+        if (response.data != 'error') {
+            __token = response.data;
+            localStorage.setItem('token', response.data);
+        }
+    })
+}
 
 function loadLoginPopup (autoLoggedOut = false) {
     html = '<div class="popup-section section-light">';

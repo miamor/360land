@@ -41,6 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) {
 
 
 class Config {
+    public function __construct () {
+        $this->dbLink = MAIN_URL.'/dashboard';
+    }
+
     function addJS ($type, $link) {
         if ($type == -1) {
             $this->JS .= $link.'|';

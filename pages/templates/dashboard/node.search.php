@@ -1,6 +1,4 @@
-<div class="col-md-1"></div>
-
-<form class="place-add col-md-10">
+<form id="theform" class="place-add">
     <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Tìm bất động sản</h4>
     <div class="add-form-content">
         <div class="form-group" attr-required="1">
@@ -297,7 +295,3 @@
         </div>
     </div>
 </form>
-
-<div class="col-md-1"></div>
-
-<div class="clearfix"></div>

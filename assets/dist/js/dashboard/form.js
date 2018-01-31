@@ -8,10 +8,10 @@ var splitURL = location.href.split('/');
 var nodeID = splitURL[splitURL.length-1];
 
 (function($) {
-    FormGen = function(submitType, nodeType) {
+    FormGen = function(submitType, isNewNode) {
         var v = $(this).attr('id');
         var $thismap = this;
-        if (newNode) {
+        if (isNewNode) {
             this.map = null;
             this.geocoder = new google.maps.Geocoder();
             this.marker = new google.maps.Marker();
@@ -24,7 +24,7 @@ var nodeID = splitURL[splitURL.length-1];
                 this.loadDataNode()
             }
 
-            if (newNode) {
+            if (isNewNode) {
                 this.map = new google.maps.Map(document.getElementById('map_select'), {
                     zoom: 5,
                     mapTypeControl: false,
@@ -73,12 +73,12 @@ var nodeID = splitURL[splitURL.length-1];
                 $(this).find('.control-label,.control-labels').append('<span class="required-mark text-danger bold">*</span>')
             });
 
-            /*if (__userInfo) {
+            if (__userInfo) {
                 $('.user-info-input').hide();
                 $('#tenlienhe').val(__userInfo.name);
                 $('#dienthoai').val(__userInfo.phone);
                 $('#email').val(__userInfo.email);
-            }*/
+            }
 
                 this.autocompleteProject();
 
@@ -166,7 +166,7 @@ var nodeID = splitURL[splitURL.length-1];
         this.submitNode = function () {
             $('#'+v).submit(function () {
                 var ok = true;
-                $('[attr-required="1"]').not('.form-adr,.form-price,.form-type').each(function () {
+                $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
                     var val = $(this).find('input,select,textarea').val();
                     var $fgr = $(this).closest('.form-group');
                     var isCustomField = $fgr.is('.customshow');
@@ -200,33 +200,59 @@ var nodeID = splitURL[splitURL.length-1];
                 var a = $('[name="type_action"]').val();
                 $('#type').val($('#type'+a).val());
 
-                if (!$('#rank').val()) {
-                    ok = false;
-                    console.log('Missing parameters (rank)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                }
-
                 if (!$('#type').val() || $('#type').val() == 'CN') {
                     ok = false;
                     console.log('Missing parameters (type)');
                     mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (type)');
                 }
-                if (!$('#price_giatri').val()) {
+
+                if (isNewNode && !$('#rank').val()) {
+                    ok = false;
+                    console.log('Missing parameters (rank)');
+                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
+                }
+
+                if (isNewNode && !$('#price_giatri').val()) {
                     ok = false;
                     console.log('Missing parameters (price_giatri)');
                     mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
                 }
 
+                if (isNewNode) {
+                    if (!$('#timefrom').val() || !$('#timeto').val()) {
+                        ok = false;
+                        console.log('Missing parameters (timefrom || timeto)');
+                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
+                    } else {
+                        var today = new Date();
+                        today.setHours(0,0,0,0);
+                        var timefrom = new Date($('#timefrom').val()).getTime();
+                        var timeto = new Date($('#timeto').val()).getTime();
+                        if (timefrom < today) {
+                            ok = false;
+                            console.log('timefrom < today');
+                            mtip('', 'error', '', 'Thời gian không thể bắt đầu từ trước ngày hôm nay');
+                        } else if (timefrom > timeto) {
+                            ok = false;
+                            console.log('timefrom > timeto');
+                            mtip('', 'error', '', 'Thời gian không hợp lệ (thời gian kết thúc < thời gian bắt đầu)');
+                        }
+                    }
+                }
 
                 var postData = objectifyForm($(this).serializeArray());
 
+                //console.log(postData);
 
                 postData.price = postData.price_giatri;
                 if (postData.price_donvi == 'm') {
                     postData.price = postData.price_giatri/1000;
                 }
 
-                postData.rank = parseInt(postData.rank);
+                postData.vip = parseInt(postData.rank);
+                delete postData['rank'];
+                //postData.rank = parseInt(postData.rank);
+
                 if (!postData.area) postData.area = 0;
                 postData.area = parseInt(postData.area);
                 if (!postData.sophongngu) postData.sophongngu = 0;
@@ -235,9 +261,9 @@ var nodeID = splitURL[splitURL.length-1];
                 postData.latitude = parseFloat(postData.latitude);
                 postData.longitude = parseFloat(postData.longitude);
 
-                if (submitType == 'add') {
-                    postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'');
-                }
+                //if (submitType == 'add') {
+                //    postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'');
+                //}
 
                 postData.tinh = $('#city option:selected').text();
                 postData.huyen = $('#district option:selected').text();
@@ -255,6 +281,7 @@ var nodeID = splitURL[splitURL.length-1];
                     console.log('not ok~');
                     mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
                 }
+                
                 return false
             })
         }
@@ -302,126 +329,6 @@ var nodeID = splitURL[splitURL.length-1];
                 }
             })
         }
-
-
-
-        this.submitProject = function () {
-            $('#'+v).submit(function () {
-                var ok = true;
-                $('[attr-required="1"]').not('.form-adr,.form-price').each(function () {
-                    var val = $(this).find('input,select,textarea').val();
-                    if ( !val || val == "CN" ) {
-                        console.log('Missing parameters');
-                        console.log($fgr);
-                        console.log($fgr.html);
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                        ok = false;
-                        return false;
-                    }
-                });
-                if (ok) {
-                    if ( !$('#city').val() || !$('#district').val() ) {
-                        console.log('Missing parameters (city || district)');
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (city/district)');
-                        ok = false;
-                        return false;
-                    }
-                    if (!$('#address').val()) {
-                        console.log('Missing parameters (address)');
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                        ok = false;
-                        return false;
-                    }
-                }
-
-                if (!$('#rank').val()) {
-                    ok = false;
-                    console.log('Missing parameters (rank)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                }
-
-                if (!$('#price_giatri').val()) {
-                    ok = false;
-                    console.log('Missing parameters (price_giatri)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
-                }
-
-
-                var postData = objectifyForm($(this).serializeArray());
-
-
-                postData.pricefrom = postData.price_giatri;
-                if (postData.price_donvi == 'm') {
-                    postData.pricefrom = postData.price_giatri/1000;
-                }
-
-                postData.rank = parseInt(postData.rank);
-
-                postData.latitude = parseFloat(postData.latitude);
-                postData.longitude = parseFloat(postData.longitude);
-
-                postData.tinh = $('#city option:selected').text();
-                postData.huyen = $('#district option:selected').text();
-
-                console.log(postData);
-                console.log(JSON.stringify(postData));
-
-                if (ok) {
-                    if (submitType == 'add') $thismap.addProject(postData)
-                    else if (submitType == 'edit') $thismap.editProject(postData)
-                } else {
-                    console.log('not ok~');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                }
-                return false
-            })
-        }
-
-        this.addProject = function (postData) {
-            console.log('ajax post');
-            //var postData = $(this).serialize();
-            $.ajax({
-                url: API_URL+'/duans/',
-                type: 'post',
-                data: postData,
-                datatype: 'json',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', __token);
-                },
-                success: function (response) {
-                    console.log(response);
-                    mtip('', 'success', '', 'Dự án đã được đăng thành công');
-                },
-                error: function (a, b, c) {
-                    console.log(a);
-                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
-                }
-            })
-        }
-
-        this.editProject = function (postData) {
-            console.log('ajax post');
-            //var postData = $(this).serialize();
-            $.ajax({
-                url: API_URL+'/duans/'+nodeID+'/',
-                type: 'put',
-                data: postData,
-                datatype: 'json',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', __token);
-                },
-                success: function (response) {
-                    console.log(response);
-                    mtip('', 'success', '', 'Dự án đã được cập nhật thành công');
-                },
-                error: function (a, b, c) {
-                    console.log(a);
-                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
-                }
-            })
-        }
-
-
 
 
         this.changeCityCallback = function () {
@@ -538,57 +445,6 @@ var nodeID = splitURL[splitURL.length-1];
                     $('.form-type').find('input').attr('readonly', true);
 
                     $('#price_giatri').val(response.price);
-                    $('#price_donvi').val('b');
-
-                    if (response.thumbs) {
-                        response.thumbsTxt = response.thumbs.implode('|');
-                        $('#thumbs').html(response.thumbsTxt.replace('|', '<br/>'));
-                    }
-
-                    $('#city option').each(function () {
-                        // if ($(this).text() == response.tinh)
-                        //if ('Hà Nội' == response.tinh) {
-                        if ($(this).text() == response.tinh || (response.tinh == 'Hà Nội' && $(this).attr('value') == 'HN')) {
-                            $('#city').val($(this).attr('value'));
-                            c_city = $('#city').val();
-                            $thismap.changeCityCallback();
-
-                            $('#district option').each(function () {
-                                if ($(this).text() == response.huyen) {
-                                    $('#district').val($(this).attr('value'));
-                                }
-                            })
-                        }
-                    })
-                },
-                error: function (a, b, c) {
-                    console.log(a);
-                }
-            })
-        }
-
-        this.loadDataProject = function () {
-            $.ajax({
-                url: API_URL+'/duans/'+nodeID+'/',
-                type: 'get',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', __token);
-                },
-                success: function (response) {
-                    console.log(response);
-                    if (response.message) {
-                        $('#main-content main').html('No item found');
-                        return false;
-                    }
-
-                    response = response.data;
-                    $('.node_title').html(response.name);
-                    for (var key in response) {
-                        $('input[name="'+key+'"], .form-group:not(".form-adr") select[name="'+key+'"], textarea[name="'+key+'"]').val(response[key])
-                    }
-                    $('#type_').val(response.type).attr('disabled', true);
-
-                    $('#price_giatri').val(response.pricefrom);
                     $('#price_donvi').val('b');
 
                     if (response.thumbs) {

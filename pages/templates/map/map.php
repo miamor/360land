@@ -226,6 +226,14 @@
             </ul>
         </div>
 
+        <div class="v-box v-place-contact"><h4>Liên hệ</h4>
+            <ul class="v-place-more v-box-content open">
+                <li><i class="fa fa-user"></i> Tên liên hệ: <span class="v-place-ten bold"></span></li>
+                <li><i class="fa fa-phone"></i> Số điện thoại: <span class="v-place-phone bold"></span></li>
+                <li><i class="fa fa-envelope-square"></i> Email: <span class="v-place-email bold"></span></li>
+            </ul>
+        </div>
+
         <div class="v-box introduan">
             <h4>Intro </h4>
             <div class="v-box-content">
@@ -238,13 +246,6 @@
         <!--//<div class="place-contact-info"><h3>'+place.tenlienhe+'</h3><a href="tel:'+place.dienthoai+'" class="place-contact-info-phone btn btn-danger">'+place.dienthoai+'</a></div>
         //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Street view</a></div>
         //<div class="v-box v-box-content"><a href="#" class="streetview-btn"><i class="fa fa-car"></i> Dẫn đường</a></div>-->
-        <div class="v-box"><h4>Liên hệ</h4>
-            <ul class="v-place-more v-box-content open">
-                <li><i class="fa fa-user"></i> Tên liên hệ: <span class="v-place-ten bold"></span></li>
-                <li><i class="fa fa-phone"></i> Số điện thoại: <span class="v-place-phone bold"></span></li>
-                <li><i class="fa fa-envelope-square"></i> Email: <span class="v-place-email bold"></span></li>
-            </ul>
-        </div>
     </div>
     <div class="clearfix"></div>
     <div class="v-box v-place-related popup-section section-light">

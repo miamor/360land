@@ -1,9 +1,3 @@
-function loginForm () {
-    $('#login').submit(function () {
-        submitLoginForm();
-    })
-}
-
 function submitLoginForm () {
     $.ajax({
         url: API_URL+'/login/user/',
@@ -122,6 +116,5 @@ $(document).ready(function () {
         //window.location.href = MAIN_URL;
         window.history.back();
     } else {
-        loginForm();
     }
 })

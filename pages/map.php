@@ -17,23 +17,6 @@ if ($n) {
         include 'templates/'.$page.'/view.php';
     }
 }
-else if ($mode) {
-    $pageTitle = 'Place mode '.$mode;
-    include 'templates/header.php';
-
-    if ($type) $mode = $mode.'_'.$type;
-
-    for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
-
-    if ($type == 'node') {
-        $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places');
-        //$config->addJS('dist', $page.'/add_initmap.js');
-    }
-    $config->addJS('dist', $page.'/form.js');
-    $config->addJS('dist', $page.'/add.js');
-
-    include 'templates/'.$page.'/'.$mode.'.php';
-}
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';

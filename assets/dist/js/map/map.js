@@ -1739,6 +1739,9 @@ var typeIcon = {
             if (this.infoWindow) this.infoWindow.close();
 
             if (__token) productControlerObj.checkSaveProject();
+            else {
+                $('#save_project').html('<a class="v-place-save disabled" href="javascript:return false" title="Đăng nhập để theo dõi dự án"><i class="fa fa-heart-o"> Theo dõi</a>');
+            }
 
             if (data) {
                 var h = null;
@@ -2167,12 +2170,6 @@ ProductSearchControler = function(h) {
         i.loadParentProject(i.ProductMap.currentProduct.duanid);
     })
 
-    /*if (__token) {
-        if (i.ProductMap.currentPID) i.checkSaveProject();
-    } else {
-        //$('.v-place-save').remove();
-    }*/
-
     $('.travelMode_select>div').click(function() {
         $('#travelMode').val($(this).attr('id'));
         $('.travelMode_one').removeClass('active');
@@ -2186,6 +2183,7 @@ ProductSearchControler = function(h) {
 };
 
 ProductSearchControler.prototype.checkSaveProject = function () {
+    console.log('call checkSaveProject');
     var i = this;
     $.ajax({
         url: API_URL + '/manager_user/kiemtraduanquantam/',
@@ -2194,12 +2192,12 @@ ProductSearchControler.prototype.checkSaveProject = function () {
         beforeSend: function(xhr) {
             xhr.setRequestHeader('Authorization', __token);
         },
-        success: function(data) {
-            console.log(data);
-            //$('.v-place-save').addClass('saved fa-heart').removeClass('fa-heart-o');
+        success: function(response) {
+            data = response.data;
+            console.log('response from kiemtraduanquantam '+data);
 
-            if (data == 'OK') i.saveProject();
-            else i.unsaveProject();
+            if (data == 'OK') i.unsaveProject();
+            else i.saveProject();
         }, 
         error: function (a, b, c) {
             console.log(a);
@@ -2209,12 +2207,12 @@ ProductSearchControler.prototype.checkSaveProject = function () {
 
 ProductSearchControler.prototype.saveProject = function () {
     var i = this;
-    $('#save_project').html('<a class="v-place-save fa fa-heart-o" href="#" title="Đánh dấu quan tâm"></a>');
+    $('#save_project').html('<a class="v-place-save" href="#" title="Nhận thông báo từ dự án này"><i class="fa fa-heart-o"> Theo dõi</a>');
 
     $('.v-place-save').hover(function () {
-        $(this).removeClass('fa-heart-o').addClass('fa-heart');
+        $(this).children('i').removeClass('fa-heart-o').addClass('fa-heart');
     }).mouseout(function () {
-        $(this).removeClass('fa-heart').addClass('fa-heart-o');
+        $(this).children('i').removeClass('fa-heart').addClass('fa-heart-o');
     }).click(function () {
         $.ajax({
             url: API_URL + '/manager_user/duanquantams/',
@@ -2237,12 +2235,12 @@ ProductSearchControler.prototype.saveProject = function () {
 
 ProductSearchControler.prototype.unsaveProject = function () {
     var i = this;
-    $('#save_project').html('<a class="v-place-save fa fa-heart saved" href="#" title="Bỏ quan tâm"></a>');
+    $('#save_project').html('<a class="v-place-save saved" href="#" title="Bỏ theo dõi"><i class="fa fa-heart"></i> Bỏ Theo dõi</a>');
 
     $('.v-place-save').hover(function () {
-        $(this).removeClass('fa-heart').addClass('fa-heart-o');
+        $(this).children('i').removeClass('fa-heart').addClass('fa-heart-o');
     }).mouseout(function () {
-        $(this).removeClass('fa-heart-o').addClass('fa-heart');
+        $(this).children('i').removeClass('fa-heart-o').addClass('fa-heart');
     }).click(function () {
         $.ajax({
             url: API_URL + '/manager_user/boduanquantam/',
@@ -2711,46 +2709,58 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
     $.post(API_URL+'/search/duan/', {duan: duanID}, function (data) {
         data = data.data;
         console.log(data);
-        $('#sales_list').html('');
-        $.each(data, function (key, val) {
-            var k = '';
-
-            if (val.price < 1) val.priceTxt = val.price * 100 + ' triệu';
-            else val.priceTxt = val.price + ' tỷ';
         
-            // test data
-            //if (!val.thumbs || !val.thumbs[0]) val.thumbs = [MAIN_URL+"/data/images/h8.jpg"];
+        if (!data.length) {
+            $('#sales_list').html('<div class="empty">No data.</div>');
+        } else {
+            $('#sales_list').html('');
+            $.each(data, function (key, val) {
+                var k = '';
 
-            // attr-marker-id here not work
-            //k += '<div attr-id="' + val.id + '" attr-marker-id="' + i + '" class="map-result-one">';
-            //k += '<div attr-id="' + val.id + '" onclick="javascript:productControlerObj.showSaleNode(\''+val.id+'\')" class="map-result-one">';
-            k += '<div attr-id="' + val.id + '" class="map-result-one">';
-            k += '<div class="map-result-one-left">';
-            k += '<img class="map-result-one-thumb" src="' + val.avatar + '">';
-            k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>' + val.priceTxt + '</span></div>';
-            k += '</div>';
-            k += '<div class="map-result-one-info">'
-            k += '<h3 class="map-result-one-title">' + val.title + '</h3>';
-            //k += '<div class="map-result-one-des">'+val.details+'</div>';
-            k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> ' + val.address + '</div>';
-            //k += '<div class="map-result-one-type">'+val.type+'</div>';
-            //k += '<div class="map-result-one-phone">'+val.phone+'</div>';
-            k += '</div>';
-            k += '<div class="clearfix"></div>';
-            k += '</div>';
+                if (val.price < 1) val.priceTxt = val.price * 100 + ' triệu';
+                else val.priceTxt = val.price + ' tỷ';
+            
+                // test data
+                //if (!val.thumbs || !val.thumbs[0]) val.thumbs = [MAIN_URL+"/data/images/h8.jpg"];
 
-            $('#sales_list').append(k);
+                // attr-marker-id here not work
+                //k += '<div attr-id="' + val.id + '" attr-marker-id="' + i + '" class="map-result-one">';
+                //k += '<div attr-id="' + val.id + '" onclick="javascript:productControlerObj.showSaleNode(\''+val.id+'\')" class="map-result-one">';
+                k += '<div attr-id="' + val.id + '" class="map-result-one">';
+                k += '<div class="map-result-one-left">';
+                k += '<img class="map-result-one-thumb" src="' + val.avatar + '">';
+                k += '<div class="map-result-one-price"><i class="fa fa-dollar"></i> <span>' + val.priceTxt + '</span></div>';
+                k += '</div>';
+                k += '<div class="map-result-one-info">'
+                k += '<h3 class="map-result-one-title">' + val.title + '</h3>';
+                //k += '<div class="map-result-one-des">'+val.details+'</div>';
+                k += '<div class="map-result-one-adr"><i class="fa fa-map-marker"></i> ' + val.address + '</div>';
+                //k += '<div class="map-result-one-type">'+val.type+'</div>';
+                //k += '<div class="map-result-one-phone">'+val.phone+'</div>';
+                k += '<ul class="v-box-content open">\
+                <li class="v-place-more-one v-place-area" style="display: inline-block;">Diện tích: <span>'+val.area+'</span>m2</li>\
+                <li class="v-place-more-one v-place-direction" style="display: inline-block;">Hướng: <span>'+val.huong+'</span></li>\
+                <li class="v-place-more-one v-place-room" style="display: inline-block;">Số phòng ngủ: <span>'+val.sophongngu+'</span></li>\
+                <li class="v-place-more-one v-place-type">Loại: <span>'+typeRealEstate[val.type]+'</span></li>\
+            </ul>';
+                k += '<div class="sale_info"><i class="fa fa-user"></i> <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.userid+' <i class="fa fa-external-link"></i></a></div>';
+                k += '</div>';
+                k += '<div class="clearfix"></div>';
+                k += '</div>';
 
-            $('#sales_list .map-result-one[attr-id="'+val.id+'"]').click(function() {
-                i.ProductMap.fromProject = true;
-                /*i.ProductMap.currentProduct = val;
-                i.ProductMap.currentPID = val.id;*/
-                val.isProject = false;
-                $('.v-place-v-sales, .v-place-v-tiendo').hide()
-                i.ProductMap.loadAndShowInfoWindow(val.id, val.isProject, true);
-                productControlerObj.ChangeUrlForNewContext();
-            })
-        });
+                $('#sales_list').append(k);
+
+                $('#sales_list .map-result-one[attr-id="'+val.id+'"] .map-result-one-title').click(function() {
+                    i.ProductMap.fromProject = true;
+                    /*i.ProductMap.currentProduct = val;
+                    i.ProductMap.currentPID = val.id;*/
+                    val.isProject = false;
+                    $('.v-place-v-sales, .v-place-v-tiendo').hide()
+                    i.ProductMap.loadAndShowInfoWindow(val.id, val.isProject, true);
+                    productControlerObj.ChangeUrlForNewContext();
+                })
+            });
+        }
     })
 }
 
@@ -2765,34 +2775,41 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
 ProductSearchControler.prototype.loadTienDo = function(id = null) {
     var i = this;
     var duanID = (id != null ? id : i.ProductMap.currentPID);
-    $.post(API_URL+'/user/tiendoduan/', {duanid: duanID}, function (data) {
+    console.log('loadTienDo ID: '+duanID);
+    $.post(API_URL+'/user/tiendoduan/', {duan: duanID}, function (data) {
         data = data.data;
         console.log('Tien do du an: '+duanID);
         console.log(data);
-        $('#tiendo_list').html('');
-        var k = '';
-        $.each(data, function (key, val) {
-            // test data
-            //if (!val.thumbs || !val.thumbs[0]) val.thumbs = [MAIN_URL+"/data/images/h8.jpg"];
 
-            // attr-marker-id here not work
-            //k += '<div attr-id="' + val.id + '" attr-marker-id="' + i + '" class="map-result-one">';
-            k += '<div attr-id="' + val.id + '" class="td-one">';
-            k += '<div class="td-one-left">';
-            k += '<img class="td-one-thumb" src="' + val.thumbs + '">';
-            k += '</div>';
-            k += '<div class="td-one-info">';
-            k += '<h3>' + val.title + '</h3>';
-            k += '<div class="td-one-des">' + val.details + '</div>';
-            k += '</div>';
-            k += '</div>';
+        if (!data.length) {
+            $('#tiendo_list').html('<div class="empty">No data.</div>');
+        } else {
+            $('#tiendo_list').html('');
+            $.each(data, function (key, val) {
+                var k = '';
+                // test data
+                //if (!val.thumbs || !val.thumbs[0]) val.thumbs = [MAIN_URL+"/data/images/h8.jpg"];
 
-            $('#tiendo_list').append(k);
+                // attr-marker-id here not work
+                //k += '<div attr-id="' + val.id + '" attr-marker-id="' + i + '" class="map-result-one">';
+                k += '<div attr-id="' + val.id + '" class="td-one">';
+                k += '<div class="td-one-left">';
+                k += '<img class="td-one-thumb" src="' + val.thumbs + '">';
+                k += '</div>';
+                k += '<div class="td-one-info">';
+                k += '<h3>' + val.title + '</h3>';
+                k += '<div class="td-one-des">' + val.details + '</div>';
+                k += '</div>';
+                k += '<div class="clearfix"></div>';
+                k += '</div>';
 
-            $('#tiendo_list .td-one[attr-id="'+val.id+'"]').click(function () {
-                i.showTienDoDetails()
+                $('#tiendo_list').append(k);
+
+                $('#tiendo_list .td-one[attr-id="'+val.id+'"]').click(function () {
+                    i.showTienDoDetails()
+                })
             })
-        })
+        }
     })
 }
 
@@ -2905,9 +2922,10 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-details').html(place.details);
     $('.v-place-title').attr('title', place.title).children('div').html(place.title);
-    $('.v-place-ten').html(place.tenlienhe);
+    $('.v-place-ten').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+place.tenlienhe+'">'+place.tenlienhe+' <i class="fa fa-external-link"></i></a>');
     $('.v-place-phone').html(place.dienthoai);
     $('.v-place-email').html(place.email);
+    $('.v-place-contact').show();
 
     $('.v-place-related-list').html('');
     $.post(API_URL + '/search/nodenangcao/', { nodeid: i.ProductMap.currentPID }, function(similar) {
@@ -3021,14 +3039,14 @@ ProductSearchControler.prototype.setProjectDetails = function() {
     if (place.price < 1) place.priceTxt = place.price * 100 + ' triệu';
     else place.priceTxt = place.price + ' tỷ';
     $('.v-place-pricenum').html(place.priceTxt);
-    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room, v-place-ten,.v-place-phone,.v-place-email').hide();
+    $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').hide();
     $('.v-place-tiendo, .v-place-intro, .v-place-infoduan').show();
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-tiendo span').html(place.tiendo);
     $('.v-place-details').html(place.infoduan);
     $('.v-place-title').attr('title', place.title).children('div').html(place.title);
-    //$('.v-place-ten,.v-place-phone,.v-place-email').hide();
     $('.v-place-intro').html(place.intro);
+    $('.v-place-contact').hide();
 
     $('.v-place-related-list').html('');
     $.post(API_URL + '/search/duannangcao/', { duanid: i.ProductMap.currentPID }, function(similar) {
