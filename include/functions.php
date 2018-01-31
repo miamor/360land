@@ -12,7 +12,8 @@ define('JS', ASSETS.'/dist/js');
 define('IMG', ASSETS.'/img');
 define('PLUGINS', ASSETS.'/plugins');
 
-define('GG_API_KEY', 'AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc');
+//define('GG_API_KEY', 'AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc');
+define('GG_API_KEY', 'AIzaSyD7iBIhRsXT0SzEJTxSxyOkqJvTYvBS2h4');
 define('GG_CX_ID', '014962602028620469778:yf4br-mf6mk');
 
 define('FB_APP_ID', '148978169071502');

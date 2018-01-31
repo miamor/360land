@@ -25,7 +25,7 @@ if ($n == 'node' && $mode) {
         for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
 
         if ($mode == 'new') {
-            $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyACkc-PYhlnPUWJaV2GlcCiEcuJujZsMdc&libraries=places');
+            $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
         }
         $config->addJS('dist', $page.'/form.js');
         $config->addJS('dist', $page.'/add.js');
