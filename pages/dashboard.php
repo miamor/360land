@@ -64,7 +64,6 @@ else {
         <div class="menu-one-box-body">
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/subscribe">Dự án quan tâm</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/">Thông báo</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/feedback">Feedback</a>
         </div>
     </div>
 </div>
