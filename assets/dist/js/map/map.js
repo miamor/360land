@@ -1014,7 +1014,9 @@ var typeIcon = {
             //if (!this.isDrawing) this.map.setZoom(zoom_moderate);
             for (var i = 0; i < a.node.length; i++) {
                 if (a.node[i] && this.isInPolyline(a.node[i].latitude, a.node[i].longitude)) {
-                    if (a.node[i].avatar == null || a.node[i].avatar == '') a.node[i].avatar = MAIN_URL + '/assets/img/noimage.png';
+                    if (a.node[i].avatar == null || a.node[i].avatar == '') {
+                        a.node[i].avatar = (a.node[i].thumbs ? a.node[i].thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
+                    }
                     a.node[i].isProject = false;
 
                     a.node[i].typeid = parseInt(a.node[i].type.split('typereal')[1]);
@@ -1033,7 +1035,10 @@ var typeIcon = {
             }
             for (var i = 0; i < a.project.length; i++) {
                 if (a.project[i] && this.isInPolyline(a.project[i].latitude, a.project[i].longitude)) {
-                    if (a.project[i].avatar == null || a.project[i].avatar == '') a.project[i].avatar = MAIN_URL + '/assets/img/noimage.png';
+                    if (a.project[i].avatar == null || a.project[i].avatar == '') {
+                        console.log( a.project[i].thumbs);
+                        a.project[i].avatar = (a.project[i].thumbs ? a.project[i].thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
+                    }
 
                     a.project[i].typeid = null;
                     a.project[i].sellLabel = '';
@@ -3002,7 +3007,9 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 function handle(place) {
     console.log(place);
 
-    if (place.avatar == null || place.avatar == '') place.avatar = MAIN_URL + '/assets/img/noimage.png';
+    if (place.avatar == null || place.avatar == '') {
+        place.avatar = (place.thumbs ? place.thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
+    }
     place.isProject = (place.name ? true : false);
 
     if (place.isProject) place.title = place.name;
@@ -3012,9 +3019,9 @@ function handle(place) {
     place.exCls = (place.isProject ? ' project' : '') +
         (place.typeid > 3 ? ' big' : '');
 
-    if (!place.thumbs) {
+    /*if (!place.thumbs) {
         place.thumbs = [MAIN_URL + "/data/images/h1.jpg", MAIN_URL + "/data/images/h2.jpg", MAIN_URL + "/data/images/h3.jpg", MAIN_URL + "/data/images/h4.jpg", MAIN_URL + "/data/images/h5.jpg", MAIN_URL + "/data/images/h6.jpg", MAIN_URL + "/data/images/h7.jpg"]
-    }
+    }*/
 
     return place;
 }
