@@ -2206,8 +2206,7 @@ ProductSearchControler = function(h) {
         f.onChangeHandler();
     });
 
-    var wi = $('.form-price').width() - $('#pricefrom_giatri').width() - 25;
-    console.log($('.form-price').width()+' ** '+$('#pricefrom_giatri').width()+' ** '+wi);
+    //var wi = $('.form-price').width() - $('#pricefrom_giatri').width() - 25;
     $('#pricefrom_donvi').css({
         width: '39%',
         'margin-left': 3
@@ -3381,7 +3380,7 @@ function render(isResizeSmaller = false, searchVisible = false) {
         });
     }
 
-    if (w <= 500) {
+    if (isMobile) {
         $('body').addClass('mobile');
         $('nav').removeClass('navbar-fixed-top');
         $('.v-place-related').removeClass('popup-section section-light');
@@ -3394,7 +3393,6 @@ function render(isResizeSmaller = false, searchVisible = false) {
         $('#map-search-form,.map-results-tabs').attr('style', 'height:' + sidePaneHeight + 'px!important');
 
         var inputW = w - $('.li-filter').width() - $('.li-list').width() - $('.map-tabs-toggle').width() - 10;
-        console.log(w + ' ~ ' + $('.li-filter').width() + ' ~ ' + $('.li-list').width() + ' ~ ' + $('.map-tabs-toggle').width() + ' ~ ' + inputW);
         $('.li-input').attr('style', 'width:' + inputW + 'px!important');
     } else {
         $('body').removeClass('mobile');
@@ -3462,8 +3460,6 @@ $(document).ready(function() {
 
     if (!isMobile) $('nav.navbar').removeClass('navbar-static-top').addClass('navbar-fixed-top');
 
-    render(false, (isMobile ? false : true));
-
     if (isMobile) {
         //$('.li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
         $('#mapSide .li-list').after('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/> </li>');
@@ -3471,6 +3467,8 @@ $(document).ready(function() {
         //$('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
         $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
     }
+
+    render(false, (isMobile ? false : true));
 
     productControlerObj = new ProductSearchControler({
         context: mapContext
