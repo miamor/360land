@@ -2397,6 +2397,10 @@ ProductSearchControler.prototype.ShowDirection = function(fromCurrentLocation = 
     this.directionsDisplay.setMap(i.map);
 
     $('#directions-guide').height($('.v-place-v-direction').height() - $('.travelMode_select').height() - 30 - $('.start_end_points').height() - 30);
+    var ml = ($('.v-place-v-direction').width() - $('.travelMode_select').width())/2 + 1;
+    $('.travelMode_select').css({
+        'margin-left': ml
+    })
 
     i.getDirection(fromCurrentLocation);
 }
@@ -2435,7 +2439,7 @@ ProductSearchControler.prototype.getDirection = function(fromCurrentLocation = t
                 }
             });
         } else { // can't get current pos
-
+            $('#directions-guide').html('Không lấy được vị trí hiện tại của bạn. Vui lòng nhập địa chỉ xuất phát.');
         }
     } else {
         f.getDirectionReal();
