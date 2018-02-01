@@ -2,6 +2,24 @@ var urlAr = (window.location.href.replace('/', ' ').trim()).split('/');
 var uID = urlAr[urlAr.length - 1];
 console.log(uID);
 
+function openRefreshForm (itemID) {
+    if (isMobile) {
+        location.href = MAIN_URL+'/dashboard/node?mode=refresh&id='+itemID;
+        //return false;
+    }
+    html = '<div class="popup-section section-light"><div class="load_refresh_form"></div></div>';
+    popup(html);
+    $.get(MAIN_URL+'/dashboard/node?mode=refresh&id='+itemID+'&temp=true', function (templates) {
+        $('.load_refresh_form').html(templates);
+        $('#theform').attr('attr-id', itemID);
+        flatApp();
+        $('.popup .popup-content').css({
+            left: '15%',
+            right: '15%'
+        })
+    });
+}
+
 $(document).ready(function () {
     if (__token) {
         // properties
@@ -12,10 +30,9 @@ $(document).ready(function () {
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', __token);
             },
-            success: function (data) {
-                console.log(data);
-                $('.v-user-properties-total').html('('+data.length+')');
-                $.each(data, function (i, v) {
+            success: function (response) {
+                $('.v-user-properties-total').html('('+response.data.length+')');
+                $.each(response.data, function (i, v) {
                     v.typeid = parseInt(v.type.split('typereal')[1]);
                     if (v.thumbs) v.thumbs = v.thumbs.split(',');
                     v.avatar = (v.thumbs ? v.thumbs[0] : MAIN_URL+'/assets/img/noimage.png');
@@ -25,7 +42,7 @@ $(document).ready(function () {
                     html = '<div class="v-user-property line">\
                         <div class="listings_rank mbs prl col cols6">\
                             <strong>'+v.rank+'</strong>\
-                            <a href="#" class="btn btn-success">Refresh</a>\
+                            <a href="#"  onclick="javascript:openRefreshForm(\''+v.id+'\'); return false" class="btn btn-success">Refresh</a>\
                         </div>\
                         <div class="listings_image mbs prl col cols6">\
                             <img class="image_url" src="'+v.avatar+'">\
