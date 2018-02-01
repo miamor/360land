@@ -382,8 +382,8 @@ body:not(.mobile) #mapSide{width:380px}
 body:not(.mobile) #mapSide .nav-tabs:not(.map-nav-select){height:42px}
 #mapSide .nav-tabs-custom ul.nav>li{margin-right:-2px}
 body:not(.mobile) #mapSide .nav-tabs-custom ul.nav>li{width:191px;text-align:center}
-body.mobile #mapSide .map_search_select>li{width:51%;text-align:center}
-body.mobile #mapSide .map_search_select>li:last-child{margin-right:-2%!important}
+body.mobile #mapSide .map_search_select>li, body.mobile #mapSide .map_results_select>li{width:51%;text-align:center}
+body.mobile #mapSide .map_search_select>li:last-child, body.mobile #mapSide .map_results_select>li:last-child{margin-right:-2%!important}
 body:not(.mobile) .map-tabs-toggle{display:none}
 #mapSide .nav-tabs-custom{position:absolute;z-index:100;top:0px;left:0;right:0;bottom:0;box-shadow:0 2px 3px rgba(0,0,0,.15);font-size: 15px}
 
