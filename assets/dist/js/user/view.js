@@ -4,11 +4,18 @@ console.log(uID);
 
 $(document).ready(function () {
     // get user info by uID
+    console.log(API_URL+'/user/profile/ '+uID);
     $.ajax({
-        url: API_URL+'/',
-        type: 'get',
+        url: API_URL+'/user/profile/',
+        type: 'post',
+        data: {name: uID},
         success: function (response) {
             console.log(response);
+            data = response.data;
+            $('.v-user-name').html(data.name);
+            $('.v-user-uname').html('@'+data.username);
+            $('.v-user-phone').html(data.phone);
+            $('.v-user-mail').html(data.mail);
         },
         error: function (a, b, c) {
             console.log(a)
