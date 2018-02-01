@@ -176,7 +176,7 @@
             </select>
     </div>
 
-    <div class="form-group hide" attr-type="project">
+    <div class="form-group form-price" attr-type="project">
         <input id="pricefrom_giatri" type="number" min="0" class="form-control" placeholder="Giá từ"/>
         <select id="pricefrom_donvi" class="form-control">
             <option value="m">triệu đồng</option>

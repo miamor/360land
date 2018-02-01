@@ -219,10 +219,20 @@ function logout (autoLoggedOut = false) {
 }
 
 function refreshToken () {
-    $.post(API_URL+'/manager_user/refresh_token/', {}, function (response) {
-        if (response.data != 'error') {
-            __token = response.data;
-            localStorage.setItem('token', response.data);
+    $.ajax({
+        url: API_URL+'/manager_user/refresh_token/',
+        type: 'post',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function (response) {
+            if (response.data != 'error') {
+                __token = response.data;
+                localStorage.setItem('token', response.data);
+            }
+        },
+        error: function (a, b, c) {
+            console.log(a);
         }
     })
 }

@@ -962,7 +962,9 @@ body:not(.mobile) .page-title:not(.show){display:none}
 body.mobile{overflow:hidden}
 body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto;margin-top:39px;padding-top:10px}
 body.mobile .place-add{padding:0 4px!important}
-body.mobile .place-add .control-label, body.mobile .place-add .control-labels{display:none}
+body.mobile .place-add .form-group:not(.form-time):not(.rank-select) .control-label, body.mobile .place-add .control-labels{display:none}
+body.mobile .form-time .control-label{text-align:left!important;margin-top:5px!important}
+body.mobile .container > [class*="col-"]{padding:0!important}
 body.mobile .place-add .radio{margin-top:0!important;display:inline-block;width:49%}
 body.mobile .place-add .form-group{margin:5px 0}
 body.mobile #map_select{height:300px}
@@ -1049,8 +1051,10 @@ body:not(.mobile) .map-side > .tab-content{top:40px}
 
 .p_type>[class*="col-"]{width:33%;float:left}
 
-#pricefrom_giatri, #price_giatri{width:59%!important;margin-right:1%!important}
-#pricefrom_donvi, #price_donvi{width:39%!important}
+#pricefrom_giatri, #price_giatri{width:59%!important}
+/*#pricefrom_donvi, #price_donvi{width:39%!important}
+*/
+.form-time{margin-top:10px}
 
 .rank-select{margin-top:30px}
 .rank-one-select{position:relative;float:left;width:48%;*width:31%;background:#fff;border:1px solid #e6e6e6;*border-width:1px 1px 1px 0;border-radius:3px;box-shadow:0 3px 2px rgba(0,0,0,.1);margin:0 1%;cursor:pointer;height:130px}
@@ -1068,7 +1072,7 @@ body.mobile .map-tabs-toggle{padding:5px 10px 6px;width:32px}
 
 body.mobile .add-node-link{position:relative}
 body.mobile .add-node-link .dropdown-menu{margin-top:-145px!important;margin-right:-20px!important;background:#fff;border:1px solid #e9e9e9;border-radius:3px!important;box-shadow:0 -2px 3px -2px rgba(0,0,0,.1)!important}
-.nav-user-mobile{text-align:center!important}
+.nav-user-mobile{text-align:center!important;float: right}
 .nav-user-mobile .nav-user-avt{float:none!important;margin:-2px auto 0}
 body.mobile nav ul.nav>li>a.loginlink{line-height:40px!important;display:block!important}
 body.mobile nav ul.nav > li > a.loginlink .fa{font-size:30px!important;display:block;line-height:40px}
