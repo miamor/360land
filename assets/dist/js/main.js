@@ -196,8 +196,8 @@ var checkSession = function() {
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
     //console.log(s);
-    if (s > 2*60*60) { // > 2 hours
-        // logout
+    if (s > 2*60*60 && s < 2.5*60*60) { // > 2 hours, < 2,5 hours
+        // refreshToken
         logout(true)
     }
 }

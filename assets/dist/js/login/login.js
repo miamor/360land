@@ -15,10 +15,11 @@ function submitLoginForm () {
                 mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
                 if ($('.popup:not(".popup-map") .load_login_form').length) {
                     remove_popup();
-                } else if ($('.popup-map').length) {
+                } 
+                if ($('.popup-map').length) {
                     location.reload();
                 } else {
-                    window.location.href = MAIN_URL;
+                    location.href = MAIN_URL;
                     //window.history.back();
                 }
             }

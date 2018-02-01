@@ -992,6 +992,21 @@ var typeIcon = {
             }
         };
 
+        this.hidePoints = function(isInit = false) {
+            if (this.markers != undefined) {
+                for (var t = 0; t < this.markers.length; t++) {
+                    this.markers[t].setVisible(false);
+                }
+            }
+        };
+        this.showPoints = function(isInit = false) {
+            if (this.markers != undefined) {
+                for (var t = 0; t < this.markers.length; t++) {
+                    this.markers[t].setVisible(true);
+                }
+            }
+        };
+
         this.callBackClearPointEvent = function() {};
 
         this.showMap = function(a, b) {
@@ -2041,7 +2056,6 @@ var typeIcon = {
 
 ProductSearchControler = function(h) {
     var i = this;
-    this.markerArray = [];
     var j = {
         zoom: mapContext.zoom,
         center: mapContext.center,
@@ -2055,6 +2069,17 @@ ProductSearchControler = function(h) {
     this.postData = null;
     this.mapResults = $('#map_results_node');
     this.mapResultsProject = $('#map_results_project');
+
+    
+    this.markerArray = [];
+
+    this.stepDisplay = new google.maps.InfoWindow;
+    this.directionsService = new google.maps.DirectionsService;
+    var geocoder = new google.maps.Geocoder();
+
+    this.directionsDisplay = new google.maps.DirectionsRenderer({ map: null });
+    this.directionsDisplay.setPanel(document.getElementById('directions-guide'));
+
 
     this.ProductMap = $('#map').ProductMap('begindraw', 'delshape', 'fullscreen', 'exitfullscreen', mapContext);
 
@@ -2263,19 +2288,6 @@ ProductSearchControler.prototype.unsaveProject = function () {
 }
 
 
-ProductSearchControler.prototype.closeModeBoard = function (mode = 'all', search = false) {
-    var i = this;
-    $('.v-place-mode-board').hide();
-    if (mode == 'direction') i.closeDirectionBoard(search)
-}
-
-ProductSearchControler.prototype.closeDirectionBoard = function(search = false) {
-    if (this.directionsDisplay) {
-        this.directionsDisplay.setMap(null);
-    }
-    if (search) this._SearchAction(-2);
-}
-
 ProductSearchControler.prototype.genPopup = function() {
     var i = f = this;
     var currentProduct = i.ProductMap.currentProduct;
@@ -2343,27 +2355,49 @@ ProductSearchControler.prototype.genPopup = function() {
     })*/
 }
 
+ProductSearchControler.prototype.closeModeBoard = function (mode = 'all', search = false) {
+    var i = this;
+    $('.v-place-mode-board').hide();
+    if (mode == 'direction') i.closeDirectionBoard(search)
+}
+
+ProductSearchControler.prototype.closeDirectionBoard = function(search = false) {
+    if (this.directionsDisplay) {
+        this.directionsDisplay.setMap(null);
+    }
+    if (search) this._SearchAction(-2);
+    else {
+        // dispaly nodes
+        i.ProductMap.showPoints();
+    }
+}
+
 ProductSearchControler.prototype.onChangeHandler = function() {
     this.calculateAndDisplayRoute();
 };
+
+ProductSearchControler.prototype.ShowDirection = function(fromCurrentLocation = true) {
+    var i = this;
+
+    i.map.setZoom(15);
+    $('#end').val(i.productLatLng);
+    $('#end_fake').val(i.ProductMap.currentProduct.title + ' - ' + i.ProductMap.currentProduct.address);
+
+    i.ProductMap.isDirection = true;
+    // hide all nodes
+    i.ProductMap.hidePoints();
+
+    this.directionsDisplay.setMap(i.map);
+
+    $('#directions-guide').height($('.v-place-v-direction').height() - $('.travelMode_select').height() - 30 - $('.start_end_points').height() - 30);
+
+    i.getDirection(fromCurrentLocation);
+}
 
 ProductSearchControler.prototype.getDirectionReal = function() {
     var f = this;
     var map = f.map;
 
-    /*f.marker = new google.maps.Marker({
-        map: map
-    });*/
-    // Instantiate an info window to hold step text.
-    f.stepDisplay = new google.maps.InfoWindow;
-
-    f.directionsService = new google.maps.DirectionsService;
-    var geocoder = new google.maps.Geocoder();
-
-    $('#directions-guide').height($('.v-place-v-direction').height() - $('.travelMode_select').height() - 30 - $('.start_end_points').height() - 30);
-    f.directionsDisplay = new google.maps.DirectionsRenderer({ map: map });
-    f.directionsDisplay.setPanel(document.getElementById('directions-guide'));
-    
     console.log($('#start').val());
     f.calculateAndDisplayRoute();
 }
@@ -2381,6 +2415,7 @@ ProductSearchControler.prototype.getDirection = function(fromCurrentLocation = t
             geocoder.geocode({
                 'location': pos
             }, function(results, status) {
+                console.log(results);
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         $('#start').val(results[0].formatted_address);
@@ -2392,57 +2427,18 @@ ProductSearchControler.prototype.getDirection = function(fromCurrentLocation = t
                     alert('Geocoder failed due to: ' + status);
                 }
             });
+        } else { // can't get current pos
+
         }
     } else {
         f.getDirectionReal();
     }
-    /*if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-			var pos = {
-				lat: position.coords.latitude,
-				lng: position.coords.longitude
-			};
-			map.setCenter(pos);
-			f.marker.setPosition(pos);
-
-			geocoder.geocode({
-				'location': pos
-			}, function (results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					if (results[0]) {
-						$('#start').val(results[0].formatted_address);
-
-            			var onChangeHandler = function () {
-            				f.calculateAndDisplayRoute(markerArray, map);
-            			};
-            			//document.getElementById('travelMode').addEventListener('change', onChangeHandler);
-                        $('.travelMode_select>div').click(function () {
-                            $('#travelMode').val($(this).attr('id'));
-                            $('.travelMode_one').removeClass('active');
-                            $(this).addClass('active');
-                            onChangeHandler();
-                        })
-						f.calculateAndDisplayRoute(markerArray, map);
-					} else {
-						alert('No results found');
-					}
-				} else {
-					alert('Geocoder failed due to: ' + status);
-				}
-			});
-
-		}, function() {
-			f.handleLocationError(true, map.getCenter());
-		});
-	} else {
-		// Browser doesn't support Geolocation
-		f.handleLocationError(false, map.getCenter());
-	}*/
 }
 
 ProductSearchControler.prototype.calculateAndDisplayRoute = function() {
     var f = this;
     // First, remove any existing markers from the map.
+    console.log(f.markerArray);
     for (var i = 0; i < f.markerArray.length; i++) {
         f.markerArray[i].setMap(null);
     }
@@ -2688,20 +2684,6 @@ ProductSearchControler.prototype.ShowMoreInfo = function(lat, lon) {
     //console.log(this.ProductMap.utilArea);
     this.utilityTool.SearchAction(lat, lon);
 };
-
-ProductSearchControler.prototype.ShowDirection = function(fromCurrentLocation = true) {
-    var i = this;
-
-    i.map.setZoom(15);
-    $('#end').val(i.productLatLng);
-    $('#end_fake').val(i.ProductMap.currentProduct.title + ' - ' + i.ProductMap.currentProduct.address);
-
-    i.ProductMap.isDirection = true;
-    // clear all points
-    i.ProductMap.clearPoints();
-
-    i.getDirection(fromCurrentLocation);
-}
 
 ProductSearchControler.prototype.loadSales = function(id = null) {
     console.log('loadSales ID: '+id);
