@@ -87,7 +87,9 @@ function getProjectInfo(duanid) {
 function handle(place) {
     console.log(place);
 
-    if (place.avatar == null || place.avatar == '') place.avatar = MAIN_URL + '/assets/img/noimage.png';
+    if (place.thumbs) place.thumbs = place.thumbs.split(',');
+    place.avatar = (place.thumbs ? place.thumbs[0] : MAIN_URL+'/assets/img/noimage.png');
+    
     place.title = place.name;
 
     place.typeid = parseInt(place.type.split('typereal')[1]);

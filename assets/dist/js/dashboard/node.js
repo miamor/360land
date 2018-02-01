@@ -13,8 +13,12 @@ $(document).ready(function () {
                 xhr.setRequestHeader('Authorization', __token);
             },
             success: function (data) {
+                console.log(data);
                 $('.v-user-properties-total').html('('+data.length+')');
                 $.each(data, function (i, v) {
+                    v.typeid = parseInt(v.type.split('typereal')[1]);
+                    if (v.thumbs) v.thumbs = v.thumbs.split(',');
+                    v.avatar = (v.thumbs ? v.thumbs[0] : MAIN_URL+'/assets/img/noimage.png');
                     if (v.price < 1) v.priceTxt = v.price * 100 + ' triệu';
                     else v.priceTxt = v.price + ' tỷ';
                 
@@ -32,18 +36,29 @@ $(document).ready(function () {
                             </div>\
                             <div class="line listings_description">\
                                 <div class="listings_area">D.tích: <span>'+v.area+'</span>m2</div>\
-                                <div class="listings_room"> Phòng ngủ:  <span>'+v.sophongngu+'</span></div>\
-                                <div class="listings_direction">Hướng: <span>'+v.huong+'</span></div>\
-                                <div class="listings_area">Loại: <span>'+v.type+'</span></div>\
-                            </div>\
-                            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>\
-                            <div class="line mts listings_type">\
+                                <div class="listings_room">Phòng ngủ: <span>'+v.sophongngu+'</span></div>\
+                                <div class="listings_direction">Hướng: <span>'+v.huong+'</span></div>';
+                    if (v.type == 'typereal1' || v.type == 'typereal11') {
+                        html += ' <div class="v-place-more-one v-place-tang" style="display: inline-block;">Tầng: <span>'+v.tang+'</span></div>';
+                    } else {
+                        html += ' <div class="v-place-more-one v-place-tang" style="display: inline-block;">Số tầng: <span>'+v.tang+'</span></div>';
+                        html += ' <div class="v-place-more-one v-place-rongtien" style="display: inline-block;">Chiều rộng mặt tiền: <span>'+v.rongtien+'</span></div>\
+                        <div class="v-place-more-one v-place-rongduong" style="display: inline-block;">Chiều rộng mặt đường: <span>'+v.rongduong+'</span></div>';
+                    }
+                    /*html += ' <div class="listings_area">Vip: <span class="bold">'+(v.vip == 1 ? 'Có' : 'Không')+'</span></div>\
+                     <div class="listings_room">Loại: <span>'+typeRealEstate[v.type]+'</span></div>';*/
+                    html += '</div>\
+                            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>';
+                    /*html += '<div class="line mts listings_type">\
                                 '+(v.type_action == 1 ? '<strong class="label label-success">Đang bán</strong>' : '<strong class="label label-info">Cho thuê</strong>')+'\
                             </div>\
                             <div class="line mts listings_edit">\
                                 <a class="text-info" href="'+location.href.trim()+'/node/'+v.id+'" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>\
-                            </div>\
-                            <div class="line mts listings_delete">\
+                            </div>';*/
+                    if (v.typeid < 11) html += '<div class="line mts listings_type"><strong class="label label-success">Đang bán</strong></div>';
+                    else html += '<div class="line mts listings_type"><strong class="label label-info">Cho thuê</strong></div>';
+                    if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
+                    html += '<div class="line mts listings_delete">\
                                 <a class="text-danger" href="#" title="Xóa bài đăng"><i class="fa fa-trash"></i></a>\
                             </div>\
                         </div>\

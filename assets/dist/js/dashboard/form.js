@@ -86,20 +86,20 @@ var nodeID = splitURL[splitURL.length-1];
                 $('#email').val(__userInfo.email);
             }
 
-                this.autocompleteProject();
+            this.autocompleteProject();
 
-                $('.type_bds').change(function () {
-                    var type = $(this).val();
-                    $('.customshow').hide();
-                    $('.'+type).show();
-                });
-                $('[name="type_action"]').change(function () {
-                    var a = $(this).val();
-                    $('.type_bds').hide();
-                    $('.type_bds#type'+a).show();
-                    $('#type').val('');
-                    $('#type'+a).val('CN');
-                });
+            $('.type_bds').change(function () {
+                var type = $(this).val();
+                $('.customshow').hide();
+                $('.'+type).show();
+            });
+            $('[name="type_action"]').change(function () {
+                var a = $(this).val();
+                $('.type_bds').hide();
+                $('.type_bds#type'+a).show();
+                $('#type').val('');
+                $('#type'+a).val('CN');
+            });
 
             $('.rank-one-select').click(function () {
                 var r = $(this).attr('attr-rank');
@@ -212,10 +212,12 @@ var nodeID = splitURL[splitURL.length-1];
                     mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (type)');
                 }
 
-                if (isNewNode && !$('#rank').val()) {
-                    ok = false;
-                    console.log('Missing parameters (rank)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
+                if (isNewNode) {
+                    if ( ($('#rank').val() == 1 && __userInfo.coin < 20) || __userInfo.coin < 10) {
+                        ok = false;
+                        console.log('Not enough money');
+                        mtip('', 'error', '', 'Tài khoản của bạn không đủ để đăng tin bài thuộc gói này');
+                    }
                 }
 
                 if (isNewNode && !$('#price_giatri').val()) {
