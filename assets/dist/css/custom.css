@@ -1053,11 +1053,11 @@ body:not(.mobile) .map-side > .tab-content{top:40px}
 #pricefrom_donvi, #price_donvi{width:39%!important}
 
 .rank-select{margin-top:30px}
-.rank-one-select{position:relative;float:left;width:31%;background:#fff;border:1px solid #e6e6e6;*border-width:1px 1px 1px 0;border-radius:3px;box-shadow:0 3px 2px rgba(0,0,0,.1);margin:0 1%;cursor:pointer;height:130px}
+.rank-one-select{position:relative;float:left;width:49%;*width:31%;background:#fff;border:1px solid #e6e6e6;*border-width:1px 1px 1px 0;border-radius:3px;box-shadow:0 3px 2px rgba(0,0,0,.1);margin:0 1%;cursor:pointer;height:130px}
 .rank-one-select:hover, .rank-one-select.active{background:#fafafa;*background:rgba(149, 227, 210, 0.41);*border-color:rgba(11, 195, 155, 0.63);*box-shadow:rgba()}
 .rank-one-des{padding:15px;font-size:15px}
-.rank-one-select:nth-child(2){height:170px;margin:-20px 1% 0}
-.rank-one-title{position:absolute;bottom:5px;left:-3px;right:-3px;background:#0bc39b;color:#fff;padding:8px 15px;font-size:16px;*margin:-5px -3px 5px;border-radius:3px}
+/*.rank-one-select:nth-child(2){height:170px;margin:-20px 1% 0}
+*/.rank-one-title{position:absolute;bottom:5px;left:-3px;right:-3px;background:#0bc39b;color:#fff;padding:8px 15px;font-size:16px;*margin:-5px -3px 5px;border-radius:3px}
 
 
 body.mobile .map-filter-board{left:0!important;right:0!important;width:100%!important}
