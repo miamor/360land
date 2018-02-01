@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#theform').submit(function () {
         if ($('[name="password"]').val() != $('[name="password_confirm"]').val() ) {
             $.ajax({
-                url: API_URL+'/manager_user/edit/',
+                url: API_URL+'/manager_user/changepassword/',
                 type: 'put',
                 data: $(this).serialize(),
                 datatype: 'json',
