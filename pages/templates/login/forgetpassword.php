@@ -2,7 +2,7 @@
 
 <div class="col-lg-8">
     <h4 class="with-border">Quên mật khẩu</h4>
-    <form id="login">
+    <form id="forgetpassword">
         <div class="form-group">
             <div class="col-lg-3 control-label">Email *</div>
             <div class="col-lg-9">
