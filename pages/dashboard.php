@@ -16,7 +16,7 @@ include 'templates/header.php';
 $includeFile = $n.'.php';
 
 
-$config->addJS('dist', $page.'/view.js');
+if (!$temp) $config->addJS('dist', $page.'/view.js');
 
 if ($n == 'info') {
     //$config->addJS('dist', $page.'/resample.js');
@@ -28,22 +28,33 @@ if ($n == 'info') {
 if ($n == 'history') {
     $config->addJS('plugins', 'DataTables/datatables.min.js');
 }
-if ($n == 'node' && $mode) {
+if ($n == 'noti' && $id) {
+    $config->addJS('dist', $page.'/'.$n.'.one.js');
+    $includeFile = $n.'.one.php';
+}
+else if ($n == 'node' && $mode) {
+        
+    if ($mode == 'refresh') $config->addJS('dist', $page.'/refresh.js');
+    else {
         for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
+        $config->addJS('dist', $page.'/form.js');
 
         if ($mode == 'new') {
             $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
         }
-        $config->addJS('dist', $page.'/form.js');
+    
         $config->addJS('dist', $page.'/add.js');
+    }
 
-        $includeFile = $n.'.'.$mode.'.php';
+    $includeFile = $n.'.'.$mode.'.php';
 } 
 else {
     $config->addJS('dist', $page.'/'.$n.'.js');
 }
 
 //include 'templates/'.$page.'/view.php';
+
+if (!$temp) {
 ?>
 
 <div class="col-lg-3 left-menu no-padding-left">
@@ -71,7 +82,7 @@ else {
         <h4 class="menu-one-box-header">Khác</h4>
         <div class="menu-one-box-body">
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/subscribe">Dự án quan tâm</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/">Thông báo</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/noti">Thông báo</a>
         </div>
     </div>
 </div>
@@ -81,6 +92,7 @@ else {
 </div>
 
 <?php
+} else include 'templates/'.$page.'/'.$includeFile;
 /*else {
     $pageTitle = 'Dashboard';
     include 'templates/header.php';

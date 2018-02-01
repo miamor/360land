@@ -20,7 +20,7 @@
 
         <div class="add-form-submit form-one-button center">
             <div class="col-sm-6" style="text-align:right">
-                <a class="forgetpassword" href="?mode=forgetpassword">Quên mật khẩu</a>
+                <a class="forgetpassword" href="<?php echo MAIN_URL ?>/login?mode=forgetpassword">Quên mật khẩu</a>
             </div>
             <div class="col-sm-6" style="text-align:left">
                 <input type="submit" class="btn" value="Đăng nhập"/>

@@ -27,7 +27,7 @@
     </div>
 
     <div class="form-group">
-        <div class="col-lg-3 control-label">Điện thoại liên hệ</div>
+        <div class="col-lg-3 control-label">Điện thoại</div>
         <div class="col-lg-9">
             <input type="text" name="phone" class="form-control"/>
         </div>

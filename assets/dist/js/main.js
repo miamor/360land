@@ -64,7 +64,7 @@ function getUserInfo () {
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
             $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
-            $('.nav-user #me_dropdown_info').show();
+            $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
         },
         error: function (a, b, c) {
@@ -212,7 +212,7 @@ function logout (autoLoggedOut = false) {
     __userInfo = __token = null;
     console.log('Logged out!');
     $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
-    $('.nav-user #me_dropdown_info').hide();
+    $('.nav-user #me_dropdown_info, .noti-right-bar').hide();
     //if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
     if (autoLoggedOut) refreshToken();
     else location.reload();
@@ -297,6 +297,30 @@ function setUserInfoNav () {
     if (isMobile) {
         $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/user/'+__userInfo.username+'">'+$('.nav-user .dropdown > a').html()+'</a>');
     }
+
+    loadNoti();
+}
+
+function loadNoti () {
+    $.ajax({
+        url: API_URL + '/manager_user/danhsachthongbao/',
+        type: 'get',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', __token);
+        },
+        success: function(response) {
+            data = response.data;
+            console.log(data);
+            $('.notification-load').html('');
+            $.each(data, function (i, v) {
+                var k = '<a href="'+MAIN_URL+'/dashboard/noti/'+v.id+'" class="one-noti" data-new="0" data-id="'+v.id+'"><div class="one-noti-content">'+v.details.substr(0, 1000)+'</div><div class="one-noti-time" style="margin-left:0"> '+v.time.split('T')[0].split('-').reverse().join('-')+' '+v.time.split('T')[1].split('Z')[0]+'</div><div class="clearfix"></div></a>';
+                $('.notification-load').append(k);
+            })
+        }, 
+        error: function (a, b, c) {
+            console.log(a);
+        }
+    });
 }
 
 
@@ -383,14 +407,14 @@ jQuery(document).ready(function ($) {
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
             $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
-            $('.nav-user #me_dropdown_info').show();
+            $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
         }
         // destroy session every 30 minutes
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
         $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
-        $('.nav-user #me_dropdown_info').hide();
+        $('.nav-user #me_dropdown_info, .noti-right-bar').hide();
         if (!isMobile) {
             $('#me_login_link, .add-node-link a').click(function () {
                 loadLoginPopup();

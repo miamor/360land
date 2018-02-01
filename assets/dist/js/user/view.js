@@ -1,6 +1,5 @@
 var urlAr = (window.location.href.replace('/', ' ').trim()).split('/');
 var uID = urlAr[urlAr.length - 1];
-console.log(uID);
 
 $(document).ready(function () {
     // get user info by uID
