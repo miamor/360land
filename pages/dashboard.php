@@ -22,7 +22,7 @@ if ($n == 'history') {
     $config->addJS('plugins', 'DataTables/datatables.min.js');
 }
 if ($n == 'node' && $mode) {
-        for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
+        for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
 
         if ($mode == 'new') {
             $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');

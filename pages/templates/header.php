@@ -36,16 +36,10 @@ $config->addJS('dist', 'main.js'); ?>
 		<div class="nav-icon"><i class="fa fa-reorder"></i></div>
 		<ul class="nav navbar-nav">
 			<li class="nav-item active">
-				<a class="nav-link" href="#"><i class="fa fa-home"></i> Trang chủ <span class="sr-only">(current)</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#"><i class="fa fa-search"></i> Tìm kiếm</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#"><i class="fa fa-bookmark"></i> Đã lưu</a>
+				<a class="nav-link" href="<?php echo MAIN_URL ?>"><i class="fa fa-home"></i> Trang chủ <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item add-node-link dropdown">
-				<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+				<a class="nav-link dropdown-toggle" href="<?php echo MAIN_URL ?>/dashboard/node?mode=new" data-toggle="dropdown">
 					<i class="fa fa-plus"></i> Đăng tin
 				</a>
 				<ul class="dropdown-menu with-triangle pull-right">
