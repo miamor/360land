@@ -5,7 +5,7 @@ error_reporting(E_ERROR | E_PARSE);
 $__pattern = '/';
 
 define('MAIN_PATH', './');
-define('MAIN_URL', '//www.mappy.com.vn'.$__pattern);
+define('MAIN_URL', '//www.mappy.com.vn');
 define('ASSETS', MAIN_URL.'/assets');
 define('CSS', ASSETS.'/dist/css');
 define('JS', ASSETS.'/dist/js');
