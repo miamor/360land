@@ -542,6 +542,7 @@ body.mobile #map_results .map-result-one-title, #overlapNodes .map-result-one-ti
 body:not(.mobile) .map-result-one-price{font-size:17px;line-height:21px}
 div:not(#sales_list) > .map-result-one:hover{background:#f3f9fa!important;cursor: pointer;}
 #sales_list .map-result-one-title:hover{cursor:pointer;color:#0bc39b}
+#sales_list .v-box-content, #sales_list .v-box-content *, #sales_list .sale_info{font-size:14px}
 
 .map-side-search{z-index:200!important}
 .p_name{position:relative}
@@ -692,7 +693,7 @@ body.mobile .v-place-info{padding-top:6px;padding-bottom:0px}
 .v-box:not(:last-child){border-bottom:1px solid #eee}
 .v-place-more-one{display:inline-block;width:49%}
 .v-box>h4{margin:0;font-weight:600;font-size:14px;cursor:pointer;padding:10px 0}
-.v-box-content{padding:10px 0 10px;margin:0}
+.v-box-content{padding:7px 0 7px;margin:0}
 .v-box.v-box-content{padding:6px 0}
 .v-box-content.open{display:block}
 .v-box>h4 + .v-box-content{padding-top:0}

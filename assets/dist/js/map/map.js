@@ -2742,10 +2742,15 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
                 k += '<ul class="v-box-content open">\
                 <li class="v-place-more-one v-place-area" style="display: inline-block;">Diện tích: <span>'+val.area+'</span>m2</li>\
                 <li class="v-place-more-one v-place-direction" style="display: inline-block;">Hướng: <span>'+val.huong+'</span></li>\
-                <li class="v-place-more-one v-place-room" style="display: inline-block;">Số phòng ngủ: <span>'+val.sophongngu+'</span></li>\
-                <li class="v-place-more-one v-place-type">Loại: <span>'+typeRealEstate[val.type]+'</span></li>\
-            </ul>';
-                k += '<div class="sale_info"><i class="fa fa-user"></i> <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.userid+' <i class="fa fa-external-link"></i></a></div>';
+                <li class="v-place-more-one v-place-room" style="display: inline-block;">Số phòng ngủ: <span>'+val.sophongngu+'</span></li>';
+                if (val.type == 'typereal1' || val.type == 'typereal11') k += '<li class="v-place-more-one v-place-tang" style="display: inline-block;">Tầng: <span>'+val.tang+'</span></li>';
+                else {
+                    k += ' <li class="v-place-more-one v-place-tang" style="display: inline-block;">Số tầng: <span>'+val.tang+'</span></li>';
+                    k += '<li class="v-place-more-one v-place-rongtien" style="display: inline-block;">Chiều rộng mặt tiền: <span>'+val.rongtien+'</span></li>\
+                    <li class="v-place-more-one v-place-rongduong" style="display: inline-block;">Chiều rộng mặt đường: <span>'+val.rongduong+'</span></li>';
+                }
+                k += '</ul>';
+                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';
