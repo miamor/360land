@@ -52,7 +52,8 @@
 
 </form>
 
-<form id="changeAvt" class="col-lg-4 no-padding" method="post" enctype="multipart/form-data">
+<div class="col-lg-4 no-padding">
+<form id="changeAvt" method="post" enctype="multipart/form-data">
     <input type="file" name="avatar-input" id="file-input">
 
     <!-- leftbox -->
@@ -78,5 +79,6 @@
         <input type="submit" value="Submit"/>
     </div>
 </form>
+</div>
 
 <div class="clearfix"></div>

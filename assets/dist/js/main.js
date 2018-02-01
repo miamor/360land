@@ -318,6 +318,58 @@ function render_nav () {
     }
 }
 
+var typeRealEstate = {
+    typereal1: '[Bán] Chung cư',
+    typereal2: '[Bán] Nhà riêng',
+    typereal3: '[Bán] Biệt thự, liền kề',
+    typereal4: '[Bán] Nhà mặt phố',
+    typereal5: '[Bán] Đất nền dự án',
+    typereal6: '[Bán] Đất',
+    typereal7: '[Bán] Trang trại, khu nghỉ dưỡng',
+    typereal8: '[Bán] Nhà kho, nhà xưởng',
+    typereal10: '[Bán] Bất động sản khác',
+
+    typereal11: '[Thuê] Chung cư',
+    typereal12: '[Thuê] Nhà riêng',
+    typereal13: '[Thuê] Nhà mặt phố',
+    typereal14: '[Thuê] Phòng trọ, nhà trọ',
+    typereal15: '[Thuê] Văn phòng',
+    typereal16: '[Thuê] Cửa hàng, ki ốt',
+    typereal17: '[Thuê] Trang trại, khu nghỉ dưỡng',
+    typereal18: '[Thuê] Bất động sản khác',
+
+    /*apartment: 'Chung cư',
+    house: 'Nhà riêng',
+    villa: 'Biệt thự, liền kề',
+    housestreet: 'Nhà mặt phố',
+    projectland: 'Đất nền dự án',
+    land: 'Đất bán',
+    resort: 'Trang trại, khu nghỉ dưỡng',
+    warehouse: 'Nhà kho, nhà xưởng',
+    other: 'Bất động sản khác',*/
+};
+
+var typeIcon = {
+    typereal1: 'apartment',
+    typereal2: 'house',
+    typereal3: 'villa',
+    typereal4: 'housestreet',
+    typereal5: 'projectland',
+    typereal6: 'land',
+    typereal7: 'resort',
+    typereal8: 'warehouse',
+    typereal10: 'other',
+
+    typereal11: 'apartment',
+    typereal12: 'house',
+    typereal13: 'housestreet',
+    typereal14: 'house',
+    typereal15: 'office',
+    typereal16: 'house',
+    typereal17: 'warehouse',
+    typereal18: 'other',
+};
+
 
 jQuery(document).ready(function ($) {
     flatApp();
@@ -340,7 +392,7 @@ jQuery(document).ready(function ($) {
         $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
         $('.nav-user #me_dropdown_info').hide();
         if (!isMobile) {
-            $('#me_login_link').click(function () {
+            $('#me_login_link, .add-node-link a').click(function () {
                 loadLoginPopup();
                 return false
             })

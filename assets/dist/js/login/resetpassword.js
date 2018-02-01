@@ -3,7 +3,7 @@ $(document).ready(function () {
         window.location.href = MAIN_URL;
         //window.history.back();
     } else {
-        $('#forgetpassword').submit(function () {
+        $('#resetpassword').submit(function () {
             return false
         })
     }
