@@ -29,7 +29,7 @@ function submitLoginForm () {
             if (c == 'Unauthorized') {
                 mtip('', 'error', '', 'Could not verify!');
             } else {
-                mtip('', 'error', '', 'Tên đăng nhập hoặc mật khẩu không đúng!');
+                mtip('', 'error', '', 'Có lỗi xảy ra khi đăng nhập. Chắc chắn rằng tên đăng nhập và mật khẩu bạn nhập vào là chính xác. Và liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                 //mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
             }
         }
