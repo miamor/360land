@@ -544,6 +544,10 @@ div:not(#sales_list) > .map-result-one:hover{background:#f3f9fa!important;cursor
 #sales_list .map-result-one-title:hover{cursor:pointer;color:#0bc39b}
 #sales_list .v-box-content, #sales_list .v-box-content *, #sales_list .sale_info{font-size:14px}
 
+.changeAvt-input{position:relative;width:100%;margin:10px 0 7px;overflow:hidden}
+.box-2{position:relative;margin:10px 0;width:100%}
+.options label,.options input{width:4em;padding:.5em 1em}
+
 .map-side-search{z-index:200!important}
 .p_name{position:relative}
 .ville-dropdown{position:absolute;top:31px;left:0;right:0;z-index:100;border:1px solid #ddd;background:#fff;max-height:300px;overflow:auto}

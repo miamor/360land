@@ -49,7 +49,7 @@ function registerForm () {
                 type: 'post',
                 data: $(this).serialize(),
                 success: function (response) {
-                    if (("token" in response) == false) {
+                    /*if (("token" in response) == false) {
                         console.log(response);
                     } else {
                         __token = response.token;
@@ -57,6 +57,9 @@ function registerForm () {
                         localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                         console.log(__token);
                         window.location.href = MAIN_URL;
+                    }*/
+                    if (response.message == 'OK!!!') {
+                        location.href = MAIN_URL+'/login';
                     }
                 },
                 error: function (a, b, c) {
