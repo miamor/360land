@@ -2206,6 +2206,14 @@ ProductSearchControler = function(h) {
         f.onChangeHandler();
     });
 
+    var wi = $('.form-price').width() - $('#pricefrom_giatri').width() - 25;
+    console.log($('.form-price').width()+' ** '+$('#pricefrom_giatri').width()+' ** '+wi);
+    $('#pricefrom_donvi').css({
+        width: '39%',
+        'margin-left': 3
+    });
+    $('.form-price').hide();
+
 };
 
 ProductSearchControler.prototype.checkSaveProject = function () {

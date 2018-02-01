@@ -27,7 +27,8 @@
 
 <div class="v-user-body">
     <div class="col-lg-8 no-padding-left">
-        <div class="v-box"><h4>Thống kê</h4>
+        <div class="v-box">
+            <h4>Thống kê</h4>
             <div class="v-box-content open">
                 <div class="v-user-stat-chart">
                     <div class="chart" id="sales-chart"></div>
@@ -44,7 +45,8 @@
             </div>
         </div>
 
-        <div class="v-box"><h4>Đánh giá</h4>
+        <div class="v-box">
+            <h4>Đánh giá</h4>
             <div class="v-box-content open">
                 <div class="col-lg-6 ratings-stat no-padding">
                     <div class="chart" id="ratings-chart"></div>
@@ -109,46 +111,32 @@
 
                 <div class="clearfix"></div>
             </div>
+        </div>
 
-	<div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Giới tiệu bản thân</h3>
+        
+        <div class="v-box">
+            <h4>Giới thiệu bản thân</h4>
+            <div class="v-box-content open">
+                <strong><i class="fa fa-book margin-r-5"></i> Trình độ học vấn</strong>
+                <p class="text-muted">
+                    B.S. in Computer Science from the University of Tennessee at Knoxville
+                </p>
+                <hr>
+                <strong><i class="fa fa-map-marker margin-r-5"></i> Địa c hỉ làm việc</strong>
+                <p class="text-muted"> Hà nỘi, Việt Nam</p>
+                <hr>
+                <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+                <p>
+                    <span class="label label-danger">UI Design</span>
+                    <span class="label label-success">Coding</span>
+                    <span class="label label-info">Javascript</span>
+                    <span class="label label-warning">PHP</span>
+                    <span class="label label-primary">Node.js</span>
+                </p> 
+                <hr>
+                <strong><i class="fa fa-file-text-o margin-r-5"></i> Ghi chú</strong>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Trình độ học vấn</strong>
-
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Địa c hỉ làm việc</strong>
-
-              <p class="text-muted"> Hà nỘi, Việt Nam</p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-              <p>
-                <span class="label label-danger">UI Design</span>
-                <span class="label label-success">Coding</span>
-                <span class="label label-info">Javascript</span>
-                <span class="label label-warning">PHP</span>
-                <span class="label label-primary">Node.js</span>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Ghi chú</strong>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-            </div>
-            <!-- /.box-body -->
-          </div>
-
         </div>
     </div>
 

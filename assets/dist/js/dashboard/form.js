@@ -61,6 +61,12 @@ var nodeID = splitURL[splitURL.length-1];
 
                     $thismap.changeAdrCallback(place);
                 });
+
+                var wi = $('.form-price').find('[class*="col-"]:not(".control-label")').width() - $('.form-price #price_giatri').width() - 25;
+                $('#pricefrom_donvi, #price_donvi').css({
+                    width: wi,
+                    'margin-left': 3
+                });
             }
 
 
