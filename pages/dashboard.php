@@ -55,7 +55,8 @@ else {
         <h4 class="menu-one-box-header">Nodes</h4>
         <div class="menu-one-box-body">
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node">List all</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new">Add new</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new">Đăng tin bán/cho thuê</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=search">Đăng tin tìm mua/thuê</a>
         </div>
     </div>
 
