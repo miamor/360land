@@ -992,14 +992,16 @@ var typeIcon = {
             }
         };
 
-        this.hidePoints = function(isInit = false) {
+        this.hidePoints = function() {
             if (this.markers != undefined) {
                 for (var t = 0; t < this.markers.length; t++) {
                     this.markers[t].setVisible(false);
                 }
             }
         };
-        this.showPoints = function(isInit = false) {
+        this.showPoints = function() {
+            console.log('showPoints~ this.markers');
+            console.log(this.markers);
             if (this.markers != undefined) {
                 for (var t = 0; t < this.markers.length; t++) {
                     this.markers[t].setVisible(true);
@@ -1014,9 +1016,7 @@ var typeIcon = {
             //if (!this.isDrawing) this.map.setZoom(zoom_moderate);
             for (var i = 0; i < a.node.length; i++) {
                 if (a.node[i] && this.isInPolyline(a.node[i].latitude, a.node[i].longitude)) {
-                    if (a.node[i].avatar == null || a.node[i].avatar == '') {
-                        a.node[i].avatar = (a.node[i].thumbs ? a.node[i].thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
-                    }
+                    a.node[i] = handle(a.node[i]);
                     a.node[i].isProject = false;
 
                     a.node[i].typeid = parseInt(a.node[i].type.split('typereal')[1]);
@@ -1035,10 +1035,11 @@ var typeIcon = {
             }
             for (var i = 0; i < a.project.length; i++) {
                 if (a.project[i] && this.isInPolyline(a.project[i].latitude, a.project[i].longitude)) {
-                    if (a.project[i].avatar == null || a.project[i].avatar == '') {
+                    /*if (a.project[i].avatar == null || a.project[i].avatar == '') {
                         console.log( a.project[i].thumbs);
                         a.project[i].avatar = (a.project[i].thumbs ? a.project[i].thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
-                    }
+                    }*/
+                    a.project[i] = handle(a.project[i]);
 
                     a.project[i].typeid = null;
                     a.project[i].sellLabel = '';
@@ -2080,7 +2081,6 @@ ProductSearchControler = function(h) {
 
     this.stepDisplay = new google.maps.InfoWindow;
     this.directionsService = new google.maps.DirectionsService;
-    var geocoder = new google.maps.Geocoder();
 
     this.directionsDisplay = new google.maps.DirectionsRenderer({ map: null });
     this.directionsDisplay.setPanel(document.getElementById('directions-guide'));
@@ -2117,7 +2117,7 @@ ProductSearchControler = function(h) {
 
     $('.close-mode-board').click(function() {
         var mode = $(this).closest('.v-place-mode-board').attr('attr-mode');
-        i.closeModeBoard(mode, true);
+        i.closeModeBoard(mode, false);
     });
 
     this.SearchProjectName();
@@ -2380,7 +2380,7 @@ ProductSearchControler.prototype.closeDirectionBoard = function(search = false) 
     if (search) this._SearchAction(-2);
     else {
         // dispaly nodes
-        i.ProductMap.showPoints();
+        this.ProductMap.showPoints();
     }
 }
 
@@ -2421,6 +2421,8 @@ ProductSearchControler.prototype.getDirectionReal = function() {
 ProductSearchControler.prototype.getDirection = function(fromCurrentLocation = true) {
     var f = this;
     var map = f.map;
+
+    var geocoder = new google.maps.Geocoder();
 
     if (fromCurrentLocation) {
         var pos = f.ProductMap.myPos;
@@ -2705,8 +2707,8 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
     console.log('loadSales ID: '+id);
     var i = this;
     var duanID = (id != null ? id : i.ProductMap.currentPID);
-    $.post(API_URL+'/search/duan/', {duan: duanID}, function (data) {
-        data = data.data;
+    $.post(API_URL+'/search/duan/', {duan: duanID}, function (response) {
+        data = response.data;
         console.log(data);
         
         if (!data.length) {
@@ -2714,6 +2716,7 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
         } else {
             $('#sales_list').html('');
             $.each(data, function (key, val) {
+                val = handle(val);
                 var k = '';
 
                 if (val.price < 1) val.priceTxt = val.price * 100 + ' triệu';
@@ -2739,10 +2742,15 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
                 k += '<ul class="v-box-content open">\
                 <li class="v-place-more-one v-place-area" style="display: inline-block;">Diện tích: <span>'+val.area+'</span>m2</li>\
                 <li class="v-place-more-one v-place-direction" style="display: inline-block;">Hướng: <span>'+val.huong+'</span></li>\
-                <li class="v-place-more-one v-place-room" style="display: inline-block;">Số phòng ngủ: <span>'+val.sophongngu+'</span></li>\
-                <li class="v-place-more-one v-place-type">Loại: <span>'+typeRealEstate[val.type]+'</span></li>\
-            </ul>';
-                k += '<div class="sale_info"><i class="fa fa-user"></i> <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.userid+' <i class="fa fa-external-link"></i></a></div>';
+                <li class="v-place-more-one v-place-room" style="display: inline-block;">Số phòng ngủ: <span>'+val.sophongngu+'</span></li>';
+                if (val.type == 'typereal1' || val.type == 'typereal11') k += '<li class="v-place-more-one v-place-tang" style="display: inline-block;">Tầng: <span>'+val.tang+'</span></li>';
+                else {
+                    k += ' <li class="v-place-more-one v-place-tang" style="display: inline-block;">Số tầng: <span>'+val.tang+'</span></li>';
+                    k += '<li class="v-place-more-one v-place-rongtien" style="display: inline-block;">Chiều rộng mặt tiền: <span>'+val.rongtien+'</span></li>\
+                    <li class="v-place-more-one v-place-rongduong" style="display: inline-block;">Chiều rộng mặt đường: <span>'+val.rongduong+'</span></li>';
+                }
+                k += '</ul>';
+                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';
@@ -2944,6 +2952,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
         for (si = 0; si < 4; si++) {
             sv = similar[si];
             if (sv) {
+                sv = handle(sv);
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
                 $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.loadAndShowInfoWindow(\'' + sv.id + '\', false, true)" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
             }
@@ -3007,17 +3016,22 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 function handle(place) {
     console.log(place);
 
-    if (place.avatar == null || place.avatar == '') {
+    /*if (place.avatar == null || place.avatar == '') {
         place.avatar = (place.thumbs ? place.thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
+    }*/
+    place.avatar = MAIN_URL + '/assets/img/noimage.png';
+    if (place.thumbs) {
+        place.thumbs = place.thumbs.split(',');
+        place.avatar = place.thumbs[0];
     }
+
     place.isProject = (place.name ? true : false);
 
     if (place.isProject) place.title = place.name;
 
     place.typeid = parseInt(place.type.split('typereal')[1]);
 
-    place.exCls = (place.isProject ? ' project' : '') +
-        (place.typeid > 3 ? ' big' : '');
+    place.exCls = (place.isProject ? ' project' : '');
 
     /*if (!place.thumbs) {
         place.thumbs = [MAIN_URL + "/data/images/h1.jpg", MAIN_URL + "/data/images/h2.jpg", MAIN_URL + "/data/images/h3.jpg", MAIN_URL + "/data/images/h4.jpg", MAIN_URL + "/data/images/h5.jpg", MAIN_URL + "/data/images/h6.jpg", MAIN_URL + "/data/images/h7.jpg"]
@@ -3067,6 +3081,7 @@ ProductSearchControler.prototype.setProjectDetails = function() {
         for (si = 0; si < 4; si++) {
             sv = similar[si];
             if (sv) {
+                sv = handle(sv);
                 //$('.v-place-related-list').append('<a href="javascript:productControlerObj.ShowMoreInfoAndHidePopup(\''+sv.id+'\','+sv.latitude+','+sv.longitude+')" class="v-place-related-one"><img class="v-place-related-one-thumb" src="'+sv.avatar+'"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> '+sv.address+'</span></div></a>');
                 sv.isProject = (sv.name != null && sv.name != undefined);
                 $('.v-place-related-list').append('<a href="javascript:productControlerObj.ProductMap.loadAndShowInfoWindow(\'' + sv.id + '\', '+sv.isProject+', true)" class="v-place-related-one"><img class="v-place-related-one-thumb" src="' + sv.avatar + '"/><div class="v-place-related-one-title"><span class="v-place-related-one-address"><i class="fa fa-map-marker"></i> ' + sv.address + '</span></div></a>');
