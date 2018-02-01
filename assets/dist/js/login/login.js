@@ -18,8 +18,8 @@ function submitLoginForm () {
                 } else if ($('.popup-map').length) {
                     location.reload();
                 } else {
-                    //window.location.href = MAIN_URL;
-                    window.history.back();
+                    window.location.href = MAIN_URL;
+                    //window.history.back();
                 }
             }
         },
@@ -113,8 +113,8 @@ function testAPI() {
 
 $(document).ready(function () {
     if (localStorage.getItem('token')) { // already logged in
-        //window.location.href = MAIN_URL;
-        window.history.back();
+        window.location.href = MAIN_URL;
+        //window.history.back();
     } else {
     }
 })
