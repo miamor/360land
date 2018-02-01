@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('head').append('<script src="https://www.google.com/recaptcha/api.js"></script>');
 
     $('#theform').submit(function () {
-        if ($('[name="password"]').val() != $('[name="password_confirm"]').val() ) {
+        if ($('[name="password"]').val() == $('[name="password_confirm"]').val() ) {
             $.ajax({
                 url: API_URL+'/manager_user/changepassword/',
                 type: 'put',

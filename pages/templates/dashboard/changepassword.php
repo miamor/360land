@@ -5,7 +5,7 @@
     <div class="form-group">
         <div class="col-lg-3 control-label">Mật khẩu cũ</div>
         <div class="col-lg-9">
-            <input type="text" name="oldpassword" class="form-control"/>
+            <input type="password" name="oldpassword" class="form-control"/>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -13,14 +13,14 @@
     <div class="form-group">
         <div class="col-lg-3 control-label">Mật khẩu mới</div>
         <div class="col-lg-9">
-            <input type="text" name="password" class="form-control"/>
+            <input type="password" name="password" class="form-control"/>
         </div>
         <div class="clearfix"></div>
     </div>
     <div class="form-group">
         <div class="col-lg-3 control-label">Xác nhận lại mật khẩu</div>
         <div class="col-lg-9">
-            <input type="text" name="password_confirm" class="form-control"/>
+            <input type="password" name="password_confirm" class="form-control"/>
         </div>
         <div class="clearfix"></div>
     </div>
