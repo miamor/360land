@@ -18,7 +18,7 @@ $(document).ready(function () {
                         mtip('', 'error', '', 'Có lỗi khi thay đổi mật khẩu. Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                     } else {
                         __userInfo = data;
-                        localStorage.setItem('user_info', data);
+                        localStorage.setItem('user_info', JSON.stringify(data));
                         mtip('', 'success', '', 'Mật khẩu được cập nhật thành công');
                     }
                 },
