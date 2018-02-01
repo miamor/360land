@@ -26,6 +26,7 @@ nav.navbar ul.navbar-nav > li > a:hover, nav.navbar ul.navbar-nav > li > a:focus
 .txt-with-line{position:relative;width:100%;margin:20px 0 21px}.txt-with-line:before{content:'';position:absolute;left:0;width:100%;height:2px;border-top:1px dashed #dfdfdf;top:10px}.txt-with-line .txt{position:relative;text-align:center;z-index:3;color:#999;display:inline-block;background:#fff;padding:1px 10px}
 .txt-with-line.center{text-align:center}
 .separator.divider{position:relative;width:100%;height:1px;background:#e3e3e3;margin:10px!important}
+.nav-user #me_reg_link{margin-left:10px}
 /*
  * Component: Form
  * ---------------
@@ -365,10 +366,14 @@ body:not(.mobile) #socialArea{top:150px!important}
 .adp-legal{display:none!important}
 
 .td-one{position: relative;padding:10px}
+.td-one:hover{*background:#f3f9fa!important;cursor: pointer}
 .td-one-left{position: relative;float: left;width:60px;margin-right:5px}
 .td-one-thumb{position: relative;width:100%;height:100%}
-.td-one-info{position: relative;float:left}
-.td-one-info h3{margin:0 0 5px;font-size:15px;line-height:17px;font-weight:600}
+.td-one-info{position: relative;margin-left:65px}
+.td-one-info h3{margin:0 78px 5px 0;font-size:15px;line-height:17px;font-weight:600}
+.td-one-time{position: relative;float:right;margin-left:5px}
+.td-one-des{position: relative}
+.td-one-dex.shorten{max-height:40px;overflow: hidden}
 
 
 #mapSide{margin-top:30px!important;position:absolute;left:10px!important;z-index:999!important}

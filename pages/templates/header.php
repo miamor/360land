@@ -59,6 +59,7 @@ $config->addJS('dist', 'main.js'); ?>
 
 		<div class="nav-user">
 			<a class="hide" id="me_login_link" href="<?php echo MAIN_URL ?>/login">Đăng nhập</a>
+			<a class="hide" id="me_reg_link" href="<?php echo MAIN_URL ?>/register">Đăng ký</a>
 			<div class="dropdown hide" id="me_dropdown_info">
 				<a class="dropdown-toggle" data-toggle="dropdown">
 					<img src="<?php echo MAIN_URL ?>/data/avt.png" class="nav-user-avt img-circle myAvt"/>

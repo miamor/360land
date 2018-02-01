@@ -63,7 +63,7 @@ function getUserInfo () {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-            $('.nav-user #me_login_link').hide();
+            $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
             $('.nav-user #me_dropdown_info').show();
             setUserInfoNav();
         },
@@ -211,7 +211,7 @@ function logout (autoLoggedOut = false) {
     localStorage.removeItem('user_info');
     __userInfo = __token = null;
     console.log('Logged out!');
-    $('.nav-user #me_login_link').show();
+    $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
     $('.nav-user #me_dropdown_info').hide();
     //if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
     if (autoLoggedOut) refreshToken();
@@ -320,14 +320,14 @@ jQuery(document).ready(function ($) {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-            $('.nav-user #me_login_link').hide();
+            $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
             $('.nav-user #me_dropdown_info').show();
             setUserInfoNav();
         }
         // destroy session every 30 minutes
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
-        $('.nav-user #me_login_link').show();
+        $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
         $('.nav-user #me_dropdown_info').hide();
         if (!isMobile) {
             $('#me_login_link').click(function () {

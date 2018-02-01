@@ -1748,6 +1748,7 @@ var typeIcon = {
                 if (key != null) {
                     h = this.markers[key];
                 } else {
+                    console.log('add new marker here~~~');
                     h = new MarkerWithLabel({
                         map: $thismap.map,
                         position: new google.maps.LatLng(data.latitude, data.longitude),
@@ -2792,13 +2793,20 @@ ProductSearchControler.prototype.loadTienDo = function(id = null) {
 
                 // attr-marker-id here not work
                 //k += '<div attr-id="' + val.id + '" attr-marker-id="' + i + '" class="map-result-one">';
+                var time = new Date(val.time);
+                var date = time.getDate();
+                var month = time.getMonth(); //Be careful! January is 0 not 1
+                var year = time.getFullYear();
+                var dateString = date + "-" +(month + 1) + "-" + year;
+
                 k += '<div attr-id="' + val.id + '" class="td-one">';
                 k += '<div class="td-one-left">';
                 k += '<img class="td-one-thumb" src="' + val.thumbs + '">';
                 k += '</div>';
                 k += '<div class="td-one-info">';
+                k += '<div class="td-one-time label label-info">'+dateString+'</div>';
                 k += '<h3>' + val.title + '</h3>';
-                k += '<div class="td-one-des">' + val.details + '</div>';
+                k += '<div class="td-one-des shorten">' + val.details + '</div>';
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';
@@ -2806,7 +2814,12 @@ ProductSearchControler.prototype.loadTienDo = function(id = null) {
                 $('#tiendo_list').append(k);
 
                 $('#tiendo_list .td-one[attr-id="'+val.id+'"]').click(function () {
-                    i.showTienDoDetails()
+                    //i.showTienDoDetails()
+                    if ($(this).find('.td-one-des').is('.shorten')) {
+                        $(this).find('.td-one-des').removeClass('shorten');
+                    } else {
+                        $(this).find('.td-one-des').addClass('shorten');
+                    }
                 })
             })
         }
