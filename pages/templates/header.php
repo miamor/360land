@@ -90,6 +90,7 @@ $config->addJS('dist', 'main.js'); ?>
 					<li class="user-footer">
 						<div class="pull-left">
 							<a class="btn btn-success btn-flat" id="meinfo_profile_link" href="#">Profile</a>
+							<a class="btn btn-info btn-flat" id="meinfo_dashboard_link" href="<?php echo MAIN_URL ?>/dashboard">Dashboard</a>
 						</div>
 						<div class="pull-right">
 							<a class="btn btn-danger btn-flat" href="<?php echo MAIN_URL ?>/logout">Logout</a>

@@ -375,6 +375,7 @@ body:not(.mobile) #socialArea{top:150px!important}
 .td-one-des{position: relative}
 .td-one-dex.shorten{max-height:40px;overflow: hidden}
 
+#meinfo_dashboard_link{margin-left:-3px}
 
 #mapSide{margin-top:30px!important;position:absolute;left:10px!important;z-index:999!important}
 body:not(.mobile) #mapSide{width:380px}
