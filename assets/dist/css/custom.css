@@ -21,7 +21,7 @@ ul, .v-place-more{list-style:none;padding:0;margin:0}
 .btn{border-radius:0!important}
 
 nav.navbar{background-color:#0bc39b;box-shadow:2px 2px 2px rgba(0,0,0,.2);z-index:997}
-nav.navbar a.nav-link, #me_dropdown_info > a,.nav-users>li>a{color:#fff!important}
+nav.navbar a.nav-link, #me_dropdown_info > a,.nav-users>li>a,.nav-user>a{color:#fff!important}
 nav.navbar ul.navbar-nav > li > a:hover, nav.navbar ul.navbar-nav > li > a:focus, nav.navbar ul.navbar-nav>li.active>a{background:rgba(0,0,0,.04)!important}
 .txt-with-line{position:relative;width:100%;margin:20px 0 21px}.txt-with-line:before{content:'';position:absolute;left:0;width:100%;height:2px;border-top:1px dashed #dfdfdf;top:10px}.txt-with-line .txt{position:relative;text-align:center;z-index:3;color:#999;display:inline-block;background:#fff;padding:1px 10px}
 .txt-with-line.center{text-align:center}
@@ -904,6 +904,9 @@ body.mobile .listings_image{width:50px;height:50px}
 .image_url{width:100%;height:100%}
 .listings_price{float:right;margin:5px 0 -4px 0!important}
 .listings_info .h4{margin:0 0 2px;font-size:19px;line-height:18px}
+.listings_time{position:relative;margin:5px 0 5px}
+.listings_time, .listings_time *{font-size:14px}
+.listings_time .listings_type{margin:0 5px 0 0!important}
 .listings_info{position:relative;float:left;}
 /*body.mobile .listings_info{margin:-53px 0 0 60px}
 */.listings_description>div{display:inline-block;width:49%}

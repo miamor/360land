@@ -25,7 +25,7 @@ $(document).ready(function () {
         // properties
         $('.v-user-properties').html('');
         $.ajax({
-            url: API_URL+'/manager_user/nodes/',
+            url: API_URL+'/manager_user/nodefalse/',
             type: 'get',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', __token);

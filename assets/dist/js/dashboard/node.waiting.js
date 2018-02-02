@@ -25,7 +25,7 @@ $(document).ready(function () {
         // properties
         $('.v-user-properties').html('');
         $.ajax({
-            url: API_URL+'/manager_user/nodes/',
+            url: API_URL+'/manager_user/nodewait/',
             type: 'get',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', __token);
@@ -40,10 +40,6 @@ $(document).ready(function () {
                     else v.priceTxt = v.price + ' tỷ';
                 
                     html = '<div class="v-user-property line">\
-                        <div class="listings_rank mbs prl col cols6">\
-                            <strong>'+v.rank+'</strong>\
-                            <a href="#"  onclick="javascript:openRefreshForm(\''+v.id+'\'); return false" class="btn btn-success">Refresh</a>\
-                        </div>\
                         <div class="listings_image mbs prl col cols6">\
                             <img class="image_url" src="'+v.avatar+'">\
                         </div>\
@@ -66,8 +62,8 @@ $(document).ready(function () {
                      <div class="listings_room">Loại: <span>'+typeRealEstate[v.type]+'</span></div>';*/
                     html += '</div>\
                             <div class="listings_time">';
-                            if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
-                            html += '<i class="fa fa-clock-o"></i> <time class="timefrom">'+v.timefrom.split('T')[0].split('-').reverse().join('-')+'</time> đến <time class="timeto">'+v.timeto.split('T')[0].split('-').reverse().join('-')+'</time></div>\
+                    if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
+                    html += '<i class="fa fa-clock-o"></i> <time class="timefrom">'+v.timefrom.split('T')[0].split('-').reverse().join('-')+'</time> đến <time class="timeto">'+v.timeto.split('T')[0].split('-').reverse().join('-')+'</time></div>\
                             <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>';
                     /*html += '<div class="line mts listings_type">\
                                 '+(v.type_action == 1 ? '<strong class="label label-success">Đang bán</strong>' : '<strong class="label label-info">Cho thuê</strong>')+'\
@@ -77,7 +73,7 @@ $(document).ready(function () {
                             </div>';*/
                     if (v.typeid < 11) html += '<div class="line mts listings_type"><strong class="label label-success">Đang bán</strong></div>';
                     else html += '<div class="line mts listings_type"><strong class="label label-info">Cho thuê</strong></div>';
-                    if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
+                   // if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
                     html += '<div class="line mts listings_delete">\
                                 <a class="text-danger" href="#" title="Xóa bài đăng"><i class="fa fa-trash"></i></a>\
                             </div>\
