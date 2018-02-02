@@ -37,7 +37,7 @@ function setNewPasswordForm () {
         if ($('[name="password"]').val() == $('[name="password_confirm"]').val()) {
             $.ajax({
                 url: API_URL + '/user/set-password/',
-                type: 'post',
+                type: 'put',
                 data: $(this).serialize(),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', __token);

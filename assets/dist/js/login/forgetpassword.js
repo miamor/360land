@@ -7,7 +7,7 @@ $(document).ready(function () {
             $.ajax({
                 url: API_URL + '/user/check_mail/',
                 type: 'post',
-                data: $('#login').serialize(),
+                data: $(this).serialize(),
                 success: function (response) {
                     console.log(response);
                     mtip('', 'success', '', 'Vui lòng kiểm tra email để xác nhận tài khoản.');
