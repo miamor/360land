@@ -2,6 +2,13 @@ var itemID_URL = (location.href.indexOf('id=') > -1 ? location.href.split('id=')
 
 $(document).ready(function () {
     var ok = true;
+    $('.rank-one-select').click(function () {
+        var r = $(this).attr('attr-rank');
+        $('.rank-one-select').removeClass('active');
+        $(this).addClass('active');
+        $('#rank').val(r);
+    });
+
     $('#theform').submit(function () {
         var itemID = $(this).attr('attr-id');
         if (!itemID) {
