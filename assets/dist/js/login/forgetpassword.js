@@ -5,7 +5,7 @@ $(document).ready(function () {
     } else {
         $('#forgetpassword').submit(function () {
             $.ajax({
-                url: API_URL + '/user/check-mail/',
+                url: API_URL + '/user/check_mail/',
                 type: 'post',
                 data: $('#login').serialize(),
                 success: function (response) {
