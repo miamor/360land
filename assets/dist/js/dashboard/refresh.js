@@ -39,36 +39,39 @@ $(document).ready(function () {
             mtip('', 'error', '', 'Tài khoản của bạn không đủ để đăng tin bài thuộc gói này');
         }
 
-        var postData = objectifyForm($(this).serializeArray());
-        //postData.timefrom = (new Date(postData.timefrom)).toISOString();
-        //postData.timeto = (new Date(postData.timeto)).toISOString();
-        postData.timefrom += ' 00:00:00';
-        postData.timeto += ' 00:00:00';
-        postData.vip = parseInt(postData.rank);
+        if (ok) {
+            var postData = objectifyForm($(this).serializeArray());
+            //postData.timefrom = (new Date(postData.timefrom)).toISOString();
+            //postData.timeto = (new Date(postData.timeto)).toISOString();
+            postData.timefrom += ' 00:00:00';
+            postData.timeto += ' 00:00:00';
+            postData.vip = parseInt(postData.rank);
+    
+            console.log(postData);
 
-        console.log(postData);
-        $.ajax({
-            url: API_URL+'/manager_user/postnodes/'+itemID+'/',
-            type: 'post',
-            data: postData,
-            datatype: 'json',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('Authorization', __token);
-            },
-            success: function (response) {
-                console.log(response);
-                if (response.data == 'Khong du coin') {
-                    mtip('', 'error', '', 'Bạn không đủ coin để gia hạn gói này! Vui lòng <a href="'+MAIN_URL+'/dashboard/addcoin">nạp thêm coin</a> để tiếp tục.');
-                } else if (response.data == 'OK') {
-                    mtip('', 'success', '', 'Tin bài đã được gia hạn!');
-                    location.reload();
+            $.ajax({
+                url: API_URL+'/manager_user/postnodes/'+itemID+'/',
+                type: 'post',
+                data: postData,
+                datatype: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', __token);
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.data == 'Khong du coin') {
+                        mtip('', 'error', '', 'Bạn không đủ coin để gia hạn gói này! Vui lòng <a href="'+MAIN_URL+'/dashboard/addcoin">nạp thêm coin</a> để tiếp tục.');
+                    } else if (response.data == 'OK') {
+                        mtip('', 'success', '', 'Tin bài đã được gia hạn!');
+                        location.reload();
+                    }
+                },
+                error: function (a, b, c) {
+                    console.log(a);
+                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                 }
-            },
-            error: function (a, b, c) {
-                console.log(a);
-                mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
-            }
-        })
+            })
+        }
 
         return false
     })

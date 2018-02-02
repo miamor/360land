@@ -1,4 +1,6 @@
 <?php
+$token = $config->get('token');
+
 if ($mode == 'forgetpassword') {
     $pageTitle = 'Quên mật khẩu';
     include 'templates/header.php';
@@ -7,7 +9,17 @@ if ($mode == 'forgetpassword') {
 
     include 'templates/'.$page.'/'.$mode.'.php';
 
-} else {
+} 
+else if ($mode == 'resetpassword' && $token) {
+    $pageTitle = 'Đặt lại mật khẩu';
+    include 'templates/header.php';
+
+    $config->addJS('dist', $page.'/'.$mode.'.js');
+
+    include 'templates/'.$page.'/'.$mode.'.php';
+
+} 
+else {
     $pageTitle = 'Đăng nhập';
     include 'templates/header.php';
 
