@@ -32,21 +32,27 @@ if ($n == 'noti' && $id) {
     $config->addJS('dist', $page.'/'.$n.'.one.js');
     $includeFile = $n.'.one.php';
 }
-else if ($n == 'node' && $mode) {
+else if ($n == 'node') {
+    if ($id) {
+        $config->addJS('dist', $page.'/'.$n.'.'.$id.'.js');
+        $includeFile = $n.'.'.$id.'.php';
+    } else if ($mode) {
+        if ($mode == 'refresh') $config->addJS('dist', $page.'/refresh.js');
+        else {
+            for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
+            $config->addJS('dist', $page.'/form.js');
+
+            if ($mode == 'new') {
+                $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
+            }
         
-    if ($mode == 'refresh') $config->addJS('dist', $page.'/refresh.js');
-    else {
-        for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
-        $config->addJS('dist', $page.'/form.js');
-
-        if ($mode == 'new') {
-            $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
+            $config->addJS('dist', $page.'/add.js');
         }
-    
-        $config->addJS('dist', $page.'/add.js');
-    }
 
-    $includeFile = $n.'.'.$mode.'.php';
+        $includeFile = $n.'.'.$mode.'.php';
+    } else {
+        $config->addJS('dist', $page.'/'.$n.'.js');
+    }
 } 
 else {
     $config->addJS('dist', $page.'/'.$n.'.js');
@@ -70,9 +76,11 @@ if (!$temp) {
     </div>
 
     <div class="menu-one-box">
-        <h4 class="menu-one-box-header">Nodes</h4>
+        <h4 class="menu-one-box-header">Tin đăng</h4>
         <div class="menu-one-box-body">
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node">List all</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node">Còn hạn</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/hethan">Hết hạn</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/waiting">Chưa được duyệt</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new">Đăng tin bán/cho thuê</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=search">Đăng tin tìm mua/thuê</a>
         </div>
