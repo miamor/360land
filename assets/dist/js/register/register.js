@@ -59,6 +59,7 @@ function registerForm () {
                         window.location.href = MAIN_URL;
                     }*/
                     if (response.message == 'OK!!!') {
+			mtip('', 'success', '', 'Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!');
                         location.href = MAIN_URL+'/login';
                     }
                 },

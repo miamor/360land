@@ -72,12 +72,8 @@ $config->addJS('dist', 'main.js'); ?>
 							coins
 						</div>
 						<div class="sta-one u-hh">
-							<strong id="meinfo_hh">12</strong>
-							hh
-						</div>
-						<div class="sta-one u-kk">
-							<strong id="meinfo_kk">5</strong>
-							kk
+							<strong id="meinfo_rank">12</strong>
+							rank
 						</div>
 					</li>
 					<!-- Menu Footer-->
@@ -108,7 +104,7 @@ $config->addJS('dist', 'main.js'); ?>
 								<ul class="notification-load">
 								</ul>
 							</div>
-							<div class="btn btn-primary btn-block btn-sm">See all notifications</div>
+							<div class="btn btn-primary btn-block btn-sm see-all-noti">See all notifications</div>
 						</li>
 					</ul>
 				</li>

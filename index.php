@@ -25,6 +25,7 @@ $mode = $config->get('mode');
 if ($do) header('Content-Type: text/plain; charset=utf-8');
 else header('Content-Type: text/html; charset=utf-8');
 
+if (!file_exists('pages/'.$page.'.php')) $page = 'error';
 
 include 'pages/'.$page.'.php';
 

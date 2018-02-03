@@ -392,8 +392,37 @@ var typeIcon = {
     typereal16: 'house',
     typereal17: 'warehouse',
     typereal18: 'other',
+
+    typeservice1: "school",
+    typeservice2: "busstop",
+    typeservice3: "public",
+    typeservice4: "hospital",
+    typeservice5: "restaurant",
+    typeservice6: "housestreet",
+    typeservice7: "hotel",
+    typeservice8: "stadium",
+    typeservice9: "supermarket",
+    typeservice10: "spa",
+    typeservice11: "ban",
+    typeservice12: "conmpany",
+    typeservice13: "other"
 };
 
+var typeService = {
+	typeservice1: "Trường học",
+	typeservice2: "Bến xe, trạm xe",
+	typeservice3: "Công trình công cộng",
+	typeservice4: "Cơ sở y tế",
+	typeservice5: "Nhà hàng",
+	typeservice6: "Cơ quan hành chính",
+	typeservice7: "Khách sạn",
+	typeservice8: "TT thể thao, giải trí",
+	typeservice9: "Địa điểm mua sắm",
+	typeservice10: "Làm đẹp, spa",
+	typeservice11: "ATM, ngân hàng",
+	typeservice12: "Các công ty dịch vụ",
+	typeservice13: "Các tiện ích khác"
+};
 
 jQuery(document).ready(function ($) {
     flatApp();
@@ -410,6 +439,9 @@ jQuery(document).ready(function ($) {
             $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
         }
+	$('.noti-right-bar .see-all-noti').click(function () {
+	    location.href = MAIN_URL+'/dashboard/noti';
+	})
         // destroy session every 30 minutes
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');

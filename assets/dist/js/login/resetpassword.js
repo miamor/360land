@@ -15,6 +15,7 @@ function resetPassword () {
                 mtip('', 'error', '', "Failed to authenticate");
             } else {
                 localStorage.setItem('token', __token);
+                localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                 getUserInfo();        
                 setNewPasswordForm();
             }

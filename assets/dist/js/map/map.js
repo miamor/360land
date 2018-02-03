@@ -1312,9 +1312,18 @@ var cityList = [];
 
             if (this.dataUtilities != null && this.dataUtilities.length > 0) {
                 this.markerUtilities = this.dataUtilities.map(function(utility, i) {
-                    return new google.maps.Marker({
+                    /*return new google.maps.Marker({
                         position: new google.maps.LatLng(utility.latitude, utility.longitude),
                         icon: ultiMarker[utility.type]
+                    });*/
+		    return new MarkerWithLabel({
+                        map: $thismap.map,
+                        position: new google.maps.LatLng(utility.latitude, utility.longitude),
+                        icon: nodeMarker.empty,
+                        labelContent: '<span class="marker-type type-' + typeIcon[utility.type] + '"><i class="icoo-' + typeIcon[utility.type] + '"></i></span>',
+                        labelAnchor: labelOrigin,
+                        labelClass: "marker-label marker-utility",
+                        labelInBackground: true,
                     });
                 });
 
@@ -1329,8 +1338,8 @@ var cityList = [];
                         k += '<div class="infowindow-util-preview iw-content">';
                         k += '<div class="bold infowindow-util-preview-title">' + j.title + '</div>';
                         if (j.address != null && j.address.length > 0) k += '<div class="infowindow-util-preview-adr"><i class="fa fa-map-marker"></i> <span>' + j.address + '</span></div>';
-                        k += '<div class="infowindow-util-preview-type">Loại tiện ích: ' + j.type + '</div>';
-                        k += '<div class="infowindow-util-preview-typeid">Typeid: ' + j.typeid + '</div>';
+                        k += '<div class="infowindow-util-preview-type">Loại tiện ích: ' + typeService[j.type] + '</div>';
+                        //k += '<div class="infowindow-util-preview-typeid">Typeid: ' + j.typeid + '</div>';
                         k += '<div class="infowindow-util-preview-distance">Khoảng cách: ' + j.distance + 'm</div>';
                         k += '</div>';
 

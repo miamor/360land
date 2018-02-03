@@ -12,6 +12,7 @@ function submitLoginForm () {
                 localStorage.setItem("token" , __token);
                 localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
                 console.log(__token);
+		getUserInfo();
                 mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
                 if ($('.popup:not(".popup-map") .load_login_form').length) {
                     remove_popup();

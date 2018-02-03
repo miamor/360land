@@ -15,6 +15,7 @@ $(document).ready(function () {
             $('.v-user-uname').html('@'+data.username);
             $('.v-user-phone').html(data.phone);
             $('.v-user-mail').html(data.mail);
+	    $('.v-user-intro').html(data.detail);
         },
         error: function (a, b, c) {
             console.log(a)
@@ -22,7 +23,7 @@ $(document).ready(function () {
     })
 
     // chart
-    var donut = new Morris.Donut({
+/*    var donut = new Morris.Donut({
         element: 'sales-chart',
         resize: true,
         colors: ["#3c8dbc", "#f56954", "#00a65a"],
@@ -47,12 +48,14 @@ $(document).ready(function () {
     });
 
     $('.ratings-more').width($('.ratings-stat').width()-$('#ratings-chart').width()+5);
+*/
 
     // properties
     $('.v-user-properties').html('');
     $.ajax({
-        url: MAIN_URL+'/api/node.php',
-        type: 'get',
+        url: API_URL+'/user/listnodesale/',
+        type: 'post',
+	data: {id: uID},
         success: function (data) {
             $('.v-user-properties-total').html('('+data.length+')');
             $.each(data, function (i, v) {
