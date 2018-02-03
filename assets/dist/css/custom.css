@@ -1188,7 +1188,7 @@ body.mobile .close-mode-board{position:absolute;top:6px;right:12px;cursor:pointe
     ul.navbar-nav.open{display:block;transition:.2s;border-radius:3px}
     ul.navbar-nav.open::before{content:'';position:absolute;top:-7px;left:12px;width:12px;height:12px;background:#fff;border:1px solid rgba(0,0,0,.15);transform:rotate(45deg);border-width:1px 0 0 1px}
     ul.navbar-nav>li{float:none!important;width:100%}
-    ul.navbar-nav>li>a{color:#444!important;padding:10px!important;line-height:20px!important}
+    ul.navbar-nav>li>a, li:not(.active) .nav-link{color:#444!important;padding:10px!important;line-height:20px!important}
     ul.navbar-nav.open>li:first-child>a{border-radius:3px 3px 0 0}
     ul.navbar-nav.open>li:last-child>a{border-radius:0 0 3px 3px}
     nav.navbar > li > a:hover, nav.navbar ul.navbar-nav > li.active > a{background:#0bc39b!important;color:#fff!important}
