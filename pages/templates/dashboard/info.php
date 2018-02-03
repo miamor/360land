@@ -1,7 +1,7 @@
 <h2 class="page-title show">Thay đổi thông tin</h2>
 
 
-<form id="theform" class="change-info col-lg-8 no-padding">
+<form id="theform" class="change-info col-lg-12 no-padding">
     <div class="form-group">
         <div class="col-lg-3 control-label">Địa chỉ</div>
         <div class="col-lg-9">
@@ -52,7 +52,7 @@
 
 </form>
 
-<div class="col-lg-4 no-padding">
+<div class="col-lg-4 no-padding hidden">
 <form id="changeAvt" method="post" enctype="multipart/form-data">
     <input type="file" name="avatar-input" id="file-input">
 
