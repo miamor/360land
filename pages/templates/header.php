@@ -39,13 +39,19 @@ $config->addJS('dist', 'main.js'); ?>
 				<a class="nav-link" href="<?php echo MAIN_URL ?>"><i class="fa fa-home"></i> Trang chủ <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item add-node-link dropdown">
-				<a class="nav-link dropdown-toggle" href="<?php echo MAIN_URL ?>/dashboard/node?mode=new" data-toggle="dropdown">
+				<a class="nav-link dropdown-toggle bold" style="font-weight:600" href="<?php echo MAIN_URL ?>/dashboard/node?mode=new" data-toggle="dropdown">
 					<i class="fa fa-plus"></i> Đăng tin
 				</a>
 				<ul class="dropdown-menu with-triangle pull-right">
 					<li class="nodesell"><a href="<?php echo MAIN_URL ?>/dashboard/node?mode=new"><i class="fa fa-plus"></i> Cần bán/cho thuê</a></li>
 					<li class="nodesearch"><a href="<?php echo MAIN_URL ?>/node?mode=search"><i class="fa fa-plus"></i> Cần mua/thuê</a></li>
 				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?php echo MAIN_URL ?>/dashboard/subscribe"><i class="fa fa-heart"></i> Dự án quan tâm</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?php echo MAIN_URL ?>">Thông tin sổ đỏ</a>
 			</li>
 			<li class="nav-item nav-user-mobile">
 			</li>
