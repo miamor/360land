@@ -257,6 +257,8 @@ var nodeID = splitURL[splitURL.length-1];
                     postData.price = postData.price_giatri/1000;
                 }
 
+                postData.timefrom += ' 00:00:00';
+                postData.timeto += ' 00:00:00';
                 postData.vip = parseInt(postData.rank);
                 delete postData['rank'];
                 //postData.rank = parseInt(postData.rank);
