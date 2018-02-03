@@ -325,7 +325,7 @@ function loadNoti () {
 
 
 function render_nav () {
-    if (!isMobile && $(window).width() < 1000) {
+    if (!isMobile && $(window).width() <= 992) {
         $('.nav-icon').show().click(function () {
             if ($('ul.navbar-nav').is('.open')) {
                 $('ul.navbar-nav').slideDown(400, function () {

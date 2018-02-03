@@ -5,7 +5,7 @@ if ($n == 'node' && $mode) {
     if ($mode == 'new') $pageTitle = 'New node';
     else $pageTitle = 'Search';
 } else {
-    $pageTitle = 'Dashboard - '.$n;
+    $pageTitle = 'Trang quản lý - '.$n;
 }
 
 $id = $__pageAr[2];

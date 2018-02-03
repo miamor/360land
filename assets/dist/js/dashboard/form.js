@@ -300,7 +300,7 @@ var nodeID = splitURL[splitURL.length-1];
             console.log('ajax post');
             //var postData = $(this).serialize();
             $.ajax({
-                url: API_URL+'/nodes/',
+                url: API_URL+'/manager_user/nodes/',
                 type: 'post',
                 data: postData,
                 datatype: 'json',

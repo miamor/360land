@@ -46,10 +46,19 @@ $(document).ready(function () {
                         </div>\
                         <div class="listings_image mbs prl col cols6">\
                             <img class="image_url" src="'+v.avatar+'">\
+                            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">\
+                                $'+v.priceTxt+'\
+                            </div>\
                         </div>\
                         <div class="listings_info col cols13">\
-                            <div class="line h4 mbn typeEmphasize">\
-                                <span class="listings_address"><a href="'+location.href.trim()+'/node/'+v.id+'">'+v.address+'</a></span>\
+                            <div class="line listings_title h4 mbn typeEmphasize">\
+                                <a target="_blank" href="'+MAIN_URL+'#ptype=&cat=&city=CN&district=CN&area=CN&price=-1&ward=CN&street=CN&room=&direction=CN&isProject=0&place_search=&points=&zoom=13&center=21.0193996429443:105.94985198974598&page=0&product='+v.id+'&isShowUtil=0&utilArea=&searchtype=0&details=1&fromProject=0">'+v.title+'</a>\
+                            </div>\
+                            <div class="line">\
+                                <span class="listings_address">\
+				    <i class="fa fa-map-marker"></i>\
+				    '+v.address+'\
+				</span>\
                             </div>\
                             <div class="line listings_description">\
                                 <div class="listings_area">D.tích: <span>'+v.area+'</span>m2</div>\
@@ -67,8 +76,7 @@ $(document).ready(function () {
                     html += '</div>\
                             <div class="listings_time">';
                             if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
-                            html += '<i class="fa fa-clock-o"></i> <time class="timefrom">'+v.timefrom.split('T')[0].split('-').reverse().join('-')+'</time> đến <time class="timeto">'+v.timeto.split('T')[0].split('-').reverse().join('-')+'</time></div>\
-                            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>';
+                            html += '<i class="fa fa-clock-o"></i> <time class="timefrom">'+v.timefrom.split('T')[0].split('-').reverse().join('-')+'</time> đến <time class="timeto">'+v.timeto.split('T')[0].split('-').reverse().join('-')+'</time></div>';
                     /*html += '<div class="line mts listings_type">\
                                 '+(v.type_action == 1 ? '<strong class="label label-success">Đang bán</strong>' : '<strong class="label label-info">Cho thuê</strong>')+'\
                             </div>\
