@@ -704,7 +704,7 @@ body:not(.mobile) .v-place-imgs{margin-top:92px}
 .v-place-switch-btns .v-place-mode>i{display:block;font-size:25px;line-height:25px;margin:10px 0 5px}
 .v-place-switch-btns .v-place-mode:hover{cursor:pointer;color:#444}
 
-.v-place-related{border-bottom:0!important;border-top:1px solid #e5e4e2!important;margin:0 0 20px;*height:235px;padding:5px 20px 5px!important}
+.v-place-related{border-bottom:0!important;border-top:1px solid #e5e4e2!important;margin:0 0 50px;*height:235px;padding:5px 20px 5px!important}
 /*body:not(.mobile) .v-place-related .toggle-box-btn{display:none}
 body:not(.mobile) .v-place-related h4{font-size:17px;border-bottom:2px solid #0bc39b;float:left;padding-bottom:5px;margin-left:.5%}
 */.v-place-related-list{clear:both;position:relative;padding:5px 0 0!important}

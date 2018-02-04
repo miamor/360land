@@ -2880,6 +2880,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     $('.v-place-email').html(place.email);
 
     $('.v-place-contact, .v-place-contacts').show();
+    $('.v-place-contacts').width($('.v-place-view').width());
     $('.v-place-call').attr('href', "tel:"+place.dienthoai);
     $('.v-place-sendmail').attr('href', "mailto:"+place.email);
 
