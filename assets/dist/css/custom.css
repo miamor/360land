@@ -541,6 +541,7 @@ body.mobile #overlapNodes{bottom:0!important}
 }
 #map_results .map-result-one{font-size:15px}
 #map_results .map-result-one-title{font-size:15px;line-height:20px}
+.hide[style*="display: block"]{display:block!important}
 
 .map-result-one-title{margin:0 0 5px;font-size:15px;line-height:17px;font-weight:600}
 .map-result-one-info{margin-left:90px}
