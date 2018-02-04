@@ -20,8 +20,11 @@ if ($n) {
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';
-    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css"><link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
-    $config->addJS('plugins', 'fancybox/jquery.fancybox.min.js');
+    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.min.css" rel="stylesheet" type="text/css">';
+    //echo '<link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
+    echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" type="text/css">';
+    $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js');
+    //$config->addJS('plugins', 'fancybox/jquery.fancybox.min.js');
     //echo '<link rel="stylesheet" href="'.PLUGINS.'/paver/css/paver.min.css" />';
 
     //echo '<link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.css"><link rel="stylesheet" href="'.PLUGINS.'/ionslider/ion.rangeSlider.skinNice.css">';
@@ -38,7 +41,7 @@ else {
     //$config->addJS('dist', 'ratings.min.js');
     for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
 
-    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.js');
+    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.min.js');
     /*$config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js");
     $config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js");
     $config->addJS('plugins', 'paver/js/jquery.paver.min.js');

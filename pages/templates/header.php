@@ -3,9 +3,12 @@
 //$config->addJS('plugins', 'sceditor/minified/jquery.sceditor.bbcode.min.js');
 if (!$temp) {
 //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
-$config->addJS(-1, MAIN_URL.'/assets/jquery/jquery-2.2.3.min.js');
-$config->addJS(-1, '//code.jquery.com/ui/1.12.1/jquery-ui.js');
-$config->addJS('bootstrap', 'js/bootstrap.min.js');
+//$config->addJS(-1, MAIN_URL.'/assets/jquery/jquery-2.2.3.min.js');
+$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+//$config->addJS(-1, '//code.jquery.com/ui/1.12.1/jquery-ui.js');
+$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+//$config->addJS('bootstrap', 'js/bootstrap.min.js');
+$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js');
 //$config->addJS('plugins', 'iCheck/icheck.js');
 $config->addJS('dist', 'main.js'); ?>
 <!DOCTYPE html>
@@ -18,14 +21,14 @@ $config->addJS('dist', 'main.js'); ?>
 
 	<title><?php echo $pageTitle ?></title>
 
-	<link rel="stylesheet" href="<?php echo MAIN_URL ?>/assets/bootstrap/css/bootstrap.min.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
 
 <!--<link href="//fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">-->
 <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 	<script>var MAIN_URL = '<?php echo MAIN_URL ?>';</script>
 
 </head>
