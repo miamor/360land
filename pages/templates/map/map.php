@@ -227,7 +227,7 @@
                 <li class="v-place-more-one v-place-direction">Hướng: <span></span></li>
                 <li class="v-place-more-one v-place-room">Số phòng ngủ: <span></span></li>
                 <li class="v-place-more-one v-place-type">Loại: <span></span></li>
-                <li class="v-place-more-one v-place-tiendo">Tiến độ: <span></span></li>
+                <li class="v-place-more-one v-place-tiendo"></li>
             </ul>
         </div>
 
