@@ -2,7 +2,9 @@
 //$config->addJS('plugins', 'bootstrapValidator/bootstrapValidator.min.js');
 //$config->addJS('plugins', 'sceditor/minified/jquery.sceditor.bbcode.min.js');
 if (!$temp) {
-$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
+//$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
+$config->addJS(-1, MAIN_URL.'/assets/jquery/jquery-2.2.3.min.js');
+$config->addJS(-1, '//code.jquery.com/ui/1.12.1/jquery-ui.js');
 $config->addJS('bootstrap', 'js/bootstrap.min.js');
 //$config->addJS('plugins', 'iCheck/icheck.js');
 $config->addJS('dist', 'main.js'); ?>
@@ -23,11 +25,7 @@ $config->addJS('dist', 'main.js'); ?>
 <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
-
-	<script src="<?php echo MAIN_URL ?>/assets/jquery/jquery-2.2.3.min.js"></script>
-
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>var MAIN_URL = '<?php echo MAIN_URL ?>';</script>
 
 </head>
