@@ -66,7 +66,7 @@ function getProjectInfo(duanid) {
         </div>\
         <div class="listings_info col cols13">\
             <div class="line h4 mbn typeEmphasize">\
-                <span class="listings_title"><a href="'+location.href.trim()+'/node/'+v.id+'">'+v.title+'</a></span>\
+                <span class="listings_title"><a target="_blank" href="'+MAIN_URL+'#ptype=&cat=&city=CN&district=CN&area=CN&price=-1&ward=CN&street=CN&room=&direction=CN&isProject=1&place_search=&points=&zoom=13&center=21.0193996429443:105.94985198974598&page=0&product='+v.id+'&isShowUtil=0&utilArea=&searchtype=0&details=1&fromProject=0">'+v.title+'</a></span>\
             </div>\
             <div class="line listings_description">\
                 <i class="fa fa-map-marker"></i> <span class="listings_address">'+v.address+'</span>\
