@@ -1802,7 +1802,7 @@ var cityList = [];
                     if ($thismap.isProject) $thismap.contentInfoWindowProject(data);
                     else $thismap.contentInfoWindowNode(data);
 
-                    $('.map-item-gotoview').click(function() {
+                    $('.map-item-gotoview, .map-item-info-title > span').click(function() {
                         $thismap.isDetails = 1;
                         productControlerObj.ShowDetails($thismap.currentPID, $thismap.isProject);
                     });
@@ -1875,7 +1875,7 @@ var cityList = [];
         }
 
         this.contentInfoWindowProject = function(data) {
-            $('.map-item-info-title').html(data.title).show();
+            $('.map-item-info-title').html('<span>'+data.title+'</span>').show();
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
             $('.map-item-info-address').html(data.address);
@@ -1885,7 +1885,7 @@ var cityList = [];
         }
 
         this.contentInfoWindowNode = function(data) {
-            $('.map-item-info-title').html(data.title).hide();
+            $('.map-item-info-title').html('<span>'+data.title+'</span>').hide();
             $('.map-item-info-more > div').show();
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
