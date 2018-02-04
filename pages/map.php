@@ -20,7 +20,7 @@ if ($n) {
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';
-    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css">';
+    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.min.css" rel="stylesheet" type="text/css">';
     //echo '<link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
     echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" type="text/css">';
     $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js');
@@ -41,13 +41,13 @@ else {
     //$config->addJS('dist', 'ratings.min.js');
     for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
 
-    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.js');
+    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.min.js');
     /*$config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js");
     $config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js");
     $config->addJS('plugins', 'paver/js/jquery.paver.min.js');
     */
 
-    $config->addJS('dist', $page.'/markers.js');
+    //$config->addJS('dist', $page.'/markers.js');
     $config->addJS('dist', $page.'/map.js');
 
 //    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key='.GG_API_KEY.'&libraries=places&callback=initMap');

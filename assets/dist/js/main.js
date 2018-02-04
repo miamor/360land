@@ -342,6 +342,9 @@ function render_nav () {
     }
 }
 
+var nodeMarker = {
+    empty: MAIN_URL+'/assets/img/markers/empty.png'
+};
 var typeRealEstate = {
     typereal1: '[Bán] Chung cư',
     typereal2: '[Bán] Nhà riêng',
