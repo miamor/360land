@@ -949,7 +949,7 @@ body.mobile .nav-user{overflow:hidden}
 
 /* Sta list */
 .sta-list{position:relative;margin-top:10px}
-.sta-one{position:relative;display:inline-block;text-align:center;padding:5px 15px;width:32%;*font-size:13px}
+.sta-one{position:relative;display:inline-block;text-align:center;padding:5px 15px;width:50%;*font-size:13px}
 .sta-one:not(:first-child):before{content:'';position:absolute;top:20%;height:26px;left:0;width:1px;background:#f0f0f0}
 .sta-one>strong{display:block;font-size:26px}
 .sta-one>strong>span{float:right;font-size:14px;font-weight:400}
