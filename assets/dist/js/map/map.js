@@ -1875,7 +1875,7 @@ var cityList = [];
         }
 
         this.contentInfoWindowProject = function(data) {
-            $('.map-item-info-title').html('<span>'+data.title+'</span>').show();
+            $('.map-item-info-title').html('<span>'+data.title+'</span>');
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
             $('.map-item-info-address').html(data.address);
@@ -1886,7 +1886,7 @@ var cityList = [];
 
 
         this.contentInfoWindowNode = function(data) {
-            $('.map-item-info-title').html('<span>'+data.title+'</span>').hide();
+            $('.map-item-info-title').html('<span>'+data.title+'</span>');
             $('.map-item-info-more > div').show();
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
