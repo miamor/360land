@@ -281,6 +281,8 @@ var nodeID = splitURL[splitURL.length-1];
                 //if (newNode) postData.timeto = postData.timeto.replace('%2F', '-');
                 //else postData.timeto = postData.timefrom;
 
+                postData.thumbs = postData.thumbs.replace(/\n/g, ",");
+                
                 console.log(postData);
                 console.log(JSON.stringify(postData));
 
@@ -310,7 +312,7 @@ var nodeID = splitURL[splitURL.length-1];
                 success: function (response) {
                     console.log(response);
                     mtip('', 'success', '', 'Tin bài đã được đăng thành công');
-		    location.href = MAIN_URL+'/dashboard/node/waiting';
+		            location.href = MAIN_URL+'/dashboard/node/waiting';
                 },
                 error: function (a, b, c) {
                     console.log(a);

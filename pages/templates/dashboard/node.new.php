@@ -243,6 +243,30 @@
             <div class="clearfix"></div>
         </div>
 
+        <div class="form-group">
+            <div class="col-md-4 no-padding control-label">Thumbnails </div>
+            <div class="col-md-8 no-padding">
+                <textarea class="form-control" name="thumbs" id="thumbs" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-4 no-padding control-label">Video </div>
+            <div class="col-md-8 no-padding">
+                <input class="form-control" name="video" id="video" placeholder="Video link"/>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-3 no-padding control-label">Panorama image </div>
+            <div class="col-lg-9 no-padding">
+                <input type="text" placeholder="Panorama image (url)" class="form-control" name="panorama_image" id="panorama_image"/>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
 
         <!--<div class="form-group" attr-required="1">
             <div class="col-md-4 no-padding control-label">Hạn</div>

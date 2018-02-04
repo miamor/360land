@@ -2890,18 +2890,18 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     else place.priceTxt = place.price + ' tỷ';
     $('.v-place-tiendo, .introduan, .v-place-tiendo').hide();
     $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').show();
-    $('.v-place-pricenum').html(place.priceTxt);
-    $('.v-place-address span').html(place.address);
     $('.v-place-area span').html(place.area);
     $('.v-place-direction span').html(place.huong);
     $('.v-place-room span').html(place.sophongngu);
-    $('.v-place-type span').html(typeRealEstate[place.type]);
+
     $('.v-place-details').html(place.details);
-    $('.v-place-title').attr('title', place.title).children('div').html(place.title);
     $('.v-place-ten').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+place.tenlienhe+'">'+place.tenlienhe+' <i class="fa fa-external-link"></i></a>');
     $('.v-place-phone').html(place.dienthoai);
     $('.v-place-email').html(place.email);
-    $('.v-place-contact').show();
+
+    $('.v-place-contact, .v-place-contacts').show();
+    $('.v-place-call').attr('href', "tel:"+place.dienthoai);
+    $('.v-place-sendmail').attr('href', "mailto:"+place.email);
 
     $('.v-place-related-list').html('');
     $.post(API_URL + '/search/nodenangcao/', { nodeid: i.ProductMap.currentPID }, function(similar) {
@@ -2923,6 +2923,11 @@ ProductSearchControler.prototype.setNodeDetails = function() {
 
 ProductSearchControler.prototype.setDetailsAll = function(place) {
     var i = this;
+
+    $('.v-place-title').attr('title', place.title).children('div').html(place.title);
+    $('.v-place-type span').html(typeRealEstate[place.type]);
+    $('.v-place-pricenum').html(place.priceTxt);
+    $('.v-place-address span').html(place.address);
 
     $('.v-place-thumbs').html('');
     if (place.thumbs) {
@@ -3025,12 +3030,12 @@ ProductSearchControler.prototype.setProjectDetails = function() {
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').hide();
     $('.v-place-tiendo, .v-place-intro, .v-place-infoduan').show();
-    $('.v-place-type span').html(typeRealEstate[place.type]);
+
     $('.v-place-tiendo span').html(place.tiendo);
     $('.v-place-details').html(place.infoduan);
-    $('.v-place-title').attr('title', place.title).children('div').html(place.title);
+
     $('.v-place-intro').html(place.intro);
-    $('.v-place-contact').hide();
+    $('.v-place-contact, .v-place-contacts').hide();
 
     $('.v-place-related-list').html('');
     $.post(API_URL + '/search/duannangcao/', { duanid: i.ProductMap.currentPID }, function(similar) {
