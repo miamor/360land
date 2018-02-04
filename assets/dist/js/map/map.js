@@ -2909,7 +2909,6 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
 
-    if (!place.video) place.video = MAIN_URL+'/data/mov_bbb.mp4';
     if (place.video) {
         $('.v-place-v-video').html('<video width="100%" height="100%" controls><source src="'+place.video+'" type="video/mp4">Your browser does not support the video tag.</video>');
     }
@@ -2933,7 +2932,6 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 
     //$('a.v-place-photos').colorbox({rel:'gal'});
 
-    if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
     //if (place.panorama_image) {
         console.log('place.panorama_image '+place.panorama_image);
         $('.panorama').html('<img src="' + place.panorama_image + '">').panorama_viewer({
@@ -2963,7 +2961,7 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 }
 
 function handle(place) {
-    console.log(place);
+    //console.log(place);
 
     /*if (place.avatar == null || place.avatar == '') {
         place.avatar = (place.thumbs ? place.thumbs[0] : MAIN_URL + '/assets/img/noimage.png');
@@ -2973,6 +2971,9 @@ function handle(place) {
         place.thumbs = place.thumbs.split(',');
         place.avatar = place.thumbs[0];
     }
+
+    if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
+    if (!place.video) place.video = MAIN_URL+'/data/mov_bbb.mp4';
 
     place.isProject = (place.name ? true : false);
 
