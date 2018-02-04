@@ -217,7 +217,7 @@
 
         <div class="v-place-contacts">
             <a class="btn btn-primary v-place-call" href="#"><i class="fa fa-phone"></i> Call</a>
-            <a class="btn btn-primary v-place-sendmail" href="#"><i class="fa fa-mail-forward"> Email</a>
+            <a class="btn btn-primary v-place-sendmail" href="#"><i class="fa fa-mail-forward"></i> Email</a>
         </div>
 
         <div class="v-box v-place-more">
