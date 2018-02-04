@@ -47,7 +47,7 @@ $(document).ready(function () {
                     	    </div>\
                         </div>\
                         <div class="listings_info col cols13">\
-                            <div class="line listings_title h4 mbn typeEmphasiz$
+                            <div class="line listings_title h4 mbn typeEmphasize">\
                                 <a onclick="javascript:return false" href="'+MAIN_URL+'#ptype=&cat=&city=CN&district=CN&area=CN&price=-1&ward=CN&street=CN&room=&direction=CN&isProject=0&place_search=&points=&zoom=13&center=21.0193996429443:105.94985198974598&page=0&product='+v.id+'&isShowUtil=0&utilArea=&searchtype=0&details=1&fromProject=0">'+v.title+'</a>\
                             </div>\
                             <div class="line">\

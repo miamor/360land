@@ -34,7 +34,7 @@
         <div class="clearfix"></div>
     </div>
 
-	<div class="form-group">
+    <div class="form-group">
         <div class="col-lg-3 control-labels">Giới tính </div>
         <div class="col-lg-3">
             <label><input name="sex" type="radio" value="true"> Nam</label>
@@ -43,6 +43,14 @@
             <label><input name="sex" type="radio" value="false"> Nữ</label>
         </div>
         <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group">
+	<div class="col-lg-3 control-label">Giới thiệu bản thân</div>
+	<div class="col-lg-9">
+	    <textarea class="form-control" name="details"></textarea>
+	</div>
+    	<div class="clearfix"></div>
     </div>
 
     <div class="add-form-submit center">

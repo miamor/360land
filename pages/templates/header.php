@@ -51,7 +51,7 @@ $config->addJS('dist', 'main.js'); ?>
 				<a class="nav-link" href="<?php echo MAIN_URL ?>/dashboard/subscribe"><i class="fa fa-heart"></i> Dự án quan tâm</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="<?php echo MAIN_URL ?>">Thông tin sổ đỏ</a>
+				<a class="nav-link" href="<?php echo MAIN_URL ?>"><i class="fa fa-info-circle"></i> Thông tin sổ đỏ</a>
 			</li>
 			<li class="nav-item nav-user-mobile">
 			</li>

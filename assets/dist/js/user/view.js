@@ -2,6 +2,7 @@ var urlAr = (window.location.href.replace('/', ' ').trim()).split('/');
 var uID = urlAr[urlAr.length - 1];
 
 $(document).ready(function () {
+    $('.page-title').html('User info');
     // get user info by uID
     console.log(API_URL+'/user/profile/ '+uID);
     $.ajax({
@@ -11,11 +12,13 @@ $(document).ready(function () {
         success: function (response) {
             console.log(response);
             data = response.data;
+	    $('.page-title').html(data.name);
+	    $('.v-user-avt').attr('src', data.avatar);
             $('.v-user-name').html(data.name);
             $('.v-user-uname').html('@'+data.username);
-            $('.v-user-phone').html(data.phone);
-            $('.v-user-mail').html(data.mail);
-	    $('.v-user-intro').html(data.detail);
+            $('.v-user-phone span').html(data.phone);
+            $('.v-user-mail span').html(data.email);
+	    $('.v-user-intro').html(data.details);
         },
         error: function (a, b, c) {
             console.log(a)
@@ -56,7 +59,10 @@ $(document).ready(function () {
         url: API_URL+'/user/listnodesale/',
         type: 'post',
 	data: {id: uID},
-        success: function (data) {
+        success: function (response) {
+	    data = response.data;
+	    console.log(data);
+	    if (data != 'error') {
             $('.v-user-properties-total').html('('+data.length+')');
             $.each(data, function (i, v) {
                 html = '<div class="v-user-property line">\
@@ -83,6 +89,7 @@ $(document).ready(function () {
                 $('.v-user-properties').append(html);
                 $('.listings_info').width($('.v-user-property').width()-$('.listings_image').width()-10);
             })
+	    }
         },
         error: function (a, b, c) {
             console.log(a);

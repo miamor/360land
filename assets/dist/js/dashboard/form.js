@@ -310,6 +310,7 @@ var nodeID = splitURL[splitURL.length-1];
                 success: function (response) {
                     console.log(response);
                     mtip('', 'success', '', 'Tin bài đã được đăng thành công');
+		    location.href = MAIN_URL+'/dashboard/node/waiting';
                 },
                 error: function (a, b, c) {
                     console.log(a);

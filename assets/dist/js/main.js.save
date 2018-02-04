@@ -295,7 +295,7 @@ function setUserInfoNav () {
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
 
     if (isMobile) {
-        $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a>');
+        $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/user/'+__userInfo.username+'">'+$('.nav-user .dropdown > a').html()+'</a>');
     }
 
     loadNoti();
@@ -442,19 +442,8 @@ jQuery(document).ready(function ($) {
 	$('.noti-right-bar .see-all-noti').click(function () {
 	    location.href = MAIN_URL+'/dashboard/noti';
 	});
-	if (isMobile) {
-	if (location.href.indexOf('dashboard') > -1) {
-	    patAr = (location.href.replace('/','').trim()).split('dashboard');
-	    pat = patAr[patAr.length-1];
-	    if (!pat) {
-		$('.container > .col-lg-9').html('<h2 class="page-title">Dashboard</h2>');
-	    } else {
-		$('.container > .left-menu').hide();
-		$('.container .page-title').prepend('<a href="'+MAIN_URL+'/dashboard"><i class="fa fa-chevron-left"></i></a> ');
-	    }
-	}
-	}
-        // destroy session every 30 minutes
+
+        // 	destroy session every 30 minutes
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
         $('.nav-user #me_login_link, .nav-user #me_reg_link').show();

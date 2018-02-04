@@ -64,6 +64,11 @@ if (!$temp) {
 ?>
 
 <div class="col-lg-3 left-menu no-padding-left">
+    <div class="menu-one-box view-public-profile">
+	<div class="menu-one-box-body">
+	    <a class="menu-one-item public-profile-link" href="#">Xem trang cá nhân</a>
+	</div>
+    </div>
     <div class="menu-one-box">
         <h4 class="menu-one-box-header">Thông tin cá nhân</h4>
         <div class="menu-one-box-body">
