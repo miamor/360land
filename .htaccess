@@ -12,7 +12,7 @@
     ExpiresByType image/x-icon "access 1 year"
     ExpiresDefault "access 1 month"
 </IfModule>
-<filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+<filesMatch ".(css|jpg|jpeg|png|gif|js|ico|eot|woff|ttf)$">
     Header set Cache-Control "max-age=2592000, public"
 </filesMatch>
 
