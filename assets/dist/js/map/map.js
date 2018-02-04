@@ -2934,7 +2934,7 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
     //$('a.v-place-photos').colorbox({rel:'gal'});
 
     if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
-    if (place.panorama_image) {
+    //if (place.panorama_image) {
         $('.panorama').html('<img src="' + place.panorama_image + '">').panorama_viewer({
             animationTime: 300
         });
@@ -2947,9 +2947,9 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
             }
         };
         interval = setInterval(check, 1200);
-    } else {
+    /*} else {
         $('.v-place-v-360').hide();
-    }
+    }*/
 
     popup_info(i, place.latitude, place.longitude);
 
