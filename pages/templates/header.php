@@ -6,7 +6,7 @@ if (!$temp) {
 //$config->addJS(-1, MAIN_URL.'/assets/jquery/jquery-2.2.3.min.js');
 $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js');
 //$config->addJS(-1, '//code.jquery.com/ui/1.12.1/jquery-ui.js');
-$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+//$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 //$config->addJS('bootstrap', 'js/bootstrap.min.js');
 $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js');
 //$config->addJS('plugins', 'iCheck/icheck.js');
@@ -22,13 +22,13 @@ $config->addJS('dist', 'main.js'); ?>
 	<title><?php echo $pageTitle ?></title>
 
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
 
-<!--<link href="//fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">-->
-<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-
+	<!--<link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+	<link href="//fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">-->
+    <link rel="stylesheet" href="<?php echo CSS ?>/minified.css" type="text/css" media="screen">
+
 	<script>var MAIN_URL = '<?php echo MAIN_URL ?>';</script>
 
 </head>
