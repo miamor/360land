@@ -655,7 +655,7 @@ body.mobile .popup-map{top:39px;left:0;right:0;bottom:50px}
 .popup-map .popup-btn[role="close"]:before{font-size:25px;line-height:1.35;text-align:center;color:rgba(0,0,0,.5)}*/
 .popup-map [role="close"]{position:absolute;z-index:999;top:30px;right:4px}
 .popup-btn[role="close"]:before{content:'\e626';font-family:'nhanha';font-size:20px;font-weight:400!important}
-.v-place-view{position:relative;width:100%;height:100%;overflow:auto}
+.v-place-view{position:relative;width:100%;height:100%;overflow:auto;padding-bottom:30px}
 .v-place-imgs,.v-place-board{position:relative;height:240px;background:#ddd}
 .v-place-board{height:240px}
 .v-place-thumbs{display:none;position:absolute;bottom:0;left:0;right:0;height:56px;text-align:center;background:rgba(0,0,0,.6)}
@@ -665,8 +665,8 @@ body.mobile .popup-map{top:39px;left:0;right:0;bottom:50px}
 .v-place-bg{position:absolute;width:100%;height:100%;background-size:100% 100%}
 .v-place-title{position:relative;margin:0}
 .v-place-contacts{position:fixed;z-index:100;bottom:20px}
-.v-place-contacts>a{display:inline-block;width:50%;margin:0 -10px}
-body.mobile .v-place-contacts{bottom:52px;left:10px;right:10px}
+.v-place-contacts>a{display:inline-block;width:49%;margin:0 -10px}
+body.mobile .v-place-contacts{bottom:52px;left:3%;right:2%}
 body.mobile .v-place-contacts>a{margin:0!important}
 
 body:not(.mobile) .v-place-title{position:absolute;top:0;left:0;right:0;font-size:18px;line-height:23px;padding:10px 15px;z-index:100;background:#0bc39b;color:#fff;height:92px}
@@ -716,7 +716,7 @@ body.mobile .v-place-related-list{padding:5px 0!important}
 .v-place-related-one-title{position:absolute;bottom:0;left:0;right:0;padding:5px 8px 5px;background:rgba(0,0,0,.5);color:#fff;line-height:16px;*font-weight:600}
 .v-place-related-one-address{font-size:14px;*font-weight:300}
 
-.v-place-more-btns{position:fixed;bottom:60px;right:15px}
+.v-place-more-btns{position:fixed;bottom:80px;right:15px}
 .v-place-more-btns>div:not(.contact-more){display:none}
 .v-place-more-btns:hover>div{display:inline-block!important}
 .v-place-more-btns>div{width:40px;height:40px;line-height:40px;text-align:center;border-radius:100%;background:#0bc39b;color:#fff;font-size:20px;cursor:pointer}
