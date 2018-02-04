@@ -22,7 +22,6 @@ $config->addJS('dist', 'main.js'); ?>
 	<title><?php echo $pageTitle ?></title>
 
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" media="screen">
-	<link href="//use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<!--<link rel="stylesheet" href="<?php echo CSS ?>/font.min.css" type="text/css" media="screen">
     <link rel="stylesheet" href="<?php echo CSS ?>/custom.css" type="text/css" media="screen">
 	<link href="//fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Source+Sans+Pro" rel="stylesheet">

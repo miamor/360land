@@ -1767,7 +1767,7 @@ var cityList = [];
                 //}
 
                 if (isMobile) {
-                    $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-utensils"></i></a>\
+                    $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-cutlery"></i></a>\
                     <a class="btn btn-default btn-sm map-item-gotoview center" title="Chi tiết"><i class="fa fa-feed"></i></a>');
                     $('.map-item-info-board').show().addClass('mobile');
 
