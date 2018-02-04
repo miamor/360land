@@ -2,10 +2,10 @@
 session_start();
 error_reporting(E_ERROR | E_PARSE);
 
-$__pattern = '/';
+$__pattern = '/360land';
 
-define('MAIN_URL', '//www.mappy.com.vn');
-//define('MAIN_URL', '//localhost'.$__pattern);
+//define('MAIN_URL', '//www.mappy.com.vn');
+define('MAIN_URL', '//localhost'.$__pattern);
 
 define('MAIN_PATH', './');
 define('ASSETS', MAIN_URL.'/assets');

@@ -992,7 +992,7 @@ body.mobile .v-user-avt{float:none;width:100%;height:180px;margin:0 auto 10px}
 body:not(.mobile) .page-title:not(.show){display:none}
 
 body.mobile{overflow:hidden}
-body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto;margin-top:39px;padding-top:10px}
+body.mobile .container{position:fixed;top:0;left:0;right:0;bottom:50px;overflow:auto;padding-top:40px}
 body.mobile .place-add{padding:0 4px!important}
 body.mobile .place-add .form-group:not(.form-time):not(.rank-select) .control-label, body.mobile .place-add .control-labels{color:#464646;font-size:13px;margin-top:8px;*display:none}
 body.mobile .form-time .control-label{text-align:left!important;margin-top:5px!important}
