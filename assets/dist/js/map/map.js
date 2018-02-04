@@ -2132,8 +2132,8 @@ ProductSearchControler = function(h) {
         $(this).addClass('active');
 
         if (vid == 'v-video') {
-            var vwi = $('.v-place-v-video').width();
-            var vhe = $('.v-place-v-video').height();
+            var vwi = $('.v-place-imgs').width();
+            var vhe = $('.v-place-imgs').height();
             $('.v-place-v-video video').width(vwi).height(vhe);
         }
         if (vid == 'v-direction') {
