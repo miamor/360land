@@ -9,8 +9,8 @@ var c_city = c_district = c_ward = null;
 var city = district = ward = street = project = null;
 var labelOrigin = new google.maps.Point(20, 20);
 
-var zoom_markerView = 13;
-var zoom_moderate = 11;
+var zoom_markerView = 14;
+var zoom_moderate = 13;
 var zoom_utilityView = 16;
 var cityList = [];
 
@@ -285,6 +285,9 @@ var cityList = [];
                         labelClass: "marker-mypos", // your desired CSS class
                         labelInBackground: true,
                     });
+                    if ( !$thismap.currentPID && (!$('#place_search').val() || $('#place_search').val() == null) && (!c_city || c_city == null || c_city == undefined || c_city == 'CN')) {
+                        $thismap.map.setCenter($thismap.myPos);
+                    }
                 }, function(a) {
                     console.log(a);
                 });
@@ -302,10 +305,6 @@ var cityList = [];
                 } else {
                     console.log('$thismap.currentPID == ' + $thismap.currentPID);
                     $thismap.loadAndShowInfoWindow($thismap.currentPID, false)
-                }
-            } else if (!$('#place_search').val() && (!c_city || c_city == 'CN')) {
-                if ($thismap.myPos) {
-                    $thismap.map.setCenter($thismap.myPos);
                 }
             }
 
@@ -438,7 +437,7 @@ var cityList = [];
                         $thismap.findPoint($thismap.polyline);
                         $thismap.catchChangePolyline();
                     }
-                } else if (c_city && c_city != 'CN') {
+                } else if (c_city && c_city != null && c_city != undefined && c_city != 'CN') {
                     if (!$thismap.isDirection) {
                         s.place_search = null;
                         $thismap.input.place_search.value = '';
@@ -496,7 +495,7 @@ var cityList = [];
             console.log(address);
             $thismap.geocoder.geocode({ 'address': address }, function(results, status) {
                 if (status === 'OK') {
-                    if (c_city && c_city != 'CN') {
+                    if (c_city && c_city != null && c_city != undefined && c_city != 'CN') {
                         $thismap.map.setCenter(results[0].geometry.location);
                         $thismap.drawBoundary(
                             adrAr[2],
