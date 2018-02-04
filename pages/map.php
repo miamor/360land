@@ -41,7 +41,7 @@ else {
     //$config->addJS('dist', 'ratings.min.js');
     for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
 
-    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.min.js');
+    $config->addJS('plugins', 'panorama_viewer/jquery.panorama_viewer.js');
     /*$config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js");
     $config->addJS(-1, "https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js");
     $config->addJS('plugins', 'paver/js/jquery.paver.min.js');
