@@ -2935,6 +2935,7 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 
     if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
     //if (place.panorama_image) {
+        console.log('place.panorama_image '+place.panorama_image);
         $('.panorama').html('<img src="' + place.panorama_image + '">').panorama_viewer({
             animationTime: 300
         });
