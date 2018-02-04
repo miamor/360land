@@ -2131,6 +2131,11 @@ ProductSearchControler = function(h) {
         $('.v-place-mode').removeClass('active');
         $(this).addClass('active');
 
+        if (vid == 'v-video') {
+            var vwi = $('.v-place-v-video').width();
+            var vhe = $('.v-place-v-video').height();
+            $('.v-place-v-video video').width(vwi).height(vhe);
+        }
         if (vid == 'v-direction') {
             i.ShowDirection();
         }
@@ -2930,6 +2935,11 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
     $('.v-place-type span').html(typeRealEstate[place.type]);
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
+
+    console.log('v-place-v-video');
+    $('.v-place-v-video').html('<video width="100%" height="100%" controls>\
+    <source src="'+MAIN_URL+'/data/mov_bbb.mp4" type="video/mp4">\
+    Your browser does not support the video tag.</video> ');
 
     $('.v-place-thumbs').html('');
     if (place.thumbs) {
