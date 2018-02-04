@@ -1767,7 +1767,7 @@ var cityList = [];
                 //}
 
                 if (isMobile) {
-                    $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-share-alt"></i></a>\
+                    $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-utensils"></i></a>\
                     <a class="btn btn-default btn-sm map-item-gotoview center" title="Chi tiết"><i class="fa fa-feed"></i></a>');
                     $('.map-item-info-board').show().addClass('mobile');
 
@@ -2879,7 +2879,8 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     $('.v-place-email').html(place.email);
 
     $('.v-place-contact, .v-place-contacts').show();
-    $('.v-place-contacts').width($('.v-place-view').width());
+    //$('.v-place-contacts').width($('.v-place-view').width());
+    $('.v-place-contacts').width(480);
     $('.v-place-call').attr('href', "tel:"+place.dienthoai);
     $('.v-place-sendmail').attr('href', "mailto:"+place.email);
 
