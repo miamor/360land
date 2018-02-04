@@ -20,7 +20,7 @@ if ($n) {
 else {
     $pageTitle = 'Map';
     include 'templates/header.php';
-    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.min.css" rel="stylesheet" type="text/css">';
+    echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.css" rel="stylesheet" type="text/css">';
     //echo '<link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
     echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" type="text/css">';
     $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js');
