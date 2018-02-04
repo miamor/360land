@@ -609,37 +609,6 @@ var cityList = [];
             }
         }
 
-        /*this.processSVData = function (data, status) {
-            if (status === 'OK') {
-                var marker = new google.maps.Marker({
-                    position: data.location.latLng,
-                    map: map,
-                    title: data.location.description
-                });
-
-                this.panorama.setPano(data.location.pano);
-                this.panorama.setPov({
-                    heading: 270,
-                    pitch: 0
-                });
-                this.panorama.setVisible(true);
-
-                marker.addListener('click', function() {
-                    var markerPanoID = data.location.pano;
-                    // Set the Pano to use the passed panoID.
-                    this.panorama.setPano(markerPanoID);
-                    this.panorama.setPov({
-                        heading: 270,
-                        pitch: 0
-                    });
-                    this.panorama.setVisible(true);
-                });
-            } else {
-                console.error('Street View data not found for this location.');
-            }
-        }*/
-
-
         this.resize = function() {
             google.maps.event.trigger($thismap.map, 'resize');
             this.isMapResize = true;
@@ -2940,10 +2909,10 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
     $('.v-place-pricenum').html(place.priceTxt);
     $('.v-place-address span').html(place.address);
 
-    console.log('v-place-v-video');
-    $('.v-place-v-video').html('<video width="100%" height="100%" controls>\
-    <source src="'+MAIN_URL+'/data/mov_bbb.mp4" type="video/mp4">\
-    Your browser does not support the video tag.</video> ');
+    if (!place.video) place.video = MAIN_URL+'/data/mov_bbb.mp4';
+    if (place.video) {
+        $('.v-place-v-video').html('<video width="100%" height="100%" controls><source src="'+place.video+'" type="video/mp4">Your browser does not support the video tag.</video>');
+    }
 
     $('.v-place-thumbs').html('');
     if (place.thumbs) {
@@ -2964,6 +2933,7 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
 
     //$('a.v-place-photos').colorbox({rel:'gal'});
 
+    if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
     if (place.panorama_image) {
         $('.panorama').html('<img src="' + place.panorama_image + '">').panorama_viewer({
             animationTime: 300
