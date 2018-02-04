@@ -1882,8 +1882,8 @@ var cityList = [];
             //$('.map-item-info-des').html(data.details);
             $('.map-item-info-thumb').attr('src', data.avatar);
             $('.map-item-info-more > div:not(:first-child)').hide();
-            $('.map-item-info-type').html(typeRealEstate[data.type]);
         }
+
 
         this.contentInfoWindowNode = function(data) {
             $('.map-item-info-title').html('<span>'+data.title+'</span>').hide();
@@ -1897,7 +1897,6 @@ var cityList = [];
             $('.map-item-info-thumb').attr('src', data.avatar);
             $('.map-item-info-bed').html(data.sophongngu);
             $('.map-item-info-huong').html(data.huong);
-            $('.map-item-info-type').html(typeRealEstate[data.type]);
         };
 
         return this
@@ -2892,6 +2891,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     else place.priceTxt = place.price + ' tỷ';
     $('.v-place-tiendo, .introduan, .v-place-tiendo').hide();
     $('.v-place-address, .v-place-area, .v-place-direction, .v-place-room').show();
+
     $('.v-place-area span').html(place.area);
     $('.v-place-direction span').html(place.huong);
     $('.v-place-room span').html(place.sophongngu);

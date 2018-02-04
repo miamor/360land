@@ -267,7 +267,6 @@
             <div class="clearfix"></div>
         </div>
 
-
         <!--<div class="form-group" attr-required="1">
             <div class="col-md-4 no-padding control-label">Hạn</div>
             <div class="col-md-8 no-padding">

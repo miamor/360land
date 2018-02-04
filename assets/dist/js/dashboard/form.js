@@ -282,7 +282,7 @@ var nodeID = splitURL[splitURL.length-1];
                 //else postData.timeto = postData.timefrom;
 
                 postData.thumbs = postData.thumbs.replace(/\n/g, ",");
-                
+
                 console.log(postData);
                 console.log(JSON.stringify(postData));
 
@@ -313,7 +313,7 @@ var nodeID = splitURL[splitURL.length-1];
                     console.log(response);
                     mtip('', 'success', '', 'Tin bài đã được đăng thành công');
 		            location.href = MAIN_URL+'/dashboard/node/waiting';
-                },
+		},
                 error: function (a, b, c) {
                     console.log(a);
                     mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
