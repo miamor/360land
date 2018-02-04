@@ -68,6 +68,7 @@ var width = height = 0;
         first.target.dispatchEvent(simulatedEvent);
     }
     $.fn.panorama_viewer = function(options){
+        console.log('panorama_viewer called~');
 
         document.addEventListener("touchstart", touchHandler, true);
         document.addEventListener("touchmove", touchHandler, true);
