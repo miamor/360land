@@ -1718,7 +1718,11 @@ var cityList = [];
 
             if (__token) productControlerObj.checkSaveProject();
             else {
-                $('#save_project').html('<a class="v-place-save disabled" href="javascript:return false" title="Đăng nhập để theo dõi dự án"><i class="fa fa-heart-o"> Theo dõi</a>');
+                $('#save_project').html('<a class="v-place-save disabled" href="#" title="Đăng nhập để theo dõi dự án"><i class="fa fa-heart-o"> Theo dõi</a>');
+                $('.v-place-save').click(function () {
+                    loadLoginPopup();
+                    return false
+                })
             }
 
             if (data) {
