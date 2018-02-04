@@ -215,6 +215,11 @@
             <div class="v-place-address"><i class="fa fa-map-marker"></i> <span></span></div>
         </div></div>
 
+        <div class="v-place-contacts">
+            <a class="btn btn-primary v-place-call" href="#"><i class="fa fa-phone"></i> Call</a>
+            <a class="btn btn-primary v-place-sendmail" href="#"><i class="fa fa-mail-forward"> Email</a>
+        </div>
+
         <div class="v-box v-place-more">
             <h4>Thông tin</h4>
             <ul class="v-box-content open">
