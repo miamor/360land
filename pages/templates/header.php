@@ -4,7 +4,7 @@
 if (!$temp) {
 //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 //$config->addJS(-1, MAIN_URL.'/assets/jquery/jquery-2.2.3.min.js');
-$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js');
 //$config->addJS(-1, '//code.jquery.com/ui/1.12.1/jquery-ui.js');
 $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
 //$config->addJS('bootstrap', 'js/bootstrap.min.js');
