@@ -36,8 +36,6 @@ else {
     //$config->addJS('plugins', 'OverlappingMarkerSpiderfier/oms.min.js');
     //$config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key='.GG_API_KEY.'&libraries=drawing,geometry,places');
 
-    $config->addJS('plugins', 'markerWithLabel/markerWithLabel.min.js');
-
     //$config->addJS('dist', 'ratings.min.js');
     //for ($i = 1; $i <= 4; $i++) $config->addJS('dist', $page.'/cityListOther'.$i.'.js');
     $config->addJS('dist', $page.'/cityListOther.js');
@@ -52,6 +50,7 @@ else {
     //$config->addJS('dist', $page.'/markers.js');
 
     $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=drawing,geometry,places');
+    $config->addJS('plugins', 'markerWithLabel/markerWithLabel.min.js');
 
     $config->addJS('dist', $page.'/map.js');
 
