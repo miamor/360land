@@ -362,6 +362,17 @@ var typeRealEstate = {
     typereal17: '[Thuê] Trang trại, khu nghỉ dưỡng',
     typereal18: '[Thuê] Bất động sản khác',
 
+    loaiduan1: "Căn hộ, chung cư",
+    loaiduan10: "Biệt thự, liền kề, nhà vườn",
+    loaiduan2: "Cao ốc văn phòng",
+    loaiduan3: "Trung tâm thương mại",
+    loaiduan4: "Khu đô thị mới",
+    loaiduan5: "Khu phức hợp",
+    loaiduan6: "Nhà ở xã hội",
+    loaiduan7: "Khu nghỉ dưỡng, sinh thái",
+    loaiduan8: "Khu công nghiệp",
+    loaiduan9: "Dự án khác",
+
     /*apartment: 'Chung cư',
     house: 'Nhà riêng',
     villa: 'Biệt thự, liền kề',
