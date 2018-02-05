@@ -2874,7 +2874,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
     $('.v-place-room span').html(place.sophongngu);
 
     $('.v-place-details').html(place.details);
-    $('.v-place-ten').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+place.tenlienhe+'">'+place.tenlienhe+' <i class="fa fa-external-link"></i></a>');
+    $('.v-place-ten').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+place.userid+'">'+place.tenlienhe+' <i class="fa fa-external-link"></i></a>');
     $('.v-place-phone').html(place.dienthoai);
     $('.v-place-email').html(place.email);
 
