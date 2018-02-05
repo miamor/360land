@@ -664,8 +664,8 @@ body.mobile .popup-map{top:39px;left:0;right:0;bottom:50px}
 .v-place-avt{float:left;width:50px;height:50px}
 .v-place-bg{position:absolute;width:100%;height:100%;background-size:100% 100%}
 .v-place-title{position:relative;margin:0}
-.v-place-contacts{position:fixed;z-index:100;bottom:20px}
-.v-place-contacts>a{display:inline-block;width:49%;margin:0 -10px}
+.v-place-contacts{position:fixed;z-index:100;bottom:25px}
+.v-place-contacts>a{display:inline-block;width:49%;margin:0}
 body.mobile .v-place-contacts{bottom:52px;left:3%;right:2%}
 body.mobile .v-place-contacts>a{margin:0!important}
 

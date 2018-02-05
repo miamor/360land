@@ -2880,7 +2880,7 @@ ProductSearchControler.prototype.setNodeDetails = function() {
 
     $('.v-place-contact, .v-place-contacts').show();
     //$('.v-place-contacts').width($('.v-place-view').width());
-    $('.v-place-contacts').width(480);
+    $('.v-place-contacts').width(435);
     $('.v-place-call').attr('href', "tel:"+place.dienthoai);
     $('.v-place-sendmail').attr('href', "mailto:"+place.email);
 
