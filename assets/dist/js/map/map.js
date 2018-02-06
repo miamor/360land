@@ -2696,7 +2696,7 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
                     <li class="v-place-more-one v-place-rongduong" style="display: inline-block;">Chiều rộng mặt đường: <span>'+val.rongduong+'</span></li>';
                 }
                 k += '</ul>';
-                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
+                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.username+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';
@@ -2982,6 +2982,10 @@ function handle(place) {
     if (place.thumbs) {
         place.thumbs = place.thumbs.split(',');
         place.avatar = place.thumbs[0];
+    }
+
+    if (place.uutien == null || place.uutien == undefined || !place.uutien) {
+        place.uutien = 0;
     }
 
     if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';

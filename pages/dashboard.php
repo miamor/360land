@@ -43,9 +43,10 @@ else if ($n == 'node') {
             $config->addJS('dist', $page.'/form.js');
 
             if ($mode == 'new') {
-                echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css" type="text/css">';
+                //echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css" type="text/css">';
                 //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/file-uploader/5.15.5/all.fine-uploader/all.fine-uploader.core.min.js');
-                $config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js');
+                //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js');
+                $config->addJS('dist', 'jquery.filedrop.js');
                 $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
             }
         

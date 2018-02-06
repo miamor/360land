@@ -13,54 +13,104 @@ $(document).ready(function () {
     FormGen.initialize();
 
     if (newNode) {
-        var previewNode = document.querySelector("#template");
-        previewNode.id = "";
-        var previewTemplate = previewNode.parentNode.innerHTML;
-        previewNode.parentNode.removeChild(previewNode);
+        var dropbox = $('#dropbox'),
+            message = $('.message', dropbox);
 
-        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            url: "/target-url", // Set the url
-            thumbnailWidth: 80,
-            thumbnailHeight: 80,
-            parallelUploads: 20,
-            previewTemplate: previewTemplate,
-            autoQueue: false, // Make sure the files aren't queued until manually added
-            previewsContainer: "#previews", // Define the container to display the previews
-            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        dropbox.filedrop({
+            // The name of the $_FILES entry:
+            paramname: 'pic',
+
+            maxfiles: 25,
+            maxfilesize: 3,
+            url: 'post_file.php',
+
+            uploadFinished: function (i, file, response) {
+                $.data(file).addClass('done');
+                // response is the JSON object that post_file.php returns
+            },
+
+            error: function (err, file) {
+                console.log(err);
+                switch (err) {
+                    case 'BrowserNotSupported':
+                        showMessage('Your browser does not support HTML5 file uploads!');
+                        break;
+                    case 'TooManyFiles':
+                        alert('Too many files! Please select 5 at most! (configurable)');
+                        break;
+                    case 'FileTooLarge':
+                        alert(file.name + ' is too large! Please upload files up to 2mb (configurable).');
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            // Called before each upload is started
+            beforeEach: function (file) {
+                if (!file.type.match(/^image\//)) {
+                    alert('Only images are allowed!');
+
+                    // Returning false will cause the
+                    // file to be rejected
+                    return false;
+                }
+            },
+
+            uploadStarted: function (i, file, len) {
+                createImage(file);
+            },
+
+            progressUpdated: function (i, file, progress) {
+                $.data(file).find('.progress').width(progress);
+            }
+
         });
 
-        myDropzone.on("addedfile", function (file) {
-            // Hookup the start button
-            file.previewElement.querySelector(".start").onclick = function () {
-                myDropzone.enqueueFile(file);
+        var template = '<div class="preview">' +
+            '<span class="imageHolder">' +
+            '<img />' +
+            '<span class="uploaded"></span>' +
+            '</span>' +
+            '<div class="progressHolder">' +
+            '<div class="progress"></div>' +
+            '</div>' +
+            '</div>';
+
+        function createImage(file) {
+
+            var preview = $(template),
+                image = $('img', preview);
+
+            var reader = new FileReader();
+
+            image.width = 100;
+            image.height = 100;
+
+            reader.onload = function (e) {
+
+                // e.target.result holds the DataURL which
+                // can be used as a source of the image:
+
+                image.attr('src', e.target.result);
             };
-        });
 
-        // Update the total progress bar
-        myDropzone.on("totaluploadprogress", function (progress) {
-            document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
-        });
+            // Reading the file as a DataURL. When finished,
+            // this will trigger the onload function above:
+            reader.readAsDataURL(file);
 
-        myDropzone.on("sending", function (file) {
-            // Show the total progress bar when upload starts
-            document.querySelector("#total-progress").style.opacity = "1";
-            // And disable the start button
-            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
-        });
+            message.hide();
+            preview.appendTo(dropbox);
 
-        // Hide the total progress bar when nothing's uploading anymore
-        myDropzone.on("queuecomplete", function (progress) {
-            document.querySelector("#total-progress").style.opacity = "0";
-        });
+            // Associating a preview container
+            // with the file, using jQuery's $.data():
 
-        // Setup the buttons for all transfers
-        // The "add files" button doesn't need to be setup because the config
-        // `clickable` has already been specified.
-        document.querySelector("#actions .start").onclick = function () {
-            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-        };
-        document.querySelector("#actions .cancel").onclick = function () {
-            myDropzone.removeAllFiles(true);
-        };
+            $.data(file, preview);
+        }
+
+        function showMessage(msg) {
+            message.html(msg);
+        }
+
     }
 })

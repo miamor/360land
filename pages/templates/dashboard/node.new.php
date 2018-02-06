@@ -247,7 +247,10 @@
             <div class="col-lg-3 no-padding control-label">Thumbnails </div>
             <div class="col-lg-9 no-padding">
                 <textarea class="form-control hidden" name="thumbs" id="thumbs" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
-                <?php include 'thumbs.form.php' ?>
+                <?php //include 'thumbs.form.php' ?>
+                <div id="dropbox">
+                    <span class="message">Drop images here to upload.</span>
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
