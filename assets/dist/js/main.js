@@ -195,13 +195,13 @@ var checkSession = function() {
     var currentSec = Math.floor(Date.now()/1000);
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
-    //console.log(s);
-    if (s > 2*60*60 && s < 2.5*60*60) { // > 2 hours, < 2,5 hours
-        // refreshToken
-        logout(true)
+    console.log(s);
+    if (s > 60*60 && s < 3*60*60) { // > 2 hours, < 2,5 hours
+        refreshToken()
+        //logout(true)
     }
 }
-checkSession_Interval = setInterval(checkSession, 10000);
+checkSession_Interval = setInterval(checkSession, 1000);
 
 
 function logout (autoLoggedOut = false) {
@@ -228,6 +228,7 @@ function refreshToken () {
         success: function (response) {
             if (response.data != 'error') {
                 __token = response.data;
+                localStorage.setItem('login_time', Math.floor(Date.now() / 1000));
                 localStorage.setItem('token', response.data);
             }
         },
@@ -318,6 +319,7 @@ function loadNoti () {
             })
         }, 
         error: function (a, b, c) {
+            logout(true);
             console.log(a);
         }
     });

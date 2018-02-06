@@ -2,16 +2,16 @@
     <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Thêm địa điểm</h4>
     <div class="add-form-content">
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Tiêu đề </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Tiêu đề </div>
+            <div class="col-lg-9 no-padding">
                 <input type="text" class="form-control" placeholder="Tiêu đề " name="title"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-labels">Loại </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-labels">Loại </div>
+            <div class="col-lg-9 no-padding">
                 <label class="col-sm-3"><input name="type_action" type="radio" checked value="2"> Bán</label>
                 <label class="col-sm-3" style="margin-top:5px!important"><input name="type_action" type="radio" value="1"> Cho thuê</label>
                 <div class="clearfix"></div>
@@ -20,8 +20,8 @@
         </div>
 
         <div class="form-group form-type" attr-required="1">
-            <div class="col-md-4 no-padding control-labels">Loại bất động sản</div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-labels">Loại bất động sản</div>
+            <div class="col-lg-9 no-padding">
                 <select id="type2" name="type2" class="form-control type_bds" attr-typeaction="2">
                     <option selected value="CN">Chọn loại bất động sản</option>
                     <option value="typereal1">Chung cư</option>
@@ -59,8 +59,8 @@
         </div>
 
         <div class="form-group form-adr" attr-required="1">
-            <div class="col-md-4 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ </div>
+            <div class="col-lg-9 no-padding">
                 <div class="col-md-6 select-city no-padding-left">
                     <select class="form-control" id="city" name="tinh">
                         <option value="-1">--Chọn Tỉnh/Thành phố *--</option>
@@ -152,8 +152,8 @@
         </div>
 
         <div class="form-group hide customshow typereal11 typereal1 typereal4" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Thuộc dự án </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Thuộc dự án </div>
+            <div class="col-lg-9 no-padding">
                 <input type="text" name="tenduan" id="tenduan" class="form-control" placeholder="Nhập tên dự án"/>
                 <div class="ville-dropdown hide"></div>
                 <input type="hidden" name="duanid" id="duanid" class="form-control"/>
@@ -167,48 +167,48 @@
         </div>
 
         <div class="form-group hide customshow typereal1 typereal11 typereal2 typereal3 typereal4" attr-required="1">
-            <div class="col-md-4 no-padding control-label customshow typereal1 typereal11 hide">Ở tầng </div>
-            <div class="col-md-4 no-padding control-label customshow typereal2 typereal3 typereal4 hide">Số tầng </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label customshow typereal1 typereal11 hide">Ở tầng </div>
+            <div class="col-lg-3 no-padding control-label customshow typereal2 typereal3 typereal4 hide">Số tầng </div>
+            <div class="col-lg-9 no-padding">
                 <input type="number" name="tang" id="tang" class="form-control"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group hide customshow typereal2 typereal3 typereal4" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Chiều rộng mặt tiền *</div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt tiền *</div>
+            <div class="col-lg-9 no-padding">
                 <input type="number" name="rongtien" id="rongtien" class="form-control" placeholder="Chiều rộng mặt tiền"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group hide customshow typereal2 typereal3 typereal4" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Chiều rộng mặt đường *</div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt đường *</div>
+            <div class="col-lg-9 no-padding">
                 <input type="number" name="rongduong" id="rongduong" class="form-control" placeholder="Chiều rộng mặt đường"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Diện tích </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Diện tích </div>
+            <div class="col-lg-9 no-padding">
                 <input type="number" min="1" placeholder="Diện tích" class="form-control" name="area" id="area"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Số phòng ngủ </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Số phòng ngủ </div>
+            <div class="col-lg-9 no-padding">
                 <input type="number" min="1" placeholder="Số phòng ngủ" class="form-control" name="sophongngu" id="sophongngu"/>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Hướng</div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Hướng</div>
+            <div class="col-lg-9 no-padding">
                 <select id="direction" name="direction" class="form-control">
                     <option value="CN">Chọn hướng</option>
                     <option value="e">Đông</option>
@@ -222,8 +222,8 @@
             <div class="clearfix"></div>
         </div>
         <div class="form-group form-price" attr-required="1">
-            <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
+            <div class="col-lg-9 no-padding">
                 <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
                 <select id="price_donvi" name="price_donvi" class="form-control">
                     <option value="m">triệu đồng</option>
@@ -236,24 +236,25 @@
         </div>
 
         <div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Thông tin chi tiết </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Thông tin chi tiết </div>
+            <div class="col-lg-9 no-padding">
                 <textarea class="form-control" name="details" placeholder="Thông tin chi tiết"></textarea>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-4 no-padding control-label">Thumbnails </div>
-            <div class="col-md-8 no-padding">
-                <textarea class="form-control" name="thumbs" id="thumbs" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
+            <div class="col-lg-3 no-padding control-label">Thumbnails </div>
+            <div class="col-lg-9 no-padding">
+                <textarea class="form-control hidden" name="thumbs" id="thumbs" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
+                <?php include 'thumbs.form.php' ?>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-4 no-padding control-label">Video </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Video </div>
+            <div class="col-lg-9 no-padding">
                 <input class="form-control" name="video" id="video" placeholder="Video link"/>
             </div>
             <div class="clearfix"></div>
@@ -268,16 +269,16 @@
         </div>
 
         <!--<div class="form-group" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Hạn</div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Hạn</div>
+            <div class="col-lg-9 no-padding">
                 <input class="form-control" type="text" id="timeto" name="timeto" placeholder="dd/mm/yyyy"/>
             </div>
             <div class="clearfix"></div>
         </div>-->
 
         <div class="form-group rank-select" attr-required="1">
-            <div class="col-md-4 no-padding control-label">Chọn gói </div>
-            <div class="col-md-8 no-padding">
+            <div class="col-lg-3 no-padding control-label">Chọn gói </div>
+            <div class="col-lg-9 no-padding">
                 <div class="rank-one-select active" attr-rank="0">
                     <div class="rank-one-des">Blah blah </div>
                     <div class="rank-one-title">Gói thường</div>
@@ -293,7 +294,7 @@
         </div>
         
         <div class="form-group form-time" attr-required="1">
-            <div class="col-md-4 no-padding control-label"><i class="fa fa-calendar"></i> Từ </div>
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-calendar"></i> Từ </div>
             <div class="col-md-3 no-padding">
                 <input class="form-control" type="date" name="timefrom" id="timefrom">
             </div>
@@ -310,32 +311,32 @@
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Tên </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Tên </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Tên liên hệ" class="form-control" name="tenlienhe" id="tenlienhe"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Điện thoại </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Điện thoại </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Điện thoại liên hệ" class="form-control" name="dienthoai" id="dienthoai"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Email </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Email </div>
+                <div class="col-lg-9 no-padding">
                     <input type="email" placeholder="Email" class="form-control" name="email" id="email"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-4 no-padding control-label">Địa chỉ </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Địa chỉ </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Địa chỉ" class="form-control" name="diachi" id="diachi"/>
                 </div>
                 <div class="clearfix"></div>

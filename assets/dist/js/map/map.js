@@ -1024,10 +1024,12 @@ var cityList = [];
             $('.map-result-one').each(function() {
                 if (!isMobile) {
                     $(this).mouseenter(function() {
-                        $thismap.mouseHover($(this).attr('attr-marker-id'));
+                        //$thismap.mouseHover($(this).attr('attr-marker-id'));
+                        $thismap.mouseHoverById($(this).attr('attr-id'))
                     });
                     $(this).mouseleave(function() {
-                        $thismap.mouseOut($(this).attr('attr-marker-id'));
+                        //$thismap.mouseOut($(this).attr('attr-marker-id'));
+                        $thismap.mouseOutById($(this).attr('attr-id'))
                     });
                 }
                 $(this).click(function() {
@@ -1416,6 +1418,15 @@ var cityList = [];
             $thismap.infoTipWindow.open($thismap.map.map_, h);
         }
 
+        this.mouseHoverById = function(id, setCenter = true) {
+            var k = this.findMarkerKey(id);
+            this.mouseHover(k, setCenter)
+        }
+        this.mouseOutById = function(id) {
+            var k = this.findMarkerKey(id);
+            this.mouseOut(k)
+        }
+        
         this.mouseHover = function(k, setCenter = true) {
             //console.log(this.markers);
             //console.log(k);
