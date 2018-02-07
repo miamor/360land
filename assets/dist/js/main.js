@@ -201,7 +201,7 @@ var checkSession = function() {
         //logout(true)
     }
 }
-checkSession_Interval = setInterval(checkSession, 1000);
+checkSession_Interval = setInterval(checkSession, 10000);
 
 
 function logout (autoLoggedOut = false) {
@@ -213,8 +213,8 @@ function logout (autoLoggedOut = false) {
     console.log('Logged out!');
     $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
     $('.nav-user #me_dropdown_info, .noti-right-bar').hide();
-    //if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
-    if (autoLoggedOut) refreshToken();
+    if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
+    //if (autoLoggedOut) refreshToken();
     else location.reload();
 }
 
@@ -319,6 +319,7 @@ function loadNoti () {
             })
         }, 
         error: function (a, b, c) {
+            //refreshToken();
             logout(true);
             console.log(a);
         }
