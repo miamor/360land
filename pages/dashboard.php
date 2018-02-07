@@ -21,9 +21,10 @@ if (!$temp) $config->addJS('dist', $page.'/view.js');
 if ($n == 'info') {
     //$config->addJS('dist', $page.'/resample.js');
     //$config->addJS('dist', $page.'/avatar.js');
-    $config->addJS(-1, 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js');
+    /*$config->addJS(-1, 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js');
     $config->addJS('dist', $page.'/inputAvt.js');
-    echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"/>';
+    echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"/>';*/
+    $config->addJS(-1,'https://cdnjs.cloudflare.com/ajax/libs/cropit/0.5.1/jquery.cropit.min.js');
 }
 if ($n == 'history') {
     $config->addJS('plugins', 'DataTables/datatables.min.js');

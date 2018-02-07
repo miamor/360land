@@ -1,7 +1,7 @@
 <h2 class="page-title show">Thay đổi thông tin</h2>
 
 
-<form id="theform" class="change-info col-lg-12 no-padding">
+<form id="theform" class="change-info col-lg-8 no-padding">
     <div class="form-group">
         <div class="col-lg-3 control-label">Địa chỉ</div>
         <div class="col-lg-9">
@@ -60,30 +60,16 @@
 
 </form>
 
-<div class="col-lg-4 no-padding hidden">
+<div class="col-lg-4 no-padding">
 <form id="changeAvt" method="post" enctype="multipart/form-data">
-    <input type="file" name="avatar-input" id="file-input">
-
-    <!-- leftbox -->
-	<div class="box-2">
-		<div class="result"></div>
-	</div>
-	<!--rightbox-->
-	<div class="box-2 img-result hide">
-		<!-- result of crop -->
-		<img class="cropped" src="" alt="">
-	</div>
-	<!-- input file -->
-	<div class="box hidden">
-        <button class="btn save hide">Save</button>
-        <a href="" class="btn download hide">Download</a>
-		<div class="options hide">
-			<label> Width</label>
-			<input type="hidden" class="img-w" value="300" />
-		</div>
-	</div>
+    <div id="image-cropper">
+        <div class="cropit-preview"></div>
+        <input type="range" class="cropit-image-zoom-input" />
+        <input type="file" class="cropit-image-input" />
+    </div>
 
     <div class="add-form-submit center">
+        <div class="select-image-btn btn btn-warning">Select new image</div>
         <input type="submit" value="Submit"/>
     </div>
 </form>

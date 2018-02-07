@@ -7,6 +7,24 @@ $(document).ready(function () {
     });
     $('input[name="sex"][value="'+__userInfo.sex+'"]').attr('checked', true).closest('.radio').addClass('checked');
 
+    
+    $('#image-cropper').cropit();
+
+    // When user clicks select image button,
+    // open select file dialog programmatically
+    $('.select-image-btn').click(function() {
+        $('.cropit-image-input').click();
+    });
+    
+    // Handle rotation
+    $('.rotate-cw-btn').click(function() {
+        $('#image-cropper').cropit('rotateCW');
+    });
+    $('.rotate-ccw-btn').click(function() {
+        $('#image-cropper').cropit('rotateCCW');
+    });
+
+
     $('#theform').submit(function () {
         $.ajax({
             url: API_URL+'/manager_user/edit/',
