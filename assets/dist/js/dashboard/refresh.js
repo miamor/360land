@@ -74,8 +74,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (a, b, c) {
-                    console.log(a);
-                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                    __handle_error(a)
                 }
             })
         }

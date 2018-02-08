@@ -1170,19 +1170,22 @@ var cityList = [];
         this.changeMarkersSize = function () {
             $.each(this.markers, function (i, v) {
                 data = $thismap.findDataInfo(v.id);
-                var bigUuTien = false;
-                if ( (data.uutien == 1 && $thismap.map.getZoom() >= 15) || 
-                     (data.uutien == 2 && $thismap.map.getZoom() >= 13) || 
-                     (data.uutien == 3 && $thismap.map.getZoom() >= 11) 
-                   ) {
-                    bigUuTien = true;
-                }
-                if (bigUuTien) {
-                    v.labelClass = 'marker-label big' + data.exCls;
-                    v.label.setStyles();
-                } else {
-                    v.labelClass = 'marker-label ' + data.exCls;
-                    v.label.setStyles();
+                //console.log(data);
+                if (data) {
+                    var bigUuTien = false;
+                    if ( (data.uutien == 1 && $thismap.map.getZoom() >= 15) || 
+                        (data.uutien == 2 && $thismap.map.getZoom() >= 13) || 
+                        (data.uutien == 3 && $thismap.map.getZoom() >= 11) 
+                    ) {
+                        bigUuTien = true;
+                    }
+                    if (bigUuTien) {
+                        v.labelClass = 'marker-label big' + data.exCls;
+                        v.label.setStyles();
+                    } else {
+                        v.labelClass = 'marker-label ' + data.exCls;
+                        v.label.setStyles();
+                    }
                 }
             })
         }
@@ -2117,7 +2120,7 @@ ProductSearchControler = function(h) {
         if (vid == 'v-video') {
             var vwi = $('.v-place-imgs').width();
             var vhe = $('.v-place-imgs').height();
-            $('.v-place-v-video video').width(vwi).height(vhe);
+            $('.v-place-v-video video, .v-place-v-video iframe').width(vwi).height(vhe);
         }
         if (vid == 'v-direction') {
             i.ShowDirection();
@@ -2623,7 +2626,9 @@ ProductSearchControler.prototype.closePopup = function(search = false) {
     this.ProductMap.input.isShowUtil.value = 0;
     this.ProductMap.isDetails = false;
     this.ProductMap.isShowUtil = false;
-    $thismap.closeInfoWindowCallBack(new google.maps.LatLng(this.ProductMap.currentProduct.latitude, this.ProductMap.currentProduct.longitude));
+    if (this.ProductMap.currentProduct) {
+        $thismap.closeInfoWindowCallBack(new google.maps.LatLng(this.ProductMap.currentProduct.latitude, this.ProductMap.currentProduct.longitude));
+    }
     //this.closeDirectionBoard(search);
     this.closeModeBoard('all', search);
     this.ChangeUrlForNewContext();
@@ -2922,7 +2927,11 @@ ProductSearchControler.prototype.setDetailsAll = function(place) {
     $('.v-place-address span').html(place.address);
 
     if (place.video) {
-        $('.v-place-v-video').html('<video width="100%" height="100%" controls><source src="'+place.video+'" type="video/mp4">Your browser does not support the video tag.</video>');
+        if (place.video.indexOf('youtube.com') > -1) {
+            $('.v-place-v-video').html('<iframe width="100%" height="100%" src="https://www.youtube.com/embed/'+place.video.split('watch?v=')[1].split('&')[0]+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
+        } else {
+            $('.v-place-v-video').html('<video width="100%" height="100%" controls><source src="'+place.video+'" type="video/mp4">Your browser does not support the video tag.</video>');
+        }
     }
 
     $('.v-place-thumbs').html('');
@@ -2989,7 +2998,6 @@ function handle(place) {
     }
 
     if (!place.panorama_image) place.panorama_image = MAIN_URL+'/data/demo_photo4.jpg';
-    if (!place.video) place.video = MAIN_URL+'/data/mov_bbb.mp4';
 
     place.isProject = (place.name ? true : false);
 
@@ -2998,6 +3006,11 @@ function handle(place) {
     place.typeid = parseInt(place.type.split('typereal')[1]);
 
     place.exCls = (place.isProject ? ' project' : '');
+
+    if (!place.video) {
+        place.video = "https://www.youtube.com/watch?v=k4Y5kbfMJmw";
+    }
+    //if (!place.video) place.video = MAIN_URL+'/data/mov_bbb.mp4';
 
     /*if (!place.thumbs) {
         place.thumbs = [MAIN_URL + "/data/images/h1.jpg", MAIN_URL + "/data/images/h2.jpg", MAIN_URL + "/data/images/h3.jpg", MAIN_URL + "/data/images/h4.jpg", MAIN_URL + "/data/images/h5.jpg", MAIN_URL + "/data/images/h6.jpg", MAIN_URL + "/data/images/h7.jpg"]

@@ -61,13 +61,25 @@
 </form>
 
 <div class="col-lg-4 no-padding">
-<form id="changeAvt" method="post" enctype="multipart/form-data">
-    <div id="image-cropper">
-        <div class="cropit-preview"></div>
-        <input type="range" class="cropit-image-zoom-input" />
-        <input type="file" class="cropit-image-input" />
+    <div class="fix-avt">
     </div>
+<form id="changeAvt" method="post" enctype="multipart/form-data">
+    <div id="image-cropper" class="edit-avt">
+        <div class="cropit-preview"></div>
+        <input type="file" class="cropit-image-input" id="avatar_file"/>
 
+        <div class="controls-wrapper">
+            <div class="rotation-btns">
+                <span class="fa fa-rotate-left rotate-ccw-btn"></span>
+                <span class="fa fa-rotate-right rotate-cw-btn"></span>
+            </div>
+            <div class="slider-wrapper">
+                <span class="fa fa-image small-image"></span>
+                <input class="cropit-image-zoom-input custom" min="0" max="1" step="0.01" type="range">
+                <span class="fa fa-image large-image"></span>
+            </div>
+        </div>
+    </div>
     <div class="add-form-submit center">
         <div class="select-image-btn btn btn-warning">Select new image</div>
         <input type="submit" value="Submit"/>

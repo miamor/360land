@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group form-adr" attr-required="1">
-            <div class="col-lg-3 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ </div>
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-map-marker hide"></i> Địa chỉ </div>
             <div class="col-lg-9 no-padding">
                 <div class="col-md-6 select-city no-padding-left">
                     <select class="form-control" id="city" name="tinh">
@@ -172,13 +172,13 @@
             <div class="col-lg-3 no-padding control-label customshow typereal1 typereal11 hide">Ở tầng </div>
             <div class="col-lg-3 no-padding control-label customshow typereal2 typereal3 typereal4 hide">Số tầng </div>
             <div class="col-lg-9 no-padding">
-                <input type="number" name="tang" id="tang" class="form-control"/>
+                <input type="number" name="tang" id="tang" class="form-control" placeholder="Tầng"/>
             </div>
             <div class="clearfix"></div>
         </div>
 
         <div class="form-group hide customshow typereal2 typereal3 typereal4" attr-required="1">
-            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt tiền *</div>
+            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt tiền</div>
             <div class="col-lg-9 no-padding">
                 <input type="number" name="rongtien" id="rongtien" class="form-control" placeholder="Chiều rộng mặt tiền"/>
             </div>
@@ -186,7 +186,7 @@
         </div>
 
         <div class="form-group hide customshow typereal2 typereal3 typereal4" attr-required="1">
-            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt đường *</div>
+            <div class="col-lg-3 no-padding control-label">Chiều rộng mặt đường</div>
             <div class="col-lg-9 no-padding">
                 <input type="number" name="rongduong" id="rongduong" class="form-control" placeholder="Chiều rộng mặt đường"/>
             </div>
@@ -224,7 +224,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="form-group form-price" attr-required="1">
-            <div class="col-lg-3 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-dollar hide"></i> Giá </div>
             <div class="col-lg-9 no-padding">
                 <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
                 <select id="price_donvi" name="price_donvi" class="form-control">
@@ -271,7 +271,7 @@
         </div>
         
         <div class="form-group form-time" attr-required="1">
-            <div class="col-lg-3 no-padding control-label"><i class="fa fa-calendar"></i> Từ </div>
+            <div class="col-lg-3 no-padding control-label"><i class="fa fa-calendar hide"></i> Từ </div>
             <div class="col-md-3 no-padding">
                 <input class="form-control" type="date" name="timefrom" id="timefrom">
             </div>
@@ -308,6 +308,18 @@
                         Select image
                     </div>
                     <input type="file" name="panorama_input" class="up-file-input hidden"/>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group" style="margin-top:30px">
+            <div class="col-lg-3 no-padding control-label">Ảnh 360 </div>
+            <div class="col-lg-9 no-padding">
+                <textarea class="form-control hidden" name="streetview_image" id="streetview_image" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
+                <div id="dropbox_360" class="dropbox">
+                    <span class="message">Click to select files or Drop images here to upload.</span>
+                    <input type="file" multiple name="anh360_input" class="up-file-input hidden"/>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -362,6 +374,8 @@
         </div>
 
         <input type="hidden" name="typenode" value="true"/>
+        <input type="hidden" name="latitude" id="latitude"/>
+        <input type="hidden" name="longitude" id="longitude"/>
 
         <div class="add-form-submit center">
             <input value="Làm lại" class="btn btn-default" type="reset">

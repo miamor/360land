@@ -22,7 +22,7 @@ function saveProject (duanid) {
                 unsaveProject(duanid);
             }, 
             error: function (a, b, c) {
-                console.log(a);
+                __handle_error(a)
             }
         });
         return false
@@ -49,7 +49,7 @@ function unsaveProject (duanid) {
                 saveProject(duanid);
             }, 
             error: function (a, b, c) {
-                console.log(a);
+                __handle_error(a)
             }
         });
         return false
@@ -63,15 +63,15 @@ function getProjectInfo(duanid) {
         html = '<div class="v-user-property line">\
         <div class="listings_image mbs prl col cols6">\
             <img class="image_url" src="'+v.avatar+'">\
+            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>\
         </div>\
         <div class="listings_info col cols13">\
             <div class="line h4 mbn typeEmphasize">\
                 <span class="listings_title"><a target="_blank" href="'+MAIN_URL+'#ptype=&cat=&city=CN&district=CN&area=CN&price=-1&ward=CN&street=CN&room=&direction=CN&isProject=1&place_search=&points=&zoom=13&center=21.0193996429443:105.94985198974598&page=0&product='+v.id+'&isShowUtil=0&utilArea=&searchtype=0&details=1&fromProject=0">'+v.title+'</a></span>\
             </div>\
             <div class="line listings_description">\
-                <i class="fa fa-map-marker"></i> <span class="listings_address">'+v.address+'</span>\
+                <i class="fa fa-map-marker"></i> <span class="listings_address" style="font-size:15px">'+v.address+'</span>\
             </div>\
-            <div class="listings_price col cols5 lastCol h4 pts typeEmphasize">$'+v.priceTxt+'</div>\
             <div class="line mts listings_type save_project" attr-id="'+v.id+'"></div>\
         </div>\
         <div class="clearfix"></div>\

@@ -18,6 +18,9 @@ if ($n == 'confirm') {
     $pageTitle = 'Tạo tài khoản mới';
     include 'templates/header.php';
 
+    //$config->addJS('jquery', 'jquery-ui-1.8.23.custom.min.js');
+    echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css"/>';
+    $config->addJS('jquery', 'jquery-ui.min.js');
     $config->addJS('dist', $page.'/register.js');
 
     include 'templates/'.$page.'/register.php';

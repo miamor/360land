@@ -112,6 +112,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
                 $thismap.uploadThumbs();
                 $thismap.uploadPanorama();
+                $thismap.upload360();
             }
 
 
@@ -137,6 +138,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 var type = $(this).val();
                 $('.customshow').hide();
                 $('.' + type).show();
+                $('#type').val($(this).val());
                 if ($('.' + type + ' #address').length) {
                     $('.' + type + ' #address').attr({
                         'placeholder': 'Địa chỉ cụ thể *',
@@ -192,6 +194,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             }).donetyping(function () {
                 $dr = $('#tenduan').next('.ville-dropdown');
                 val = $(this).val();
+                console.log(val);
                 if (!val.length) {
                     $dr.hide().html('');
                 } else {
@@ -215,12 +218,95 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                                     })
                                 })
                             }
+                        },
+                        error: function (a, b, c) {
+                            __handle_error(a);
                         }
                     })
                 }
             });
         }
 
+
+        this.upload360 = function () {
+            $('#thumbs').val('');
+            var dropbox = $('#dropbox_360'),
+                message = $('.message', dropbox);
+
+            dropbox.UploadImages({
+                // The name of the $_FILES entry:
+                paramname: 'anh360',
+
+                maxfiles: 25,
+                maxfilesize: 5,
+                url: API_URL + '/manager_user/uploadanh360/',
+                token: __token,
+                dragable: true,
+
+                uploadFinished: function (i, file, response) {
+                    $.data(file).addClass('done');
+                    // response is the JSON object that post_file.php returns
+                    //console.log(response);
+                    if (response.data) {
+                        img = response.data;
+
+                        var $thisImgHolder = $($.data(file)[0]);
+                        if ($thisImgHolder.is(':hidden')) {
+                            if ($('#streetview_image').val().indexOf(img) > -1) {
+                                console.log('remove from streetview_image '+img);
+                                $('#streetview_image').val($('#streetview_image').val().replace(img + ',', ''));
+                            }
+                        } else {
+                            if ($('#streetview_image').val().indexOf(img) == -1) {
+                                console.log('add to streetview_image '+img);
+                                $('#streetview_image').val($('#streetview_image').val() + img + ',');
+                            }
+                        }
+                        $thisImgHolder.find('.remove-thumb').click(function (event) {
+                            event.stopPropagation();
+                            $('#streetview_image').val($('#streetview_image').val().replace(img + ',', ''));
+                            $thisImgHolder.remove();
+                            if (!$(dropbox).find('.preview').length) {
+                                $(message).show()
+                            }
+                        })
+                    }
+                },
+
+                error: function (err, file) {
+                    console.log(err);
+                    switch (err) {
+                        case 'BrowserNotSupported':
+                            mtip('', 'error', '', 'Your browser does not support HTML5 file uploads!');
+                            break;
+                        case 'TooManyFiles':
+                            mtip('', 'error', '', 'Too many files!');
+                            break;
+                        case 'FileTooLarge':
+                            mtip('', 'error', '', file.name + ' is too large!.');
+                            break;
+                        default:
+                            break;
+                    }
+                },
+
+                // Called before each upload is started
+                beforeEach: function (file) {
+                    if (!file.type.match(/^image\//)) {
+                        alert('Only images are allowed!');
+                        return false;
+                    }
+                },
+
+                uploadStarted: function (i, file, len) {
+                    createImage(file, dropbox);
+                },
+
+                progressUpdated: function (i, file, progress) {
+                    $.data(file).find('.progress').width(progress);
+                }
+            });
+        }
 
         this.uploadThumbs = function () {
             $('#thumbs').val('');
@@ -378,11 +464,18 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
         this.submitNode = function () {
             $('#' + v).submit(function () {
                 var ok = true;
+
+                var a = $('[name="type_action"]').val();
+                $('#type').val($('#type' + a).val());
+
+                var typeBDS = $('#type').val();
+                console.log(typeBDS);
+                console.log($('.'+typeBDS));
+                
                 $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
                     var val = $(this).find('input,select,textarea').val();
                     var $fgr = $(this).closest('.form-group');
                     var isCustomField = $fgr.is('.customshow');
-                    var typeBDS = $('#type').val();
                     if ((!isCustomField || (typeBDS && isCustomField && $fgr.is('.' + typeBDS))
                     ) && (!val || val == "CN")
                     ) {
@@ -401,7 +494,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         ok = false;
                         return false;
                     }
-                    if ($('.' + typeBDS + ' #address[isRequired="1"]').length && !$('#address').val()) {
+                    if ($('.'+typeBDS).find('#address[isRequired="1"]').length && !$('#address').val()) {
                         console.log('Missing parameters (address)');
                         //mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
                         mtip('', 'error', '', 'Với loại bất động sản <b>' + $('.type_bds#type' + $('[name="type_action"]:checked').val()).find('option:selected').text() + '</b>, trường <b>Địa chỉ cụ thể</b> là bắt buộc.');
@@ -409,9 +502,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         return false;
                     }
                 }
-
-                var a = $('[name="type_action"]').val();
-                $('#type').val($('#type' + a).val());
 
                 if (!$('#type').val() || $('#type').val() == 'CN') {
                     ok = false;
@@ -534,12 +624,15 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 },
                 success: function (response) {
                     console.log(response);
-                    mtip('', 'success', '', 'Tin bài đã được đăng thành công');
-                    location.href = MAIN_URL + '/dashboard/node/waiting';
+                    if (response.data == 'error') {
+                        __handle_error()
+                    } else {
+                        mtip('', 'success', '', 'Tin bài đã được đăng thành công');
+                        //location.href = MAIN_URL + '/dashboard/node/waiting';
+                    }
                 },
                 error: function (a, b, c) {
-                    console.log(a);
-                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                    __handle_error(a)
                 }
             })
         }
@@ -560,8 +653,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     mtip('', 'success', '', 'Tin bài đã được cập nhật thành công');
                 },
                 error: function (a, b, c) {
-                    console.log(a);
-                    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                    __handle_error(a)
                 }
             })
         }
@@ -700,7 +792,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     })
                 },
                 error: function (a, b, c) {
-                    console.log(a);
+                    __handle_error(a)
                 }
             })
         }

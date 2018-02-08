@@ -2,9 +2,10 @@
 
 <div class="v-user-top">
     <img class="v-user-avt" src="//mappy.com.vn/assets/img/noimage.png"/>
-    <div class="v-user-basicinfo">
-        <h2 class="v-user-name"></h2>
-        <div class="v-user-uname">@</div>
+    <div class="v-user-basicinfo left">
+        <h2 class="v-user-name left"></h2>
+        <div class="v-user-uname left">@</div>
+        <div class="clearfix"></div>
         <div class="v-user-ratings hidden">
             <div class="ratings text-lg text-warning">
     			<i class="fa fa-star"></i>
@@ -21,12 +22,14 @@
         <div class="v-user-mail">
             <i class="fa fa-envelope-square"></i> Email: <span></span>
         </div>
+        <div class="v-user-social">
+        </div>
     </div>
     <div class="clearfix"></div>
 </div>
 
 <div class="v-user-body">
-    <div class="col-lg-8 no-padding-left">
+    <div class="col-lg-7 no-padding-left">
         <div class="v-box">
             <h4>Giới thiệu bản thân</h4>
             <div class="v-box-content open">
@@ -34,8 +37,7 @@
             </div>
         </div>
     </div>
-
-    <div class="col-lg-4 no-padding">
+    <div class="col-lg-5 no-padding-right">
         <div class="v-box">
             <h4>Tin đăng <span class="v-user-properties-total"></span></h4>
             <div class="v-box-content v-user-properties open">

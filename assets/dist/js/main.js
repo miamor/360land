@@ -64,6 +64,7 @@ function getUserInfo () {
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
             $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+            $('.nav-user').removeClass('loginlink');
             $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
         },
@@ -212,6 +213,7 @@ function logout (autoLoggedOut = false) {
     __userInfo = __token = null;
     console.log('Logged out!');
     $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
+    $('.nav-user').addClass('loginlink');
     $('.nav-user #me_dropdown_info, .noti-right-bar').hide();
     if (autoLoggedOut) loadLoginPopup(autoLoggedOut);
     //if (autoLoggedOut) refreshToken();
@@ -249,6 +251,14 @@ function loadLoginPopup (autoLoggedOut = false) {
         flatApp();
         //loginForm();
     });
+}
+
+
+function __handle_error (a) {
+    if (a) {
+        console.log(a);
+    }
+    mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
 }
 
 
@@ -296,7 +306,7 @@ function setUserInfoNav () {
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
 
     if (isMobile) {
-        $('.nav-user-mobile').show().html('<a href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a>');
+        $('.nav-user-mobile').addClass('dropdown').show().html('<a class="dropdown-toggle" data-toggle="dropdown" href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a><ul class="dropdown-menu pull-right"><li><a href="'+MAIN_URL+'/user/'+__userInfo.username+'">Profile</a></li><li><a href="'+MAIN_URL+'/dashboard">Dashboard</a></li><li><a href="'+MAIN_URL+'/logout">Logout</a></li></ul>');
     }
 
     loadNoti();
@@ -453,6 +463,7 @@ jQuery(document).ready(function ($) {
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
             $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+            $('.nav-user').removeClass('loginlink');
             $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
         }
@@ -475,6 +486,7 @@ jQuery(document).ready(function ($) {
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');
         $('.nav-user #me_login_link, .nav-user #me_reg_link').show();
+        $('.nav-user').addClass('loginlink');
         $('.nav-user #me_dropdown_info, .noti-right-bar').hide();
         if (!isMobile) {
             $('#me_login_link, .add-node-link a').click(function () {
