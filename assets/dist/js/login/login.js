@@ -8,21 +8,7 @@ function submitLoginForm () {
             if (("token" in response) == false) {
                 mtip('', 'error', 'Lỗi', response.message);
             } else {
-                __token = response.token;
-                localStorage.setItem("token" , __token);
-                localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
-                console.log(__token);
-		        getUserInfo();
-                mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
-                if ($('.popup:not(".popup-map") .load_login_form').length) {
-                    remove_popup();
-                } 
-                if ($('.popup-map').length) {
-                    location.reload();
-                } else {
-                    location.href = MAIN_URL;
-                    //window.history.back();
-                }
+                loginSuccess(response.token);
             }
         },
         error: function (a, b, c) {
@@ -116,11 +102,73 @@ function testAPI() {
   FB.api('/me', {fields: 'name, email'}, function(response) {
     console.log('Successful login for: ' + response.name);
     console.log(response);
+    checkLoginFB(response);
     //document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
   });
 }
 
+function checkLoginFB(userDataFB) {
+    $.ajax({
+        url: API_URL+'/user/login_facebook/',
+        type: 'post',
+        data: userDataFB,
+        success: function (response) {
+            console.log(response);
+            if (response.status == 'unavailable') {
+                console.log('Account not available in db. Register');
+                $('.form-reg-fb').show();
+                $('#reg_fb').submit(function () {
+                    response.email = $(this).find('[name="email"]').val();
+                    regFB(response);
+                    return false
+                })
+                //mtip('', 'error', 'Lỗi', response.message);
+            } else if (response.status == 'available') {
+                loginSuccess(response.token);
+            }
+        },
+        error: function (a, b, c) {
+            __handle_error(a)
+        }
+    });
+}
 
+function regFB () {
+    $.ajax({
+        url: API_URL+'/user/register_facebook/',
+        type: 'post',
+        data: userDataFB,
+        success: function (response) {
+            console.log(response);
+            if (response.status == 'unavailable') {
+                __handle_error();
+            } else if (response.status == 'available') {
+                loginSuccess(response.token);
+            }
+        },
+        error: function (a, b, c) {
+            __handle_error(a)
+        }
+    });
+}
+
+function loginSuccess (token) {
+    __token = token;
+    localStorage.setItem("token" , __token);
+    localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
+    console.log(__token);
+    getUserInfo();
+    mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
+    if ($('.popup:not(".popup-map") .load_login_form').length) {
+        remove_popup();
+    } 
+    if ($('.popup-map').length) {
+        location.reload();
+    } else {
+        location.href = MAIN_URL;
+        //window.history.back();
+    }
+}
 
 $(document).ready(function () {
     if (localStorage.getItem('token')) { // already logged in
