@@ -50,8 +50,11 @@ $config->addJS('dist', 'main.js'); ?>
 			<li class="nav-item">
 				<a class="nav-link" href="<?php echo MAIN_URL ?>/dashboard/subscribe"><i class="fa fa-heart"></i> Dự án quan tâm</a>
 			</li>
-			<li class="nav-item">
+			<li class="nav-item hidden">
 				<a class="nav-link" href="<?php echo MAIN_URL ?>"><i class="fa fa-info-circle"></i> Thông tin sổ đỏ</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?php echo MAIN_URL ?>/sale"><i class="fa fa-user"></i> Tìm kiếm sales</a>
 			</li>
 			<li class="nav-item nav-user-mobile">
 			</li>
@@ -105,12 +108,12 @@ $config->addJS('dist', 'main.js'); ?>
 					</a>
 					<ul class="dropdown-menu with-triangle pull-right">
 						<li>
-							<div class="nav-dropdown-heading">Notifications</div>
+							<div class="nav-dropdown-heading">Thông báo</div>
 							<div class="nav-dropdown-content scroll-nav-dropdown">
 								<ul class="notification-load">
 								</ul>
 							</div>
-							<div class="btn btn-primary btn-block btn-sm see-all-noti">See all notifications</div>
+							<div class="btn btn-primary btn-block btn-sm see-all-noti">Xem tất cả thông báo</div>
 						</li>
 					</ul>
 				</li>

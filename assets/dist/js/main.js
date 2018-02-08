@@ -301,7 +301,7 @@ function setUserInfoNav () {
     if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
     $('.myID').attr('id', __userInfo.username);
     $('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse()[0]);
-    $('#meinfo_uname').text(__userInfo.username);
+    $('#meinfo_uname').text(__userInfo.name);
     $('#meinfo_coins').text(__userInfo.coin);
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
 

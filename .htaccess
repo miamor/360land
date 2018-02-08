@@ -84,8 +84,8 @@ RewriteBase /360land/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 
-RewriteRule ^((?!(|error|login|register|logout|map|user|dashboard|feedback))[^/].+)$ index.php?page=$1
-RewriteRule ^((error|login|register|logout|map|user|dashboard|feedback).*) index.php?page=$1
+RewriteRule ^((?!(|error|login|register|logout|map|user|dashboard|feedback|sale))[^/].+)$ index.php?page=$1
+RewriteRule ^((error|login|register|logout|map|user|dashboard|feedback|sale).*) index.php?page=$1
 
 ErrorDocument 404 /index.php?page=error
 
