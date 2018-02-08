@@ -117,6 +117,7 @@ function checkLoginFB(userDataFB) {
             if (response.status == 'unavailable') {
                 console.log('Account not available in db. Register');
                 $('.form-reg-fb').show();
+                $('.form-login').hide();
                 $('#reg_fb').submit(function () {
                     response.email = $(this).find('[name="email"]').val();
                     regFB(response);
@@ -158,15 +159,16 @@ function loginSuccess (token) {
     localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
     console.log(__token);
     getUserInfo();
-    mtip('', 'success', '', 'Đăng nhập thành công! Đang chuyển hướng...');
+    mtip('', 'success', '', 'Đăng nhập thành công!');
     if ($('.popup:not(".popup-map") .load_login_form').length) {
         remove_popup();
     } 
-    if ($('.popup-map').length) {
+    if (location.href.indexOf('login') == -1) {
+        remove_popup();
         location.reload();
     } else {
-        location.href = MAIN_URL;
-        //window.history.back();
+        //location.href = MAIN_URL;
+        history.go(-1);
     }
 }
 

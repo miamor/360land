@@ -183,6 +183,11 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             this.submitForm();
         }
 
+        this.submitForm = function () {
+            $thismap.submitNode()
+        }
+
+
         this.addMarker = function (location) {
             $thismap.marker.setPosition(location);
             $thismap.marker.setVisible(true);
@@ -204,7 +209,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 if (!val.length) {
                     $dr.hide().html('');
                 } else {
-                    searchData = { 
+                    searchData = {
                         input: val,
                         tinh: $('#city option:selected').text(),
                         huyen: $('#district option:selected').text()
@@ -467,12 +472,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             })
         }
 
-
-        this.submitForm = function () {
-            $thismap.submitNode()
-        }
-
-
+        
         this.submitNode = function () {
             $('#' + v).submit(function () {
                 var ok = true;
@@ -636,8 +636,9 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 },
                 success: function (response) {
                     console.log(response);
-                    if (response.data == 'error') {
-                        __handle_error()
+                    if (response.status == 'error') {
+                        //__handle_error()
+                        mtip('', 'error', '', response.data);
                     } else {
                         mtip('', 'success', '', 'Tin bài đã được đăng thành công');
                         //location.href = MAIN_URL + '/dashboard/node/waiting';
@@ -662,7 +663,12 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 },
                 success: function (response) {
                     console.log(response);
-                    mtip('', 'success', '', 'Tin bài đã được cập nhật thành công');
+                    if (response.status == 'error') {
+                        //__handle_error()
+                        mtip('', 'error', '', response.data);
+                    } else {
+                        mtip('', 'success', '', 'Tin bài đã được cập nhật thành công');
+                    }
                 },
                 error: function (a, b, c) {
                     __handle_error(a)

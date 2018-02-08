@@ -1877,7 +1877,7 @@ var cityList = [];
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
             $('.map-item-info-contact_phone').html(data.dienthoai);
-            $('.map-item-info-contact_name').html(data.tenlienhe);
+            $('.map-item-info-contact_name').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+data.userid+'">'+data.tenlienhe+' <i class="fa fa-external-link"></i></a>');
             $('.map-item-info-address').html(data.address);
             $('.map-item-info-des').html(data.details);
             $('.map-item-info-thumb').attr('src', data.avatar);
@@ -2701,7 +2701,7 @@ ProductSearchControler.prototype.loadSales = function(id = null) {
                     <li class="v-place-more-one v-place-rongduong" style="display: inline-block;">Chiều rộng mặt đường: <span>'+val.rongduong+'</span></li>';
                 }
                 k += '</ul>';
-                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.username+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
+                k += '<div class="sale_info"><i class="fa fa-user"></i> Đăng bởi <a title="Sale info" target="_blank" href="'+MAIN_URL+'/user/'+val.userid+'">'+val.tenlienhe+' <i class="fa fa-external-link"></i></a> vào ngày <i class="fa fa-clock-o"></i> <time class="v-place-time">'+val.timecreate.split('T')[0]+'</time></div>';
                 k += '</div>';
                 k += '<div class="clearfix"></div>';
                 k += '</div>';

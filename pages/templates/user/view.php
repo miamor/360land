@@ -30,10 +30,19 @@
 
 <div class="v-user-body">
     <div class="col-lg-7 no-padding-left">
-        <div class="v-box">
+        <div class="v-box v-intro">
             <h4>Giới thiệu bản thân</h4>
             <div class="v-box-content open">
-		<div class="v-user-intro"></div>
+		        <div class="v-user-intro"></div>
+            </div>
+        </div>
+
+        <div class="v-box v-chart">
+            <h4>Thống kê bài đăng</h4>
+            <div class="v-box-content open">
+                <div class="chart">
+                    <canvas id="areaChart" style="height:250px"></canvas>
+                </div>
             </div>
         </div>
     </div>
