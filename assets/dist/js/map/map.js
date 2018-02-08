@@ -3202,7 +3202,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
                 if (d.type_search == 2) {
                     $('a[href="#map_results_project"]').click()
                 } else {
-                    $('a[href="#map_results_node"]').click()
+                    $('a[href="#map_rresults_node"]').click()
                 }
             } else {
                 if ($('.map-search-tabs').is(':visible')) $('.map-tabs-toggle').click()
@@ -3220,6 +3220,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             ) {
                 $('.btn-filter').html('<i class="fa fa-check"></i> Lọc');
                 $('.cancel-filter').show();
+                $('#place_search').val('');
             } else {
                 $('.btn-filter').html('<i class="fa fa-filter"></i> Lọc');
                 $('.cancel-filter').hide()
