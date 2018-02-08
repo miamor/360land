@@ -31,6 +31,7 @@ $(document).ready(function () {
                 xhr.setRequestHeader('Authorization', __token);
             },
             success: function (response) {
+                console.log(response);
                 $('.v-user-properties-total').html('('+response.data.length+')');
                 $.each(response.data, function (i, v) {
                     v.typeid = parseInt(v.type.split('typereal')[1]);
