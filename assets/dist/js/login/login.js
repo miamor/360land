@@ -86,9 +86,17 @@ window.fbAsyncInit = function() {
     //
     // These three cases are handled in the callback function.
 
-    FB.getLoginStatus(function(response) {
+    /*FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
-    });
+    });*/
+    FB.Event.subscribe('auth.login', function(response) {
+        console.log("login clicked");
+        console.log(response.status);
+        console.log(response);
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    })
 };
 
 // Load the SDK asynchronously
