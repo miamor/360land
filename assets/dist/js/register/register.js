@@ -6,46 +6,15 @@ function showRecaptcha(element) {
     });
 }*/
 
-function registerForm () {
+function registerForm() {
     //showRecaptcha('recaptcha_div');
     $('#register').submit(function () {
         if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$(this).find('[name="phone"]').val()) {
             console.log('Missing parameters');
         } else {
-            // validateCaptcha
-            /*var challengeEle = document.getElementById("recaptcha_challenge_field"),
-            responseEle = document.getElementById("recaptcha_response_field"),
-            result,
-            reqStr = "";
-
-            if (challengeEle.value != "" && responseEle.value != "") {
-                //console.log("====== captcha =======");
-                //console.log("challengeEle: " + challengeEle.value);
-                console.log("responseEle: " + responseEle.value);
-                //console.log("==============================");
-                reqStr += "randBust="+(new Date()).getTime();
-                reqStr += "&challengeVal="+challengeEle.value+"&responseVal="+responseEle.value;
-
-                result = liveballScriptlet(1,"rct=json",reqStr);
-
-                var resultObj = JSON.parse(result);
-                if (resultObj.result != null) {
-                    if (resultObj.result == "true") {
-                        console.log("reCAPTCHA Passed");
-                        submitRegister();
-                    } else {
-                        console.log("reCAPTCHA Failed");
-                    }
-                    return false;
-                }
-                console.log("reCAPTCHA No Result");
-            }
-            console.log("reCAPTCHA needs to be filled in");
-            */
-            //submitRegister();
             console.log($(this).serialize());
             $.ajax({
-                url: API_URL+'/user/create/',
+                url: API_URL + '/user/create/',
                 type: 'post',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -59,8 +28,8 @@ function registerForm () {
                         window.location.href = MAIN_URL;
                     }*/
                     if (response.message == 'OK!!!') {
-			mtip('', 'success', '', 'Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!');
-                        location.href = MAIN_URL+'/login';
+                        $('#register').html('<div class="alerts alert-success">Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!</div>');
+                        //location.href = MAIN_URL+'/login';
                     }
                 },
                 error: function (a, b, c) {
@@ -72,42 +41,42 @@ function registerForm () {
     })
 }
 
-function submitRegister () {
+function submitRegister() {
 }
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
-  console.log('statusChangeCallback');
-  console.log(response);
-  // The response object is returned with a status field that lets the
-  // app know the current login status of the person.
-  // Full docs on the response object can be found in the documentation
-  // for FB.getLoginStatus().
-  if (response.status === 'connected') {
-    // Logged into your app and Facebook.
-    testAPI();
-  } else {
-    // The person is not logged into your app or we are unable to tell.
-    //document.getElementById('status').innerHTML = 'Please log into this app.';
-  }
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        testAPI();
+    } else {
+        // The person is not logged into your app or we are unable to tell.
+        //document.getElementById('status').innerHTML = 'Please log into this app.';
+    }
 }
 
 // This function is called when someone finishes with the Login
 // Button.  See the onlogin handler attached to it in the sample
 // code below.
 function checkLoginState() {
-    FB.getLoginStatus(function(response) {
+    FB.getLoginStatus(function (response) {
         statusChangeCallback(response);
     });
 }
 
-window.fbAsyncInit = function() {
+window.fbAsyncInit = function () {
     FB.init({
-      appId      : FB_APP_ID,
-      cookie     : true,  // enable cookies to allow the server to access
-                          // the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : 'v2.11' // use graph api version 2.8
+        appId: FB_APP_ID,
+        cookie: true,  // enable cookies to allow the server to access
+        // the session
+        xfbml: true,  // parse social plugins on this page
+        version: 'v2.11' // use graph api version 2.8
     });
 
     // Now that we've initialized the JavaScript SDK, we call
@@ -122,30 +91,106 @@ window.fbAsyncInit = function() {
     //
     // These three cases are handled in the callback function.
 
-    FB.getLoginStatus(function(response) {
+    /*FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
-    });
+    });*/
+    FB.Event.subscribe('auth.login', function (response) {
+        console.log("login clicked");
+        console.log(response.status);
+        console.log(response);
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') return false
+            statusChangeCallback(response);
+        });
+    })
 };
 
 // Load the SDK asynchronously
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "https://connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
 function testAPI() {
-  console.log('Welcome!  Fetching your information.... ');
-  FB.api('/me', {fields: 'name, email'}, function(response) {
-    console.log('Successful login for: ' + response.name);
-    console.log(response);
-    //document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
-  });
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', { fields: 'name, email' }, function (response) {
+        console.log('Successful login for: ' + response.name);
+        console.log(response);
+        checkLoginFB(response);
+        //document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+    });
 }
+
+function checkLoginFB(userDataFB) {
+    $.ajax({
+        url: API_URL + '/user/login_facebook/',
+        type: 'post',
+        data: userDataFB,
+        success: function (response) {
+            console.log(response);
+            if (response.status == 'unavailable') {
+                console.log('Account not available in db. Register');
+                $('.form-reg-fb').show();
+                $('.form-login').hide();
+                $('#reg_fb').submit(function () {
+                    response.email = $(this).find('[name="email"]').val();
+                    regFB(response);
+                    return false
+                })
+                //mtip('', 'error', 'Lỗi', response.message);
+            } else if (response.status == 'available') {
+                loginSuccess(response.token);
+            }
+        },
+        error: function (a, b, c) {
+            __handle_error(a)
+        }
+    });
+}
+
+function regFB() {
+    $.ajax({
+        url: API_URL + '/user/register_facebook/',
+        type: 'post',
+        data: userDataFB,
+        success: function (response) {
+            console.log(response);
+            if (response.status == 'unavailable') {
+                __handle_error();
+            } else if (response.status == 'available') {
+                loginSuccess(response.token);
+            }
+        },
+        error: function (a, b, c) {
+            __handle_error(a)
+        }
+    });
+}
+
+function loginSuccess(token) {
+    __token = token;
+    localStorage.setItem("token", __token);
+    localStorage.setItem("login_time", Math.floor(Date.now() / 1000));
+    console.log(__token);
+    getUserInfo();
+    mtip('', 'success', '', 'Đăng nhập thành công!');
+    if ($('.popup:not(".popup-map") .load_login_form').length) {
+        remove_popup();
+    }
+    if (location.href.indexOf('login') == -1) {
+        remove_popup();
+        location.reload();
+    } else {
+        //location.href = MAIN_URL;
+        history.go(-1);
+    }
+}
+
 
 
 
