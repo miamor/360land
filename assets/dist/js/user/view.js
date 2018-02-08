@@ -150,7 +150,6 @@ $(document).ready(function () {
             $('.page-title').html(data.name);
             $('.v-user-avt').attr('src', data.avatar);
             $('.v-user-name').html(data.name);
-            $('.v-user-uname').html('@' + data.username);
             $('.v-user-phone span').html(data.phone);
             $('.v-user-mail span').html(data.email);
             $('.v-user-intro').html(data.details);

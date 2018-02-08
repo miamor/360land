@@ -4,7 +4,6 @@
     <img class="v-user-avt" src="//mappy.com.vn/assets/img/noimage.png"/>
     <div class="v-user-basicinfo left">
         <h2 class="v-user-name left"></h2>
-        <div class="v-user-uname left">@</div>
         <div class="clearfix"></div>
         <div class="v-user-ratings hidden">
             <div class="ratings text-lg text-warning">
