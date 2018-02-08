@@ -153,7 +153,7 @@
             <div class="clearfix"></div>
         </div>
 
-        <div class="form-group hide customshow typereal11 typereal1 typereal4" attr-required="1">
+        <div class="form-group form-proj hide customshow typereal11 typereal1 typereal4" attr-required="1">
             <div class="col-lg-3 no-padding control-label">Thuộc dự án </div>
             <div class="col-lg-9 no-padding">
                 <input type="text" name="tenduan" id="tenduan" class="form-control" placeholder="Nhập tên dự án"/>

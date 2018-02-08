@@ -137,7 +137,10 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             $('.type_bds').change(function () {
                 var type = $(this).val();
                 $('.customshow').hide();
-                $('.' + type).show();
+                $('.'+type).not('.form-proj').show();
+                if ($('#city').val() && $('#city').val() != -1 && $('#district').val() && $('#district').val() != -1) {
+                    $('.'+type+'.form-proj').show();
+                }
                 $('#type').val($(this).val());
                 if ($('.' + type + ' #address').length) {
                     $('.' + type + ' #address').attr({
@@ -166,6 +169,9 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     // get lat and lng based on district
                     var placeTxt = $('#district option:selected').text() + ', ' + $('#city option:selected').text() + ', Vietnam';
                     console.log(placeTxt);
+                    if ($('#type').val() && $('#type').val() != 'CN') {
+                        $('.'+$('#type').val()+'.form-proj').show();
+                    }
                     if (newNode) {
                         $thismap.infowindow.close();
                         $thismap.marker.setVisible(false);
@@ -198,10 +204,16 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 if (!val.length) {
                     $dr.hide().html('');
                 } else {
+                    searchData = { 
+                        input: val,
+                        tinh: $('#city option:selected').text(),
+                        huyen: $('#district option:selected').text()
+                    };
+                    console.log(searchData);
                     $.ajax({
                         url: API_URL + '/search/duanbasic/',
                         type: 'post',
-                        data: { input: val },
+                        data: searchData,
                         success: function (data) {
                             $dr.show().html('');
                             if (data.message && data.message.indexOf('No duan') > -1) {
@@ -471,7 +483,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 var typeBDS = $('#type').val();
                 console.log(typeBDS);
                 console.log($('.'+typeBDS));
-                
+
                 $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
                     var val = $(this).find('input,select,textarea').val();
                     var $fgr = $(this).closest('.form-group');

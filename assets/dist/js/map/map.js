@@ -1171,7 +1171,7 @@ var cityList = [];
             $.each(this.markers, function (i, v) {
                 data = $thismap.findDataInfo(v.id);
                 //console.log(data);
-                if (data) {
+                if (data != null && data != undefined && data) {
                     var bigUuTien = false;
                     if ( (data.uutien == 1 && $thismap.map.getZoom() >= 15) || 
                         (data.uutien == 2 && $thismap.map.getZoom() >= 13) || 
@@ -2486,7 +2486,7 @@ ProductSearchControler.prototype.SearchProjectName = function() {
             $dr.hide().html('');
         } else {
             $.ajax({
-                url: API_URL + '/search/duanbasic/',
+                url: API_URL + '/search/getduaninput/',
                 type: 'post',
                 data: { input: val },
                 success: function(data) {
