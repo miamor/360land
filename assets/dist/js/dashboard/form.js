@@ -104,17 +104,16 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     $thismap.addMarker(event.latLng);
                 });
 
-                var wi = $('.form-price').find('[class*="col-"]:not(".control-label")').width() - $('.form-price #price_giatri').width() - 30;
-                $('#pricefrom_donvi, #price_donvi').css({
-                    width: wi,
-                    'margin-left': 5
-                });
-
                 $thismap.uploadThumbs();
                 $thismap.uploadPanorama();
                 $thismap.upload360();
             }
 
+            var wi = $('.form-price').find('[class*="col-"]:not(".control-label")').width() - $('.form-price #price_giatri').width() - 30;
+            $('#pricefrom_donvi, #price_donvi').css({
+                width: wi,
+                'margin-left': 5
+            });
 
             $('#city').change(function () {
                 c_city = $(this).val();

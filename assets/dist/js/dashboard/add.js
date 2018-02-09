@@ -1,4 +1,4 @@
-var newNode = window.location.href.indexOf('type=search') === -1;
+var newNode = window.location.href.indexOf('mode=search') === -1;
 
 $(document).ready(function () {
     if (!__token) {
