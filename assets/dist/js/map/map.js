@@ -341,7 +341,8 @@ var cityList = [];
             //this.map.controls[google.maps.ControlPosition.TOP].push(document.getElementById('map_search'));
 
             if (isMobile) {
-                $('#controlUtility').addClass('small').css('bottom', ($('.map-item-info-board').height() + 40).toString() + 'px!important');
+                //$('#controlUtility').addClass('small').css('bottom', ($('.map-item-info-board').height() + 40).toString() + 'px!important');
+                $('#controlUtility').addClass('small');
             }
 
             var input = document.getElementById('place_search');
@@ -1244,6 +1245,10 @@ var cityList = [];
             this.utilArea = e;
             this.ClearUtilitiesAroundPoint();
 
+            if (isMobile) {
+                $('.map-item-info-board').hide();
+            }
+
             if (this.circle == null) this.circle = new google.maps.Circle({
                 center: new google.maps.LatLng(c, d),
                 radius: e,
@@ -1289,7 +1294,7 @@ var cityList = [];
                         position: new google.maps.LatLng(utility.latitude, utility.longitude),
                         icon: ultiMarker[utility.type]
                     });*/
-		    return new MarkerWithLabel({
+		            return new MarkerWithLabel({
                         map: $thismap.map,
                         position: new google.maps.LatLng(utility.latitude, utility.longitude),
                         icon: nodeMarker.empty,
@@ -1345,6 +1350,10 @@ var cityList = [];
             /*if (a == undefined || a == true) {
                 this.ClearUtilitiesAroundCallback()
             }*/
+
+            if (this.currentPID && !this.isShowUtil && isMobile) {
+                $('.map-item-info-board').show();
+            }
 
             this.ClearUtilitiesAroundCallback()
         };
@@ -1784,7 +1793,9 @@ var cityList = [];
                 if (isMobile) {
                     $('.map-item-info-buttons').html('<a class="btn btn-default btn-sm map-item-view-utilities center" title="Tiện ich"><i class="fa fa-cutlery"></i></a>\
                     <a class="btn btn-default btn-sm map-item-gotoview center" title="Chi tiết"><i class="fa fa-feed"></i></a>');
-                    $('.map-item-info-board').show().addClass('mobile');
+                    if (!$thismap.isShowUtil) {
+                        $('.map-item-info-board').show().addClass('mobile');
+                    }
 
                     if ($thismap.isProject) $thismap.contentInfoWindowProject(data);
                     else $thismap.contentInfoWindowNode(data);
@@ -3214,7 +3225,7 @@ ProductSearchControler.prototype._SearchAction = function(g) {
             if (!f.ProductMap.isTrigger && !isMobile) {
                 $('.li-list>a').click();
             }
-            $thismap.isTrigger = false;
+            f.ProductMap.isTrigger = false;
 
             if (!isMobile) {
                 if (d.type_search == 2) {
