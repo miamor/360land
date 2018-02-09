@@ -299,14 +299,15 @@ function stip(d) {
 
 function setUserInfoNav () {
     if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
-    $('.myID').attr('id', __userInfo.username);
-    $('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse()[0]);
-    $('#meinfo_uname').text(__userInfo.name);
+    $('.myID').attr('id', __userInfo.id);
+    /*$('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse().join(' '));*/
+    $('.myName, #meinfo_name').text(__userInfo.name);
+    $('#meinfo_uname').text(__userInfo.username);
     $('#meinfo_coins').text(__userInfo.coin);
-    $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.username);
+    $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.id);
 
     if (isMobile) {
-        $('.nav-user-mobile').addClass('dropdown').show().html('<a class="dropdown-toggle" data-toggle="dropdown" href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a><ul class="dropdown-menu pull-right"><li><a href="'+MAIN_URL+'/user/'+__userInfo.username+'">Profile</a></li><li><a href="'+MAIN_URL+'/dashboard">Dashboard</a></li><li><a href="'+MAIN_URL+'/logout">Logout</a></li></ul>');
+        $('.nav-user-mobile').addClass('dropdown').show().html('<a class="dropdown-toggle" data-toggle="dropdown" href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a><ul class="dropdown-menu pull-right"><li><a href="'+MAIN_URL+'/user/'+__userInfo.id+'">Profile</a></li><li><a href="'+MAIN_URL+'/dashboard">Dashboard</a></li><li><a href="'+MAIN_URL+'/logout">Logout</a></li></ul>');
     }
 
     loadNoti();
@@ -499,7 +500,7 @@ jQuery(document).ready(function ($) {
     }
 
     $('[href*="/logout"]').click(function () {
-        popup('<div class="popup-section section-light">Đang đăng xuất khỏi tài khoản <b>'+__userInfo.username+'</b>...</div>');
+        popup('<div class="popup-section section-light">Đang đăng xuất khỏi tài khoản <b>'+__userInfo.name+'</b>...</div>');
         logout();
         setTimeout(function () {
             remove_popup();

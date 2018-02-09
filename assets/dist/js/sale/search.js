@@ -19,7 +19,7 @@ function loadData (name, company) {
                     </div>\
                     <div class="listings_info col cols13">\
                         <div class="line listings_title">\
-                            <a style="font-weight:600" target="_blank" href="'+MAIN_URL+'/user/'+v.username+'">'+v.name+'</a>\
+                            <a style="font-weight:600" target="_blank" href="'+MAIN_URL+'/user/'+v.id+'">'+v.name+'</a>\
                         </div>\
                         <div class="line listings_description">\
                             <span>Địa chỉ: '+v.address+'</span>\
