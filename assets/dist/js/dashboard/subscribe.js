@@ -115,12 +115,16 @@ $(document).ready(function () {
                 xhr.setRequestHeader('Authorization', __token);
             },
             success: function (response) {
-                data = response.data;
-                console.log(data);
-                $('.v-user-properties-total').html('('+data.length+')');
-                $.each(data, function (i, v) {
-                    getProjectInfo(v.duan);
-                });
+                if (response.status == 'error') {
+
+                } else {
+                    data = response.data;
+                    console.log(data);
+                    $('.v-user-properties-total').html('('+data.length+')');
+                    $.each(data, function (i, v) {
+                        getProjectInfo(v.duan);
+                    });
+                }
             },
             error: function (a, b, c) {
                 console.log(a);

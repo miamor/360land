@@ -2099,6 +2099,21 @@ ProductSearchControler = function(h) {
     });
     this.catchInputChange();
 
+    $('.map-item-info-board-control').click(function () {
+        var swipe_dir = $(this).attr('class').split('swipe-')[1].split(' ')[0];
+        console.log(i.ProductMap.data);
+        var key = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
+        console.log(key);
+        if (key != null && key != undefined) {
+            if (swipe_dir == 'right' && i.ProductMap.data.length > key+1) {
+                i.ProductMap.showInfoWindow(i.ProductMap.data[key+1].id);
+            } else if (swipe_dir == 'left' && i.ProductMap.data[key-1]) {
+                i.ProductMap.showInfoWindow(i.ProductMap.data[key-1].id);
+            } else {
+                mtip('', 'error', '', 'Không có dữ liệu')
+            }
+        }
+    })
 
     $('.v-place-mode').click(function() {
         vid = $(this).attr('id');

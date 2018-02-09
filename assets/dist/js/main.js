@@ -196,13 +196,13 @@ var checkSession = function() {
     var currentSec = Math.floor(Date.now()/1000);
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
-    //console.log(s);
-    if (s > 60*60 && s < 3*60*60) { // > 2 hours, < 2,5 hours
+    console.log('load secs to check token: '+s);
+    if (s > 60*60 && s < 3*60*60) { // > 1 hours, < 3 hours
         refreshToken()
         //logout(true)
     }
 }
-checkSession_Interval = setInterval(checkSession, 10000);
+checkSession_Interval = setInterval(checkSession, 1000*60);
 
 
 function logout (autoLoggedOut = false) {

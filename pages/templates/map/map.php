@@ -137,6 +137,8 @@
 
 
 <div class="map-item-info-board hide" id="mapInfoBoard">
+    <div class="map-item-info-board-control swipe-left"><div></div></div>
+    <div class="map-item-info-board-control swipe-right"><div></div></div>
     <div class="map-item-info-board-close fa fa-times"></div>
 <div id="iw-container">
     <div class="map-item-info-thumb-div">

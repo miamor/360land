@@ -31,6 +31,9 @@ $(document).ready(function () {
                 xhr.setRequestHeader('Authorization', __token);
             },
             success: function (response) {
+                if (response.status == 'error') {
+
+                } else {
                 $('.v-user-properties-total').html('('+response.data.length+')');
                 $.each(response.data, function (i, v) {
                     v.typeid = parseInt(v.type.split('typereal')[1]);
@@ -95,6 +98,7 @@ $(document).ready(function () {
                     $('.v-user-properties').append(html);
                     $('.listings_info').width($('.v-user-property').width()-$('.listings_image').width()-$('.listings_rank').width()-40);
                 })
+                }
             },
             error: function (a, b, c) {
                 console.log(a);
