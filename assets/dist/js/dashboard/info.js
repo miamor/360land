@@ -1,10 +1,13 @@
 $(document).ready(function () {
+    __userInfo.social = __userInfo.social.split(',');
     $('#theform .form-group input').each(function () {
         var inputID = $(this).attr('name');
         if (inputID != 'sex') {
             $(this).val(__userInfo[inputID]);
         }
     });
+    $('#theform [name="facebook"]').val(__userInfo.social[0]);
+    $('#theform [name="youtube"]').val(__userInfo.social[1]);
     $('input[name="sex"][value="' + __userInfo.sex + '"]').attr('checked', true).closest('.radio').addClass('checked');
 
     $('.fix-avt').html('<img src="' + __userInfo.avatar + '"/>');
@@ -60,10 +63,11 @@ $(document).ready(function () {
     })
 
     $('#theform').submit(function () {
+        var social = $(this).find('[name="facebook"]').val()+','+$(this).find('[name="youtube"]').val();
         $.ajax({
             url: API_URL + '/manager_user/edit/',
             type: 'put',
-            data: $(this).serialize(),
+            data: $(this).serialize()+'&social='+social,
             datatype: 'json',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', __token);

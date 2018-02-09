@@ -53,6 +53,28 @@
     	<div class="clearfix"></div>
     </div>
 
+
+    <div class="social">
+        <div class="txt-with-line center">
+            <span class="txt generate-new-button">Tài khoản xã hội <span class="fa fa-caret-down"></span></span>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-3 control-label"><i class="fa fa-facebook-square"></i> Facebook</div>
+            <div class="col-lg-9">
+                <input type="text" name="facebook" class="form-control"/>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-3 control-label"><i class="fa fa-youtube-square"></i> Youtube</div>
+            <div class="col-lg-9">
+                <input type="text" name="youtube" class="form-control"/>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
     <div class="add-form-submit center">
         <input value="Làm lại" class="btn btn-default" type="reset">
         <input value="Gửi" class="btn btn-primary" type="submit">

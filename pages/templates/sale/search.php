@@ -1,8 +1,9 @@
+<style>.v-user-property:nth-child(2n+1){background:#f8f8f8}</style>
 <h2 class="page-title show">Tìm kiếm sales</h2>
 
 <form id="searchsale" class="col-lg-4 v-box">
     <h4>Từ khóa</h4>
-    <div class="v-box-content v-user-properties open">
+    <div class="v-box-content open">
         <div class="form-group">
             <div class="col-lg-3 control-label">Tên</div>
             <div class="col-lg-9">
