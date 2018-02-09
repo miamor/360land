@@ -12,7 +12,7 @@ function loadAssets(uid) {
             data = response.data;
             console.log(data);
             if (data != 'error') {
-                $('.v-user-properties-total').html('(' + data.length + ')');
+                var totalNode = 0;
                 $.each(data, function (i, v) {
                     v.typeid = parseInt(v.type.split('typereal')[1]);
                     if (v.thumbs) v.thumbs = v.thumbs.split(',');
@@ -58,10 +58,15 @@ function loadAssets(uid) {
                         </div>\
                         <div class="clearfix"></div>\
                     </div>';
-                    $('.v-user-properties').append(html);
-                    $('.listings_info').width($('.v-user-property').width() - $('.listings_image').width() - 20);
-                    $('.listings_description,.listings_description *').css('font-size', 14)
-                })
+                    if (v.typenode == true) {
+                        $('.v-user-properties').append(html);
+                        totalNode++;
+                    }
+                });
+                $('.v-user-properties-total').html('(' + totalNode + ')');
+
+                $('.listings_info').width($('.v-user-property').width() - $('.listings_image').width() - 20);
+                $('.listings_description,.listings_description *').css('font-size', 14)
             }
         },
         error: function (a, b, c) {

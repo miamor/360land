@@ -107,6 +107,10 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 $thismap.uploadThumbs();
                 $thismap.uploadPanorama();
                 $thismap.upload360();
+            } else {
+                $('[name="type_action"][value="2"]').parent('label').html($('[name="type_action"][value="2"]').parent('label').html().replace('Bán', 'Tìm mua'));
+                $('[name="type_action"][value="1"]').parent('label').html($('[name="type_action"][value="1"]').parent('label').html().replace('Cho thuê', 'Tìm thuê'));
+                //$('[name="type_action"]').radio();
             }
 
             var wi = $('.form-price').find('[class*="col-"]:not(".control-label")').width() - $('.form-price #price_giatri').width() - 30;
@@ -493,8 +497,13 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 $('#type').val($('#type' + a).val());
 
                 var typeBDS = $('#type').val();
-                console.log(typeBDS);
-                console.log($('.' + typeBDS));
+
+                if (!typeBDS || typeBDS == 'CN') {
+                    console.log('Missing parameters (type)');
+                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
+                    ok = false;
+                    return false;
+                }
 
                 $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
                     var val = $(this).find('input,select,textarea').val();
@@ -511,7 +520,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         return false;
                     }
                 });
-                if (ok) {
+                if (ok && isNewNode) {
                     if (!$('#city').val() || !$('#district').val()) {
                         console.log('Missing parameters (city || district)');
                         mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (city/district)');
@@ -525,12 +534,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         ok = false;
                         return false;
                     }
-                }
-
-                if (!$('#type').val() || $('#type').val() == 'CN') {
-                    ok = false;
-                    console.log('Missing parameters (type)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (type)');
                 }
 
                 if (isNewNode) {
@@ -594,8 +597,13 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     postData.price = postData.price_giatri / 1000;
                 }
 
-                postData.timefrom += ' 00:00:00';
-                postData.timeto += ' 00:00:00';
+                if (isNewNode) {
+                    postData.timefrom += ' 00:00:00';
+                    postData.timeto += ' 00:00:00';
+                } else {
+                    postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'')+' 00:00:00';
+                }
+
                 postData.vip = parseInt(postData.rank);
                 delete postData['rank'];
                 //postData.rank = parseInt(postData.rank);

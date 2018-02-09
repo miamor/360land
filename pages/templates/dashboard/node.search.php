@@ -58,7 +58,7 @@
             <div class="clearfix"></div>
         </div>
 
-        <div class="form-group form-adr attr-required="1"">
+        <div class="form-group form-adr" attr-required="1">
             <div class="col-md-4 no-padding control-label"><i class="fa fa-map-marker"></i> Địa chỉ </div>
             <div class="col-md-8 no-padding">
                 <div class="col-md-6 select-city no-padding-left">
@@ -246,36 +246,36 @@
 
         <div class="user-info-input">
             <div class="txt-with-line center">
-            	<span class="txt generate-new-button">Thông tin cá nhân <span class="fa fa-caret-down"></span></span>
+                <span class="txt generate-new-button">Thông tin cá nhân <span class="fa fa-caret-down"></span></span>
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Tên </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Tên </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Tên liên hệ" class="form-control" name="tenlienhe" id="tenlienhe"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Điện thoại </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Điện thoại </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Điện thoại liên hệ" class="form-control" name="dienthoai" id="dienthoai"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Email </div>
-                <div class="col-md-8 no-padding">
+                <div class="col-lg-3 no-padding control-label">Email </div>
+                <div class="col-lg-9 no-padding">
                     <input type="email" placeholder="Email" class="form-control" name="email" id="email"/>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
-            <div class="form-group" attr-required="1">
-                <div class="col-md-4 no-padding control-label">Địa chỉ </div>
-                <div class="col-md-8 no-padding">
+            <div class="form-group">
+                <div class="col-lg-3 no-padding control-label">Địa chỉ </div>
+                <div class="col-lg-9 no-padding">
                     <input type="text" placeholder="Địa chỉ" class="form-control" name="diachi" id="diachi"/>
                 </div>
                 <div class="clearfix"></div>

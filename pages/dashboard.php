@@ -92,7 +92,7 @@ if (!$temp) {
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/hethan">Hết hạn</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/waiting">Chưa được duyệt</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new">Đăng tin bán/cho thuê</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=search">Đăng tin tìm mua/thuê</a>
+            <a class="menu-one-item hidden" href="<?php echo $config->dbLink ?>/node?mode=search">Đăng tin tìm mua/thuê</a>
         </div>
     </div>
 
