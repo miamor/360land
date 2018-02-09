@@ -159,8 +159,8 @@ $(document).ready(function () {
                 $('.v-user-mail span').html(data.email);
                 $('.v-user-intro').html(data.details);
 
-                $('.v-user-social').append('<a class="btn-social btn-facebook" href="' + data.social[0] + '"><i class="fa fa-facebook-square"></i></a>');
-                $('.v-user-social').append('<a class="btn-social btn-youtube" href="' + data.social[1] + '"><i class="fa fa-youtube-square"></i></a>');
+                if (data.social[0]) $('.v-user-social').append('<a class="btn-social btn-facebook" href="' + data.social[0] + '"><i class="fa fa-facebook-square"></i></a>');
+                if (data.social[1]) $('.v-user-social').append('<a class="btn-social btn-youtube" href="' + data.social[1] + '"><i class="fa fa-youtube-square"></i></a>');
                 if (isMobile) {
                     $('.container').append('<div class="v-place-contacts">\
                     <a class="btn btn-primary v-place-call" href="tel:'+ data.phone + '"><i class="fa fa-phone"></i> Call</a>\
