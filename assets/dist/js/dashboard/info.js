@@ -53,7 +53,9 @@ $(document).ready(function () {
                 if (response.status == 'success') {
                     mtip('', 'success', '', 'Đổi avatar thành công!');
                     $('.edit-avt').hide();
-                    $('.fix-avt').show().find('img').attr('src', response.data);            
+                    $('.fix-avt').show().find('img').attr('src', response.data);
+                    __userInfo.avatar = response.data;
+                    localStorage.setItem('user_info', JSON.stringify(__userInfo));
                 } else {
                     mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                 }
