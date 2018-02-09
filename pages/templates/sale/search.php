@@ -1,4 +1,4 @@
-<style>.v-user-property:nth-child(2n+1){background:#f8f8f8}</style>
+<style>.v-user-property{padding:10px}.v-user-property:nth-child(2n+1){background:#f8f8f8}</style>
 <h2 class="page-title show">Tìm kiếm sales</h2>
 
 <form id="searchsale" class="col-lg-4 v-box">
