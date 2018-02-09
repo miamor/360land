@@ -147,26 +147,30 @@ $(document).ready(function () {
         success: function (response) {
             console.log(response);
             data = response.data;
-            data.social = data.social.split(',');
+            if (data == 'error') {
+                $('.container').load(MAIN_URL+'/error?temp=true');
+            } else {
+                data.social = data.social.split(',');
 
-            $('.page-title').html(data.name);
-            $('.v-user-avt').attr('src', data.avatar);
-            $('.v-user-name').html(data.name);
-            $('.v-user-phone span').html(data.phone);
-            $('.v-user-mail span').html(data.email);
-            $('.v-user-intro').html(data.details);
+                $('.page-title').html(data.name);
+                $('.v-user-avt').attr('src', data.avatar);
+                $('.v-user-name').html(data.name);
+                $('.v-user-phone span').html(data.phone);
+                $('.v-user-mail span').html(data.email);
+                $('.v-user-intro').html(data.details);
 
-            $('.v-user-social').append('<a class="btn-social btn-facebook" href="' + data.social[0] + '"><i class="fa fa-facebook-square"></i></a>');
-            $('.v-user-social').append('<a class="btn-social btn-youtube" href="' + data.social[1] + '"><i class="fa fa-youtube-square"></i></a>');
-            if (isMobile) {
-                $('.container').append('<div class="v-place-contacts">\
-                <a class="btn btn-primary v-place-call" href="tel:'+ data.phone + '"><i class="fa fa-phone"></i> Call</a>\
-                <a class="btn btn-primary v-place-sendmail" href="mailto:'+ data.email + '"><i class="fa fa-mail-forward"></i> Email</a>\
-                </div>');
-                $('.v-user-body').css('margin-bottom', 40);
+                $('.v-user-social').append('<a class="btn-social btn-facebook" href="' + data.social[0] + '"><i class="fa fa-facebook-square"></i></a>');
+                $('.v-user-social').append('<a class="btn-social btn-youtube" href="' + data.social[1] + '"><i class="fa fa-youtube-square"></i></a>');
+                if (isMobile) {
+                    $('.container').append('<div class="v-place-contacts">\
+                    <a class="btn btn-primary v-place-call" href="tel:'+ data.phone + '"><i class="fa fa-phone"></i> Call</a>\
+                    <a class="btn btn-primary v-place-sendmail" href="mailto:'+ data.email + '"><i class="fa fa-mail-forward"></i> Email</a>\
+                    </div>');
+                    $('.v-user-body').css('margin-bottom', 40);
+                }
+
+                loadAssets(data.id);
             }
-
-            loadAssets(data.id);
         },
         error: function (a, b, c) {
             console.log(a)
@@ -180,7 +184,7 @@ $(document).ready(function () {
         success: function (response) {
             data = response.data;
             if (data == 'error') {
-                __handle_error()
+                //__handle_error()
             } else {
                 drawChart(data);
             }
