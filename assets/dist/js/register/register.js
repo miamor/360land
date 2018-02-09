@@ -128,7 +128,7 @@ function testAPI() {
 
 function checkLoginFB(userDataFB) {
     $.ajax({
-        url: API_URL + '/user/login_facebook/',
+        url: API_URL+'/user/login_facebook/',
         type: 'post',
         data: userDataFB,
         success: function (response) {
@@ -137,6 +137,9 @@ function checkLoginFB(userDataFB) {
                 console.log('Account not available in db. Register');
                 $('.form-reg-fb').show();
                 $('.form-login').hide();
+                if (userDataFB.email != null && userDataFB.email) {
+                    $('#reg_fb [name="email"]').val(userDataFB.email);
+                }
                 $('#reg_fb').submit(function () {
                     response.email = $(this).find('[name="email"]').val();
                     regFB(response);
@@ -153,9 +156,9 @@ function checkLoginFB(userDataFB) {
     });
 }
 
-function regFB() {
+function regFB (userDataFB) {
     $.ajax({
-        url: API_URL + '/user/register_facebook/',
+        url: API_URL+'/user/register_facebook/',
         type: 'post',
         data: userDataFB,
         success: function (response) {
@@ -190,8 +193,6 @@ function loginSuccess(token) {
         history.go(-1);
     }
 }
-
-
 
 
 $(document).ready(function () {

@@ -138,6 +138,7 @@ function checkLoginFB(userDataFB) {
 }
 
 function regFB (userDataFB) {
+    console.log(userDataFB);
     $.ajax({
         url: API_URL+'/user/register_facebook/',
         type: 'post',
