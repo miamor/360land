@@ -1,0 +1,98 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?my37ow');
+  src:  url('fonts/icomoon.eot?my37ow#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?my37ow') format('truetype'),
+    url('fonts/icomoon.woff?my37ow') format('woff'),
+    url('fonts/icomoon.svg?my37ow#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-apartment:before {
+  content: "\e900";
+}
+.icon-bank:before {
+  content: "\e901";
+}
+.icon-busstop:before {
+  content: "\e902";
+}
+.icon-cinema:before {
+  content: "\e903";
+}
+.icon-cofee:before {
+  content: "\e904";
+}
+.icon-company:before {
+  content: "\e905";
+}
+.icon-hospital:before {
+  content: "\e906";
+}
+.icon-hotel:before {
+  content: "\e907";
+}
+.icon-house:before {
+  content: "\e908";
+}
+.icon-housestreet:before {
+  content: "\e909";
+}
+.icon-land:before {
+  content: "\e90a";
+}
+.icon-office:before {
+  content: "\e90b";
+}
+.icon-other:before {
+  content: "\e90c";
+}
+.icon-projectland:before {
+  content: "\e90d";
+}
+.icon-public:before {
+  content: "\e90e";
+}
+.icon-resort:before {
+  content: "\e90f";
+}
+.icon-restaurant:before {
+  content: "\e910";
+}
+.icon-school:before {
+  content: "\e911";
+}
+.icon-spa:before {
+  content: "\e912";
+}
+.icon-stadium:before {
+  content: "\e913";
+}
+.icon-supermarket:before {
+  content: "\e914";
+}
+.icon-swimming:before {
+  content: "\e915";
+}
+.icon-villa:before {
+  content: "\e916";
+}
+.icon-warehouse:before {
+  content: "\e917";
+}
