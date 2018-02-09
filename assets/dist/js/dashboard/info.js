@@ -42,15 +42,18 @@ $(document).ready(function () {
             url: API_URL + '/manager_user/editavatar/',
             type: 'POST',
             data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', __token);
+            },
             processData: false,  // tell jQuery not to process the data
             contentType: false,  // tell jQuery not to set contentType
             success: function (response) {
+                console.log(response);
                 data = response.data;
-                console.log(data);
-                if (data == 'OK') {
+                if (response.status == 'success') {
                     mtip('', 'success', '', 'Đổi avatar thành công!');
-                    $('.edit-avt').show();
-                    $('.fix-avt').hide();            
+                    $('.edit-avt').hide();
+                    $('.fix-avt').show().find('img').attr('src', response.data);            
                 } else {
                     mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
                 }
