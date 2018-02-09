@@ -1765,6 +1765,7 @@ var cityList = [];
                     console.log('set activeMarker');
                     this.activeMarker(this.currentMarkerKey, data);
                 }
+                $('.map-item-info-board-control').show();
 
                 //console.log(this.isProject);
                 productControlerObj.ChangeUrlForNewContext();
@@ -1876,7 +1877,7 @@ var cityList = [];
             $('.map-item-info-more > div').show();
             $('.map-item-info-price span').html(data.priceTxt);
             $('.map-item-info-type').html(typeRealEstate[data.type]);
-            $('.map-item-info-contact_phone').html(data.dienthoai);
+            $('.map-item-info-contact_phone').html('<a href="tel:'+data.dienthoai+'">'+data.dienthoai+'</a>');
             $('.map-item-info-contact_name').html('<a target="_blank" title="Thông tin người đăng tin" href="'+MAIN_URL+'/user/'+data.userid+'">'+data.tenlienhe+' <i class="fa fa-external-link"></i></a>');
             $('.map-item-info-address').html(data.address);
             $('.map-item-info-des').html(data.details);
@@ -2105,13 +2106,15 @@ ProductSearchControler = function(h) {
         var key = i.ProductMap.findMarkerKey(i.ProductMap.currentPID);
         console.log(key);
         if (key != null && key != undefined) {
-            if (swipe_dir == 'right' && i.ProductMap.data.length > key+1) {
-                i.ProductMap.showInfoWindow(i.ProductMap.data[key+1].id);
-            } else if (swipe_dir == 'left' && i.ProductMap.data[key-1]) {
-                i.ProductMap.showInfoWindow(i.ProductMap.data[key-1].id);
-            } else {
-                mtip('', 'error', '', 'Không có dữ liệu')
+            var nMarker = null;
+            if (swipe_dir == 'right') {
+                if (i.ProductMap.data.length > key+1) nMarker = key+1;
+                else nMarker = 0;
+            } else if (swipe_dir == 'left') {
+                if (i.ProductMap.data[key-1]) nMarker = key-1;
+                else nmarker = i.ProductMap.data.length-1;
             }
+            i.ProductMap.showInfoWindow(i.ProductMap.data[nMarker].id);
         }
     })
 
