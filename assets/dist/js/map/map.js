@@ -523,14 +523,24 @@ var cityList = [];
 
         this.drawBoundary = function (c, d, w) {
             if (d) d = locdau(d);
-            else d = 'CN';
+
             c = locdau(c);
             if (c == 'Hà Nọi' || c == 'Hanoi') c = 'Ha Noi';
 
-            var pData = {
-                distric: d,
-                province: c
-            };
+            var pData = null;
+            var getBound_url = null;
+            if (d != 'CN') {
+                pData = {
+                    distric: d,
+                    province: c
+                }
+                getBound_url = API_URL + '/user/distric/';
+            } else {
+                pData = {
+                    province: c
+                }
+                getBound_url = API_URL + '/user/province/';
+            }
             console.log(pData);
             /*var formData = new FormData($('#place_search_form')[0]);
             formData.append('distric', d);
@@ -538,7 +548,7 @@ var cityList = [];
             $thismap.input.district.value = d;*/
             //$thismap.input.city.value = c;
             $.ajax({
-                url: API_URL + '/user/distric/',
+                url: getBound_url,
                 type: 'post',
                 data: pData,
                 /*data: formData,
