@@ -49,10 +49,10 @@ else {
 
     //$config->addJS('dist', $page.'/markers.js');
 
-    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=drawing,geometry,places');
-    $config->addJS('plugins', 'markerWithLabel/markerWithLabel.min.js');
-
     $config->addJS('dist', $page.'/map.js');
+
+    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=drawing,geometry,places&callback=initMap');
+    $config->addJS('plugins', 'markerWithLabel/markerWithLabel.min.js');
 
 //    $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?key='.GG_API_KEY.'&libraries=places&callback=initMap');
 

@@ -202,7 +202,9 @@ var checkSession = function() {
         //logout(true)
     }
 }
-checkSession_Interval = setInterval(checkSession, 1000*60);
+if (__token) {
+    checkSession_Interval = setInterval(checkSession, 1000*60);
+}
 
 
 function logout (autoLoggedOut = false) {
