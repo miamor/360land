@@ -2,8 +2,15 @@
 if (!$n) $n = 'info';
 
 if ($n == 'node' && $mode) {
-    if ($mode == 'new') $pageTitle = 'New node';
-    else $pageTitle = 'Search';
+    if ($mode == 'edit') {
+        if ($type == 'node') $pageTitle = 'New node';
+        else $pageTitle = 'Search';
+    }
+    else if ($mode == 'new') {
+        if ($type == 'node') $pageTitle = 'New node';
+        else $pageTitle = 'Search';
+    }
+    //else $pageTitle = 'Search';
 } else {
     $pageTitle = 'Trang quản lý - '.$n;
 }
@@ -40,10 +47,12 @@ else if ($n == 'node') {
     } else if ($mode) {
         if ($mode == 'refresh') $config->addJS('dist', $page.'/refresh.js');
         else {
-            for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
-            $config->addJS('dist', $page.'/form.js');
+            if ($mode == 'new' || $type == 'node') {
+                for ($i = 1; $i <= 4; $i++) $config->addJS('dist', 'map/cityListOther'.$i.'.js');
+                $config->addJS('dist', $page.'/form.js');
+            }
 
-            if ($mode == 'new') {
+            if ($type == 'node') {
                 //echo '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.css" type="text/css">';
                 //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/file-uploader/5.15.5/all.fine-uploader/all.fine-uploader.core.min.js');
                 //$config->addJS(-1, '//cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js');
@@ -51,10 +60,13 @@ else if ($n == 'node') {
                 $config->addJS(-1, 'https://maps.googleapis.com/maps/api/js?v=3&key='.GG_API_KEY.'&libraries=places');
             }
         
-            $config->addJS('dist', $page.'/add.js');
+            if ($mode == 'edit') {
+                if ($type == 'node') $config->addJS('dist', $page.'/edit.js');
+            }
+            else $config->addJS('dist', $page.'/add.js');
         }
 
-        $includeFile = $n.'.'.$mode.'.php';
+        $includeFile = "$n.$type.$mode.php";
     } else {
         $config->addJS('dist', $page.'/'.$n.'.js');
     }
@@ -91,8 +103,9 @@ if (!$temp) {
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node">Còn hạn</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/hethan">Hết hạn</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/waiting">Chưa được duyệt</a>
-            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new">Đăng tin bán/cho thuê</a>
-            <a class="menu-one-item hidden" href="<?php echo $config->dbLink ?>/node?mode=search">Đăng tin tìm mua/thuê</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node/search">Tin đăng tìm kiếm</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new&type=node">Đăng tin bán/cho thuê</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink ?>/node?mode=new&type=search">Đăng tin tìm mua/thuê</a>
         </div>
     </div>
 

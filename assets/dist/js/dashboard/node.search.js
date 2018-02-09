@@ -36,7 +36,7 @@ $(document).ready(function () {
         // properties
         $('.v-user-properties').html('');
         $.ajax({
-            url: API_URL + '/manager_user/nodewait/',
+            url: API_URL + '/manager_user/danhsachtimkiem/',
             type: 'get',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', __token);
@@ -63,7 +63,7 @@ $(document).ready(function () {
                         </div>\
                         <div class="listings_info col cols13">\
                             <div class="line listings_title h4 mbn typeEmphasize">\
-                                <a onclick="javascript:return false" href="'+ MAIN_URL + '#ptype=&cat=&city=CN&district=CN&area=CN&price=-1&ward=CN&street=CN&room=&direction=CN&isProject=0&place_search=&points=&zoom=13&center=21.0193996429443:105.94985198974598&page=0&product=' + v.id + '&isShowUtil=0&utilArea=&searchtype=0&details=1&fromProject=0">' + v.title + '</a>\
+                                <a target="_blank" href="'+ MAIN_URL + '/search/'+v.id+'">' + v.title + '</a>\
                             </div>\
                             <div class="line">\
                                 <span class="listings_address">\
@@ -97,10 +97,7 @@ $(document).ready(function () {
                         if (v.typeid < 11) html += '<div class="line mts listings_type"><strong class="label label-success">Đang bán</strong></div>';
                         else html += '<div class="line mts listings_type"><strong class="label label-info">Cho thuê</strong></div>';
                         // if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
-                        html += '<div class="line mts listings_edit">\
-                               <a class="text-info" href="'+MAIN_URL+'/dashboard/node?mode=edit&type=node&id=' + v.id + '" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>\
-                           </div>\
-                           <div class="line mts listings_delete">\
+                        html += '<div class="line mts listings_delete">\
                                <a class="text-danger" href="javascript:del(\''+ v.id + '\')" title="Xóa bài đăng"><i class="fa fa-trash"></i></a>\
                            </div>\
                        </div>\

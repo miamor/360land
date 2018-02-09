@@ -5,10 +5,37 @@ var c_city = district = null;
 var cityList = [];
 
 var splitURL = location.href.split('/');
-var nodeID = splitURL[splitURL.length - 1];
+var nodeID = location.href.split('id=')[1];
 
 
 var template = '<div class="preview"><div class="remove-thumb"><i class="fa fa-times"></i></div><span class="imageHolder"><img /><span class="uploaded"></span></span><div class="progressHolder"><div class="progress"></div></div></div>';
+
+function createImageReal (src, div, paramname) {
+    if (src.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+        var preview = $(template),
+            image = $('img', preview);
+
+        image.width = 100;
+        image.height = 100;
+
+        image.attr('src', src);
+
+        $(div).find('.message').hide();
+        preview.appendTo(div);
+        preview.addClass('done');
+
+        $(div).find('.remove-thumb').each(function () {
+            $(this).click(function (event) {
+                event.stopPropagation();
+                $(this).parent('.preview').hide();
+                if (!$(div).find('.preview').length) {
+                    $(message).show()
+                }
+                $('[name="'+paramname+'"]').val($('[name="'+paramname+'"]').val().replace(src, ''));
+            });
+        })
+    }
+}
 
 function createImage(file, div) {
     var preview = $(template),
@@ -63,6 +90,18 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             }
 
             if (isNewNode) {
+                if (submitType == 'add') {
+                    $('#anh360').val('');
+                    $('#thumbs').val('');
+                    $('#panorama_image').val('');    
+                }
+    
+                $thismap.uploadThumbs();
+                $thismap.uploadPanorama();
+                $thismap.upload360();
+            }
+
+            if (isNewNode) {
                 this.map = new google.maps.Map(document.getElementById('map_select'), {
                     zoom: 5,
                     mapTypeControl: false,
@@ -103,10 +142,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 google.maps.event.addListener($thismap.map, 'click', function (event) {
                     $thismap.addMarker(event.latLng);
                 });
-
-                $thismap.uploadThumbs();
-                $thismap.uploadPanorama();
-                $thismap.upload360();
             } else {
                 $('[name="type_action"][value="2"]').parent('label').html($('[name="type_action"][value="2"]').parent('label').html().replace('Bán', 'Tìm mua'));
                 $('[name="type_action"][value="1"]').parent('label').html($('[name="type_action"][value="1"]').parent('label').html().replace('Cho thuê', 'Tìm thuê'));
@@ -254,7 +289,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
 
         this.upload360 = function () {
-            $('#thumbs').val('');
             var dropbox = $('#dropbox_360'),
                 message = $('.message', dropbox);
 
@@ -336,7 +370,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
         }
 
         this.uploadThumbs = function () {
-            $('#thumbs').val('');
+            console.log('up thumbs called');
             var dropbox = $('#dropbox'),
                 message = $('.message', dropbox);
 
@@ -420,7 +454,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
         }
 
         this.uploadPanorama = function () {
-            $('#panorama_image').val('');
             var dropbox = $('#dropbox_pano'),
                 message = $('.message', dropbox);
 
@@ -505,78 +538,83 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     return false;
                 }
 
-                $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
-                    var val = $(this).find('input,select,textarea').val();
-                    var $fgr = $(this).closest('.form-group');
-                    var isCustomField = $fgr.is('.customshow');
-                    if ((!isCustomField || (typeBDS && isCustomField && $fgr.is('.' + typeBDS))
-                    ) && (!val || val == "CN")
-                    ) {
-                        console.log('Missing parameters');
-                        console.log($fgr);
-                        console.log($fgr.html);
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                        ok = false;
-                        return false;
-                    }
-                });
-                if (ok && isNewNode) {
-                    if (!$('#city').val() || !$('#district').val()) {
-                        console.log('Missing parameters (city || district)');
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (city/district)');
-                        ok = false;
-                        return false;
-                    }
-                    if ($('.' + typeBDS).find('#address[isRequired="1"]').length && !$('#address').val()) {
-                        console.log('Missing parameters (address)');
-                        //mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
-                        mtip('', 'error', '', 'Với loại bất động sản <b>' + $('.type_bds#type' + $('[name="type_action"]:checked').val()).find('option:selected').text() + '</b>, trường <b>Địa chỉ cụ thể</b> là bắt buộc.');
-                        ok = false;
-                        return false;
-                    }
-                }
-
-                if (isNewNode) {
-                    if (($('#rank').val() == 1 && __userInfo.coin < 20) || __userInfo.coin < 10) {
-                        ok = false;
-                        console.log('Not enough money');
-                        mtip('', 'error', '', 'Tài khoản của bạn không đủ để đăng tin bài thuộc gói này');
-                    }
-                }
-
-                if (isNewNode && !$('#price_giatri').val()) {
-                    ok = false;
-                    console.log('Missing parameters (price_giatri)');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
-                }
-
-                if (isNewNode) {
-                    if (!$('#timefrom').val() || !$('#timeto').val()) {
-                        ok = false;
-                        console.log('Missing parameters (timefrom || timeto)');
-                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
-                    } else {
-                        var today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        var timefrom = new Date($('#timefrom').val()).getTime();
-                        var timeto = new Date($('#timeto').val()).getTime();
-                        if (timefrom < today) {
+                if (submitType == 'add') {
+                    $('[attr-required="1"]').not('.form-adr,.form-price,.form-type, .form-time').each(function () {
+                        var val = $(this).find('input,select,textarea').val();
+                        var $fgr = $(this).closest('.form-group');
+                        var isCustomField = $fgr.is('.customshow');
+                        if ((!isCustomField || (typeBDS && isCustomField && $fgr.is('.' + typeBDS))
+                        ) && (!val || val == "CN")
+                        ) {
+                            console.log('Missing parameters');
+                            console.log($fgr);
+                            console.log($fgr.html);
+                            mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
                             ok = false;
-                            console.log('timefrom < today');
-                            mtip('', 'error', '', 'Thời gian không thể bắt đầu từ trước ngày hôm nay');
-                        } else if (timefrom > timeto) {
+                            return false;
+                        }
+                    });
+
+                    if (ok && isNewNode) {
+                        if (!$('#city').val() || !$('#district').val()) {
+                            console.log('Missing parameters (city || district)');
+                            mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (city/district)');
                             ok = false;
-                            console.log('timefrom > timeto');
-                            mtip('', 'error', '', 'Thời gian không hợp lệ (thời gian kết thúc < thời gian bắt đầu)');
+                            return false;
+                        }
+                        if ($('.' + typeBDS).find('#address[isRequired="1"]').length && !$('#address').val()) {
+                            console.log('Missing parameters (address)');
+                            //mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
+                            mtip('', 'error', '', 'Với loại bất động sản <b>' + $('.type_bds#type' + $('[name="type_action"]:checked').val()).find('option:selected').text() + '</b>, trường <b>Địa chỉ cụ thể</b> là bắt buộc.');
+                            ok = false;
+                            return false;
                         }
                     }
 
-                    if (!$('#latitude').val() || !$('#longitude').val()) {
-                        ok = false;
-                        console.log('lat/lng missing');
-                        mtip('', 'error', '', 'Không tìm thấy vị trí địa điểm! Vui lòng chọn vị trí trên bản đồ bằng tay!');
+                    if (isNewNode) {
+                        if (($('#rank').val() == 1 && __userInfo.coin < 20) || __userInfo.coin < 10) {
+                            ok = false;
+                            console.log('Not enough money');
+                            mtip('', 'error', '', 'Tài khoản của bạn không đủ để đăng tin bài thuộc gói này');
+                        }
                     }
 
+                    if (isNewNode && !$('#price_giatri').val()) {
+                        ok = false;
+                        console.log('Missing parameters (price_giatri)');
+                        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
+                    }
+
+                    if (isNewNode) {
+                        if (!$('#timefrom').val() || !$('#timeto').val()) {
+                            ok = false;
+                            console.log('Missing parameters (timefrom || timeto)');
+                            mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc (price_giatri)');
+                        } else {
+                            var today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            var timefrom = new Date($('#timefrom').val()).getTime();
+                            var timeto = new Date($('#timeto').val()).getTime();
+                            if (timefrom < today) {
+                                ok = false;
+                                console.log('timefrom < today');
+                                mtip('', 'error', '', 'Thời gian không thể bắt đầu từ trước ngày hôm nay');
+                            } else if (timefrom > timeto) {
+                                ok = false;
+                                console.log('timefrom > timeto');
+                                mtip('', 'error', '', 'Thời gian không hợp lệ (thời gian kết thúc < thời gian bắt đầu)');
+                            }
+                        }
+
+                        if (!$('#latitude').val() || !$('#longitude').val()) {
+                            ok = false;
+                            console.log('lat/lng missing');
+                            mtip('', 'error', '', 'Không tìm thấy vị trí địa điểm! Vui lòng chọn vị trí trên bản đồ bằng tay!');
+                        }
+                    }
+                }
+
+                if (isNewNode) {
                     if ($('#thumbs').val()) {
                         console.log($('#thumbs').val());
                         console.log($('#thumbs').val().endsWith(','));
@@ -597,11 +635,13 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     postData.price = postData.price_giatri / 1000;
                 }
 
-                if (isNewNode) {
-                    postData.timefrom += ' 00:00:00';
-                    postData.timeto += ' 00:00:00';
-                } else {
-                    postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'')+' 00:00:00';
+                if (submitType == 'add') {
+                    if (isNewNode) {
+                        postData.timefrom += ' 00:00:00';
+                        postData.timeto += ' 00:00:00';
+                    } else {
+                        postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'')+' 00:00:00';
+                    }
                 }
 
                 postData.vip = parseInt(postData.rank);
@@ -613,20 +653,18 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 if (!postData.sophongngu) postData.sophongngu = 0;
                 postData.sophongngu = parseInt(postData.sophongngu);
 
+                if (!postData.rongduong) postData.rongduong = 0;
+                else postData.rongduong = parseInt(postData.rongduong);
+                if (!postData.rongtien) postData.rongtien = 0;
+                else postData.rongtien = parseInt(postData.rongtien);
+                if (!postData.tang) postData.tang = 0;
+                else postData.tang = parseInt(postData.tang);
+
                 postData.latitude = (postData.latitude ? parseFloat(postData.latitude) : 0);
                 postData.longitude = (postData.latitude ? parseFloat(postData.longitude) : 0);
 
-                //if (submitType == 'add') {
-                //    postData.timefrom = postData.timeto = new Date().toISOString().replace(/T.*/,'');
-                //}
-
                 postData.tinh = $('#city option:selected').text();
                 postData.huyen = $('#district option:selected').text();
-
-                //if (newNode) postData.timeto = postData.timeto.replace('%2F', '-');
-                //else postData.timeto = postData.timefrom;
-
-                //postData.thumbs = postData.thumbs.replace(/\n/g, ",");
 
                 console.log(postData);
                 console.log(JSON.stringify(postData));
@@ -647,7 +685,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             console.log('ajax post');
             //var postData = $(this).serialize();
             $.ajax({
-                url: API_URL + '/manager_user/nodes/',
+                url: (isNewNode ? API_URL + '/manager_user/nodes/' : API_URL+'/manager_user/dangbaitimkiem/'),
                 type: 'post',
                 data: postData,
                 datatype: 'json',
@@ -661,7 +699,8 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         mtip('', 'error', '', response.data);
                     } else {
                         mtip('', 'success', '', 'Tin bài đã được đăng thành công');
-                        location.href = MAIN_URL + '/dashboard/node/waiting';
+                        if (isNewNode) location.href = MAIN_URL + '/dashboard/node/waiting';
+                        else location.href = MAIN_URL + '/dashboard/node/search';
                     }
                 },
                 error: function (a, b, c) {
@@ -674,7 +713,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             console.log('ajax post');
             //var postData = $(this).serialize();
             $.ajax({
-                url: API_URL + '/nodes/' + nodeID + '/',
+                url: API_URL + '/manager_user/nodes/' + nodeID + '/',
                 type: 'put',
                 data: postData,
                 datatype: 'json',
@@ -779,24 +818,33 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
         this.loadDataNode = function () {
             $.ajax({
-                url: API_URL + '/nodes/' + nodeID + '/',
-                type: 'get',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', __token);
-                },
+                url: API_URL + '/user/chitietnode/',
+                type: 'post',
+                data: { id: nodeID },
                 success: function (response) {
                     console.log(response);
 
-                    if (response.message) {
-                        $('#main-content main').html('No item found');
-                        return false;
+                    if ( (response.typenode == true && !isNewNode) || (response.typenode == false && isNewNode) ) {
+                        $('#'+v).html('<div class="alerts alert-error">Sai URL</div>');
+                        return false
                     }
 
-                    response = response.data;
+                    if (isNewNode) {
+                        if (response.thumbs == null) response.thumbs = '';
+                        else response.thumbs = response.thumbs+',';
+                        if (response.anh360 == null) response.anh360 = '';
+                        else response.anh360 = response.anh360+',';
+                        if (response.panorama_image == null) response.panorama_image = '';
+                    }
+
+                    $('.rank-select,.form-time').hide();
+
+                    response.timefrom = response.timefrom.split('T')[0];
+                    response.timeto = response.timeto.split('T')[0];
 
                     $('.node_title').html(response.title);
                     for (var key in response) {
-                        $('input[name="' + key + '"], .form-group:not(".form-adr") select[name="' + key + '"], textarea[name="' + key + '"]').not('[type="file"]').val(response[key])
+                        $('input[name="' + key + '"], .form-group:not(".form-adr") select[name="' + key + '"], textarea[name="' + key + '"]').not('[type="file"],[name="typenode"]').val(response[key])
                     }
                     // get typeid
                     typeid = parseInt(response.type.split('typereal')[1]);
@@ -810,11 +858,24 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
                     $('.customshow.' + response.type).show();
 
-                    $('.form-type_action input, .form-type select').attr('disabled', true);
+                    //$('.form-type_action input, .form-type select, .form-adr select, .form-adr input, [name="title"]').attr('disabled', true);
+                    $('.form-group input, .form-group select').not('[name="panorama_image"],[name="video"],[type="file"]').attr('disabled', true);
+                    $('#'+v).find('label.radio').addClass('disabled');
+
                     $('.form-type').find('input').attr('readonly', true);
 
                     $('#price_giatri').val(response.price);
                     $('#price_donvi').val('b');
+
+                    thumbsAr = response.thumbs.split(',');
+                    $.each(thumbsAr, function (i, v) {
+                        createImageReal(v, $('#dropbox'), 'thumbs');
+                    });
+                    createImageReal(response.panorama_image, $('#dropbox_pano'), 'panorama_image');
+                    img360Ar = response.anh360.split(',');
+                    $.each(img360Ar, function (i, v) {
+                        createImageReal(v, $('#dropbox_360'), 'anh360');
+                    });
 
                     $('#city option').each(function () {
                         // if ($(this).text() == response.tinh)

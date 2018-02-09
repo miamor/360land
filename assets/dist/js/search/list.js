@@ -1,11 +1,10 @@
 var kName = location.href.indexOf('name=') > -1 ? location.href.split('name=')[1].split('&')[0] : null;
 var kCompany = location.href.indexOf('company=') > -1 ? location.href.split('company=')[1].split('&')[0] : null;
 
-function loadData (name, company) {
+function list () {
     $.ajax({
-        url: API_URL+'/search/timkiemsale/',
-        type: 'post',
-        data: {name: name, company: company},
+        url: API_URL+'/search/danhsachbaidangtimkiem/',
+        type: 'get',
         success: function (response) {
             console.log(response);
             data = response.data;
@@ -15,29 +14,20 @@ function loadData (name, company) {
                 $('.v-user-properties').html('');
                 $('.v-user-properties-total').html('('+data.length+')');
                 $.each(data, function (i, v) {
-                    v.social = v.social.split(',');
                     html = '<div class="v-user-property line" style="min-height:100px">\
                         <div class="listings_image" style="width:70px;height:70px">\
                             <img class="image_url" src="'+v.avatar+'">\
                         </div>\
                         <div class="listings_info col cols13">\
                             <div class="line listings_title">\
-                                <a style="font-weight:600" target="_blank" href="'+MAIN_URL+'/user/'+v.id+'">'+v.name+'</a>\
+                                <a style="font-weight:600" target="_blank" href="'+MAIN_URL+'/search/'+v.id+'">'+v.title+'</a>\
                             </div>\
                             <div class="line listings_description">\
-                                <span>Địa chỉ: '+v.address+'</span>\
+                                <i class="fa fa-map-marker"></i> <span>Khu vực: <b>'+v.huyen+', '+v.tinh+'</b></span>\
                             </div>\
                             <div class="line listings_description">\
-                                <span>Công ty: '+v.company+'</span>\
-                            </div>\
-                            <div class="line listings_description">\
-                                <div>Điện thoại: <a href="tel:'+v.phone+'">'+v.phone+'</a></div>\
-                                <div>Email: <a href="maito:'+v.email+'">'+v.email+'</a></div>\
-                            </div>\
-                            <div class="line">';
-                                if (v.social[0]) html += '<a class="btn-social btn-facebook" href="' + v.social[0] + '"><i class="fa fa-facebook-square"></i></a>';
-                                if (v.social[1]) html += '<a class="btn-social btn-youtube" href="' + v.social[1] + '"><i class="fa fa-youtube-square"></i></a>';
-                    html +=     '<div class="clearfix"></div>\
+                                <div>Cần: <span>'+(v.type_action == 1 ? 'Thuê' : 'Mua')+'</span></div>\
+                                <div>Loại BĐS: <span>'+typeRealEstate[v.type].split('] ')[1]+'</span></div>\
                             </div>\
                         </div>\
                         <div class="clearfix"></div>\
@@ -54,14 +44,5 @@ function loadData (name, company) {
 }
 
 $(document).ready(function () {
-    if (kName || kCompany) {
-        loadData(kName, kCompany);
-    }
-    $('#searchsale').submit(function () {
-        var name = $(this).find('[name="name"]').val();
-        var company = $(this).find('[name="company"]').val();
-        history.pushState('search', 'Tìm kiếm sales', MAIN_URL+'/sale?name='+name+'&company='+company);
-        loadData(name, company);
-        return false
-    })
+    list();
 })

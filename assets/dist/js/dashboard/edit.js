@@ -9,6 +9,6 @@ $(document).ready(function () {
         });
     }
 
-    var FormGen = $('#theform').FormGen('add', newNode);
+    var FormGen = $('#theform').FormGen('edit', newNode);
     FormGen.initialize();
 })

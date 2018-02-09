@@ -138,6 +138,16 @@ function remove_popup () {
 }
 
 function flatApp () {
+    $('.toggle-more').click(function () {
+        if ($(this).next('.open-more').is(':visible')) {
+            $(this).next('.open-more').slideUp();
+            $(this).find('.fa').attr('class', 'fa fa-caret-down');
+        } else {
+            $(this).next('.open-more').slideDown();
+            $(this).find('.fa').attr('class', 'fa fa-caret-up');
+        }
+    });
+    
     $('input[type="submit"]').addClass('btn btn-success');
 
     //iCheck for checkbox and radio inputs
