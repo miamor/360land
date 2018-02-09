@@ -51,12 +51,15 @@ function objectifyForm(formArray) {//serialize data function
   	return returnArray;
 }
 
-function getUserInfo () {
+function getUserInfo (token) {
+    if (localStorage.getItem('token')) {
+        token = localStorage.getItem('token');
+    }
     $.ajax({
         url: API_URL+'/manager_user/info/',
         type: 'get',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+            xhr.setRequestHeader('Authorization', token);
         },
         success: function (response) {
             localStorage.setItem('user_info', JSON.stringify(response));
@@ -302,8 +305,8 @@ function stip(d) {
 function setUserInfoNav () {
     if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
     $('.myID').attr('id', __userInfo.id);
-    /*$('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse().join(' '));*/
-    $('.myName, #meinfo_name').text(__userInfo.name);
+    $('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse()[0]);
+    //$('.myName, #meinfo_name').text(__userInfo.name);
     $('#meinfo_uname').text(__userInfo.username);
     $('#meinfo_coins').text(__userInfo.coin);
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.id);

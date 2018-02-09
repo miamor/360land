@@ -1,5 +1,5 @@
-var kName = location.href.split('name=')[1].split('&')[0];
-var kCompany = location.href.split('company=')[1].split('&')[0];
+var kName = location.href.indexOf('name=') > -1 ? location.href.split('name=')[1].split('&')[0] : null;
+var kCompany = location.href.indexOf('company=') > -1 ? location.href.split('company=')[1].split('&')[0] : null;
 
 function loadData (name, company) {
     $.ajax({
@@ -50,7 +50,9 @@ function loadData (name, company) {
 }
 
 $(document).ready(function () {
-    loadData(kName, kCompany);
+    if (kName || kCompany) {
+        loadData(kName, kCompany);
+    }
     $('#searchsale').submit(function () {
         var name = $(this).find('[name="name"]').val();
         var company = $(this).find('[name="company"]').val();

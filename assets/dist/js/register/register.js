@@ -46,8 +46,8 @@ function submitRegister() {
 
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
+    //console.log('statusChangeCallback');
+    //console.log(response);
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
     // Full docs on the response object can be found in the documentation
@@ -95,9 +95,9 @@ window.fbAsyncInit = function () {
       statusChangeCallback(response);
     });*/
     FB.Event.subscribe('auth.login', function (response) {
-        console.log("login clicked");
-        console.log(response.status);
-        console.log(response);
+        //console.log("login clicked");
+        //console.log(response.status);
+        //console.log(response);
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') return false
             statusChangeCallback(response);
@@ -117,10 +117,10 @@ window.fbAsyncInit = function () {
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
 function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+    //console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', { fields: 'name, email' }, function (response) {
-        console.log('Successful login for: ' + response.name);
-        console.log(response);
+        //console.log('Successful login for: ' + response.name);
+        //console.log(response);
         checkLoginFB(response);
         //document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
     });
@@ -128,11 +128,11 @@ function testAPI() {
 
 function checkLoginFB(userDataFB) {
     $.ajax({
-        url: API_URL+'/user/login_facebook/',
+        url: API_URL + '/user/login_facebook/',
         type: 'post',
         data: userDataFB,
         success: function (response) {
-            console.log(response);
+            //console.log(response);
             if (response.status == 'unavailable') {
                 console.log('Account not available in db. Register');
                 $('.form-reg-fb').show();
@@ -141,8 +141,8 @@ function checkLoginFB(userDataFB) {
                     $('#reg_fb [name="email"]').val(userDataFB.email);
                 }
                 $('#reg_fb').submit(function () {
-                    response.email = $(this).find('[name="email"]').val();
-                    regFB(response);
+                    userDataFB.email = $(this).find('[name="email"]').val();
+                    regFB(userDataFB);
                     return false
                 })
                 //mtip('', 'error', 'Lỗi', response.message);
@@ -156,13 +156,14 @@ function checkLoginFB(userDataFB) {
     });
 }
 
-function regFB (userDataFB) {
+function regFB(userDataFB) {
+    //console.log(userDataFB);
     $.ajax({
-        url: API_URL+'/user/register_facebook/',
+        url: API_URL + '/user/register_facebook/',
         type: 'post',
         data: userDataFB,
         success: function (response) {
-            console.log(response);
+            //console.log(response);
             if (response.status == 'unavailable') {
                 __handle_error();
             } else if (response.status == 'available') {
@@ -179,8 +180,8 @@ function loginSuccess(token) {
     __token = token;
     localStorage.setItem("token", __token);
     localStorage.setItem("login_time", Math.floor(Date.now() / 1000));
-    console.log(__token);
-    getUserInfo();
+    //console.log(__token);
+    getUserInfo(__token);
     mtip('', 'success', '', 'Đăng nhập thành công!');
     if ($('.popup:not(".popup-map") .load_login_form').length) {
         remove_popup();
