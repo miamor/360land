@@ -145,10 +145,10 @@ $(document).ready(function () {
         type: 'post',
         data: { id: uID },
         success: function (response) {
-            //console.log(response);
+            console.log(response);
             data = response.data;
             data.social = data.social.split(',');
-            
+
             $('.page-title').html(data.name);
             $('.v-user-avt').attr('src', data.avatar);
             $('.v-user-name').html(data.name);

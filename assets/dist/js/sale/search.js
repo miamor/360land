@@ -54,7 +54,7 @@ $(document).ready(function () {
     $('#searchsale').submit(function () {
         var name = $(this).find('[name="name"]').val();
         var company = $(this).find('[name="company"]').val();
-        history.pushState('search', 'Tìm kiếm sales', location.href+'?name='+name+'&company='+company);
+        history.pushState('search', 'Tìm kiếm sales', MAIN_URL+'/sale?name='+name+'&company='+company);
         loadData(name, company);
         return false
     })
