@@ -770,64 +770,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             }
         }
 
-        this.loadDataNode = function () {
-            $.ajax({
-                url: API_URL + '/nodes/' + nodeID + '/',
-                type: 'get',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', __token);
-                },
-                success: function (response) {
-                    console.log(response)
-                    if (response.message) {
-                        $('#main-content main').html('No item found');
-                        return false;
-                    }
-
-                    $('.node_title').html(response.title);
-                    for (var key in response) {
-                        $('input[name="' + key + '"], .form-group:not(".form-adr") select[name="' + key + '"], textarea[name="' + key + '"]').val(response[key])
-                    }
-                    // get typeid
-                    typeid = parseInt(response.type.split('typereal')[1]);
-                    if (typeid < 11) { // show type2
-                        $('#type2').show().val(response.type);
-                        $('#type1').hide()
-                    } else { // shwo type1
-                        $('#type1').show().val(response.type);
-                        $('#type2').hide()
-                    }
-
-                    $('.customshow.' + response.type).show();
-
-                    $('.form-type_action input, .form-type select').attr('disabled', true);
-                    $('.form-type').find('input').attr('readonly', true);
-
-                    $('#price_giatri').val(response.price);
-                    $('#price_donvi').val('b');
-
-                    $('#city option').each(function () {
-                        // if ($(this).text() == response.tinh)
-                        //if ('Hà Nội' == response.tinh) {
-                        if ($(this).text() == response.tinh || (response.tinh == 'Hà Nội' && $(this).attr('value') == 'HN')) {
-                            $('#city').val($(this).attr('value'));
-                            c_city = $('#city').val();
-                            $thismap.changeCityCallback();
-
-                            $('#district option').each(function () {
-                                if ($(this).text() == response.huyen) {
-                                    $('#district').val($(this).attr('value'));
-                                }
-                            })
-                        }
-                    })
-                },
-                error: function (a, b, c) {
-                    __handle_error(a)
-                }
-            })
-        }
-
         return this;
     }
     $.fn.FormGen = FormGen
