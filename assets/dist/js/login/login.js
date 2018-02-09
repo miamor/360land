@@ -122,8 +122,8 @@ function checkLoginFB(userDataFB) {
                     $('#reg_fb [name="email"]').val(userDataFB.email);
                 }
                 $('#reg_fb').submit(function () {
-                    response.email = $(this).find('[name="email"]').val();
-                    regFB(response);
+                    userDataFB.email = $(this).find('[name="email"]').val();
+                    regFB(userDataFB);
                     return false
                 })
                 //mtip('', 'error', 'Lỗi', response.message);
