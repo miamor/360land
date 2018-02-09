@@ -82,6 +82,7 @@ function drawChart(chartData) {
     // This will get the first returned node in the jQuery collection.
     var areaChart = new Chart(areaChartCanvas);
 
+    console.log(chartData);
     var areaChartData = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sep","Oct","Nov","Dec"],
         datasets: [

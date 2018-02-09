@@ -260,7 +260,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
             dropbox.UploadImages({
                 // The name of the $_FILES entry:
-                paramname: 'anh360',
+                paramname: 'anh_360',
 
                 maxfiles: 25,
                 maxfilesize: 5,
@@ -279,19 +279,19 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
                         var $thisImgHolder = $($.data(file)[0]);
                         if ($thisImgHolder.is(':hidden')) {
-                            if ($('#anh_360').val().indexOf(img) > -1) {
-                                console.log('remove from anh_360 ' + img);
-                                $('#anh_360').val($('#anh_360').val().replace(img + ',', ''));
+                            if ($('#anh360').val().indexOf(img) > -1) {
+                                console.log('remove from anh360 ' + img);
+                                $('#anh360').val($('#anh360').val().replace(img + ',', ''));
                             }
                         } else {
-                            if ($('#anh_360').val().indexOf(img) == -1) {
-                                console.log('add to anh_360 ' + img);
-                                $('#anh_360').val($('#anh_360').val() + img + ',');
+                            if ($('#anh360').val().indexOf(img) == -1) {
+                                console.log('add to anh360 ' + img);
+                                $('#anh360').val($('#anh360').val() + img + ',');
                             }
                         }
                         $thisImgHolder.find('.remove-thumb').click(function (event) {
                             event.stopPropagation();
-                            $('#anh_360').val($('#anh_360').val().replace(img + ',', ''));
+                            $('#anh360').val($('#anh360').val().replace(img + ',', ''));
                             $thisImgHolder.remove();
                             if (!$(dropbox).find('.preview').length) {
                                 $(message).show()
@@ -793,7 +793,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     }
 
                     response = response.data;
-                    response['anh_360'] = response['anh360'];
 
                     $('.node_title').html(response.title);
                     for (var key in response) {
