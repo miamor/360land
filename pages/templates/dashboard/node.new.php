@@ -316,7 +316,7 @@
         <div class="form-group" style="margin-top:30px">
             <div class="col-lg-3 no-padding control-label">Ảnh 360 </div>
             <div class="col-lg-9 no-padding">
-                <textarea class="form-control hidden" name="streetview_image" id="streetview_image" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
+                <textarea class="form-control hidden" name="anh_360" id="anh_360" placeholder="Thumbnails (Mỗi link ảnh một dòng)"></textarea>
                 <div id="dropbox_360" class="dropbox">
                     <span class="message">Click to select files or Drop images here to upload.</span>
                     <input type="file" multiple name="anh360_input" class="up-file-input hidden"/>

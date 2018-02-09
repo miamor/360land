@@ -276,19 +276,19 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
                         var $thisImgHolder = $($.data(file)[0]);
                         if ($thisImgHolder.is(':hidden')) {
-                            if ($('#streetview_image').val().indexOf(img) > -1) {
-                                console.log('remove from streetview_image ' + img);
-                                $('#streetview_image').val($('#streetview_image').val().replace(img + ',', ''));
+                            if ($('#anh_360').val().indexOf(img) > -1) {
+                                console.log('remove from anh_360 ' + img);
+                                $('#anh_360').val($('#anh_360').val().replace(img + ',', ''));
                             }
                         } else {
-                            if ($('#streetview_image').val().indexOf(img) == -1) {
-                                console.log('add to streetview_image ' + img);
-                                $('#streetview_image').val($('#streetview_image').val() + img + ',');
+                            if ($('#anh_360').val().indexOf(img) == -1) {
+                                console.log('add to anh_360 ' + img);
+                                $('#anh_360').val($('#anh_360').val() + img + ',');
                             }
                         }
                         $thisImgHolder.find('.remove-thumb').click(function (event) {
                             event.stopPropagation();
-                            $('#streetview_image').val($('#streetview_image').val().replace(img + ',', ''));
+                            $('#anh_360').val($('#anh_360').val().replace(img + ',', ''));
                             $thisImgHolder.remove();
                             if (!$(dropbox).find('.preview').length) {
                                 $(message).show()
