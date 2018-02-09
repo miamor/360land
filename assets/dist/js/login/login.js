@@ -172,7 +172,8 @@ function loginSuccess (token) {
         location.reload();
     } else {
         //location.href = MAIN_URL;
-        history.go(-1);
+        //history.go(-1);
+        location.reload();
     }
 }
 

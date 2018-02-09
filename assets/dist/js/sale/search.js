@@ -31,7 +31,7 @@ $(document).ready(function () {
                 console.log(response);
                 data = response.data;
                 $('#search_total').html('('+data.length+')');
-                $.each(data, function () {
+                $.each(data, function (i, v) {
                     html = '<div class="v-user-property line">\
                         <div class="listings_image" style="width:70px;height:70px">\
                             <img class="image_url" src="'+v.avatar+'">\
