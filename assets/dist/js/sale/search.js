@@ -9,6 +9,7 @@ function loadData (name, company) {
         success: function (response) {
             console.log(response);
             data = response.data;
+            $('.v-user-properties').html('');
             $('.v-user-properties-total').html('('+data.length+')');
             $.each(data, function (i, v) {
                 v.social = v.social.split(',');
@@ -30,9 +31,10 @@ function loadData (name, company) {
                             <div>Điện thoại: <a href="tel:'+v.phone+'">'+v.phone+'</a></div>\
                             <div>Email: <a href="maito:'+v.email+'">'+v.email+'</a></div>\
                         </div>\
-                        <div class="line listings_description social-accounts">\
-                            <a class="btn-social btn-facebook" href="' + v.social[0] + '"><i class="fa fa-facebook-square"></i></a>\
-                            <a class="btn-social btn-youtube" href="' + v.social[1] + '"><i class="fa fa-youtube-square"></i></a\
+                        <div class="line">';
+                            if (v.social[0]) html += '<a class="btn-social btn-facebook" href="' + v.social[0] + '"><i class="fa fa-facebook-square"></i></a>';
+                            if (v.social[1]) html += '<a class="btn-social btn-youtube" href="' + v.social[1] + '"><i class="fa fa-youtube-square"></i></a>';
+                html +=     '<div class="clearfix"></div>\
                         </div>\
                     </div>\
                     <div class="clearfix"></div>\
