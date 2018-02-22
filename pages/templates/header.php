@@ -47,7 +47,7 @@ $config->addJS('dist', 'main.js'); ?>
 					<li class="nodesearch"><a href="<?php echo MAIN_URL ?>/dashboard/node?mode=new&type=search"><i class="fa fa-plus"></i> Cần mua/thuê</a></li>
 				</ul>
 			</li>
-			<li class="nav-item">
+			<li class="nav-item nav-subscribe">
 				<a class="nav-link" href="<?php echo MAIN_URL ?>/dashboard/subscribe"><i class="fa fa-heart"></i> Dự án quan tâm</a>
 			</li>
 			<li class="nav-item hidden">
@@ -55,6 +55,9 @@ $config->addJS('dist', 'main.js'); ?>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="<?php echo MAIN_URL ?>/sale"><i class="fa fa-user"></i> Tìm kiếm sales</a>
+			</li>
+			<li class="nav-item nav-manual">
+				<a class="nav-link" href="<?php echo MAIN_URL ?>/huongdan"><i class="fa fa-book"></i> Hướng dẫn</a>
 			</li>
 			<li class="nav-item nav-user-mobile">
 			</li>

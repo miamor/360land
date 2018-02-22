@@ -3395,6 +3395,10 @@ function render(isResizeSmaller = false, searchVisible = false) {
     //setWidth(w);
     //}
 
+    if (isMobile) {
+        $('.map-item-info-thumb-div').width($('body').width() - 240)
+    }
+
     $('ul.map_search_select>li>a').click(function (e) {
         var type = $(this).parent('li').attr('attr-type');
         $('#map-search-form .form-group[attr-type]').hide();

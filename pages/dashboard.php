@@ -81,6 +81,10 @@ else {
 if (!$temp) {
 ?>
 
+<div class="dashboard-left-mobile">
+    <h4 class="page-title">Dashboard</h4>
+</div>
+
 <div class="dashboard-left left-menu">
     <div class="menu-one-box view-public-profile">
 	<div class="menu-one-box-body">

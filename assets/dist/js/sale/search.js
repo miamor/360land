@@ -17,7 +17,7 @@ function loadData (name, company) {
                 $.each(data, function (i, v) {
                     v.social = v.social.split(',');
                     html = '<div class="v-user-property line" style="min-height:100px">\
-                        <div class="listings_image" style="width:70px;height:70px">\
+                        <div class="listings_image">\
                             <img class="image_url" src="'+v.avatar+'">\
                         </div>\
                         <div class="listings_info col cols13">\
