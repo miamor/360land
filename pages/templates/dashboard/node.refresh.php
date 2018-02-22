@@ -1,5 +1,5 @@
 <form id="theform" class="place-add">
-    <h4 class="page-title with-border show"><i class="fa fa-map-marker"></i> Refresh bài đăng</h4>
+    <h4 class="page-title show"><i class="fa fa-map-marker"></i> Refresh bài đăng</h4>
     <div class="add-form-content">
         <div class="form-group rank-select" attr-required="1">
             <div class="col-md-4 no-padding control-label">Chọn gói </div>

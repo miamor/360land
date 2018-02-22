@@ -41,10 +41,7 @@ if ($n == 'noti' && $id) {
     $includeFile = $n.'.one.php';
 }
 else if ($n == 'node') {
-    if ($id) {
-        $config->addJS('dist', $page.'/'.$n.'.'.$id.'.js');
-        $includeFile = $n.'.'.$id.'.php';
-    } else if ($mode) {
+    if ($mode) {
         if ($mode == 'refresh') $config->addJS('dist', $page.'/refresh.js');
         else {
             if ($mode == 'new' || $type == 'node') {
@@ -66,9 +63,13 @@ else if ($n == 'node') {
             else $config->addJS('dist', $page.'/add.js');
         }
 
-        $includeFile = "$n.$type.$mode.php";
+        $includeFile = $type ? "$n.$type.$mode.php" : $mode ? "$n.$mode.php" : $n.'.php';
     } else {
-        $config->addJS('dist', $page.'/'.$n.'.js');
+        $config->addJS('dist', $page.'/node.list.js');
+    }
+    
+    if ($id) { // hethan || waiting ...
+        $includeFile = $n.'.'.$id.'.php';
     }
 } 
 else {
@@ -80,7 +81,7 @@ else {
 if (!$temp) {
 ?>
 
-<div class="col-lg-3 left-menu no-padding-left">
+<div class="dashboard-left left-menu">
     <div class="menu-one-box view-public-profile">
 	<div class="menu-one-box-body">
 	    <a class="menu-one-item public-profile-link" href="#">Xem trang cá nhân</a>
@@ -118,9 +119,11 @@ if (!$temp) {
     </div>
 </div>
 
-<div class="col-lg-9 no-padding-right">
+<div class="dashboard-main">
     <?php include 'templates/'.$page.'/'.$includeFile ?>
 </div>
+
+<div class="clearfix"></div>
 
 <?php
 } else include 'templates/'.$page.'/'.$includeFile;

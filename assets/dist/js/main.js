@@ -40,7 +40,7 @@
 
 
 var isMobile = ($(window).width() <= 500 ? true : false);
-var API_URL = '//mappy.com.vn:8000';
+var API_URL = '//vingroupsmartcitynguyentrai.com:8000';
 var __token = __userInfo = null;
 
 function objectifyForm(formArray) {//serialize data function

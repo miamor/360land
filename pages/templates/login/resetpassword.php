@@ -1,7 +1,7 @@
 <div class="col-lg-2"></div>
 
 <div class="col-lg-8">
-    <h4 class="with-border">Đặt lại mật khẩu</h4>
+    <h4 class="page-title show">Đặt lại mật khẩu</h4>
     <form id="resetpassword">
         <div class="form-group">
             <div class="col-lg-3 control-label">Password *</div>
