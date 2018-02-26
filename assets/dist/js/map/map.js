@@ -478,14 +478,15 @@ var cityList = [];
                         $('#city option').each(function () {
                             if ($(this).text() == adr[len-2].short_name) {
                                 $(this).attr('selected', 'selected');
+                                var _city = $(this).val();
 
                                 console.log('change city callback');
-                                productControlerObj.changeCityCallback($(this).val());
+                                productControlerObj.changeCityCallback($(this).val(), false);
 
                                 $('#district option').each(function () {
                                     if ($(this).text() == adr[len-3].short_name) {
                                         $(this).attr('selected', 'selected');
-                                        productControlerObj.changeDistrictCallback($(this).val());        
+                                        productControlerObj.changeDistrictCallback($(this).val(), _city, false);        
                                     }
                                 });
                             }
@@ -2589,16 +2590,17 @@ ProductSearchControler.prototype.showCitySearch = function () {
     var i = this;
 }
 
-ProductSearchControler.prototype.changeCityCallback = function (ct) {
-    c_city = ct;
+ProductSearchControler.prototype.changeCityCallback = function (ct, setGlobalVar = true) {
+    if (setGlobalVar) c_city = ct;
+    if (!ct && c_city) ct = c_city;
     var f = this.formSearch;
     district = {};
     for (var i = 0; i < cityList.length; i++) {
-        if (cityList[i].code == c_city) {
+        if (cityList[i].code == ct) {
             district = cityList[i].district;
             for (var u = 0; u < district.length; u++) {
                 district[u].order = district[u].id;
-                if (c_city == 'HN') {
+                if (ct == 'HN') {
                     if (district[u].id == 718)
                         district[u].order = 15;
                     else if (district[u].id > 15)
@@ -2625,15 +2627,21 @@ ProductSearchControler.prototype.changeCityCallback = function (ct) {
     f.find('#district').append(options.district);
 }
 
-ProductSearchControler.prototype.changeDistrictCallback = function (dt) {
-    c_district = dt;
+ProductSearchControler.prototype.changeDistrictCallback = function (dt, ct, setGlobalVar = true) {
+    if (setGlobalVar) {
+        c_district = dt;
+    } else {
+        ct = c_city;
+    }
+    if (!dt && c_district) dt = c_district
+    
     var f = this.formSearch;
     ward = {};
     street = {};
     for (var i = 0; i < cityList.length; i++) {
-        if (cityList[i].code == c_city) {
+        if (cityList[i].code == ct) {
             for (var j = 0; j < cityList[i].district.length; j++) {
-                if (cityList[i].district[j].id == c_district) {
+                if (cityList[i].district[j].id == dt) {
                     project = cityList[i].district[j].project;
                     ward = cityList[i].district[j].ward;
                     street = cityList[i].district[j].street;
