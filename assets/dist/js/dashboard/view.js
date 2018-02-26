@@ -10,4 +10,7 @@ $(document).ready(function () {
         $('.dashboard-main,.dashboard-left').hide();
         $('.dashboard-left-mobile').show();
     }
+
+    urll = location.href.split(MAIN_URL)[1];
+    $('.menu-one-item[href*="'+urll+'"]').addClass('active');
 })

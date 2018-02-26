@@ -40,7 +40,7 @@
 
 
 var isMobile = ($(window).width() <= 500 ? true : false);
-var API_URL = '//vingroupsmartcitynguyentrai.com:8000';
+var API_URL = '//beapi.mappy.com.vn:8989';
 var __token = __userInfo = null;
 
 function objectifyForm(formArray) {//serialize data function
@@ -250,6 +250,8 @@ function refreshToken () {
             }
         },
         error: function (a, b, c) {
+            console.log('Can\'t refresh token!');
+            logout(true);
             console.log(a);
         }
     })
@@ -345,8 +347,8 @@ function loadNoti () {
             })
         }, 
         error: function (a, b, c) {
-            //refreshToken();
-            logout(true);
+            refreshToken();
+            //logout(true);
             console.log(a);
         }
     });

@@ -63,7 +63,9 @@ else if ($n == 'node') {
             else $config->addJS('dist', $page.'/add.js');
         }
 
-        $includeFile = $type ? "$n.$type.$mode.php" : $mode ? "$n.$mode.php" : $n.'.php';
+        if ($type && $mode) $includeFile = "$n.$type.$mode.php";
+        else if ($mode) $includeFile = "$n.$mode.php";
+        else $includeFile = $n.'.php';
     } else {
         $config->addJS('dist', $page.'/node.list.js');
     }
