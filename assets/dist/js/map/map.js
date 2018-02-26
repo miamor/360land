@@ -276,6 +276,9 @@ var cityList = [];
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
+
+                    $thismap.setFilterOptionsByCoordinates(pos);
+
                     $thismap.myPos = pos;
                     $thismap.currentPosMarker = new MarkerWithLabel({
                         map: $thismap.map,
@@ -462,6 +465,44 @@ var cityList = [];
 
             return loaded;
         };
+
+        this.setFilterOptionsByCoordinates = function (coord) {
+            $thismap.geocoder.geocode({ 'location': coord }, function (results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        //console.log(results[0]);
+                        var adr = results[0].address_components;
+                        var len = parseInt(adr.length);
+                        if (adr[len-2].short_name == 'Hà Nội') adr[len-2].short_name = 'Hà Nội';
+                        if (adr[len-3].short_name == 'Từ Liêm') adr[len-3].short_name = 'Bắc Từ Liêm';
+                        $('#city option').each(function () {
+                            if ($(this).text() == adr[len-2].short_name) {
+                                $(this).attr('selected', 'selected');
+
+                                console.log('change city callback');
+                                productControlerObj.changeCityCallback($(this).val());
+
+                                $('#district option').each(function () {
+                                    if ($(this).text() == adr[len-3].short_name) {
+                                        $(this).attr('selected', 'selected');
+                                        productControlerObj.changeDistrictCallback($(this).val());        
+                                    }
+                                });
+                            }
+                        });
+
+                        /*$('#city option[value="'+adr[len-2].short_name+'"]').attr('selected');
+                        productControlerObj.changeCityCallback();
+                        $('#district option[value="'+adr[len-3].short_name+'"]').attr('selected');
+                        productControlerObj.changeDistrictCallback();*/
+                    } else {
+                        window.alert('No results found');
+                    }
+                } else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
 
         this.geocodeaddress = function (address) {
             //var address = this.input.place_search.value;
