@@ -19,7 +19,7 @@
                 <p>Bước 1: Đăng nhập</p>
             </div>
  
-            <div class="tab-pane active" id="step-22">
+            <div class="tab-pane" id="step-22">
                 <a href="<?php echo IMG ?>/manual/22.png" data-fancybox="addnode" data-caption="Bước 2: Chuyển hướng đến trang 'Đăng tin cho thuê/bán' từ thanh menu hoặc trang dashboard">
                         <img src="<?php echo IMG ?>/manual/22.png">
                     </a>
