@@ -57,7 +57,7 @@ $config->addJS('dist', 'main.js'); ?>
 				<a class="nav-link" href="<?php echo MAIN_URL ?>/sale"><i class="fa fa-user"></i> Tìm kiếm sales</a>
 			</li>
 			<li class="nav-item nav-manual">
-				<a class="nav-link" href="<?php echo MAIN_URL ?>/huongdan"><i class="fa fa-book"></i> Hướng dẫn</a>
+				<a class="nav-link" href="<?php echo MAIN_URL ?>/manual"><i class="fa fa-book"></i> Hướng dẫn</a>
 			</li>
 			<li class="nav-item nav-user-mobile">
 			</li>
