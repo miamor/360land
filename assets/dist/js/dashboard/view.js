@@ -12,5 +12,6 @@ $(document).ready(function () {
     }
 
     urll = location.href.split(MAIN_URL)[1];
+    if (!urll) urll = 'info';
     $('.menu-one-item[href*="'+urll+'"]').addClass('active');
 })
