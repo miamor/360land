@@ -14,8 +14,9 @@ $(document).ready(function () {
         $('.view-public-profile .user-footer').remove();
     }
 
-    urll = location.href.split(MAIN_URL)[1];
-    if (urll.indexOf('dashboard') > -1) urll = 'info';
+    urll = location.href.split(MAIN_URL+'/dashboard')[1];
+    urls = urll.split('?')[0].split('#')[0];
+    if (urls == '' || urls == '/') urll = 'info';
     console.log(urll);
     $('.menu-one-item[href*="'+urll+'"]').addClass('active');
 })

@@ -57,8 +57,10 @@ $(document).ready(function () {
                     //$('.fix-avt').find('img').attr('src', response.data);
                     $('.fix-avt').show();
                     $('.myAvt,#meinfo_avt').attr('src', response.data);
-                    __userInfo.social = __userInfo.social.join(',');
-                    __userInfo.avatar = response.data;
+                    if (__userInfo.social.length) {
+                        __userInfo.social = __userInfo.social.join(',');
+                        __userInfo.avatar = response.data;
+                    }
                     localStorage.setItem('user_info', JSON.stringify(__userInfo));
                 } else {
                     mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');

@@ -402,9 +402,10 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                                 $('#thumbs').val($('#thumbs').val().replace(img + ',', ''));
                             }
                         } else {
-                            if ($('#thumbs').val().indexOf(img) == -1) {
+                            if ($('#thumbs').val().indexOf(img) == -1 && img) {
                                 console.log('add to thumb ' + img);
                                 $('#thumbs').val($('#thumbs').val() + img + ',');
+                                console.log('Thumbs val: '+$('#thumbs').val());
                             }
                         }
                         $thisImgHolder.find('.remove-thumb').click(function (event) {
