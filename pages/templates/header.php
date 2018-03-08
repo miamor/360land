@@ -72,7 +72,7 @@ $config->addJS('dist', 'main.js'); ?>
 					<strong class="s-title myName"></strong>
 					<span class="hidden myID"></span>
 				</a>
-				<ul class="dropdown-menu with-triangle pull-right">
+				<ul class="me-profile-dropdown dropdown-menu with-triangle pull-right">
 					<li class="user-header">
 						<img src="<?php echo MAIN_URL ?>/data/avt.png" id="meinfo_avt" class="img-circle" alt="User Image">
 						<p><span id="meinfo_name"></span> - <small id="meinfo_uname">@tutu</small></p>
@@ -84,7 +84,7 @@ $config->addJS('dist', 'main.js'); ?>
 							coins
 						</div>
 						<div class="sta-one u-hh">
-							<strong id="meinfo_rank">12</strong>
+							<strong id="meinfo_rank"></strong>
 							rank
 						</div>
 					</li>

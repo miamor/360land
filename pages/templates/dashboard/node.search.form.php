@@ -232,7 +232,7 @@
             <div class="form-group form-price">
                 <div class="col-md-4 no-padding control-label"><i class="fa fa-dollar"></i> Giá </div>
                 <div class="col-md-8 no-padding">
-                    <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
+                    <input type="number" min="1" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
                     <select id="price_donvi" name="price_donvi" class="form-control">
                         <option value="m">triệu đồng</option>
                         <option value="b">tỷ đồng</option>

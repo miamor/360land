@@ -1,3 +1,4 @@
+<h4 class="page-title"><i class="toggle-dashboard-left fa fa-reorder"></i> Hướng dẫn</h4>
 <div class="dashboard-left left-menu">
     <div class="menu-one-box">
         <h4 class="menu-one-box-header">Chức năng chính</h4>

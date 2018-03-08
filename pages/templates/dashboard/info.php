@@ -88,7 +88,7 @@
 <form id="changeAvt" method="post" enctype="multipart/form-data">
     <div id="image-cropper" class="edit-avt">
         <div class="cropit-preview"></div>
-        <input type="file" class="cropit-image-input" id="avatar_file"/>
+        <input type="file" accept="image/*" class="cropit-image-input" id="avatar_file"/>
 
         <div class="controls-wrapper">
             <div class="rotation-btns">

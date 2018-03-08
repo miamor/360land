@@ -4,11 +4,10 @@
 	<table id="buyList" class="table table-bordered table-striped">
 		<thead>
 			<tr>
-			  <th>ID</th>
+			  <th>Mã</th>
 			  <th>Coins</th>
 			  <th>Type</th>
-			  <th>Staff</th>
-			  <th>Date</th>
+			  <th>Ngày GD</th>
 		  </tr>
 		</thead>
 		<tbody>

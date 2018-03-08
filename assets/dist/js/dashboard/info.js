@@ -53,9 +53,10 @@ $(document).ready(function () {
                 if (response.status == 'success') {
                     mtip('', 'success', '', 'Đổi avatar thành công!');
                     $('.edit-avt').hide();
-                    $('.fix-avt').find('img').attr('src', response.data);
+                    $('.fix-avt').html('<img src="'+response.data+'"/>');
+                    //$('.fix-avt').find('img').attr('src', response.data);
                     $('.fix-avt').show();
-                    $('.myAvt').attr('src', response.data);
+                    $('.myAvt,#meinfo_avt').attr('src', response.data);
                     __userInfo.social = __userInfo.social.join(',');
                     __userInfo.avatar = response.data;
                     localStorage.setItem('user_info', JSON.stringify(__userInfo));

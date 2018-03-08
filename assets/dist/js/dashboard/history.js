@@ -12,8 +12,12 @@ $(document).ready(function () {
             { data: "id" },
             { data: "coin" },
 			{ data: "type" },
-			{ data: "staff" },
-            { data: "date"}
+            {
+                data: "date",
+                render : function (data, type, row) {
+                    return data.split('T')[0]
+                }
+            }
 		],
         fnRowCallback: function (nRow, aData, iDisplayIndex) {
             console.log(aData);

@@ -23,9 +23,14 @@ var listType = urlAr[urlAr.length - 1].split(/\?|\#/)[0];
 
                     } else {
                         $('.v-user-properties-total').html('(' + response.data.length + ')');
-                        $.each(response.data, function (i, v) {
-                            $thisList.appendList(v);
-                        })
+                        if (response.data.length == 0) {
+                            $thisList.html('Không có bài đăng nào')
+                        }
+                        else {
+                            $.each(response.data, function (i, v) {
+                                $thisList.appendList(v);
+                            });
+                        }
                     }
                 },
                 error: function (a, b, c) {

@@ -2745,7 +2745,7 @@ ProductSearchControler.prototype.loadSales = function (id = null) {
         //console.log(data);
 
         if (!data.length) {
-            $('#sales_list').html('<div class="empty">No data.</div>');
+            $('#sales_list').html('<div class="empty">Không có dữ liệu.</div>');
         } else {
             $('#sales_list').html('');
             $.each(data, function (key, val) {
@@ -2821,7 +2821,7 @@ ProductSearchControler.prototype.loadTienDo = function (id = null) {
         //console.log(data);
 
         if (!data.length) {
-            $('#tiendo_list').html('<div class="empty">No data.</div>');
+            $('#tiendo_list').html('<div class="empty">Không có dữ liệu.</div>');
         } else {
             $('#tiendo_list').html('');
             $.each(data, function (key, val) {

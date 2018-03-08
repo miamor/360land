@@ -83,11 +83,8 @@ else {
 if (!$temp) {
 ?>
 
-<div class="dashboard-left-mobile">
-    <h4 class="page-title">Dashboard</h4>
-</div>
-
 <div class="dashboard-left left-menu">
+    <h4 class="page-title">Trang quản lý</h4>
     <div class="menu-one-box view-public-profile">
 	<div class="menu-one-box-body">
 	    <a class="menu-one-item public-profile-link" href="#">Xem trang cá nhân</a>

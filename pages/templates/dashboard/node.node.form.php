@@ -225,7 +225,7 @@
         <div class="form-group form-price" attr-required="1">
             <div class="col-lg-3 no-padding control-label"><i class="fa fa-dollar hide"></i> Giá </div>
             <div class="col-lg-9 no-padding">
-                <input type="text" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
+                <input type="number" min="1" placeholder="Giá" class="form-control" name="price_giatri" id="price_giatri"/>
                 <select id="price_donvi" name="price_donvi" class="form-control">
                     <option value="m">triệu đồng</option>
                     <option value="b">tỷ đồng</option>
@@ -293,7 +293,7 @@
                     <?php //include 'thumbs.form.php' ?>
                     <div id="dropbox" class="dropbox">
                         <span class="message">Click to select files or Drop images here to upload.</span>
-                        <input type="file" multiple name="thumb_input" class="up-file-input hidden"/>
+                        <input type="file" accept="image/*" multiple name="thumb_input" class="up-file-input hidden"/>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -310,7 +310,7 @@
                             <i class="fa fa-folder-open-o"></i>
                             Select image
                         </div>
-                        <input type="file" name="panorama_input" class="up-file-input hidden"/>
+                        <input type="file" accept="image/*" name="panorama_input" class="up-file-input hidden"/>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -322,7 +322,7 @@
                     <textarea class="form-control hidden" name="anh360" id="anh360"></textarea>
                     <div id="dropbox_360" class="dropbox">
                         <span class="message">Click to select files or Drop images here to upload.</span>
-                        <input type="file" multiple name="anh_360" class="up-file-input hidden"/>
+                        <input type="file" accept="image/*" multiple name="anh_360" class="up-file-input hidden"/>
                     </div>
                 </div>
                 <div class="clearfix"></div>

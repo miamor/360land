@@ -114,7 +114,14 @@ function popup (html) {
         //$('.popup-inner>div').height($('.popup-content').height());
         $('body').addClass('fixed');
         $('.popup:not(".popup-map")').show();
-		//flatApp();
+        //flatApp();
+        if (isMobile) {
+            $('.popup-content').css({
+                left: 0,
+                right: 0
+            });
+            $('.popup-content .the-board .popup-section').height($('.popup-content').height()-32);
+        }
 		$(this).css({
 			'overflow': 'visible'
 		});
@@ -321,6 +328,7 @@ function setUserInfoNav () {
     //$('.myName, #meinfo_name').text(__userInfo.name);
     $('#meinfo_uname').text(__userInfo.username);
     $('#meinfo_coins').text(__userInfo.coin);
+    $('#meinfo_rank').text(__userInfo.rank);
     $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.id);
 
     if (isMobile) {
