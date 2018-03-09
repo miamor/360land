@@ -217,7 +217,7 @@ var checkSession = function() {
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
     console.log('load secs to check token: '+s);
-    if (s > 60*60 && s < 3*60*60) { // > 1 hours, < 3 hours
+    if (s > 10*60 && s < 3*60*60) { // > 1 hours, < 3 hours
         refreshToken()
         //logout(true)
     }

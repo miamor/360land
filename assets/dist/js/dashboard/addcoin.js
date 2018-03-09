@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $('head').append('<script src="https://www.google.com/recaptcha/api.js"></script>');
+
     $('#theform').submit(function () {
         $.ajax({
             url: API_URL+'/manager_user/buycoins/',
