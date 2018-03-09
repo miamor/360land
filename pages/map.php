@@ -6,7 +6,7 @@ if ($n) {
 
         include 'templates/'.$page.'/map.streetview.php';
     } else {
-        $pageTitle = 'Place title';
+        $pageTitle = 'Chi tiết địa điểm';
         include 'templates/header.php';
 
         //$config->addJS('plugins', 'DataTables/datatables.min.js');
@@ -18,7 +18,7 @@ if ($n) {
     }
 }
 else {
-    $pageTitle = 'Map';
+    $pageTitle = 'Mappy';
     include 'templates/header.php';
     echo '<link href="'.PLUGINS.'/panorama_viewer/panorama_viewer.min.css" rel="stylesheet" type="text/css">';
     //echo '<link href="'.PLUGINS.'/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css">';
