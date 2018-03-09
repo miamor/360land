@@ -3,12 +3,12 @@ if (!$n) $n = 'info';
 
 if ($n == 'node' && $mode) {
     if ($mode == 'edit') {
-        if ($type == 'node') $pageTitle = 'New node';
-        else $pageTitle = 'Search';
+        if ($type == 'node') $pageTitle = 'Sửa bài đăng';
+        else $pageTitle = 'Sửa bài đăng';
     }
     else if ($mode == 'new') {
-        if ($type == 'node') $pageTitle = 'New node';
-        else $pageTitle = 'Search';
+        if ($type == 'node') $pageTitle = 'Đăng tin bài mới';
+        else $pageTitle = 'Đăng tin tìm kiếm';
     }
     //else $pageTitle = 'Search';
 } else {
