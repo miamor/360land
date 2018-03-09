@@ -27,9 +27,11 @@ function registerForm() {
                         console.log(__token);
                         window.location.href = MAIN_URL;
                     }*/
-                    if (response.message == 'OK!!!') {
+                    if (response.status == 'success') {
                         $('#register').html('<div class="alerts alert-success">Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!</div>');
                         //location.href = MAIN_URL+'/login';
+                    } else {
+                        $('#register').html('<div class="alerts alert-error">'+response.message+'</div>');
                     }
                 },
                 error: function (a, b, c) {

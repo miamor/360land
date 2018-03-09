@@ -32,16 +32,17 @@ $(document).ready(function () {
             toggleMenu(1)
         }
     })
-});
 
-
-$(document).mouseup(function(e) {
-    var container = $(".dashboard-left");
-    // if the target of the click isn't the container nor a descendant of the container
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-        if ($('.toggle-dashboard-left').is(e.target) || $('.toggle-dashboard-left').has(e.target) > 0) {
-        } else {
-            toggleMenu(0)
-        }
+    if (isMobile) {
+        $(document).mouseup(function(e) {
+            var container = $(".dashboard-left");
+            // if the target of the click isn't the container nor a descendant of the container
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                if ($('.toggle-dashboard-left').is(e.target) || $('.toggle-dashboard-left').has(e.target) > 0) {
+                } else {
+                    toggleMenu(0)
+                }
+            }
+        })
     }
 });
