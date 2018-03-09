@@ -234,14 +234,14 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
             $thismap.changeAdrByCoord(loc);
         }
 
-        this.changeAdrByCoord(latlng) = function {
+        this.changeAdrByCoord = function (latlng) {
             this.geocoder.geocode({
                 'latLng': latlng
             }, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[1]) {
                         console.log(results[1]);
-                        $('#address').val(results[1]);
+                        $('#address').val(results[1].formatted_address);
                     } else {
                         alert('No results found');
                     }
