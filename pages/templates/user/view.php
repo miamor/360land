@@ -1,7 +1,7 @@
 <h4 class="page-title">Tu Nguyen</h4>
 
 <div class="v-user-top">
-    <img class="v-user-avt" src="//mappy.com.vn/assets/img/noimage.png"/>
+    <img class="v-user-avt" src="<?php echo MAIN_URL ?>/assets/img/noimage.png"/>
     <div class="v-user-basicinfo left">
         <h2 class="v-user-name left"></h2>
         <div class="clearfix"></div>

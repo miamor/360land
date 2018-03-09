@@ -531,6 +531,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                 $('#type').val($('#type' + a).val());
 
                 var typeBDS = $('#type').val();
+                console.log($(this).serialize());
 
                 if (!typeBDS || typeBDS == 'CN') {
                     console.log('Missing parameters (type)');
@@ -892,7 +893,9 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                                 }
                             })
                         }
-                    })
+                    });
+
+                    console.log($('#thumbs').val())
                 },
                 error: function (a, b, c) {
                     console.log(a);
