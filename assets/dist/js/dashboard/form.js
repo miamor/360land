@@ -713,6 +713,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
 
         this.editNode = function (postData) {
             console.log('ajax post');
+            console.log(postData);
             //var postData = $(this).serialize();
             $.ajax({
                 url: API_URL + '/manager_user/nodes/' + nodeID + '/',
@@ -832,11 +833,11 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     }
 
                     if (isNewNode) {
-                        if (response.thumbs == null) response.thumbs = '';
+                        if (response.thumbs == null || response.thumbs == "" || !response.length) response.thumbs = '';
                         else response.thumbs = response.thumbs+',';
-                        if (response.anh360 == null) response.anh360 = '';
+                        if (response.anh360 == null || response.anh360 == "" || !response.anh360) response.anh360 = '';
                         else response.anh360 = response.anh360+',';
-                        if (response.panorama_image == null) response.panorama_image = '';
+                        if (response.panorama_image == null || response.panorama_image == "" || !response.panorama_image) response.panorama_image = '';
                     }
 
                     $('.rank-select,.form-time').hide();
@@ -894,7 +895,6 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                             })
                         }
                     });
-
                     console.log($('#thumbs').val())
                 },
                 error: function (a, b, c) {
