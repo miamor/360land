@@ -11,6 +11,7 @@ function registerForm() {
     $('#register').submit(function () {
         if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$(this).find('[name="phone"]').val()) {
             console.log('Missing parameters');
+            mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc')
         } else {
             console.log($(this).serialize());
             $.ajax({
