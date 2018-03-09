@@ -217,13 +217,11 @@ var checkSession = function() {
     var loginSec = parseInt(localStorage.getItem('login_time'));
     var s = currentSec - loginSec;
     console.log('load secs to check token: '+s);
-    if (s > 10*60 && s < 3*60*60) { // > 1 hours, < 3 hours
+    //if (s > 0.5*60 && s < 3*60*60) { // > 1 hours, < 3 hours
+    if (s > 10*60) { // > 1 hours, < 3 hours
         refreshToken()
         //logout(true)
     }
-}
-if (__token) {
-    checkSession_Interval = setInterval(checkSession, 1000*60);
 }
 
 
@@ -243,6 +241,7 @@ function logout (autoLoggedOut = false) {
 }
 
 function refreshToken () {
+    console.log('refreshToken called');
     $.ajax({
         url: API_URL+'/manager_user/refresh_token/',
         type: 'post',
@@ -250,6 +249,7 @@ function refreshToken () {
             xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
         },
         success: function (response) {
+            console.log(response);
             if (response.data != 'error') {
                 __token = response.data;
                 localStorage.setItem('login_time', Math.floor(Date.now() / 1000));
@@ -258,7 +258,7 @@ function refreshToken () {
         },
         error: function (a, b, c) {
             console.log('Can\'t refresh token!');
-            logout(true);
+            //logout(true);
             console.log(a);
         }
     })
@@ -482,6 +482,9 @@ jQuery(document).ready(function ($) {
 
     if (localStorage.getItem('token')) {
         __token = localStorage.getItem('token');
+
+        checkSession_Interval = setInterval(checkSession, 60000);
+        
         if (!localStorage.getItem('user_info')) {
             getUserInfo();
         } else {

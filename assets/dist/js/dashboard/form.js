@@ -226,11 +226,29 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
         }
 
 
-        this.addMarker = function (location) {
-            $thismap.marker.setPosition(location);
+        this.addMarker = function (loc) {
+            $thismap.marker.setPosition(loc);
             $thismap.marker.setVisible(true);
-            $('#latitude').val(location.lat());
-            $('#longitude').val(location.lng());
+            $('#latitude').val(loc.lat());
+            $('#longitude').val(loc.lng());
+            $thismap.changeAdrByCoord(loc);
+        }
+
+        this.changeAdrByCoord(latlng) = function {
+            this.geocoder.geocode({
+                'latLng': latlng
+            }, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        console.log(results[1]);
+                        $('#address').val(results[1]);
+                    } else {
+                        alert('No results found');
+                    }
+                } else {
+                    alert('Geocoder failed due to: ' + status);
+                }
+            });
         }
 
         this.autocompleteProject = function () {
