@@ -19,7 +19,7 @@
 
     <div class="add-form-submit center">
         <!--<input value="Gửi yêu cầu xuất hóa đơn" class="btn btn-primary" type="submit">-->
-        <button class="btn btn-primary g-recaptcha" data-sitekey="6LfC-ksUAAAAAJNP8YQiXZ3r67Hz7vtNE4YpzLzo" data-callback="onSubmitRequest">Gửi yêu cầu xuất hóa đơn</button>
+        <button class="btn btn-primary g-recaptcha" data-sitekey="6LfC-ksUAAAAAJNP8YQiXZ3r67Hz7vtNE4YpzLzo" data-callback="onSubmitRequest" style="border-radius:3px!important">Gửi yêu cầu xuất hóa đơn</button>
     </div>
 
 </form>

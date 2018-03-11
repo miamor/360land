@@ -3,7 +3,7 @@ function onSubmitRequest () {
     $.ajax({
         url: API_URL+'/manager_user/buycoins/',
         type: 'post',
-        data: $(this).serialize(),
+        data: $form.serialize(),
         datatype: 'json',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('Authorization', __token);
@@ -12,7 +12,7 @@ function onSubmitRequest () {
             console.log(response);
             data = response.data;
             if (response.status == 'error') {
-                mtip('', 'error', '', response.data);
+                mtip('', 'error', '', response.message);
             } else {
                 mtip('', 'success', '', 'Yêu cầu nạp tiền được gửi thành công');
             }
