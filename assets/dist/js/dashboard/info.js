@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    //console.log(__userInfo);
     __userInfo.social = __userInfo.social.split(',');
     $('#theform .form-group input').each(function () {
         var inputID = $(this).attr('name');
@@ -74,30 +75,38 @@ $(document).ready(function () {
     })
 
     $('#theform').submit(function () {
+        var ok = true;
         var social = $(this).find('[name="facebook"]').val()+','+$(this).find('[name="youtube"]').val();
-        $.ajax({
-            url: API_URL + '/manager_user/edit/',
-            type: 'put',
-            data: $(this).serialize()+'&social='+social,
-            datatype: 'json',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', __token);
-            },
-            success: function (response) {
-                console.log(response);
-                data = response.data;
-                if (data == 'error') {
-                    mtip('', 'error', '', 'Có lỗi khi thay đổi thông tin cá nhân. Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
-                } else {
-                    __userInfo = data;
-                    localStorage.setItem('user_info', JSON.stringify(data));
-                    mtip('', 'success', '', 'Thông tin cá nhân được cập nhật thành công');
+        if (/^0(1\d{9}|9\d{8})$/.test($('[name="phone"]').val()) == false) {
+            ok = false;
+            mtip('', 'error', '', 'Số điện thoại không hợp lệ!');
+            return false
+        } 
+        if (ok) {
+            $.ajax({
+                url: API_URL + '/manager_user/edit/',
+                type: 'put',
+                data: $(this).serialize()+'&social='+social,
+                datatype: 'json',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', __token);
+                },
+                success: function (response) {
+                    console.log(response);
+                    data = response.data;
+                    if (data == 'error') {
+                        mtip('', 'error', '', 'Có lỗi khi thay đổi thông tin cá nhân. Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                    } else {
+                        __userInfo = data;
+                        localStorage.setItem('user_info', JSON.stringify(data));
+                        mtip('', 'success', '', 'Thông tin cá nhân được cập nhật thành công');
+                    }
+                },
+                error: function (a, b, c) {
+                    __handle_error(a)
                 }
-            },
-            error: function (a, b, c) {
-                __handle_error(a)
-            }
-        });
+            });
+        }
         return false
     })
 })

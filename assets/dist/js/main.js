@@ -51,6 +51,24 @@ function objectifyForm(formArray) {//serialize data function
   	return returnArray;
 }
 
+/*function checkUserCoin (token) {
+    $.ajax({
+        url: API_URL+'/manager_user/info/',
+        type: 'get',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', token);
+        },
+        success: function (response) {
+            if (response.coin != __userInfo.coin) {
+                localStorage.setItem('user_info', JSON.stringify(response))
+            }
+        },
+        error: function (a, b, c) {
+            console.log(a);
+        }
+    })
+}*/
+
 function getUserInfo (token) {
     if (localStorage.getItem('token')) {
         token = localStorage.getItem('token');
@@ -477,7 +495,7 @@ var typeService = {
 	typeservice13: "Các tiện ích khác"
 };
 
-jQuery(document).ready(function ($) {
+$(document).ready(function ($) {
     flatApp();
 
     if (localStorage.getItem('token')) {
@@ -485,17 +503,21 @@ jQuery(document).ready(function ($) {
 
         checkSession_Interval = setInterval(checkSession, 60000);
         
-        //if (!localStorage.getItem('user_info')) {
+        if (!localStorage.getItem('user_info')) {
             getUserInfo();
-        /*} else {
+        } else {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
-            console.log(__userInfo);
+            //console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-            $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+            /*$('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
             $('.nav-user').removeClass('loginlink');
             $('.nav-user #me_dropdown_info, .noti-right-bar').show();
-            setUserInfoNav();
-        }*/
+            // check coins
+            checkUserCoin();
+            setUserInfoNav();*/
+            // get again
+            getUserInfo();
+        }
         $('.noti-right-bar .see-all-noti').click(function () {
             location.href = MAIN_URL+'/dashboard/noti';
         });

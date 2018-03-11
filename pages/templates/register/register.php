@@ -74,7 +74,7 @@
                 <input name="recaptcha_response_field" id="recaptcha_response_field" type="hidden" value="">
             </div>-->
             <div class="col-lg-9">
-                <div class="g-recaptcha" data-sitekey="6LelrzsUAAAAAFljbuBoEJE3HvWIs52ldwS4XiRJ"></div>
+                <div class="g-recaptcha" data-sitekey="6LdF-0sUAAAAAP6tGXGoYL-mEHpkzB-0YP5y_RqM"></div>
             </div>
             <div class="clearfix"></div>
         </div>
