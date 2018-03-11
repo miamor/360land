@@ -32,6 +32,8 @@ function createImageReal (src, div, paramname) {
                     $(message).show()
                 }
                 $('[name="'+paramname+'"]').val($('[name="'+paramname+'"]').val().replace(src, ''));
+                $('[name="'+paramname+'"]').val($('[name="'+paramname+'"]').val().replace(/,+/g, ','));
+
             });
         })
     }
@@ -333,8 +335,9 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         if ($thisImgHolder.is(':hidden')) {
                             if ($('#anh360').val().indexOf(img) > -1) {
                                 console.log('remove from anh360 ' + img);
-                                $('#anh360').val($('#anh360').val().replace(img + ',', ''));
-                            }
+                                $('#anh360').val($('#anh360').val().replace(img, ''));
+                                $('#anh360').val($('#anh360').val().replace(/,+/g, ','));
+                                }
                         } else {
                             if ($('#anh360').val().indexOf(img) == -1) {
                                 console.log('add to anh360 ' + img);
@@ -343,7 +346,8 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         }
                         $thisImgHolder.find('.remove-thumb').click(function (event) {
                             event.stopPropagation();
-                            $('#anh360').val($('#anh360').val().replace(img + ',', ''));
+                            $('#anh360').val($('#anh360').val().replace(img, ''));
+                            $('#anh360').val($('#anh360').val().replace(/,+/g, ','));
                             $thisImgHolder.remove();
                             if (!$(dropbox).find('.preview').length) {
                                 $(message).show()
@@ -417,7 +421,8 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         if ($thisImgHolder.is(':hidden')) {
                             if ($('#thumbs').val().indexOf(img) > -1) {
                                 console.log('remove from thumb ' + img);
-                                $('#thumbs').val($('#thumbs').val().replace(img + ',', ''));
+                                $('#thumbs').val($('#thumbs').val().replace(img, ''));
+                                $('#thumbs').val($('#thumbs').val().replace(/,+/g, ','));
                             }
                         } else {
                             if ($('#thumbs').val().indexOf(img) == -1 && img) {
@@ -428,8 +433,9 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                         }
                         $thisImgHolder.find('.remove-thumb').click(function (event) {
                             event.stopPropagation();
-                            $('#thumbs').val($('#thumbs').val().replace(img + ',', ''));
-                            $thisImgHolder.remove();
+                            $('#thumbs').val($('#thumbs').val().replace(img, ''));
+                            $('#thumbs').val($('#thumbs').val().replace(/,+/g, ','));
+                        $thisImgHolder.remove();
                             if (!$(dropbox).find('.preview').length) {
                                 $(message).show()
                             }
