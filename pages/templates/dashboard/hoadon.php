@@ -1,12 +1,12 @@
-<h2 class="page-title show">Lịch sử giao dịch</h2>
+<h2 class="page-title show">Giao dịch đang chờ thanh toán</h2>
 
 <div class="">
 	<table id="buyList" class="table table-bordered table-striped">
 		<thead>
 			<tr>
-			  <th>Mã giao dịch</th>
+			  <th>Mã hóa đơn</th>
 			  <th>Coins</th>
-			  <th>Ngày GD</th>
+			  <th>Số tiền tương ứng</th>
 		  </tr>
 		</thead>
 		<tbody>

@@ -6,6 +6,7 @@ var listType = urlAr[urlAr.length - 1].split(/\?|\#/)[0];
         var url = API_URL + '/manager_user/nodes/';
         if (listType == 'hethan') url = API_URL + '/manager_user/nodefalse/';
         if (listType == 'waiting') url = API_URL + '/manager_user/nodewait/';
+        if (listType == 'search') url = API_URL + '/manager_user/danhsachtimkiem/';
         var $div = $(this);
         //var $div = $('.v-user-properties');
         $thisList = this;
@@ -102,9 +103,10 @@ var listType = urlAr[urlAr.length - 1].split(/\?|\#/)[0];
             if (v.typeid < 11) html += '<div class="line mts listings_type"><strong class="label label-success">Đang bán</strong></div>';
             else html += '<div class="line mts listings_type"><strong class="label label-info">Cho thuê</strong></div>';
             if (v.vip == 1) html += '<div class="line mts listings_type"><strong class="label label-warning">VIP</strong></div>';
-            html += '<div class="line mts listings_edit">\
-            <a class="text-info" href="'+ MAIN_URL + '/dashboard/node?mode=edit&type=node&id=' + v.id + '" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>\
-            </div>\
+            html += '<div class="line mts listings_edit">';
+            //if (listType == 'search') html += '<a class="text-info" href="'+ MAIN_URL + '/dashboard/node?mode=edit&type=search&id=' + v.id + '" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>';
+            if (listType != 'search') html += '<a class="text-info" href="'+ MAIN_URL + '/dashboard/node?mode=edit&type=node&id=' + v.id + '" title="Sửa bài đăng"><i class="fa fa-pencil"></i></a>';
+            html += '</div>\
                 <div class="line mts listings_delete">\
                     <a class="text-danger" href="javascript:__listGen.del(\''+ v.id + '\')" title="Xóa bài đăng"><i class="fa fa-trash"></i></a>\
                 </div>\

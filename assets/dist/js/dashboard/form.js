@@ -700,7 +700,7 @@ errors = ["BrowserNotSupported", "TooManyFiles", "FileTooLarge"];
                     else if (submitType == 'edit') $thismap.editNode(postData)
                 } else {
                     console.log('not ok~');
-                    mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc');
+                    //mtip('', 'error', '', 'Có lỗi');
                 }
 
                 return false

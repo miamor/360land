@@ -33,7 +33,7 @@ if ($n == 'info') {
     echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css"/>';*/
     $config->addJS(-1,'https://cdnjs.cloudflare.com/ajax/libs/cropit/0.5.1/jquery.cropit.min.js');
 }
-if ($n == 'history') {
+if ($n == 'history' || $n == 'hoadon') {
     $config->addJS('plugins', 'DataTables/datatables.min.js');
 }
 if ($n == 'noti' && $id) {
@@ -97,6 +97,7 @@ if (!$temp) {
             <a class="menu-one-item" href="<?php echo $config->dbLink ?>/info">Sửa thông tin</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink.'/changepassword' ?>">Đổi mật khẩu</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink.'/addcoin' ?>">Nạp tiền</a>
+            <a class="menu-one-item" href="<?php echo $config->dbLink.'/hoadon' ?>">Hóa đơn chờ thanh toán</a>
             <a class="menu-one-item" href="<?php echo $config->dbLink.'/history' ?>">Lịch sử giao dịch</a>
         </div>
     </div>

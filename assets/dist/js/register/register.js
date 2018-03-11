@@ -43,10 +43,10 @@ function onSubmitReg() {
 
 function registerForm() {
     //showRecaptcha('recaptcha_div');
-    $('#register').submit(function () {
+    /*$('#register').submit(function () {
         onSubmitReg();
         return false
-    })
+    })*/
 }
 
 function submitRegister() {
