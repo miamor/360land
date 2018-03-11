@@ -15,17 +15,18 @@ function confirmAccount () {
                 localStorage.setItem('token', __token);
                 localStorage.setItem("login_time", Math.floor(Date.now() / 1000));
                 getUserInfo();
-		mtip('', 'success', '', 'Xác thực người dùng thành công. Đang chuyển hướng...');
-		window.locaton.href = MAIN_URL;
+		        mtip('.confirm-content', 'success', '', 'Xác thực người dùng thành công. Đang chuyển hướng...');
+		        locaton.href = MAIN_URL+'/manual';
             }
         },
         error: function (a, b, c) {
             console.log(a)
             if (a.status == 401) {
-                mtip('', 'error', '', 'Failed to authenticate');
+                //mtip('', 'error', '', 'Failed to authenticate');
+		        mtip('.confirm-content', 'error', '', 'Lối xác thực');
             }
             else {
-                mtip('', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
+                mtip('.confirm-content', 'error', '', 'Lỗi hệ thống! Vui lòng liên hệ với quản trị viên để được hỗ trợ sớm nhất!');
             }
         }
     })

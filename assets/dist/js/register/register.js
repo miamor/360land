@@ -6,40 +6,45 @@ function showRecaptcha(element) {
     });
 }*/
 
+function onSubmitReg() {
+    $form = $('#register');
+    if (!$form.find('[name="username"]').val() || !$form.find('[name="password"]').val() || !$form.find('[name="name"]').val() || !$form.find('[name="email"]').val() || !$form.find('[name="phone"]').val()) {
+        console.log('Missing parameters');
+        mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc')
+    } else {
+        console.log($form.serialize());
+        $.ajax({
+            url: API_URL + '/user/create/',
+            type: 'post',
+            data: $form.serialize(),
+            success: function (response) {
+                /*if (("token" in response) == false) {
+                    console.log(response);
+                } else {
+                    __token = response.token;
+                    localStorage.setItem("token" , __token);
+                    localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
+                    console.log(__token);
+                    window.location.href = MAIN_URL;
+                }*/
+                if (response.status == 'success') {
+                    $('#register').html('<div class="alerts alert-success">Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!</div>');
+                    //location.href = MAIN_URL+'/login';
+                } else {
+                    $('#register').html('<div class="alerts alert-error">'+response.message+'</div>');
+                }
+            },
+            error: function (a, b, c) {
+                console.log(a)
+            }
+        });
+    }
+}
+
 function registerForm() {
     //showRecaptcha('recaptcha_div');
     $('#register').submit(function () {
-        if (!$(this).find('[name="username"]').val() || !$(this).find('[name="password"]').val() || !$(this).find('[name="name"]').val() || !$(this).find('[name="email"]').val() || !$(this).find('[name="phone"]').val()) {
-            console.log('Missing parameters');
-            mtip('', 'error', '', 'Các trường đánh dấu * là bắt buộc')
-        } else {
-            console.log($(this).serialize());
-            $.ajax({
-                url: API_URL + '/user/create/',
-                type: 'post',
-                data: $(this).serialize(),
-                success: function (response) {
-                    /*if (("token" in response) == false) {
-                        console.log(response);
-                    } else {
-                        __token = response.token;
-                        localStorage.setItem("token" , __token);
-                        localStorage.setItem("login_time" , Math.floor(Date.now() / 1000));
-                        console.log(__token);
-                        window.location.href = MAIN_URL;
-                    }*/
-                    if (response.status == 'success') {
-                        $('#register').html('<div class="alerts alert-success">Đăng ký thành công. Kiểm tra hòm thư để kích hoạt tài khoản!</div>');
-                        //location.href = MAIN_URL+'/login';
-                    } else {
-                        $('#register').html('<div class="alerts alert-error">'+response.message+'</div>');
-                    }
-                },
-                error: function (a, b, c) {
-                    console.log(a)
-                }
-            });
-        }
+        onSubmitReg();
         return false
     })
 }

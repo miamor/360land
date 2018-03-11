@@ -67,21 +67,18 @@
             <div class="clearfix"></div>
         </div>
 
-        <div class="form-group" style="margin-top:15px">
+        <!--<div class="form-group" style="margin-top:15px">
             <div class="col-lg-3 control-label"></div>
-            <!--<div id="recaptcha_div">
-                <input type="hidden" name="recaptcha_challenge_field" id="recaptcha_challenge_field" value="">
-                <input name="recaptcha_response_field" id="recaptcha_response_field" type="hidden" value="">
-            </div>-->
             <div class="col-lg-9">
                 <div class="g-recaptcha" data-sitekey="6LdF-0sUAAAAAP6tGXGoYL-mEHpkzB-0YP5y_RqM"></div>
             </div>
             <div class="clearfix"></div>
-        </div>
+        </div>-->
 
         <div class="add-form-submit form-one-button center">
             <input type="reset" class="btn btn-default" value="Nhập lại"/>
-            <input type="submit" class="btn" value="Đăng ký"/>
+            <!--<input type="submit" class="btn" value="Đăng ký"/>-->
+            <button class="btn btn-primary g-recaptcha" data-sitekey="6LfC-ksUAAAAAJNP8YQiXZ3r67Hz7vtNE4YpzLzo" data-callback="onSubmitReg">Submit</button>
         </div>
     </form>
 
