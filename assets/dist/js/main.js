@@ -485,9 +485,9 @@ jQuery(document).ready(function ($) {
 
         checkSession_Interval = setInterval(checkSession, 60000);
         
-        if (!localStorage.getItem('user_info')) {
+        //if (!localStorage.getItem('user_info')) {
             getUserInfo();
-        } else {
+        /*} else {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
             console.log(__userInfo);
             //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
@@ -495,22 +495,22 @@ jQuery(document).ready(function ($) {
             $('.nav-user').removeClass('loginlink');
             $('.nav-user #me_dropdown_info, .noti-right-bar').show();
             setUserInfoNav();
+        }*/
+        $('.noti-right-bar .see-all-noti').click(function () {
+            location.href = MAIN_URL+'/dashboard/noti';
+        });
+        if (isMobile) {
+            if (location.href.indexOf('dashboard') > -1) {
+                patAr = (location.href.replace('/','').trim()).split('dashboard');
+                pat = patAr[patAr.length-1];
+                if (!pat) {
+                $('.container > .col-lg-9').html('<h2 class="page-title">Dashboard</h2>');
+                } else {
+                $('.container > .left-menu').hide();
+                $('.container .page-title').prepend('<a href="'+MAIN_URL+'/dashboard"><i class="fa fa-chevron-left"></i></a> ');
+                }
+            }
         }
-	$('.noti-right-bar .see-all-noti').click(function () {
-	    location.href = MAIN_URL+'/dashboard/noti';
-	});
-	if (isMobile) {
-	if (location.href.indexOf('dashboard') > -1) {
-	    patAr = (location.href.replace('/','').trim()).split('dashboard');
-	    pat = patAr[patAr.length-1];
-	    if (!pat) {
-		$('.container > .col-lg-9').html('<h2 class="page-title">Dashboard</h2>');
-	    } else {
-		$('.container > .left-menu').hide();
-		$('.container .page-title').prepend('<a href="'+MAIN_URL+'/dashboard"><i class="fa fa-chevron-left"></i></a> ');
-	    }
-	}
-	}
         // destroy session every 30 minutes
     } else {
         //$('.nav-user').html('<a href="'+MAIN_URL+'/login">Đăng nhập</a>');

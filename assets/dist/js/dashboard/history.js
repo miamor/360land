@@ -10,8 +10,13 @@ $(document).ready(function () {
         },
 		columns: [
             { data: "id" },
-            { data: "coin" },
-			{ data: "type" },
+            { 
+                data: "coin",
+                render: function (data, type, row) {
+                    if (row.type == false) return -data;
+                    else return data
+                }
+            },
             {
                 data: "date",
                 render : function (data, type, row) {
@@ -21,9 +26,11 @@ $(document).ready(function () {
 		],
         fnRowCallback: function (nRow, aData, iDisplayIndex) {
             console.log(aData);
-            /*if (aData.taxiid != null) {
-                $(nRow).addClass('taken');
-            }*/
+            if (aData.type == false) {
+                $(nRow).addClass('substract');
+            } else {
+                $(nRow).addClass('add');
+            }
         }
 	})
 })

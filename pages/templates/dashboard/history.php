@@ -6,7 +6,6 @@
 			<tr>
 			  <th>Mã</th>
 			  <th>Coins</th>
-			  <th>Type</th>
 			  <th>Ngày GD</th>
 		  </tr>
 		</thead>
