@@ -22,6 +22,12 @@ $(document).ready(function () {
                 render : function (data, type, row) {
                     return 20
                 }
+            },
+            {
+                data: "date",
+                render : function (data, type, row) {
+                    return data.split('T')[0]
+                }
             }
 		],
         fnRowCallback: function (nRow, aData, iDisplayIndex) {

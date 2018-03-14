@@ -7,6 +7,7 @@
 			  <th>Mã hóa đơn</th>
 			  <th>Coins</th>
 			  <th>Số tiền tương ứng</th>
+			  <th>Ngày</th>
 		  </tr>
 		</thead>
 		<tbody>
