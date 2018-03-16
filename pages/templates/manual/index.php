@@ -12,7 +12,7 @@
     <div class="menu-one-box">
         <h4 class="menu-one-box-header">Tài khoản</h4>
         <div class="menu-one-box-body">
-            <div class="menu-one-item" id="h-log">Đăng ký &amp; đăng nhập</div>
+            <div class="menu-one-item" id="h-reg">Đăng ký &amp; đăng nhập</div>
             <div class="menu-one-item" id="h-addcoin">Nạp tiền</div>
             <div class="menu-one-item" id="h-upgrade">Nâng cấp tin</div>
         </div>
@@ -40,9 +40,6 @@
     <?php include 'addcoin.php' ?>
     </div>
 
-    <div class="help-board h-login hide">
-    <?php include 'login.php' ?>
-    </div>
 </div>
 
 <div class="clearfix"></div>
