@@ -24,6 +24,10 @@
         <?php include 'search.php' ?>
     </div>
 
+    <div class="help-board h-reg hide">
+        <?php include 'reg.php' ?>
+    </div>
+
     <div class="help-board h-add hide">
     <?php include 'addnode.php' ?>
     </div>
