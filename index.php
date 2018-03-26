@@ -1,11 +1,18 @@
 <?php
 include 'include/functions.php';
 $config = new Config();
+$__lang = 'vi';
 
 if (check($__page, '?') > 0) $__page = $__page.'&';
 else $__page = $__page;
 
 $__pageAr = array_values(array_filter(explode('/', explode('?', rtrim($__page))[0])));
+if ($__pageAr[0] == 'en') {
+	unset($__pageAr[0]);
+	$__pageAr = array_values($__pageAr);
+	$__lang = 'en';
+}
+
 if ($__pageAr) {
 	$page = $__pageAr[0];
 	$n = (array_key_exists(1, $__pageAr) && $__pageAr[1]) ? $__pageAr[1] : null;
@@ -25,10 +32,17 @@ $mode = $config->get('mode');
 if ($do) header('Content-Type: text/plain; charset=utf-8');
 else header('Content-Type: text/html; charset=utf-8');
 
-if (!file_exists('pages/'.$page.'.php')) $page = 'error';
+if ($__lang == 'en') {
+	if (!file_exists('pages/en/'.$page.'.php')) $page = 'error';
 
-include 'pages/'.$page.'.php';
+	include 'pages/en/'.$page.'.php';
 
-include 'pages/templates/footer.php';
+	include 'pages/en/templates/footer.php';
+} else {
+	if (!file_exists('pages/'.$page.'.php')) $page = 'error';
 
+	include 'pages/'.$page.'.php';
+
+	include 'pages/templates/footer.php';
+}
  ?>
