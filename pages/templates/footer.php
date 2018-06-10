@@ -7,6 +7,7 @@
 		<div class="the-board"></div>
 	</div>
 </div></div>
+
 <?php }
 
 $config->echoJS();

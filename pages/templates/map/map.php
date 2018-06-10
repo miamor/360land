@@ -218,8 +218,9 @@
         </div></div>
 
         <div class="v-place-contacts">
-            <a class="btn btn-primary v-place-call" href="#"><i class="fa fa-phone"></i> Call</a>
+            <a class="btn btn-primary v-place-call" href="#"><i class="fa fa-phone"></i> Gọi</a>
             <a class="btn btn-primary v-place-sendmail" href="#"><i class="fa fa-mail-forward"></i> Email</a>
+            <a class="btn btn-primary v-place-chat" href="#"><i class="fa fa-comments-o"></i> Chat ngay</a>
         </div>
 
         <div class="v-box v-place-more">
@@ -282,6 +283,16 @@
     </div>
     <h3>Sales</h3>
     <div id="sales_list"></div>
+</div>
+
+<div class="v-place-v-chat v-place-mode-board hide" attr-mode="chat">
+    <div class="close-chat-board close-mode-board">
+        <i class="fa fa-times"></i>
+    </div>
+    <h3>Chat</h3>
+    <div id="chat_iframe">
+        <iframe id="chat_iframee" name="chat_iframee" src="<?php echo MAIN_URL?>/chat?temp=true"></iframe>
+    </div>
 </div>
 
 <div class="v-place-v-tiendo v-place-mode-board hide" attr-mode="tiendo">
