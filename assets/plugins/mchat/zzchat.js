@@ -1272,8 +1272,8 @@ function runChat() {
     $('[name="to_id"]').val(currentUserID);
     $form.submit();
   } else {
-    autoUpdate();
   }
+  autoUpdate();
 
 }
 
