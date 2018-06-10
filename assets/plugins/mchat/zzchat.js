@@ -918,6 +918,7 @@ function runChat() {
           $messenger.focus();
         } else {
           //mtip('', 'error', '', response.message)
+          $messenger.val(oldMessage);
           console.log(response.message)
         }
       },
