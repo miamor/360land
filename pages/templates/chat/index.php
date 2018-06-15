@@ -25,7 +25,7 @@
 
 
 			<div id="chatbox-wrap">
-				<div class="chatbox-content">
+				<div class="chatbox-content" data-id="publish">
 				</div>
 			</div>
 			<div id="chatbox-messenger-form">

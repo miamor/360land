@@ -2425,8 +2425,9 @@ ProductSearchControler.prototype.openChat = function () {
     currentNodeID = i.ProductMap.currentPID;
     currentNodeName = place.title;
     currentUserID = place.userid;
-    console.log('/chat ['+currentNodeID+'] {'+currentNodeName+'} '+currentUserID);
-    $('.v-place-v-chat #chat_iframe').html('<iframe id="chat_iframee" name="chat_iframee" src="'+MAIN_URL+'/chat?token='+__token+'&node_id='+currentNodeID+'&node_name='+(currentNodeName)+'&user_id='+currentUserID+'&temp=true"></iframe>');
+    thisUserName = place.username;
+    //console.log('/chat ['+currentNodeID+'] {'+currentNodeName+'} '+thisUserName);
+    $('.v-place-v-chat #chat_iframe').html('<iframe id="chat_iframee" name="chat_iframee" src="'+MAIN_URL+'/chat?token='+__token+'&node_id='+currentNodeID+'&node_name='+(currentNodeName)+'&user_id='+thisUserName+'&id='+currentUserID+'&temp=true"></iframe>');
     /*var iframe = document.getElementById("chat_iframee").contentWindow;
     //iframe.__token = __token;
     iframe.document.getElementById("chatbox-messenger-input").value = '/chat ['+iframe.currentNodeID+'] {'+iframe.currentNodeName+'} '+iframe.currentUserID;

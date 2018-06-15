@@ -6,6 +6,8 @@
 //var socket = new WebSocket('ws://beapi.mappy.com.vn:8000/?session_key='+token);
 
 var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_.*)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
+//var regexpPM = /(\d{13,}_.*)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
+
 //var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 
 var cURL = API_URL+'/chat';
@@ -40,8 +42,12 @@ function runChat() {
 
   var connected = 0;
 
+  var currentUser = JSON.parse(localStorage.getItem('user_info'));
+  currentUserName = currentUser['username'];
+  //currentUserID = ar[9];
+
   currentUserID = "";
-  currentUserName = "tunguyen";
+  //currentUserName = "";
 
 
   /**
@@ -289,6 +295,7 @@ function runChat() {
    * @param {htmlString} Dữ liệu tin nhắn mới
    */
   var newMessage = function(Messages) {
+    //console.log(Messages);
     if (Messages) {
       var arr = $.parseHTML(Messages); // Chuyển htmlString tin nhắn thành HTML
 
@@ -329,7 +336,9 @@ function runChat() {
             // Nếu có nickname của thành viên đang truy cập trong danh sách
 
             var dataId = arrMess[5]; // data-id lấy từ tin nhắn
-
+            node_id = dataId.split("_n")[1].split('_')[0];
+            to_uid = dataId.split("_id")[1].split("{")[0];
+  
             var $private = $('.chatbox-content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng ứng với data-id lấy được
             var $tabPrivate = $('.chatbox-change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục tương ứng
 
@@ -362,6 +371,7 @@ function runChat() {
               $tabPrivate = $("<div>", {
                 class: "chatbox-change",
                 "data-id": dataId,
+                "data-nodeid": node_id,
                 "data-name": node_title,
                 "data-users": arrMess[7],
                 html:
@@ -396,9 +406,28 @@ function runChat() {
                 $('.chatbox-change[data-id="publish"]').click();*/
             }
 
+            /*if (location.href.indexOf('node_id=') > -1 && location.href.indexOf('node_name=') > -1 && location.href.indexOf('user_id=') > -1) {
+              var ar = location.href.split(/=|&/);
+              //console.log(ar);
+              currentNodeID = ar[3];
+              currentNodeName = decodeURIComponent(ar[5]);
+              toUserName = ar[7];
+
+              console.log(currentNodeID);
+              console.log($tabPrivate.attr('data-nodeid'));
+              if ($tabPrivate.attr('data-nodeid') == currentNodeID) {
+                console.log('$tabPrivate click!');
+                $tabPrivate.click();
+              }
+            }*/
+            
+            console.log($tabPrivate.html());
+
             $msg.html(zzEmoFb.checkEmo(arrMess[1] + arrMess[9])); // Xóa phần đánh dấu tin nhắn
 
             $this.appendTo($private); // Thêm tin nhắn vào mục chat riêng theo data-id
+
+
           }
         } else if (
           messText.indexOf("{HIDDEN_TEXT}") !== -1 ||
@@ -538,6 +567,10 @@ function runChat() {
       setTimeout(function() {
         $wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
       }, 300);
+
+      console.log('chatbox-change length~ '+$('.chatbox-change').length);
+      console.log($('.chatbox-change').html());
+
     }
   };
 
@@ -556,17 +589,19 @@ function runChat() {
       thisLastMess = chatbox_messages.match(
         /<p class="chatbox_row_(1|2) clearfix">(?:.(?!<p class="chatbox_row_(1|2) clearfix">))*<\/p>$/
       )[0]; // Lấy tin nhắn cuối trong lần này
+      //console.log(thisLastMess);
       if (lastMess === undefined) {
         // Nếu trước đó ko có tin cuối => lần truy cập chatbox đầu tiên hoặc chatbox mới clear
         newChatboxMessages = chatbox_messages;
         lastMess = thisLastMess; // Cập nhật tin nhắn cuối
+        //console.log('lastMess === undefined');
         newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
       } else if (lastMess !== thisLastMess) {
         // Không có tin mới
         newChatboxMessages = chatbox_messages.split(lastMess)[1]; // Cắt bỏ tin nhắn cũ, lấy tin mới
         lastMess = thisLastMess; // Cập nhật tin nhắn cuối
         uSend = lastMess.split(/(copy_user_name\(\'|\')/)[2]; // Lấy tên người gửi cuối
-        if (uSend != meName) newSound = true; // Nếu người gửi là người khác thì bật âm thanh tin nhắn mới
+        if (uSend != currentUserName) newSound = true; // Nếu người gửi là người khác thì bật âm thanh tin nhắn mới
         newMessage(newChatboxMessages); // Xử lý tin nhắn và đưa vào chatbox
       }
     } else {
@@ -582,6 +617,8 @@ function runChat() {
 
     $("#chatbox-forumvi:hidden").fadeIn(200); // Hiển thị chatbox
     firstTime = false;
+
+    
   };
 
   /**
@@ -676,6 +713,7 @@ function runChat() {
         });*/
 
         filterMess(chatbox_messages); // Lọc và xử lý các tin nhắn trong chatbox_messages
+
       }
     }
   };
@@ -709,6 +747,7 @@ function runChat() {
    * @param {URL} Đường dẫn tải dữ liệu
    */
   var update = function() {
+    //console.log(cURL+'/message/');
     //console.log(__token);
     $.ajax({
       url: cURL+'/message/',
@@ -722,6 +761,7 @@ function runChat() {
         if (response.status == 'success') {
           var data = response.data;
           getDone(data);
+
           $("#chatbox-forumvi:hidden").fadeIn(200);
         }
       },
@@ -757,10 +797,10 @@ function runChat() {
   };
 
   var autoUpdate = function() {
-    // Tự cập nhật mỗi 5s
+    // Tự cập nhật mỗi 1s
     var refreshFunction = setInterval(function() {
       update();
-    }, 3000);
+    }, 600);
   };
 
   // Bật tắt tự động cập nhật
@@ -850,6 +890,7 @@ function runChat() {
       $titSetting.hide();
     }
     $form.attr("data-key", key);
+    $('#chatbox-title').attr('data-id', key);
     $messenger.add("#chatbox-title").attr("data-id", dataID);
     $("#chatbox-title > h2").text($("h3", $this).text());
 
@@ -879,8 +920,6 @@ function runChat() {
    */
   var sendMessage = function(val) {
     oldMessage = $messenger.val();
-    console.log(val);
-    console.log(currentNodeID);
     if (!currentNodeID || !currentUserID) {
       //mtip('', 'error', '', 'Chọn 1 cuộc hội thoại');
       console.log('Chọn 1 cuộc hội thoại');
@@ -972,10 +1011,11 @@ function runChat() {
     event.preventDefault(); // Chặn sự kiện submit
 
     var messVal = $messenger.val();
+    //console.log('form submited '+messVal);
     if ($.trim(messVal) !== "") {
       var regexpCmd = /^\/(chat|gift|toggle|kick|away|ban|unban|mod|unmod|cls|clear|me)(\s\[(.+?)\]\s\{(.+?)\}\s(.+))?$/;
 
-      console.log(messVal);
+      //console.log(messVal);
       if (regexpCmd.test(messVal)) {
         // Nếu là các lệnh cmd
         var cmd = messVal.match(regexpCmd);
@@ -987,21 +1027,23 @@ function runChat() {
         nicknameencode = encodeURIComponent(nickname),
           currentUserNameencode = encodeURIComponent(currentUserName);
 
-        console.log(cmd);
         if (/^(chat|gift|toggle)$/.test(action)) {
           // Những lệnh không gửi đi
           if (action === "chat") {
             var nickdecode = decodeURIComponent(nickname);
 
+            console.log('nodeid~'+nodeid);
             // Đặt biến cho tab chat riêng
             var $newTab = $(
-              '.chatbox-change[data-users="[\\"' +
-                currentUserNameencode +
-                '\\",\\"' +
-                nicknameencode +
-                '\\"]"][data-nodeid="'+nodeid+'"][data-name="{'+nodename+'}"]'
+              '.chatbox-change[data-nodeid="'+nodeid+'"]'
             );
+            console.log('.chatbox-change length~~~ '+$('.chatbox-change').length);
+            console.log($('chatbox-change').html());
+            console.log($('chatbox-change').text());
+
+            console.log($newTab.length);
             if (!$newTab.length) {
+              console.log('not found $newTab');
               $newTab = $(
                 '.chatbox-change[data-users="[\\"' +
                   nicknameencode +
@@ -1011,6 +1053,13 @@ function runChat() {
               );
             }
 
+            console.log('.chatbox-change[data-users="[\\"' +
+            currentUserNameencode +
+            '\\",\\"' +
+            nicknameencode +
+            '\\"]"][data-nodeid="'+nodeid+'"][data-name="{'+nodename+'}"]');
+            console.log($newTab);
+
             var $user = userOnline(nickname);
 
             if ($newTab.length) {
@@ -1019,6 +1068,7 @@ function runChat() {
               var dataId = $newTab.attr('data-id');
               $messenger.attr('data-id', dataId);
               $form.attr('data-key', dataId);
+              console.log('newTab.length~ '+dataId);
             } else {
               //if ($user.length) {
                 // Nếu có nickname trong danh sách
@@ -1026,7 +1076,7 @@ function runChat() {
 
                 if (!$newTab.length) {
                   // Nếu chưa có tab chat
-                  var dataId = new Date().getTime() + "_u" + currentUserID + "_n" + currentNodeID; // Tạo data-id
+                  var dataId = new Date().getTime() + "_u" + currentUserName + "_n" + currentNodeID+"_id"+currentUserID; // Tạo data-id
 
                   $messenger.attr('data-id', dataId);
                   $form.attr('data-key', dataId);
@@ -1056,7 +1106,7 @@ function runChat() {
                       $("span", $user).css("color") +
                       '">' +
                       nickname +
-                      '</h3><span class="chatbox-change-mess"></span>'
+                      ' - '+nodename+'</h3><span class="chatbox-change-mess"></span>'
                   }).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
                   $newTab.click();
                   $("<div>", {
@@ -1065,6 +1115,7 @@ function runChat() {
                     style: "display: none;"
                   }).appendTo($wrap); // Tạo mục chat riêng mới
                 }
+                
               /*} else {
                 // Nếu không có nickname trong danh sách
                 if ($newTab.length) {
@@ -1095,8 +1146,9 @@ function runChat() {
         var node_id, node_title;
         console.log(messId);
         if (messId !== "publish") {
-          currentNodeID = messId.split("_n")[1].split('{')[0];
-          currentUserID = messId.split("_u")[1].split("_")[0];
+          currentNodeID = messId.split("_n")[1].split('_')[0];
+          currentUserName = messId.split("_u")[1].split("_")[0];
+          currentUserID = messId.split("_id")[1].split("{")[0];
           node_title = $messenger.attr("data-name");
           $('[name="node_id"]').val(currentNodeID);
           $('[name="to_id"]').val(currentUserID);
@@ -1256,24 +1308,46 @@ function runChat() {
   //				 var chatbox_memberlist = '';
 
 
-  if (location.href.indexOf('node_id=') > -1 && location.href.indexOf('node_name=') > -1 && location.href.indexOf('user_id=') > -1) {
-    var ar = location.href.split(/=|&/);
-    console.log(ar);
-    currentNodeID = ar[3];
-    currentNodeName = decodeURIComponent(ar[5]);
-    currentUserID = ar[7];
+  __token = localStorage.getItem("token");
 
-    console.log(currentNodeID);
+  $.ajax({
+    url: cURL+'/message/',
+    type: "get",
+    //dataType: "script",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', __token);
+    },
+    success: function (response) {
+      console.log(response);
+      if (response.status == 'success') {
+        var data = response.data;
+        getDone(data);
 
-    console.log('send /chat ['+currentNodeID+'] {'+currentNodeName+'} '+currentUserID);
+        $("#chatbox-forumvi:hidden").fadeIn(200);
 
-    $messenger.val('/chat ['+currentNodeID+'] {'+currentNodeName+'} '+currentUserID);
-    $('[name="node_id"]').val(currentNodeID);
-    $('[name="to_id"]').val(currentUserID);
-    $form.submit();
-  } else {
-  }
-  autoUpdate();
+        if (location.href.indexOf('node_id=') > -1 && location.href.indexOf('node_name=') > -1 && location.href.indexOf('user_id=') > -1) {
+          console.log('check url and start /chat ');
+          var ar = location.href.split(/=|&/);
+          //console.log(ar);
+          currentNodeID = ar[3];
+          currentNodeName = decodeURIComponent(ar[5]);
+          toUserName = ar[7];
+      
+            $messenger.val('/chat ['+currentNodeID+'] {'+currentNodeName+'} '+toUserName);
+            $('[name="node_id"]').val(currentNodeID);
+            $('[name="to_id"]').val(currentUserID);
+            $form.submit();
+
+        }
+        
+        //autoUpdate();
+      }
+    },
+    error: function (a, b, c) {
+      console.log(a);
+    }
+  });
+  //autoUpdate();
 
 }
 

@@ -291,7 +291,6 @@
     </div>
     <h3>Chat</h3>
     <div id="chat_iframe">
-        <iframe id="chat_iframee" name="chat_iframee" src="<?php echo MAIN_URL?>/chat?temp=true"></iframe>
     </div>
 </div>
 

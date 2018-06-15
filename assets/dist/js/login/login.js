@@ -4,7 +4,7 @@ function submitLoginForm() {
         type: 'post',
         data: $('#login').serialize(),
         success: function (response) {
-            //console.log(response);
+            console.log(response);
             if (("token" in response) == false) {
                 mtip('', 'error', 'Lỗi', response.message);
             } else {
@@ -159,22 +159,48 @@ function regFB(userDataFB) {
 
 function loginSuccess(token) {
     __token = token;
-    localStorage.setItem("token", __token);
-    localStorage.setItem("login_time", Math.floor(Date.now() / 1000));
+    //getUserInfo(__token);
+    console.log(token);
+    if (token) {
+        mtip('', 'success', '', 'Đăng nhập thành công! Đang lấy thông tin...');
+        $.ajax({
+            url: API_URL+'/manager_user/info/',
+            type: 'get',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', __token);
+            },
+            success: function (response) {
+                localStorage.setItem("token", __token);
+                localStorage.setItem("login_time", Math.floor(Date.now() / 1000));
+                localStorage.setItem('user_info', JSON.stringify(response));
+                __userInfo = response;
+                mtip('', 'success', '', 'Lấy thông tin thành công. Đang chuyển trang...');
+                console.log(__userInfo);
+                //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+                $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+                $('.nav-user').removeClass('loginlink');
+                $('.nav-user #me_dropdown_info, .noti-right-bar').show();
+                setUserInfoNav();
+
+                mtip('', 'success', '', 'Đăng nhập thành công!');
+                if ($('.popup:not(".popup-map") .load_login_form').length) {
+                    remove_popup();
+                }
+                if (location.href.indexOf('login') == -1) {
+                    remove_popup();
+                    location.reload();
+                } else {
+                    //location.href = MAIN_URL;
+                    //history.go(-1);
+                    location.reload();
+                }        
+            },
+            error: function (a, b, c) {
+                console.log(a);
+            }
+        })
+    }
     //console.log(__token);
-    getUserInfo(__token);
-    mtip('', 'success', '', 'Đăng nhập thành công!');
-    if ($('.popup:not(".popup-map") .load_login_form').length) {
-        remove_popup();
-    }
-    if (location.href.indexOf('login') == -1) {
-        remove_popup();
-        location.reload();
-    } else {
-        //location.href = MAIN_URL;
-        //history.go(-1);
-        location.reload();
-    }
 }
 
 $(document).ready(function () {

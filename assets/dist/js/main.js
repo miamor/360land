@@ -70,29 +70,27 @@ function objectifyForm(formArray) {//serialize data function
 }*/
 
 function getUserInfo (token) {
-    if (localStorage.getItem('token')) {
-        token = localStorage.getItem('token');
-    }
-    $.ajax({
-        url: API_URL+'/manager_user/info/',
-        type: 'get',
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('Authorization', token);
-        },
-        success: function (response) {
-            localStorage.setItem('user_info', JSON.stringify(response));
-            __userInfo = JSON.parse(localStorage.getItem('user_info'));
-            console.log(__userInfo);
-            //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-            $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
-            $('.nav-user').removeClass('loginlink');
-            $('.nav-user #me_dropdown_info, .noti-right-bar').show();
-            setUserInfoNav();
-        },
-        error: function (a, b, c) {
-            console.log(a);
-        }
-    })
+    console.log('getUserInfo'+token);
+        $.ajax({
+            url: API_URL+'/manager_user/info/',
+            type: 'get',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', token);
+            },
+            success: function (response) {
+                localStorage.setItem('user_info', JSON.stringify(response));
+                __userInfo = response;
+                console.log(__userInfo);
+                //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+                $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+                $('.nav-user').removeClass('loginlink');
+                $('.nav-user #me_dropdown_info, .noti-right-bar').show();
+                setUserInfoNav(__userInfo);
+            },
+            error: function (a, b, c) {
+                console.log(a);
+            }
+        })
 }
 
 function randStr() {
@@ -339,24 +337,29 @@ function stip(d) {
 }
 
 
-function setUserInfoNav () {
-    if (__userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', __userInfo.avatar);
-    $('.myID').attr('id', __userInfo.id);
-    $('.myName, #meinfo_name').text(__userInfo.name.split(' ').reverse()[0]);
-    //$('.myName, #meinfo_name').text(__userInfo.name);
-    $('#meinfo_uname').text(__userInfo.username);
-    $('#meinfo_coins').text(__userInfo.coin);
-    $('#meinfo_rank').text(__userInfo.rank);
-    $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+__userInfo.id);
+function setUserInfoNav (userInfo) {
+    console.log(userInfo);
+    if (userInfo != null && userInfo != undefined) {
+        if (userInfo.avatar) $('.myAvt, #meinfo_avt').attr('src', userInfo.avatar);
+        $('.myID').attr('id', userInfo.id);
+        $('.myName, #meinfo_name').text(userInfo.name.split(' ').reverse()[0]);
+        //$('.myName, #meinfo_name').text(userInfo.name);
+        $('#meinfo_uname').text(userInfo.username);
+        $('#meinfo_coins').text(userInfo.coin);
+        $('#meinfo_rank').text(userInfo.rank);
+        $('#meinfo_profile_link').attr('href', MAIN_URL+'/user/'+userInfo.id);
 
-    if (isMobile) {
-        $('.nav-user-mobile').addClass('dropdown').show().html('<a class="dropdown-toggle" data-toggle="dropdown" href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a><ul class="dropdown-menu pull-right"><li><a href="'+MAIN_URL+'/user/'+__userInfo.id+'">Profile</a></li><li><a href="'+MAIN_URL+'/dashboard">Dashboard</a></li><li><a href="'+MAIN_URL+'/logout">Logout</a></li></ul>');
+        if (isMobile) {
+            $('.nav-user-mobile').addClass('dropdown').show().html('<a class="dropdown-toggle" data-toggle="dropdown" href="'+MAIN_URL+'/dashboard">'+$('.nav-user .dropdown > a').html()+'</a><ul class="dropdown-menu pull-right"><li><a href="'+MAIN_URL+'/user/'+userInfo.id+'">Profile</a></li><li><a href="'+MAIN_URL+'/dashboard">Dashboard</a></li><li><a href="'+MAIN_URL+'/logout">Logout</a></li></ul>');
+        }
+
+        loadNoti();
     }
-
-    loadNoti();
 }
 
 function loadNoti () {
+    console.log(__token);
+    /*
     $.ajax({
         url: API_URL + '/manager_user/danhsachthongbao/',
         type: 'get',
@@ -377,7 +380,7 @@ function loadNoti () {
             //logout(true);
             console.log(a);
         }
-    });
+    });*/
 }
 
 
@@ -503,21 +506,22 @@ $(document).ready(function ($) {
 
         checkSession_Interval = setInterval(checkSession, 60000);
         
-        if (!localStorage.getItem('user_info')) {
-            getUserInfo();
+        //localStorage.setItem('user_info', JSON.stringify(response));
+        __userInfo = JSON.parse(localStorage.getItem('user_info'));
+        //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
+        $('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
+        $('.nav-user').removeClass('loginlink');
+        $('.nav-user #me_dropdown_info, .noti-right-bar').show();
+        setUserInfoNav(__userInfo);
+
+
+        /*if (!localStorage.getItem('user_info')) {
+            getUserInfo(localStorage.getItem('token'));
         } else {
             __userInfo = JSON.parse(localStorage.getItem('user_info'));
-            //console.log(__userInfo);
-            //$('.nav-user').html('<img class="nav-user-avt" src=""/><h4 class="nav-user-name">'+__userInfo.username+'</h4>');
-            /*$('.nav-user #me_login_link, .nav-user #me_reg_link').hide();
-            $('.nav-user').removeClass('loginlink');
-            $('.nav-user #me_dropdown_info, .noti-right-bar').show();
-            // check coins
-            checkUserCoin();
-            setUserInfoNav();*/
             // get again
-            getUserInfo();
-        }
+            getUserInfo(localStorage.getItem('token'));
+        }*/
         $('.noti-right-bar .see-all-noti').click(function () {
             location.href = MAIN_URL+'/dashboard/noti';
         });

@@ -9,6 +9,7 @@ if (!$temp && $mode != 'iframe') {
     <head>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" media="screen">
         <link rel="stylesheet" type="text/css" href="'.PLUGINS.'/mchat/zzchat.iframe.css" />
+        <script>var MAIN_URL = "'.MAIN_URL.'"</script>
     </head>
     <body>';
 }
