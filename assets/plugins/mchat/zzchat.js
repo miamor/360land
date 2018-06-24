@@ -10,7 +10,7 @@ var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d
 
 //var regexpPM = /^(<span style="color: (#[0-9A-Fa-f]{6}|rgb\(\d{2,3}, \d{2,3}, \d{2,3}\));?">(<(strike|i|u|strong)>)*)(\d{13,}_\d+)({.*})(\["[^"]+"(\,"[^"]+")+\])(.*)$/; // Mã kiểm tra định dạng tin nhắn riêng
 
-var cURL = API_URL+'/chat';
+var cURL = API_URL + '/chat';
 //var cURL = '//localhost/mRoom/chat?do=update';
 
 //$(document).ready(function () {
@@ -55,7 +55,7 @@ function runChat() {
    *
    * @param {String} nickname của người cần lấy
    */
-  var userOnline = function(n) {
+  var userOnline = function (n) {
     if (n.indexOf("@") !== -1) n = n.split("@")[1];
     return $("#chatbox-members").find(
       "a[onclick=\"return copy_user_name('" + n + "');\"]"
@@ -114,7 +114,7 @@ function runChat() {
     all: "",
     emoFB: {},
 
-    imgEmo: function(b, a) {
+    imgEmo: function (b, a) {
       return (
         '<img class="smiley_FB" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="' +
         b.replace(/\"/, "&quot;") +
@@ -124,19 +124,19 @@ function runChat() {
       );
     },
 
-    checkEmo: function(b) {
-      return (b = b.replace(zzEmoFb.all, function(a) {
+    checkEmo: function (b) {
+      return (b = b.replace(zzEmoFb.all, function (a) {
         return zzEmoFb.imgEmo(a, zzEmoFb.emoFB[a]);
       }));
     },
 
-    list: function(b, a) {
-      $.each(zzEmoFb.emoFB, function(c, d) {
+    list: function (b, a) {
+      $.each(zzEmoFb.emoFB, function (c, d) {
         b.test(c) && $(a).append(zzEmoFb.imgEmo(c, d));
       });
     },
 
-    addSmiley: function(ele) {
+    addSmiley: function (ele) {
       var normal = /\bO:\)\B|\bo\.O\b|\bO\.o\b|\b8\|\B|\b8\)\B|\b3:\)\B|\B(\(y\)\B|\B:3\b|\B:\'\(\B|\B:\(\B|\B:O\b|\B:D\b|\B&gt;:\(\B|\B&lt;3\b|\B\^_\^\B|\B:\*\B|\B:v\b|\B&lt;\(\"\)\B|\B:poop:\B|\B:putnam:\B|\B\(\^\^\^\)\B|\B:\)\B|\B-_-\B|\B:P\b|\B:\/\B|\B&gt;:O\b|\B;\)\B|\B:\|\]\B)/,
         more = /\B:fb([0-9]|[1-9][0-9]|1[0-9][0-9]|20[0-9]):\B/;
       zzEmoFb.all = RegExp(
@@ -247,7 +247,7 @@ function runChat() {
 
       var $more = $(".more", $smiley);
 
-      $more.click(function() {
+      $more.click(function () {
         $("p.less", $smiley).length
           ? $more.nextAll().show()
           : (zzEmoFb.list(more, "#smiley_FB_frame"),
@@ -255,7 +255,7 @@ function runChat() {
         $(this).hide();
       });
 
-      $smiley.on("click", ".less", function() {
+      $smiley.on("click", ".less", function () {
         $(this).hide();
         $more
           .show()
@@ -263,7 +263,7 @@ function runChat() {
           .hide();
       });
 
-      $smiley.on("click", "img", function(e) {
+      $smiley.on("click", "img", function (e) {
         $messenger[0].value += " " + this.alt;
         if (!e.ctrlKey) {
           $(ele).removeClass("active");
@@ -271,15 +271,15 @@ function runChat() {
         }
       });
 
-      $(ele).click(function() {
+      $(ele).click(function () {
         $(this).toggleClass("active");
       });
 
-      $smiley.click(function(e) {
+      $smiley.click(function (e) {
         e.stopPropagation();
       });
 
-      $(document).click(function(e) {
+      $(document).click(function (e) {
         if (!$(e.target).closest(ele).length) {
           $(ele).removeClass("active");
         }
@@ -294,12 +294,12 @@ function runChat() {
    *
    * @param {htmlString} Dữ liệu tin nhắn mới
    */
-  var newMessage = function(Messages) {
+  var newMessage = function (Messages) {
     //console.log(Messages);
     if (Messages) {
       var arr = $.parseHTML(Messages); // Chuyển htmlString tin nhắn thành HTML
 
-      $.each(arr, function(i, val) {
+      $.each(arr, function (i, val) {
         // Duyệt qua từng tin
 
         var $this = $(this); // Đặt biến cho tin nhắn đang xét
@@ -338,7 +338,7 @@ function runChat() {
             var dataId = arrMess[5]; // data-id lấy từ tin nhắn
             node_id = dataId.split("_n")[1].split('_')[0];
             to_uid = dataId.split("_id")[1].split("{")[0];
-  
+
             var $private = $('.chatbox-content[data-id="' + dataId + '"]'); // Đặt biến cho mục chat riêng ứng với data-id lấy được
             var $tabPrivate = $('.chatbox-change[data-id="' + dataId + '"]'); // Đặt biến cho tab của mục tương ứng
 
@@ -355,7 +355,7 @@ function runChat() {
               var $tabname;
 
               if (chat_name === "") {
-                chat_name = $.grep(arrUsers, function(n, i) {
+                chat_name = $.grep(arrUsers, function (n, i) {
                   return n !== encodeURIComponent(currentUserName);
                 });
 
@@ -386,7 +386,7 @@ function runChat() {
                   '</a></h3><span class="chatbox-change-mess"></span>'
               }).appendTo("#chatbox-list"); // Thêm vào khu vực tab
 
-              $tabPrivate.click(function() {
+              $tabPrivate.click(function () {
                 restrictTab();
               });
             } /*else if (
@@ -420,7 +420,7 @@ function runChat() {
                 $tabPrivate.click();
               }
             }*/
-            
+
             console.log($tabPrivate.html());
 
             $msg.html(zzEmoFb.checkEmo(arrMess[1] + arrMess[9])); // Xóa phần đánh dấu tin nhắn
@@ -449,15 +449,15 @@ function runChat() {
           // Nếu có ký hiệu buzz
           $msg.html(
             '<img src="' +
-              MAIN_URL +
-              '/assets/plugins/mchat/img/buzz.gif" width="62" height="16" />'
+            MAIN_URL +
+            '/assets/plugins/mchat/img/buzz.gif" width="62" height="16" />'
           ); // Thay bằng ảnh buzz
           if (!firstTime && $("#chatbox-main").css("left") !== "-1px") {
             // Không chạy hiệu ứng buzz trong lần truy cập đầu tiên
             //					$msgTab.click();
             $("#chatbox-forumvi").addClass("chatbox-buzz");
             $("#chatbox-buzz-audio")[0].play();
-            setTimeout(function() {
+            setTimeout(function () {
               $("#chatbox-forumvi").removeClass("chatbox-buzz");
               $messenger.focus();
             }, 1000);
@@ -466,7 +466,7 @@ function runChat() {
           if ($this.find(".user > a").text() === currentUserName) {
             $msgTab.add(".chatbox-content[data-id='" + msgId + "']").hide();
             var otherUser = decodeURIComponent(
-              $.grep($msgTab.data("users"), function(n, i) {
+              $.grep($msgTab.data("users"), function (n, i) {
                 return n !== encodeURIComponent(currentUserName);
               })[0]
             );
@@ -483,8 +483,8 @@ function runChat() {
           } else {
             $this.replaceWith(
               '<p class="chatbox-userout clearfix"><strong>' +
-                $this.find(".user > a").text() +
-                "</strong> đã rời khỏi phòng.</p>"
+              $this.find(".user > a").text() +
+              "</strong> đã rời khỏi phòng.</p>"
             );
           }
         }
@@ -509,7 +509,7 @@ function runChat() {
         }
       });
 
-      setTimeout(function() {
+      setTimeout(function () {
         var $tabCookie = $(
           '.chatbox-change[data-id="' + my_getcookie("chatbox_active") + '"]'
         );
@@ -523,7 +523,7 @@ function runChat() {
       var messCounterObj = JSON.parse(sessionStorage.getItem("messCounter"));
       var allNewMess = 0; // Đếm số tin nhắn mới
 
-      $(".chatbox-content").each(function() {
+      $(".chatbox-content").each(function () {
         var $this = $(this),
           dataID = $this.attr("data-id");
         var messLength = $(".chatbox_row_1, .chatbox_row_2", $this).length; // Số tin nhắn
@@ -564,11 +564,11 @@ function runChat() {
         $title.text(tit);
       }
 
-      setTimeout(function() {
+      setTimeout(function () {
         $wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
       }, 300);
 
-      console.log('chatbox-change length~ '+$('.chatbox-change').length);
+      console.log('chatbox-change length~ ' + $('.chatbox-change').length);
       console.log($('.chatbox-change').html());
 
     }
@@ -582,7 +582,7 @@ function runChat() {
    *
    * @param {htmlString} Dữ liệu tin nhắn
    */
-  var filterMess = function(chatbox_messages) {
+  var filterMess = function (chatbox_messages) {
     var newChatboxMessages, thisLastMess;
     if (chatbox_messages) {
       // Nếu có tin nhắn
@@ -608,7 +608,7 @@ function runChat() {
       // Nếu không có tin nhắn (có thể là do clear chatbox)
       lastMess = undefined; // Xóa giá trị tin nhắn cuối
       var obj = {};
-      $(".chatbox-content").each(function() {
+      $(".chatbox-content").each(function () {
         var $this = $(this);
         obj[$this.attr("data-id")] = $this.children("p").length;
       });
@@ -618,7 +618,7 @@ function runChat() {
     $("#chatbox-forumvi:hidden").fadeIn(200); // Hiển thị chatbox
     firstTime = false;
 
-    
+
   };
 
   /**
@@ -634,7 +634,7 @@ function runChat() {
    * @param3 {String} nickname dùng trong mã lệnh
    * @param4 {String} Nội dung thẻ li
    */
-  var quickAction = function(ele, cmd, user_name, txt) {
+  var quickAction = function (ele, cmd, user_name, txt) {
     if (user_name) {
       user_name = " " + user_name;
     } else {
@@ -654,7 +654,7 @@ function runChat() {
    *
    * $param {htmlString} Dữ liệu tin nhắn
    */
-  var getDone = function(chatsource) {
+  var getDone = function (chatsource) {
     //console.log(chatsource);
     if (typeof chatsource !== "undefined") {
       if (chatsource.indexOf("<!DOCTYPE html PUBLIC") === 0) {
@@ -718,7 +718,7 @@ function runChat() {
     }
   };
 
-  var disconnect = function() {
+  var disconnect = function () {
     clearInterval(refreshFunction); // Dừng tự cập nhật
     $("#chatbox-action-logout").addClass("isOut");
     $(".chatbox-action-checkbox")
@@ -727,7 +727,7 @@ function runChat() {
     $messenger.val("/away");
     $form.submit();
     $wform.css("bottom", "-90px");
-    setTimeout(function() {
+    setTimeout(function () {
       $wform.hide();
     }, 500);
     $wrap.css({
@@ -746,12 +746,12 @@ function runChat() {
    *
    * @param {URL} Đường dẫn tải dữ liệu
    */
-  var update = function() {
+  var update = function () {
     //console.log(cURL+'/message/');
     //console.log(__token);
     //console.log('update called');
     $.ajax({
-      url: cURL+'/message/',
+      url: cURL + '/message/',
       type: "get",
       //dataType: "script",
       beforeSend: function (xhr) {
@@ -797,15 +797,15 @@ function runChat() {
       });*/
   };
 
-  var autoUpdate = function() {
-    // Tự cập nhật mỗi 1s
-    var refreshFunction = setInterval(function() {
+  var autoUpdate = function () {
+    // Tự cập nhật mỗi 1s = 600
+    var refreshFunction = setInterval(function () {
       update();
-    }, 600);
+    }, 300);
   };
 
   // Bật tắt tự động cập nhật
-  $("#chatbox-input-autorefesh").change(function() {
+  $("#chatbox-input-autorefesh").change(function () {
     if ($(this).prop("checked")) {
       // Đã check
       autoUpdate();
@@ -814,7 +814,7 @@ function runChat() {
     }
   });
 
-  $("#chatbox-action-logout").click(function() {
+  $("#chatbox-action-logout").click(function () {
     var $this = $(this);
     if ($this.hasClass("isOut")) {
       $(".chatbox-action-checkbox")
@@ -822,7 +822,7 @@ function runChat() {
         .show();
       $this.removeClass("isOut");
       $wform.show();
-      setTimeout(function() {
+      setTimeout(function () {
         $wform.css("bottom", 0);
       }, 10);
       $wrap.css({
@@ -830,7 +830,7 @@ function runChat() {
         opacity: 1
       });
       $("#chatbox-tabs").css("opacity", 1);
-      setTimeout(function() {
+      setTimeout(function () {
         $wrap[0].scrollTop = $wrap.prop("scrollHeight");
       }, 500);
       autoUpdate();
@@ -844,7 +844,7 @@ function runChat() {
    */
 
   // Đánh dấu đã xem hết tin nhắn
-  $messenger.on("focus click keydown", function() {
+  $messenger.on("focus click keydown", function () {
     var dataID = $messenger.attr("data-id");
     var $countMess = $(".chatbox-change[data-id='" + dataID + "']").find(
       ".chatbox-change-mess"
@@ -865,7 +865,7 @@ function runChat() {
 
       // Hiệu ứng cho tin nhắn mới
       $noSeen.addClass("chatbox-newmess");
-      setTimeout(function() {
+      setTimeout(function () {
         $noSeen.removeClass("chatbox-newmess");
       }, 3000);
 
@@ -875,7 +875,7 @@ function runChat() {
   });
 
   // Chuyển tab
-  $("#chatbox-list").on("click", ".chatbox-change", function() {
+  $("#chatbox-list").on("click", ".chatbox-change", function () {
     var $this = $(this);
     $(".chatbox-change.active").removeClass("active");
     $this.addClass("active");
@@ -901,13 +901,13 @@ function runChat() {
   });
 
   // Chạy các chức năng từ menu
-  $("#chatbox-title").on("click", ".chatbox-action", function() {
+  $("#chatbox-title").on("click", ".chatbox-action", function () {
     $messenger.val($(this).attr("data-action"));
     $form.submit();
   });
 
   // Buzz
-  $("#chatbox-option-buzz").click(function() {
+  $("#chatbox-option-buzz").click(function () {
     if ($(this).html() === "BUZZ") {
       $messenger.val("/buzz");
       $form.submit();
@@ -919,9 +919,9 @@ function runChat() {
    *
    * @param {String} Nội dung tin nhắn
    */
-  var sendMessage = function(val) {
+  var sendMessage = function (val) {
     oldMessage = $messenger.val();
-    console.log(currentNodeID+'~~~'+currentUserID)
+    console.log(currentNodeID + '~~~' + currentUserID)
     if (!currentNodeID || !currentUserID) {
       //mtip('', 'error', '', 'Chọn 1 cuộc hội thoại');
       console.log('Chọn 1 cuộc hội thoại');
@@ -933,7 +933,7 @@ function runChat() {
       sent: val,
     });
     $.ajax({
-      url: cURL+'/send/', 
+      url: cURL + '/send/',
       type: 'post',
       data: {
         node_id: currentNodeID,
@@ -947,7 +947,7 @@ function runChat() {
         scolor: $("#chatbox-input-color").val()*/
       },
       beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', __token);
+        xhr.setRequestHeader('Authorization', __token);
       },
       success: function (response) {
         console.log(response);
@@ -963,7 +963,7 @@ function runChat() {
           console.log(response.message)
         }
       },
-      error: function(a, b, c) {
+      error: function (a, b, c) {
         console.log("Lỗi! Tin nhắn chưa được gửi.");
         $messenger.val(oldMessage);
         // Xử lý cho lỗi mất kết nối internet (có thể xảy ra do refresh trang trong lúc đang tải)
@@ -971,7 +971,7 @@ function runChat() {
     });
   };
 
-  var getCaret = function(el) {
+  var getCaret = function (el) {
     if (el.selectionStart) {
       return el.selectionStart;
     } else if (document.selection) {
@@ -989,7 +989,7 @@ function runChat() {
     return 0;
   };
 
-  $messenger.keyup(function(event) {
+  $messenger.keyup(function (event) {
     if (event.keyCode == 13) {
       var content = this.value;
       var caret = getCaret(this);
@@ -1008,7 +1008,7 @@ function runChat() {
     }
   });
 
-  $form.submit(function(event) {
+  $form.submit(function (event) {
     // Gửi tin nhắn
     event.preventDefault(); // Chặn sự kiện submit
 
@@ -1017,16 +1017,16 @@ function runChat() {
     if ($.trim(messVal) !== "") {
       var regexpCmd = /^\/(chat|gift|toggle|kick|away|ban|unban|mod|unmod|cls|clear|me)(\s\[(.+?)\]\s\{(.+?)\}\s(.+))?$/;
 
-      console.log('messVal~~~~ '+messVal);
+      console.log('messVal~~~~ ' + messVal);
       if (regexpCmd.test(messVal)) {
         // Nếu là các lệnh cmd
         var cmd = messVal.match(regexpCmd);
 
         var action = cmd[1],
-        nodeid = cmd[3],
-        nodename = cmd[4],
-        nickname = cmd[5],
-        nicknameencode = encodeURIComponent(nickname),
+          nodeid = cmd[3],
+          nodename = cmd[4],
+          nickname = cmd[5],
+          nicknameencode = encodeURIComponent(nickname),
           currentUserNameencode = encodeURIComponent(currentUserName);
 
         if (/^(chat|gift|toggle)$/.test(action)) {
@@ -1034,7 +1034,7 @@ function runChat() {
           if (action === "chat") {
             var nickdecode = decodeURIComponent(nickname);
 
-            console.log('nodeid~'+nodeid);
+            console.log('nodeid~' + nodeid);
             // Đặt biến cho tab chat riêng
             /*var $newTab = $(
               '.chatbox-change[data-users="[\\"' +
@@ -1048,7 +1048,7 @@ function runChat() {
               currentUserNameencode +
               '\\",\\"' +
               nicknameencode +
-              '\\"]"][data-nodeid="'+nodeid+'"]'
+              '\\"]"][data-nodeid="' + nodeid + '"]'
             );
 
             if (!$newTab.length) {
@@ -1064,9 +1064,9 @@ function runChat() {
                 currentUserNameencode +
                 '\\",\\"' +
                 nicknameencode +
-                '\\"]"][data-nodeid="'+nodeid+'"]'
+                '\\"]"][data-nodeid="' + nodeid + '"]'
               );
-              }
+            }
 
             console.log($newTab);
 
@@ -1077,55 +1077,62 @@ function runChat() {
               $newTab.show().click();
               var dataId = $newTab.attr('data-id');
               $messenger.attr('data-id', dataId);
-              $form.attr('data-key', dataId);
-              console.log('newTab.length~ '+dataId);
+
+              key = dataId + $newTab.attr("data-name") + $newTab.attr("data-users");
+              $form.attr('data-key', key);
+
+              console.log('newTab.length~ ' + dataId);
             } else {
               //if ($user.length) {
-                // Nếu có nickname trong danh sách
-                $user.parent().hide(); // Ẩn nickname trong danh sách
+              // Nếu có nickname trong danh sách
+              $user.parent().hide(); // Ẩn nickname trong danh sách
 
-                if (!$newTab.length) {
-                  // Nếu chưa có tab chat
-                  var dataId = new Date().getTime() + "_u" + currentUserName + "_n" + currentNodeID+"_id"+currentUserID; // Tạo data-id
+              if (!$newTab.length) {
+                // Nếu chưa có tab chat
+                var dataId = new Date().getTime() + "_u" + currentUserName + "_n" + currentNodeID + "_id" + currentUserID; // Tạo data-id
 
-                  $messenger.attr('data-id', dataId);
-                  $form.attr('data-key', dataId);
-    
-                  // Đặt icon online và away dựa vào class ở tiêu đề
-                  var clas,
-                    $status = $user
-                      .parent()
-                      .parent()
-                      .prev("h4");
-                  if ($status.hasClass("online")) {
-                    clas = " online";
-                  } else if ($status.hasClass("online")) {
-                    clas = " away";
-                  } else {
-                    clas = "";
-                  }
-                  $newTab = $("<div>", {
-                    class: "chatbox-change" + clas,
-                    "data-id": dataId,
-                    "data-name": "{"+nodename+"}",
-                    "data-nodeid": nodeid,
-                    "data-users":
-                      '["' + currentUserNameencode + '","' + nicknameencode + '"]',
-                    html:
-                      '<h3 style="color:' +
-                      $("span", $user).css("color") +
-                      '">' +
-                      nickname +
-                      ' - '+nodename+'</h3><span class="chatbox-change-mess"></span>'
-                  }).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
-                  $newTab.click();
-                  $("<div>", {
-                    class: "chatbox-content",
-                    "data-id": dataId,
-                    style: "display: none;"
-                  }).appendTo($wrap); // Tạo mục chat riêng mới
+                $messenger.attr('data-id', dataId);
+                //$form.attr('data-key', dataId);
+
+                // Đặt icon online và away dựa vào class ở tiêu đề
+                var clas,
+                  $status = $user
+                    .parent()
+                    .parent()
+                    .prev("h4");
+                if ($status.hasClass("online")) {
+                  clas = " online";
+                } else if ($status.hasClass("online")) {
+                  clas = " away";
+                } else {
+                  clas = "";
                 }
-                
+                $newTab = $("<div>", {
+                  class: "chatbox-change" + clas,
+                  "data-id": dataId,
+                  "data-name": "{" + nodename + "}",
+                  "data-nodeid": nodeid,
+                  "data-users":
+                    '["' + currentUserNameencode + '","' + nicknameencode + '"]',
+                  html:
+                    '<h3 style="color:' +
+                    $("span", $user).css("color") +
+                    '">' +
+                    nickname +
+                    ' - ' + nodename + '</h3><span class="chatbox-change-mess"></span>'
+                }).appendTo("#chatbox-list"); // Tạo tab chat riêng mới
+
+                key = dataId + $newTab.attr("data-name") + $newTab.attr("data-users");
+                $form.attr('data-key', key);
+
+                $newTab.click();
+                $("<div>", {
+                  class: "chatbox-content",
+                  "data-id": dataId,
+                  style: "display: none;"
+                }).appendTo($wrap); // Tạo mục chat riêng mới
+              }
+
               /*} else {
                 // Nếu không có nickname trong danh sách
                 if ($newTab.length) {
@@ -1163,8 +1170,8 @@ function runChat() {
           $('[name="node_id"]').val(currentNodeID);
           $('[name="to_id"]').val(currentUserID);
         }
-        
-        console.log(messWithKey+" - currentUserID="+currentUserID);
+
+        console.log('messWithKey: ' + messWithKey + " - currentUserID=" + currentUserID);
 
         if (messVal == "/buzz") {
           // BUZZ
@@ -1179,7 +1186,7 @@ function runChat() {
 
             $buzz.addClass("disable"); // Thêm class để hiện số đếm lùi
             $buzz.html(60);
-            timeBuzzCount = setInterval(function() {
+            timeBuzzCount = setInterval(function () {
               var zero = timeBuzz--;
               $buzz.html(zero);
               if (zero <= 0) {
@@ -1211,14 +1218,14 @@ function runChat() {
    * Chọn màu
    * Kiểm duyệt BBcode
    */
-  var chooseColor = function(colo) {
+  var chooseColor = function (colo) {
     // Đổi màu chữ
     //	$("#chatbox-option-color").css("background", colo);
     $("#chatbox-input-color").val(colo.slice(1));
     //	$("#chatbox-messenger").css("color", colo);
   };
-  $("#chatbox-option-color").click(function() {
-    var randomColor = (function(m, s, c) {
+  $("#chatbox-option-color").click(function () {
+    var randomColor = (function (m, s, c) {
       return (
         (c ? arguments.callee(m, s, c - 1) : "#") +
         s[m.floor(m.random() * s.length)]
@@ -1234,10 +1241,10 @@ function runChat() {
 
   $(
     "#chatbox-option-bold, #chatbox-option-italic, #chatbox-option-underline, #chatbox-option-strike"
-  ).click(function() {
+  ).click(function () {
     var $this = $(this);
 
-    $this.toggleClass(function() {
+    $this.toggleClass(function () {
       var val = "1";
       if ($this.hasClass("active")) {
         val = "0";
@@ -1247,7 +1254,7 @@ function runChat() {
     });
     var arrCookie = [],
       style = "";
-    $("#chatbox-form > input:not(#chatbox-input-color)").each(function(i, val) {
+    $("#chatbox-form > input:not(#chatbox-input-color)").each(function (i, val) {
       var thisVal = this.value;
       arrCookie.push(thisVal);
       if (thisVal !== "0") {
@@ -1282,13 +1289,13 @@ function runChat() {
       my_setcookie("chatbox_restrict", 0, false); // Lưu cookie
     }
   }
-  $(".chatbox-change").click(function() {
+  $(".chatbox-change").click(function () {
     restrictTab();
   });
 
   var getArrCookie = my_getcookie("optionCookie");
   if (getArrCookie) {
-    $.each(getArrCookie.split("|"), function(i, val) {
+    $.each(getArrCookie.split("|"), function (i, val) {
       if (val === "1") {
         $("#chatbox-option > div")
           .eq(i)
@@ -1297,7 +1304,7 @@ function runChat() {
     });
   }
 
-  $messenger.on("input", function() {
+  $messenger.on("input", function () {
     var val = this.value;
     this.value = val.replace(
       /\[\/(b|i|u|strike|left|center|right|justify|size|color|font|list|quote|code|spoiler|hide|table|tr|td|flash|youtube|dailymotion|sub|sup|scroll|updown|flipv|fliph|fade|blur|wow|rand)\]|\[(\*|hr)\]/gi,
@@ -1305,7 +1312,7 @@ function runChat() {
     );
   });
 
-  var CB_disconnect = function() {
+  var CB_disconnect = function () {
     disconnect();
   };
 
@@ -1323,7 +1330,7 @@ function runChat() {
   __token = localStorage.getItem("token");
 
   $.ajax({
-    url: cURL+'/message/',
+    url: cURL + '/message/',
     type: "get",
     //dataType: "script",
     beforeSend: function (xhr) {
@@ -1344,14 +1351,14 @@ function runChat() {
           currentNodeID = ar[3];
           currentNodeName = decodeURIComponent(ar[5]);
           toUserName = ar[7];
-      
-            $messenger.val('/chat ['+currentNodeID+'] {'+currentNodeName+'} '+toUserName);
-            $('[name="node_id"]').val(currentNodeID);
-            $('[name="to_id"]').val(currentUserID);
-            $form.submit();
+
+          $messenger.val('/chat [' + currentNodeID + '] {' + currentNodeName + '} ' + toUserName);
+          $('[name="node_id"]').val(currentNodeID);
+          $('[name="to_id"]').val(currentUserID);
+          $form.submit();
 
         }
-        
+
         autoUpdate();
       }
     },
@@ -1363,14 +1370,14 @@ function runChat() {
 
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   if (__token) {
     runChat();
   } else if (localStorage.getItem("token") && !__token) {
     __token = localStorage.getItem("token");
     console.log(location.href);
     runChat();
-    
+
   } else {
     $('#chatbox-forumvi').html('<div class="alerts alert-warning">Bạn phải đăng nhập để sử dụng tính năng này</div>');
   }
