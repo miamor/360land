@@ -235,7 +235,8 @@ var checkSession = function() {
     //console.log('load secs to check token: '+s);
     //if (s > 0.5*60 && s < 3*60*60) { // > 1 hours, < 3 hours
     if (s > 10*60) { // > 1 hours, < 3 hours
-        refreshToken()
+        console.log('call refreshToken');
+        //refreshToken()
         //logout(true)
     }
 }

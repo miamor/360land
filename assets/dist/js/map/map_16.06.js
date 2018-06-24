@@ -459,9 +459,6 @@ var cityList = [];
                     }
                 }
                 loaded = true;
-
-                render(false, (isMobile ? false : true));
-
             });
 
             $thismap.enableSetCenter = true;
@@ -682,8 +679,7 @@ var cityList = [];
                         $thismap.bounds.b.f != oldbounds.b.f
                     )
                 )) {
-                //$thismap.findPointByBounds();
-                productControlerObj._SearchAction();
+                $thismap.findPointByBounds();
             }
             /*
             if ($thismap.isMapResize) {
@@ -3183,9 +3179,7 @@ ProductSearchControler.prototype.setProjectDetails = function() {
     i.showDetailsCallback();
 }
 
-ProductSearchControler.prototype._SearchAction = function(g, query) {
-    if (!query) query = false;
-
+ProductSearchControler.prototype._SearchAction = function(g) {
     //console.log('_SearchAction called');
     //console.log(g);
     var f = this;
@@ -3289,67 +3283,63 @@ ProductSearchControler.prototype._SearchAction = function(g, query) {
 
     this.searchVar = d;
 
-    console.log(d);
-    //console.log(JSON.stringify(d));
-    //if (f.ProductMap.markers == null || f.ProductMap.markers == undefined || !f.ProductMap.markers || f.ProductMap.markers.length <= 0) {
-        $.ajax({
-            url: API_URL + '/search/searchall/',
-            //url: MAIN_URL+'/api/node.php',
-            type: 'post',
-            //data: $('#map-search-form').serialize(),
-            data: d,
-            success: function(data) {
-                console.log(data);
-                //console.log('isProject === '+f.ProductMap.isProject);
-                // show on map
-                f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
-                //console.log(f.ProductMap.data);
-                //f.showList(data);
+    //console.log(d);
+    console.log(JSON.stringify(d));
+    $.ajax({
+        url: API_URL + '/search/searchall/',
+        //url: MAIN_URL+'/api/node.php',
+        type: 'post',
+        //data: $('#map-search-form').serialize(),
+        data: d,
+        success: function(data) {
+            console.log(data);
+            //console.log('isProject === '+f.ProductMap.isProject);
+            // show on map
+            f.tempProductData = f.productData = f.ProductMap.showMap(data, d.isSearchForm);
+            //console.log(f.ProductMap.data);
+            //f.showList(data);
 
-                if (!f.ProductMap.isTrigger && !isMobile) {
-                    $('.li-list>a').click();
-                }
-                f.ProductMap.isTrigger = false;
-
-                if (!isMobile) {
-                    if (d.type_search == 2) {
-                        $('a[href="#map_results_project"]').click()
-                    } else {
-                        $('a[href="#map_rresults_node"]').click()
-                    }
-                } else {
-                    if ($('.map-search-tabs').is(':visible')) $('.map-tabs-toggle').click()
-                }
-
-                /*if (g == 1 ||
-                        ($('#type').val() && $('#type').val() != 'CN') ||
-                        ($('#city').val() && $('#city').val() != 'CN') ||
-                        ($('#district').val() && $('#district').val() != 'CN') ||
-                        ($('#area').val() && $('#area').val() != 'CN') ||
-                        ($('#price').val() && $('#price').val() != 'CN')
-                    ) {*/
-                if (g == 1 ||
-                    (g != -1 && (d.type_search && d.type_search > 0))
-                ) {
-                    $('.btn-filter').html('<i class="fa fa-check"></i> Lọc');
-                    $('.cancel-filter').show();
-                    $('#place_search').val('');
-                } else {
-                    $('.btn-filter').html('<i class="fa fa-filter"></i> Lọc');
-                    $('.cancel-filter').hide()
-                }
-                //console.log('isProject (new) === '+f.ProductMap.isProject);
-                f.ChangeUrlForNewContext();
-            },
-            error: function(a, b, c) {
-                $('.loading-layout').hide();
-                $('.popup-map').hide();
-                console.log(a)
+            if (!f.ProductMap.isTrigger && !isMobile) {
+                $('.li-list>a').click();
             }
-        });
-    /*} else {
-        console.log('update map, but do not send new query, just show and hide points on map');
-    }*/
+            f.ProductMap.isTrigger = false;
+
+            if (!isMobile) {
+                if (d.type_search == 2) {
+                    $('a[href="#map_results_project"]').click()
+                } else {
+                    $('a[href="#map_rresults_node"]').click()
+                }
+            } else {
+                if ($('.map-search-tabs').is(':visible')) $('.map-tabs-toggle').click()
+            }
+
+            /*if (g == 1 ||
+                    ($('#type').val() && $('#type').val() != 'CN') ||
+                    ($('#city').val() && $('#city').val() != 'CN') ||
+                    ($('#district').val() && $('#district').val() != 'CN') ||
+                    ($('#area').val() && $('#area').val() != 'CN') ||
+                    ($('#price').val() && $('#price').val() != 'CN')
+                ) {*/
+            if (g == 1 ||
+                (g != -1 && (d.type_search && d.type_search > 0))
+            ) {
+                $('.btn-filter').html('<i class="fa fa-check"></i> Lọc');
+                $('.cancel-filter').show();
+                $('#place_search').val('');
+            } else {
+                $('.btn-filter').html('<i class="fa fa-filter"></i> Lọc');
+                $('.cancel-filter').hide()
+            }
+            //console.log('isProject (new) === '+f.ProductMap.isProject);
+            f.ChangeUrlForNewContext();
+        },
+        error: function(a, b, c) {
+            $('.loading-layout').hide();
+            $('.popup-map').hide();
+            console.log(a)
+        }
+    });
 
     //f.ChangeUrlForNewContext();
 
@@ -3591,6 +3581,8 @@ function initMap() {
         //$('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
         $('.nav-search').html('<li class="li-input"><input type="text" id="place_search" placeholder="Search place"/></li>');
     }
+
+    render(false, (isMobile ? false : true));
 
     productControlerObj = new ProductSearchControler({
         context: mapContext

@@ -88,6 +88,7 @@ if (!$temp) {
     <div class="menu-one-box view-public-profile">
 	<div class="menu-one-box-body">
 	    <a class="menu-one-item public-profile-link" href="#">Xem trang cá nhân</a>
+	    <a class="menu-one-item" href="<?php echo MAIN_URL ?>/chat">Chat</a>
 	</div>
     </div>
     <div class="menu-one-box">

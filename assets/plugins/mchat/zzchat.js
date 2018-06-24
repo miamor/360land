@@ -749,6 +749,7 @@ function runChat() {
   var update = function() {
     //console.log(cURL+'/message/');
     //console.log(__token);
+    //console.log('update called');
     $.ajax({
       url: cURL+'/message/',
       type: "get",
@@ -920,6 +921,7 @@ function runChat() {
    */
   var sendMessage = function(val) {
     oldMessage = $messenger.val();
+    console.log(currentNodeID+'~~~'+currentUserID)
     if (!currentNodeID || !currentUserID) {
       //mtip('', 'error', '', 'Chọn 1 cuộc hội thoại');
       console.log('Chọn 1 cuộc hội thoại');
@@ -1015,7 +1017,7 @@ function runChat() {
     if ($.trim(messVal) !== "") {
       var regexpCmd = /^\/(chat|gift|toggle|kick|away|ban|unban|mod|unmod|cls|clear|me)(\s\[(.+?)\]\s\{(.+?)\}\s(.+))?$/;
 
-      //console.log(messVal);
+      console.log('messVal~~~~ '+messVal);
       if (regexpCmd.test(messVal)) {
         // Nếu là các lệnh cmd
         var cmd = messVal.match(regexpCmd);
@@ -1034,30 +1036,38 @@ function runChat() {
 
             console.log('nodeid~'+nodeid);
             // Đặt biến cho tab chat riêng
+            /*var $newTab = $(
+              '.chatbox-change[data-users="[\\"' +
+              nicknameencode +
+              '\\",\\"' +
+              currentUserNameencode +
+              '\\"]"][data-nodeid="'+nodeid+'"]'
+            );*/
             var $newTab = $(
-              '.chatbox-change[data-nodeid="'+nodeid+'"]'
+              '.chatbox-change[data-users="[\\"' +
+              currentUserNameencode +
+              '\\",\\"' +
+              nicknameencode +
+              '\\"]"][data-nodeid="'+nodeid+'"]'
             );
-            console.log('.chatbox-change length~~~ '+$('.chatbox-change').length);
-            console.log($('chatbox-change').html());
-            console.log($('chatbox-change').text());
 
-            console.log($newTab.length);
             if (!$newTab.length) {
-              console.log('not found $newTab');
-              $newTab = $(
+              /*$newTab = $(
                 '.chatbox-change[data-users="[\\"' +
                   nicknameencode +
                   '\\",\\"' +
                   currentUserNameencode +
                   '\\"]"][data-nodeid="'+nodeid+'"][data-name="{'+nodename+'}"]'
+              );*/
+              var $newTab = $(
+                '.chatbox-change[data-users="[\\"' +
+                currentUserNameencode +
+                '\\",\\"' +
+                nicknameencode +
+                '\\"]"][data-nodeid="'+nodeid+'"]'
               );
-            }
+              }
 
-            console.log('.chatbox-change[data-users="[\\"' +
-            currentUserNameencode +
-            '\\",\\"' +
-            nicknameencode +
-            '\\"]"][data-nodeid="'+nodeid+'"][data-name="{'+nodename+'}"]');
             console.log($newTab);
 
             var $user = userOnline(nickname);
@@ -1153,6 +1163,9 @@ function runChat() {
           $('[name="node_id"]').val(currentNodeID);
           $('[name="to_id"]').val(currentUserID);
         }
+        
+        console.log(messWithKey+" - currentUserID="+currentUserID);
+
         if (messVal == "/buzz") {
           // BUZZ
 
@@ -1182,7 +1195,6 @@ function runChat() {
         } else if (messVal == "/out" && messId !== "publish") {
           sendMessage(messWithKey);
         } else {
-          console.log(messVal);
 
           sendMessage(messWithKey);
         }
@@ -1340,7 +1352,7 @@ function runChat() {
 
         }
         
-        //autoUpdate();
+        autoUpdate();
       }
     },
     error: function (a, b, c) {
