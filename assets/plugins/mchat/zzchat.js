@@ -421,7 +421,7 @@ function runChat() {
               }
             }*/
 
-            console.log($tabPrivate.html());
+            //console.log($tabPrivate.html());
 
             $msg.html(zzEmoFb.checkEmo(arrMess[1] + arrMess[9])); // Xóa phần đánh dấu tin nhắn
 
@@ -568,8 +568,8 @@ function runChat() {
         $wrap.scrollTop(99999); // Cuộn xuống dòng cuối cùng
       }, 300);
 
-      console.log('chatbox-change length~ ' + $('.chatbox-change').length);
-      console.log($('.chatbox-change').html());
+      //console.log('chatbox-change length~ ' + $('.chatbox-change').length);
+      //console.log($('.chatbox-change').html());
 
     }
   };
@@ -761,6 +761,7 @@ function runChat() {
         //getDone(response);
         if (response.status == 'success') {
           var data = response.data;
+          //console.log(data);
           getDone(data);
 
           $("#chatbox-forumvi:hidden").fadeIn(200);
@@ -799,9 +800,10 @@ function runChat() {
 
   var autoUpdate = function () {
     // Tự cập nhật mỗi 1s = 600
+    //console.log('autoUpdate called');
     var refreshFunction = setInterval(function () {
       update();
-    }, 300);
+    }, 100);
   };
 
   // Bật tắt tự động cập nhật
@@ -921,7 +923,7 @@ function runChat() {
    */
   var sendMessage = function (val) {
     oldMessage = $messenger.val();
-    console.log(currentNodeID + '~~~' + currentUserID)
+    //console.log(currentNodeID + '~~~' + currentUserID)
     if (!currentNodeID || !currentUserID) {
       //mtip('', 'error', '', 'Chọn 1 cuộc hội thoại');
       console.log('Chọn 1 cuộc hội thoại');
@@ -950,7 +952,7 @@ function runChat() {
         xhr.setRequestHeader('Authorization', __token);
       },
       success: function (response) {
-        console.log(response);
+        //console.log(response);
         //getDone(response);
         // Cập nhật tin nhắn
         if (response.status == 'success') {
@@ -960,7 +962,7 @@ function runChat() {
         } else {
           //mtip('', 'error', '', response.message)
           $messenger.val(oldMessage);
-          console.log(response.message)
+          //console.log(response.message)
         }
       },
       error: function (a, b, c) {
@@ -1017,7 +1019,7 @@ function runChat() {
     if ($.trim(messVal) !== "") {
       var regexpCmd = /^\/(chat|gift|toggle|kick|away|ban|unban|mod|unmod|cls|clear|me)(\s\[(.+?)\]\s\{(.+?)\}\s(.+))?$/;
 
-      console.log('messVal~~~~ ' + messVal);
+      //console.log('messVal~~~~ ' + messVal);
       if (regexpCmd.test(messVal)) {
         // Nếu là các lệnh cmd
         var cmd = messVal.match(regexpCmd);
@@ -1034,7 +1036,7 @@ function runChat() {
           if (action === "chat") {
             var nickdecode = decodeURIComponent(nickname);
 
-            console.log('nodeid~' + nodeid);
+            //console.log('nodeid~' + nodeid);
             // Đặt biến cho tab chat riêng
             /*var $newTab = $(
               '.chatbox-change[data-users="[\\"' +
@@ -1068,7 +1070,7 @@ function runChat() {
               );
             }
 
-            console.log($newTab);
+            //console.log($newTab);
 
             var $user = userOnline(nickname);
 
@@ -1081,7 +1083,7 @@ function runChat() {
               key = dataId + $newTab.attr("data-name") + $newTab.attr("data-users");
               $form.attr('data-key', key);
 
-              console.log('newTab.length~ ' + dataId);
+              //console.log('newTab.length~ ' + dataId);
             } else {
               //if ($user.length) {
               // Nếu có nickname trong danh sách
@@ -1161,7 +1163,7 @@ function runChat() {
         var messWithKey = $form.attr("data-key") + messVal; // tin nhắn có key (tin riêng)
         var messId = $messenger.attr("data-id"); // 1528471380508_u2_n3
         var node_id, node_title;
-        console.log(messId);
+        //console.log(messId);
         if (messId !== "publish") {
           currentNodeID = messId.split("_n")[1].split('_')[0];
           currentUserName = messId.split("_u")[1].split("_")[0];
@@ -1171,7 +1173,7 @@ function runChat() {
           $('[name="to_id"]').val(currentUserID);
         }
 
-        console.log('messWithKey: ' + messWithKey + " - currentUserID=" + currentUserID);
+        //console.log('messWithKey: ' + messWithKey + " - currentUserID=" + currentUserID);
 
         if (messVal == "/buzz") {
           // BUZZ
@@ -1329,6 +1331,14 @@ function runChat() {
 
   __token = localStorage.getItem("token");
 
+  $('#chatbox-forumvi').hide().after('<div class="loading-layout" style="position:absolute!important">\
+    <div class= "cssload-thecube">\
+    <div class="cssload-cube cssload-c1"></div>\
+    <div class="cssload-cube cssload-c2"></div>\
+    <div class="cssload-cube cssload-c4"></div>\
+    <div class="cssload-cube cssload-c3"></div>\
+  </div>\
+</div>');
   $.ajax({
     url: cURL + '/message/',
     type: "get",
@@ -1337,20 +1347,21 @@ function runChat() {
       xhr.setRequestHeader('Authorization', __token);
     },
     success: function (response) {
-      console.log(response);
+      //console.log(response);
       if (response.status == 'success') {
         var data = response.data;
         getDone(data);
 
-        $("#chatbox-forumvi:hidden").fadeIn(200);
+        $("#chatbox-forumvi:hidden").fadeIn(200).next('.loading-layout').remove();
 
         if (location.href.indexOf('node_id=') > -1 && location.href.indexOf('node_name=') > -1 && location.href.indexOf('user_id=') > -1) {
-          console.log('check url and start /chat ');
+          //console.log('check url and start /chat ');
           var ar = location.href.split(/=|&/);
           //console.log(ar);
           currentNodeID = ar[3];
           currentNodeName = decodeURIComponent(ar[5]);
           toUserName = ar[7];
+          currentUserID = ar[9];
 
           $messenger.val('/chat [' + currentNodeID + '] {' + currentNodeName + '} ' + toUserName);
           $('[name="node_id"]').val(currentNodeID);
@@ -1375,7 +1386,7 @@ $(document).ready(function () {
     runChat();
   } else if (localStorage.getItem("token") && !__token) {
     __token = localStorage.getItem("token");
-    console.log(location.href);
+    //console.log(location.href);
     runChat();
 
   } else {
