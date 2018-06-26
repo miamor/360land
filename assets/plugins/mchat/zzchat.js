@@ -747,7 +747,7 @@ function runChat() {
    * @param {URL} Đường dẫn tải dữ liệu
    */
   var update = function () {
-    //console.log(cURL+'/message/');
+    //console.log('update called: ' + cURL + '/message/');
     //console.log(__token);
     //console.log('update called');
     $.ajax({
@@ -803,7 +803,7 @@ function runChat() {
     //console.log('autoUpdate called');
     var refreshFunction = setInterval(function () {
       update();
-    }, 100);
+    }, 300);
   };
 
   // Bật tắt tự động cập nhật
@@ -1347,12 +1347,13 @@ function runChat() {
       xhr.setRequestHeader('Authorization', __token);
     },
     success: function (response) {
-      //console.log(response);
+      console.log(response);
       if (response.status == 'success') {
         var data = response.data;
         getDone(data);
 
-        $("#chatbox-forumvi:hidden").fadeIn(200).next('.loading-layout').remove();
+        $("#chatbox-forumvi:hidden").fadeIn(200)
+        $('#chatbox-forumvi+.loading-layout').remove();
 
         if (location.href.indexOf('node_id=') > -1 && location.href.indexOf('node_name=') > -1 && location.href.indexOf('user_id=') > -1) {
           //console.log('check url and start /chat ');
@@ -1368,9 +1369,9 @@ function runChat() {
           $('[name="to_id"]').val(currentUserID);
           $form.submit();
 
-        }
+          autoUpdate();
 
-        autoUpdate();
+        }
       }
     },
     error: function (a, b, c) {
